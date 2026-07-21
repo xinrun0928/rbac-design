@@ -10,6 +10,14 @@ export interface OrgTreeNode {
   description: string
   /** 是否为关键/重点单位 */
   isKey: boolean
+  /** 归属地区 */
+  areaName?: string
+  /** 负责人 */
+  leader?: string
+  /** 联系电话 */
+  contactPhone?: string
+  /** 邮箱 */
+  email?: string
   /** 成员列表 */
   members: OrgMember[]
   /** 子节点 */

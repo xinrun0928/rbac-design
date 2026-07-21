@@ -1,785 +1,728 @@
 <template>
-  <div class="org-tree-view">
+  <div class="org-management">
     <!-- 页面头部 -->
     <div class="page-header animate-item">
       <div class="header-left">
         <h1><span class="title-bar"></span>组织管理</h1>
-        <span class="page-desc">广东省交通运输厅组织架构与成员信息</span>
+        <span class="page-desc">管理系统组织架构，维护组织树结构</span>
       </div>
       <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh">刷新</el-button>
+        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
       </div>
     </div>
 
-    <div class="main-content animate-item">
-      <!-- 左侧：组织树列表 -->
-      <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <div class="tree-header">
-          <span v-if="!treeCollapsed" class="tree-title">组织结构</span>
-          <el-button
-            :icon="treeCollapsed ? DArrowRight : DArrowLeft"
-            link
-            @click="treeCollapsed = !treeCollapsed"
-            class="collapse-btn"
-          />
-        </div>
-        <div v-if="!treeCollapsed" class="tree-body">
-          <el-input
-            v-model="treeFilter"
-            placeholder="搜索组织名称"
+    <!-- 搜索栏 -->
+    <el-card class="search-card animate-item" shadow="never">
+      <el-form :model="searchForm" inline>
+        <el-form-item label="组织名称">
+          <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+        </el-form-item>
+        <el-form-item label="套餐类型">
+          <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 160px">
+            <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+          <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <!-- 工具栏 -->
+    <div class="toolbar animate-item">
+      <div class="toolbar-left">
+        <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
+      </div>
+      <div class="toolbar-right">
+        <span class="total-count">共 {{ orgList.length }} 个组织</span>
+      </div>
+    </div>
+
+    <!-- 组织树表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <el-table
+        v-loading="loading"
+        :data="orgTreeData"
+        row-key="id"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        border
+        stripe
+        default-expand-all
+        :indent="24"
+        empty-text=" "
+      >
+        <el-table-column prop="name" label="组织名称" min-width="280" fixed>
+          <template #default="{ row }">
+            <div class="org-name-cell">
+              <el-icon class="org-icon" :style="{ color: getPackageColor(row.packageName) }">
+                <OfficeBuilding />
+              </el-icon>
+              <span class="org-name">{{ row.name }}</span>
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="packageName" label="套餐类型" width="140" align="center">
+          <template #default="{ row }">
+            <el-tag :color="getPackageColor(row.packageName)" effect="dark" style="border: none; color: #fff;" size="small" round>
+              {{ row.packageName }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="nodeType" label="节点类型" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag size="small" :type="getNodeTypeTagType(row.nodeType)" effect="plain">
+              {{ getNodeTypeLabel(row.nodeType) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="areaName" label="归属地区" width="120" align="center">
+          <template #default="{ row }">
+            <span class="area-text">{{ row.areaName || '-' }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="leader" label="负责人" width="100" align="center">
+          <template #default="{ row }">
+            <span class="leader-text">{{ row.leader || '-' }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="contactPhone" label="联系电话" width="130" align="center">
+          <template #default="{ row }">
+            <span class="phone-text">{{ row.contactPhone || '-' }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="email" label="邮箱" min-width="160">
+          <template #default="{ row }">
+            <span class="email-text">{{ row.email || '-' }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="members" label="成员数" width="80" align="center">
+          <template #default="{ row }">
+            <span class="count-text">{{ row.members?.length || 0 }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="210" align="center" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" link :icon="Plus" @click="handleAdd(row)">新增</el-button>
+            <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
+            <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <!-- 新增/编辑组织抽屉 -->
+    <el-drawer
+      v-model="drawerVisible"
+      :title="isEdit ? '编辑组织' : '新增组织'"
+      size="500px"
+      direction="rtl"
+      :before-close="handleDrawerClose"
+      class="org-drawer"
+    >
+      <el-form ref="formRef" :model="formData" label-width="110px" label-position="right">
+        <el-form-item label="上级节点" prop="parentId">
+          <el-tree-select
+            v-model="formData.parentId"
+            :data="parentTreeData"
+            :props="{ label: 'name', value: 'id', children: 'children' }"
+            placeholder="请选择上级节点（不选则为顶级）"
             clearable
-            :prefix-icon="Search"
-            class="tree-search"
+            check-strictly
+            style="width: 100%"
           />
-          <el-tree
-            ref="treeRef"
-            :data="treeData"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterTreeNode"
-            @node-click="handleNodeClick"
-            class="org-tree"
-          >
-            <template #default="{ data }">
-              <div class="tree-node">
-                <el-icon class="node-icon" :class="getNodeIconClass(data.nodeType)">
-                  <component :is="getNodeIcon(data.nodeType)" />
-                </el-icon>
-                <span class="node-label">{{ data.name }}</span>
-                <span class="node-tag-right">
-                  <el-tag
-                    :color="getPackageTagColor(data.packageName)"
-                    effect="dark"
-                    style="border: none; color: #fff; font-size: 11px; height: 20px; padding: 0 8px;"
-                    size="small"
-                    round
-                  >
-                    {{ data.packageName }}
-                  </el-tag>
-                </span>
-              </div>
-            </template>
-          </el-tree>
-        </div>
-      </div>
+        </el-form-item>
 
-      <!-- 右侧：成员信息区域 -->
-      <div class="detail-panel">
-        <!-- 未选中状态 -->
-        <div v-if="!currentNode" class="empty-state">
-          <el-icon :size="80" color="#DCDFE6"><OfficeBuilding /></el-icon>
-          <p class="empty-title">请选择左侧组织节点</p>
-          <p class="empty-desc">点击左侧组织树中的节点，查看该组织的成员信息</p>
-        </div>
+        <el-form-item label="组织名称" prop="name" :rules="[{ required: true, message: '请输入组织名称', trigger: 'blur' }]">
+          <el-input v-model="formData.name" placeholder="请输入组织名称" maxlength="100" show-word-limit />
+        </el-form-item>
 
-        <!-- 选中状态：组织详情 -->
-        <template v-else>
-          <!-- 组织信息卡片 -->
-          <el-card class="org-info-card" shadow="never">
-            <div class="org-info-header">
-              <div class="org-info-left">
-                <div class="org-name-row">
-                  <el-icon class="org-icon" :class="getNodeIconClass(currentNode.nodeType)">
-                    <component :is="getNodeIcon(currentNode.nodeType)" />
-                  </el-icon>
-                  <h2 class="org-name">{{ currentNode.name }}</h2>
-                  <el-tag
-                    :color="getPackageTagColor(currentNode.packageName)"
-                    effect="dark"
-                    style="border: none; color: #fff;"
-                    round
-                  >
-                    {{ currentNode.packageName }}
-                  </el-tag>
-                </div>
-                <p class="org-desc">{{ currentNode.description }}</p>
-              </div>
-            </div>
+        <el-form-item label="归属地区" prop="areaCode">
+          <el-cascader
+            v-model="formData.areaCode"
+            :options="areaOptions"
+            :props="{ label: 'areaName', value: 'areaCode', children: 'children' }"
+            placeholder="请选择归属地区"
+            clearable
+            style="width: 100%"
+          />
+        </el-form-item>
 
-            <!-- 统计卡片 -->
-            <div class="stat-cards">
-              <div class="stat-item">
-                <div class="stat-value">{{ currentNode.members.length }}</div>
-                <div class="stat-label">成员人数</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-value">{{ getChildrenCount(currentNode) }}</div>
-                <div class="stat-label">下属机构</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-value">{{ getAllMembersCount(currentNode) }}</div>
-                <div class="stat-label">总人员数</div>
-              </div>
-            </div>
-          </el-card>
+        <el-form-item label="套餐类型" prop="packageType" :rules="[{ required: true, message: '请选择套餐类型', trigger: 'change' }]">
+          <el-select v-model="formData.packageType" placeholder="请选择套餐类型" style="width: 100%" @change="handlePackageTypeChange">
+            <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
 
-          <!-- 成员列表 -->
-          <el-card class="member-card" shadow="never">
-            <template #header>
-              <div class="card-header">
-                <span class="card-title">
-                  <el-icon><User /></el-icon>
-                  成员列表
-                </span>
-                <span class="member-count">共 {{ currentNode.members.length }} 人</span>
-              </div>
-            </template>
+        <el-form-item label="套餐名称" prop="packageName" :rules="[{ required: true, message: '请选择套餐名称', trigger: 'change' }]">
+          <el-select :model-value="formData.packageName" placeholder="请选择套餐名称" style="width: 100%" :disabled="!formData.packageType" @update:model-value="handlePackageNameUpdate">
+            <el-option v-for="item in packageLabelOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
 
-            <div v-if="currentNode.members.length" class="member-grid">
-              <div
-                v-for="member in currentNode.members"
-                :key="member.id"
-                class="member-item"
-              >
-                <div class="member-avatar">
-                  <el-icon :size="28"><User /></el-icon>
-                </div>
-                <div class="member-info">
-                  <div class="member-name">{{ member.name }}</div>
-                  <div class="member-position">
-                    <el-tag size="small" effect="plain" round>{{ member.position }}</el-tag>
-                  </div>
-                  <div class="member-detail">
-                    <div class="detail-row">
-                      <el-icon><Phone /></el-icon>
-                      <span>{{ member.phone }}</span>
-                    </div>
-                    <div class="detail-row">
-                      <el-icon><Message /></el-icon>
-                      <span>{{ member.email }}</span>
-                    </div>
-                    <div class="detail-row">
-                      <el-icon><Tickets /></el-icon>
-                      <span>{{ member.responsibility }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div v-else class="no-members">
-              <el-icon :size="48" color="#DCDFE6"><User /></el-icon>
-              <p>该组织暂无成员信息</p>
-            </div>
-          </el-card>
-
-          <!-- 子组织列表（如有） -->
-          <el-card v-if="currentNode.children && currentNode.children.length" class="children-card" shadow="never">
-            <template #header>
-              <div class="card-header">
-                <span class="card-title">
-                  <el-icon><OfficeBuilding /></el-icon>
-                  下属机构
-                </span>
-                <span class="member-count">共 {{ currentNode.children.length }} 个</span>
-              </div>
-            </template>
-
-            <div class="children-grid">
-              <div
-                v-for="child in currentNode.children"
-                :key="child.id"
-                class="child-item"
-                @click="handleNodeClick(child)"
-              >
-                <div class="child-icon" :class="getNodeIconClass(child.nodeType)">
-                  <el-icon :size="20">
-                    <component :is="getNodeIcon(child.nodeType)" />
-                  </el-icon>
-                </div>
-                <div class="child-info">
-                  <div class="child-name">
-                    {{ child.name }}
-                    <el-tag
-                      :color="getPackageTagColor(child.packageName)"
-                      effect="dark"
-                      style="border: none; color: #fff; font-size: 10px; height: 18px; padding: 0 6px; margin-left: 8px;"
-                      size="small"
-                      round
-                    >
-                      {{ child.packageName }}
-                    </el-tag>
-                  </div>
-                  <div class="child-meta">
-                    <span>{{ child.members.length }} 名成员</span>
-                    <span v-if="child.children?.length">{{ child.children.length }} 个子机构</span>
-                  </div>
-                </div>
-                <el-icon class="child-arrow"><ArrowRight /></el-icon>
-              </div>
-            </div>
-          </el-card>
+        <!-- 根据套餐类型显示不同的关联字段 -->
+        <template v-if="formData.packageType === 2 || formData.packageType === 3 || formData.packageType === 4">
+          <el-form-item label="上级地市交通" prop="parentCityOrgId">
+            <el-select v-model="formData.parentCityOrgId" placeholder="请选择上级地市交通组织" clearable style="width: 100%">
+              <el-option v-for="item in cityOrgOptions" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
         </template>
-      </div>
-    </div>
+
+        <template v-if="formData.packageType === 3 || formData.packageType === 4">
+          <el-form-item label="上级事务中心" prop="parentAffairOrgId">
+            <el-select v-model="formData.parentAffairOrgId" placeholder="请选择上级事务中心组织" clearable style="width: 100%">
+              <el-option v-for="item in affairOrgOptions" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
+        </template>
+
+        <template v-if="formData.packageType === 4">
+          <el-form-item label="上级公司企业" prop="parentCompanyOrgId">
+            <el-select v-model="formData.parentCompanyOrgId" placeholder="请选择上级公司企业组织" clearable style="width: 100%">
+              <el-option v-for="item in companyOrgOptions" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
+        </template>
+
+        <el-form-item label="负责人" prop="leader">
+          <el-input v-model="formData.leader" placeholder="请输入负责人" />
+        </el-form-item>
+
+        <el-form-item label="联系电话" prop="contactPhone">
+          <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" />
+        </el-form-item>
+
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="formData.email" placeholder="请输入邮箱" />
+        </el-form-item>
+
+        <el-form-item label="备注" prop="description">
+          <el-input v-model="formData.description" type="textarea" :rows="3" placeholder="请输入备注" maxlength="200" show-word-limit />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <div class="drawer-footer">
+          <el-button @click="drawerVisible = false">取消</el-button>
+          <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
+            {{ isEdit ? '保存修改' : '确认创建' }}
+          </el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type ElTree from 'element-plus/es/components/tree'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { FormInstance } from 'element-plus'
 import {
-  Refresh, Search, DArrowLeft, DArrowRight,
-  OfficeBuilding, User, Phone, Message, Tickets,
-  ArrowRight, DataBoard, SetUp, Van, Place
+  Refresh, Search, RefreshLeft, Plus, Delete, Edit,
+  OfficeBuilding
 } from '@element-plus/icons-vue'
 import type { OrgTreeNode } from '../types/orgTree'
-import { orgTreeData } from '../mock/orgTreeData'
+import { orgTreeData as rawOrgTreeData } from '../mock/orgTreeData'
+import { mealTypeOptions, mealNameOptions } from '../mock/mealData'
+import { areaData } from '../mock/areaData'
 
 // ── 状态 ──
-const treeRef = ref<InstanceType<typeof ElTree>>()
-const treeCollapsed = ref(false)
-const treeFilter = ref('')
-const treeData = ref<OrgTreeNode[]>(orgTreeData)
-const currentNode = ref<OrgTreeNode | null>(null)
+const loading = ref(false)
+const submitLoading = ref(false)
+const orgList = ref<OrgTreeNode[]>([])
+const drawerVisible = ref(false)
+const isEdit = ref(false)
+const formRef = ref<FormInstance>()
 
-// ── 树节点筛选 ──
-watch(treeFilter, (val) => {
-  treeRef.value?.filter(val)
+const searchForm = reactive({
+  name: '',
+  packageType: null as number | null
 })
 
-// ── 方法 ──
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.includes(value)
+const formData = reactive({
+  id: 0,
+  parentId: 0,
+  packageType: null as number | null,
+  packageName: '',
+  areaCode: [] as string[],
+  name: '',
+  leader: '',
+  contactPhone: '',
+  email: '',
+  description: '',
+  parentCityOrgId: null as number | null,
+  parentAffairOrgId: null as number | null,
+  parentCompanyOrgId: null as number | null
+})
+
+// 地区选项
+const areaOptions = computed(() => areaData)
+
+// 套餐名称选项
+const packageLabelOptions = computed(() => {
+  if (!formData.packageType) return []
+  return mealNameOptions[formData.packageType] || []
+})
+
+// 获取所有节点的扁平列表
+function flattenTree(nodes: OrgTreeNode[]): OrgTreeNode[] {
+  const result: OrgTreeNode[] = []
+  function traverse(items: OrgTreeNode[]) {
+    for (const item of items) {
+      result.push(item)
+      if (item.children) {
+        traverse(item.children)
+      }
+    }
+  }
+  traverse(nodes)
+  return result
 }
 
-function handleNodeClick(data: OrgTreeNode) {
-  currentNode.value = data
+// 地市交通组织选项
+const cityOrgOptions = computed(() => {
+  const allNodes = flattenTree(rawOrgTreeData)
+  return allNodes.filter(n => n.packageName === '市交通' || n.packageName === '交通')
+})
+
+// 事务中心组织选项
+const affairOrgOptions = computed(() => {
+  const allNodes = flattenTree(rawOrgTreeData)
+  return allNodes.filter(n => n.packageName === '事务中心' || n.packageName === '省事务中心' || n.packageName === '市事务中心')
+})
+
+// 公司企业组织选项
+const companyOrgOptions = computed(() => {
+  const allNodes = flattenTree(rawOrgTreeData)
+  return allNodes.filter(n => n.packageName === '公司' || n.packageName === '省交通公司')
+})
+
+// 上级节点树数据
+const parentTreeData = computed(() => {
+  return [{ id: 0, name: '（顶级组织）', children: rawOrgTreeData }]
+})
+
+// 组织树数据（带搜索过滤）
+const orgTreeData = computed(() => {
+  let data = rawOrgTreeData
+  if (searchForm.name || searchForm.packageType !== null) {
+    const flatData = flattenTree(data)
+    const filtered = flatData.filter(item => {
+      const nameMatch = !searchForm.name || item.name.includes(searchForm.name)
+      const typeMatch = searchForm.packageType === null || getTypeFromPackageName(item.packageName) === searchForm.packageType
+      return nameMatch && typeMatch
+    })
+    data = buildTree(filtered)
+  }
+  return data
+})
+
+// 构建树结构
+function buildTree(data: OrgTreeNode[]): OrgTreeNode[] {
+  const map = new Map<number, OrgTreeNode>()
+  const roots: OrgTreeNode[] = []
+
+  data.forEach(item => {
+    map.set(item.id, { ...item, children: [] })
+  })
+
+  data.forEach(item => {
+    const node = map.get(item.id)!
+    // 找到父节点
+    const parent = findParent(item, data)
+    if (parent && map.has(parent.id)) {
+      map.get(parent.id)!.children!.push(node)
+    } else {
+      roots.push(node)
+    }
+  })
+
+  return roots
+}
+
+// 找到父节点
+function findParent(node: OrgTreeNode, allNodes: OrgTreeNode[]): OrgTreeNode | null {
+  // 根据层级关系找到父节点
+  const nodeIndex = allNodes.findIndex(n => n.id === node.id)
+  for (let i = nodeIndex - 1; i >= 0; i--) {
+    if (allNodes[i].id < node.id) {
+      return allNodes[i]
+    }
+  }
+  return null
+}
+
+// 根据套餐名称获取类型
+function getTypeFromPackageName(packageName: string): number {
+  for (const [type, names] of Object.entries(mealNameOptions)) {
+    if (names.includes(packageName)) {
+      return Number(type)
+    }
+  }
+  return 0
+}
+
+// ── 方法 ──
+function fetchData() {
+  loading.value = true
+  try {
+    orgList.value = flattenTree(rawOrgTreeData)
+  } finally {
+    loading.value = false
+  }
+}
+
+function handleSearch() {
+  fetchData()
+}
+
+function handleReset() {
+  searchForm.name = ''
+  searchForm.packageType = null
+  fetchData()
 }
 
 function handleRefresh() {
-  treeData.value = [...orgTreeData]
-  currentNode.value = null
-  treeFilter.value = ''
+  searchForm.name = ''
+  searchForm.packageType = null
+  fetchData()
 }
 
-function getNodeIcon(nodeType: string) {
-  const iconMap: Record<string, any> = {
-    root: DataBoard,
-    dept: OfficeBuilding,
-    branch: SetUp,
-    station: Van,
-    company: Place
-  }
-  return iconMap[nodeType] || OfficeBuilding
+function handleAdd(parentRow: OrgTreeNode | null) {
+  isEdit.value = false
+  formData.id = 0
+  formData.parentId = parentRow?.id || 0
+  formData.packageType = null
+  formData.packageName = ''
+  formData.areaCode = []
+  formData.name = ''
+  formData.leader = ''
+  formData.contactPhone = ''
+  formData.email = ''
+  formData.description = ''
+  formData.parentCityOrgId = null
+  formData.parentAffairOrgId = null
+  formData.parentCompanyOrgId = null
+  drawerVisible.value = true
 }
 
-function getNodeIconClass(nodeType: string): string {
-  const classMap: Record<string, string> = {
-    root: 'icon-root',
-    dept: 'icon-dept',
-    branch: 'icon-branch',
-    station: 'icon-station',
-    company: 'icon-company'
-  }
-  return classMap[nodeType] || 'icon-dept'
-}
-
-/** 套餐名称 → 标签颜色 */
-function getPackageTagColor(packageName: string): string {
-  const colorMap: Record<string, string> = {
-    '省交通本级': '#409EFF',
-    '交通': '#67C23A',
-    '市交通': '#19A576',
-    '县交通': '#20B2AA',
-    '省事务中心': '#E6A23C',
-    '事务中心': '#EBBB28',
-    '市事务中心': '#F0C040',
-    '县事务中心': '#F5D060',
-    '省交通公司': '#9B59B6',
-    '公司': '#8E44AD',
-    '监控中心': '#E74C3C',
-    '高速公路': '#3498DB',
-    '普通公路': '#95A5A6'
-  }
-  return colorMap[packageName] || '#909399'
-}
-
-function getChildrenCount(node: OrgTreeNode): number {
-  return node.children?.length || 0
-}
-
-function getAllMembersCount(node: OrgTreeNode): number {
-  let count = node.members.length
-  if (node.children) {
-    for (const child of node.children) {
-      count += getAllMembersCount(child)
+function handleEdit(row: OrgTreeNode) {
+  isEdit.value = true
+  formData.id = row.id
+  formData.parentId = 0
+  const packageName = row.packageName
+  let packageType = null
+  for (const [type, names] of Object.entries(mealNameOptions)) {
+    if (names.includes(packageName)) {
+      packageType = Number(type)
+      break
     }
   }
-  return count
+  formData.packageType = packageType
+  formData.packageName = packageName
+  formData.areaCode = []
+  formData.name = row.name
+  formData.leader = ''
+  formData.contactPhone = ''
+  formData.email = ''
+  formData.description = row.description
+  formData.parentCityOrgId = null
+  formData.parentAffairOrgId = null
+  formData.parentCompanyOrgId = null
+  drawerVisible.value = true
 }
+
+function handleDelete(row: OrgTreeNode) {
+  ElMessageBox.confirm(
+    `确定要删除组织 "${row.name}" 吗？`,
+    '确认删除',
+    { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' }
+  ).then(() => {
+    ElMessage.success('删除成功')
+    fetchData()
+  }).catch(() => {})
+}
+
+function handlePackageTypeChange() {
+  formData.packageName = ''
+  formData.parentCityOrgId = null
+  formData.parentAffairOrgId = null
+  formData.parentCompanyOrgId = null
+}
+
+function handlePackageNameUpdate(value: string) {
+  formData.packageName = value
+  formData.parentCityOrgId = null
+  formData.parentAffairOrgId = null
+  formData.parentCompanyOrgId = null
+}
+
+function handleDrawerClose(done: () => void) {
+  formRef.value?.resetFields()
+  done()
+}
+
+function handleSubmit() {
+  if (!formRef.value) return
+  formRef.value.validate((valid) => {
+    if (valid) {
+      ElMessage.success(isEdit.value ? '编辑成功' : '新增成功')
+      drawerVisible.value = false
+      fetchData()
+    }
+  })
+}
+
+function getPackageColor(packageName: string): string {
+  const colors: Record<string, string> = {
+    '省交通本级': '#409EFF',
+    '交通': '#67C23A',
+    '市交通': '#E6A23C',
+    '县交通': '#F56C6C',
+    '省事务中心': '#9B59B6',
+    '事务中心': '#1ABC9C',
+    '市事务中心': '#3498DB',
+    '县事务中心': '#2ECC71',
+    '省交通公司': '#E74C3C',
+    '公司': '#F39C12',
+    '监控中心': '#8E44AD',
+    '高速公路': '#16A085',
+    '普通公路': '#27AE60'
+  }
+  return colors[packageName] || '#909399'
+}
+
+function getNodeTypeLabel(nodeType: string): string {
+  const labels: Record<string, string> = {
+    root: '根节点',
+    dept: '部门',
+    branch: '分支',
+    station: '站点',
+    company: '企业'
+  }
+  return labels[nodeType] || '未知'
+}
+
+function getNodeTypeTagType(nodeType: string): '' | 'success' | 'warning' | 'info' | 'danger' {
+  const types: Record<string, '' | 'success' | 'warning' | 'info' | 'danger'> = {
+    root: '',
+    dept: 'success',
+    branch: 'warning',
+    station: 'info',
+    company: 'danger'
+  }
+  return types[nodeType] || 'info'
+}
+
+onMounted(() => {
+  fetchData()
+})
 </script>
 
 <style lang="scss" scoped>
-.org-tree-view {
+.org-management {
   padding: 24px;
-  background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
+  background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   min-height: 100vh;
-  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   .animate-item {
     animation: fadeInUp 0.5s ease forwards;
     opacity: 0;
     &:nth-child(1) { animation-delay: 0.05s; }
-    &:nth-child(2) { animation-delay: 0.15s; }
+    &:nth-child(2) { animation-delay: 0.12s; }
+    &:nth-child(3) { animation-delay: 0.2s; }
   }
 
-  // 头部
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 20px;
     padding: 24px 28px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
     .header-left h1 {
       font-size: 22px;
       font-weight: 600;
       color: #303133;
-      margin: 0 0 8px;
+      margin: 0 0 8px 0;
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .title-bar {
-      width: 4px; height: 22px;
-      background: linear-gradient(180deg, #409EFF, #66B1FF);
-      border-radius: 2px;
       display: inline-block;
-    }
-    .page-desc { font-size: 13px; color: #909399; padding-left: 14px; }
-  }
-
-  // 主内容区：左树右详情
-  .main-content {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-  }
-
-  // 左侧树面板 — 宽度增至 420px
-  .tree-panel {
-    width: 420px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: width 0.3s ease;
-    overflow: hidden;
-
-    &.collapsed { width: 48px; }
-
-    .tree-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid #EBEEF5;
+      width: 4px;
+      height: 22px;
+      background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
+      border-radius: 2px;
     }
 
-    .tree-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .tree-body {
-      padding: 12px;
-    }
-
-    .tree-search {
-      margin-bottom: 12px;
-    }
-
-    .org-tree {
-      max-height: calc(100vh - 320px);
-      overflow-y: auto;
-
-      :deep(.el-tree-node__content) {
-        height: 40px;
-        border-radius: 6px;
-        margin-bottom: 2px;
-      }
-
-      :deep(.el-tree-node.is-current > .el-tree-node__content) {
-        background: #ECF5FF;
-        color: #409EFF;
-      }
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .page-desc {
       font-size: 13px;
-      flex: 1;
-      min-width: 0;
-
-      .node-icon {
-        font-size: 16px;
-        flex-shrink: 0;
-
-        &.icon-root { color: #E6A23C; }
-        &.icon-dept { color: #409EFF; }
-        &.icon-branch { color: #67C23A; }
-        &.icon-station { color: #909399; }
-        &.icon-company { color: #9B59B6; }
-      }
-
-      .node-label {
-        flex: 1;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .node-tag-right {
-        flex-shrink: 0;
-        margin-left: auto;
-      }
-    }
-  }
-
-  // 右侧详情区
-  .detail-panel {
-    flex: 1;
-    min-width: 0;
-  }
-
-  // 空状态
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 500px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-
-    .empty-title {
-      font-size: 18px;
-      color: #606266;
-      margin: 20px 0 8px;
-      font-weight: 500;
-    }
-    .empty-desc {
-      font-size: 14px;
       color: #909399;
+      padding-left: 14px;
     }
   }
 
-  // 组织信息卡片
-  .org-info-card {
+  .search-card {
+    margin-bottom: 16px;
     border-radius: 12px;
     border: none;
-    margin-bottom: 16px;
 
-    :deep(.el-card__body) { padding: 24px; }
-
-    .org-info-header {
-      margin-bottom: 20px;
+    :deep(.el-card__body) {
+      padding: 20px 24px 8px;
     }
 
-    .org-name-row {
+    .el-form-item {
+      margin-bottom: 12px;
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 0 4px;
+
+    .toolbar-left {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
+    }
+
+    .total-count {
+      font-size: 13px;
+      color: #909399;
+      padding: 6px 14px;
+      background: #f0f2f5;
+      border-radius: 6px;
+    }
+  }
+
+  .table-card {
+    border-radius: 12px;
+    border: none;
+
+    :deep(.el-card__body) {
+      padding: 20px;
+    }
+
+    :deep(.el-table) {
+      --el-table-row-hover-bg-color: #f5f7fa;
+      border-radius: 8px;
+      overflow: hidden;
+
+      .el-table__row .cell {
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+      }
+
+      .el-table__indent {
+        padding-left: 24px !important;
+        display: inline-block !important;
+      }
+
+      .el-table__expand-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 4px;
+        vertical-align: middle;
+
+        .el-icon {
+          font-size: 14px;
+          transition: transform 0.2s ease;
+        }
+
+        &.expanded .el-icon {
+          transform: rotate(90deg);
+        }
+      }
+
+      .el-table__cell.is-leaf .el-table__expand-icon {
+        visibility: hidden;
+      }
+    }
+
+    .org-name-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
       .org-icon {
-        font-size: 28px;
-
-        &.icon-root { color: #E6A23C; }
-        &.icon-dept { color: #409EFF; }
-        &.icon-branch { color: #67C23A; }
-        &.icon-station { color: #909399; }
-        &.icon-company { color: #9B59B6; }
+        font-size: 16px;
+        flex-shrink: 0;
       }
 
       .org-name {
-        font-size: 20px;
-        font-weight: 600;
+        font-weight: 500;
         color: #303133;
-        margin: 0;
       }
     }
 
-    .org-desc {
-      font-size: 14px;
-      color: #909399;
-      margin: 0;
-      padding-left: 38px;
-    }
-
-    .stat-cards {
-      display: flex;
-      gap: 16px;
-      padding-top: 20px;
-      border-top: 1px solid #EBEEF5;
-    }
-
-    .stat-item {
-      flex: 1;
-      text-align: center;
-      padding: 16px;
-      background: #F5F7FA;
-      border-radius: 8px;
-
-      .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: #409EFF;
-        line-height: 1.2;
-      }
-      .stat-label {
-        font-size: 13px;
-        color: #909399;
-        margin-top: 6px;
-      }
-    }
-  }
-
-  // 成员卡片
-  .member-card {
-    border-radius: 12px;
-    border: none;
-    margin-bottom: 16px;
-
-    :deep(.el-card__header) {
-      padding: 16px 24px;
-      border-bottom: 1px solid #EBEEF5;
-    }
-    :deep(.el-card__body) { padding: 20px 24px; }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .member-count {
+    .desc-text {
       font-size: 13px;
       color: #909399;
-      background: #F0F2F5;
-      padding: 4px 12px;
-      border-radius: 6px;
     }
 
-    .member-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px;
-    }
-
-    .member-item {
-      display: flex;
-      gap: 16px;
-      padding: 20px;
-      background: #F5F7FA;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: #ECF5FF;
-        box-shadow: 0 2px 8px rgba(64, 158, 255, 0.1);
-        transform: translateY(-2px);
-      }
-    }
-
-    .member-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #409EFF, #66B1FF);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      flex-shrink: 0;
-    }
-
-    .member-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .member-name {
-      font-size: 16px;
-      font-weight: 600;
-      color: #303133;
-      margin-bottom: 4px;
-    }
-
-    .member-position {
-      margin-bottom: 12px;
-    }
-
-    .member-detail {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .detail-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
+    .count-text {
       font-size: 13px;
       color: #606266;
-
-      .el-icon {
-        color: #909399;
-        margin-top: 2px;
-        flex-shrink: 0;
-      }
-    }
-
-    .no-members {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 0;
-
-      p {
-        font-size: 14px;
-        color: #909399;
-        margin-top: 12px;
-      }
     }
   }
 
-  // 子组织卡片
-  .children-card {
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__header) {
-      padding: 16px 24px;
+  :deep(.org-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
+      padding: 20px 24px;
       border-bottom: 1px solid #EBEEF5;
-    }
-    :deep(.el-card__body) { padding: 20px 24px; }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .member-count {
-      font-size: 13px;
-      color: #909399;
-      background: #F0F2F5;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-
-    .children-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .child-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
-      background: #F5F7FA;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: #ECF5FF;
-        box-shadow: 0 2px 8px rgba(64, 158, 255, 0.1);
-        transform: translateX(4px);
+      .el-drawer__title {
+        font-weight: 600;
+        font-size: 16px;
       }
     }
 
-    .child-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
+    .el-drawer__body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .drawer-footer {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-
-      &.icon-root { background: #FDF6EC; color: #E6A23C; }
-      &.icon-dept { background: #ECF5FF; color: #409EFF; }
-      &.icon-branch { background: #F0F9EB; color: #67C23A; }
-      &.icon-station { background: #F4F4F5; color: #909399; }
-      &.icon-company { background: #F5ECF8; color: #9B59B6; }
-    }
-
-    .child-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .child-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .child-meta {
-      font-size: 13px;
-      color: #909399;
-      margin-top: 4px;
-
-      span + span::before {
-        content: '·';
-        margin: 0 8px;
-      }
-    }
-
-    .child-arrow {
-      color: #C0C4CC;
-      font-size: 16px;
-      flex-shrink: 0;
-      transition: transform 0.3s ease;
-
-      .child-item:hover & {
-        color: #409EFF;
-        transform: translateX(4px);
-      }
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px 24px;
+      border-top: 1px solid #EBEEF5;
+      margin-top: auto;
     }
   }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

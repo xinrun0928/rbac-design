@@ -16,10 +16,14 @@ export function buildMenuTree(menus: Menu[], parentId: number = 0): Menu[] {
   return menus
     .filter(item => item.parentId === parentId && item.deleted === 0)
     .sort((a, b) => a.displayOrder - b.displayOrder)
-    .map(item => ({
-      ...item,
-      children: buildMenuTree(menus, item.menuId)
-    }))
+    .map(item => {
+      const children = buildMenuTree(menus, item.menuId)
+      const result: Menu = { ...item }
+      if (children.length > 0) {
+        result.children = children
+      }
+      return result
+    })
 }
 
 /** 获取子系统下的菜单树 */

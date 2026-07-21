@@ -18,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/MenuManagement.vue')
     },
     {
+      path: '/role',
+      name: 'Role',
+      component: () => import('../views/RoleManagement.vue')
+    },
+    {
       path: '/subsystem',
       name: 'Subsystem',
       component: () => import('../views/SubsystemManagement.vue')
@@ -28,8 +33,8 @@ const router = createRouter({
       component: () => import('../views/MemberManagement.vue')
     },
     {
-      path: '/orgtree',
-      name: 'OrgTree',
+      path: '/organization',
+      name: 'OrgManage',
       component: () => import('../views/OrgTreeView.vue')
     },
     {

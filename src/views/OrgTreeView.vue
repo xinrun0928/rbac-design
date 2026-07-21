@@ -3,7 +3,7 @@
     <!-- 页面头部 -->
     <div class="page-header animate-item">
       <div class="header-left">
-        <h1><span class="title-bar"></span>组织架构树</h1>
+        <h1><span class="title-bar"></span>组织管理</h1>
         <span class="page-desc">广东省交通运输厅组织架构与成员信息</span>
       </div>
       <div class="header-right">

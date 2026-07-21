@@ -21,6 +21,10 @@
           <el-icon><Menu /></el-icon>
           <span>菜单管理</span>
         </el-menu-item>
+        <el-menu-item index="/role">
+          <el-icon><UserFilled /></el-icon>
+          <span>角色管理</span>
+        </el-menu-item>
         <el-menu-item index="/subsystem">
           <el-icon><Monitor /></el-icon>
           <span>子系统管理</span>
@@ -29,9 +33,9 @@
           <el-icon><User /></el-icon>
           <span>成员管理</span>
         </el-menu-item>
-        <el-menu-item index="/orgtree">
+        <el-menu-item index="/organization">
           <el-icon><Share /></el-icon>
-          <span>组织架构树</span>
+          <span>组织管理</span>
         </el-menu-item>
         <el-sub-menu index="logs">
           <template #title>

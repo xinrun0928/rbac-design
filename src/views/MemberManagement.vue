@@ -61,9 +61,6 @@
         <div v-if="currentNode" class="current-node-bar">
           <el-icon><Location /></el-icon>
           <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
-          <el-tag size="small" :type="getNodeTypeTagType(currentNode.nodeType)" effect="plain">
-            {{ getNodeTypeLabel(currentNode.nodeType) }}
-          </el-tag>
         </div>
 
         <!-- 搜索栏 -->

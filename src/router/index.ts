@@ -13,6 +13,11 @@ const router = createRouter({
       component: () => import('../views/MealManagement.vue')
     },
     {
+      path: '/menu',
+      name: 'Menu',
+      component: () => import('../views/MenuManagement.vue')
+    },
+    {
       path: '/subsystem',
       name: 'Subsystem',
       component: () => import('../views/SubsystemManagement.vue')

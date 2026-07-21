@@ -11,21 +11,6 @@
       </div>
     </div>
 
-    <!-- 统计卡片 -->
-    <div class="stats-cards animate-item">
-      <el-card v-for="stat in statsData" :key="stat.label" shadow="hover">
-        <div class="stat-item">
-          <div class="stat-icon" :style="{ background: stat.bg }">
-            <el-icon :size="24" :color="stat.color"><component :is="stat.icon" /></el-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-value">{{ stat.value }}</div>
-            <div class="stat-label">{{ stat.label }}</div>
-          </div>
-        </div>
-      </el-card>
-    </div>
-
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
       <el-form :model="searchForm" inline>
@@ -470,21 +455,6 @@ const editFormData = reactive<SubsystemForm>({
   remark: ''
 })
 
-// ── 计算属性 ──
-const statsData = computed(() => {
-  const total = pagination.total
-  const normalCount = tableData.value.filter(p => p.status === 1101).length
-  const disabledCount = tableData.value.filter(p => p.status === 1102).length
-  const visibleCount = tableData.value.filter(p => !p.isHidden).length
-
-  return [
-    { label: '子系统总数', value: total, icon: Monitor, color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
-    { label: '正常状态', value: normalCount, icon: SuccessFilled, color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
-    { label: '已停用', value: disabledCount, icon: CircleCloseFilled, color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' },
-    { label: '可见状态', value: visibleCount, icon: CircleCheck, color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' }
-  ]
-})
-
 // ── 表单验证规则 ──
 const formRules: FormRules = {
   subsysCode: [
@@ -807,60 +777,6 @@ onMounted(() => {
         font-size: 13px;
         color: #909399;
         padding-left: 14px;
-      }
-    }
-  }
-
-  // 统计卡片
-  .stats-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-
-    .el-card {
-      border: none;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      }
-
-      :deep(.el-card__body) {
-        padding: 20px;
-      }
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .stat-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .stat-info {
-      .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: #303133;
-        line-height: 1.2;
-      }
-
-      .stat-label {
-        font-size: 13px;
-        color: #909399;
-        margin-top: 4px;
       }
     }
   }

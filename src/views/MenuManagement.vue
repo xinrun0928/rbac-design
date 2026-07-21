@@ -333,170 +333,155 @@
       </div>
     </div>
 
-    <!-- 新增/编辑对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
+    <!-- 新增/编辑抽屉 -->
+    <el-drawer
+      v-model="drawerVisible"
       :title="isEdit ? '编辑菜单' : '新增菜单'"
-      width="650px"
+      size="520px"
+      direction="rtl"
       destroy-on-close
-      :close-on-click-modal="false"
       @closed="resetForm"
     >
       <el-form
         ref="formRef"
         :model="formData"
         :rules="formRules"
-        label-width="110px"
+        label-width="100px"
         label-position="right"
         class="menu-form"
       >
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="上级菜单" prop="parentId">
-              <el-tree-select
-                v-model="formData.parentId"
-                :data="parentMenuOptions"
-                :props="{
-                  label: 'menuName',
-                  value: 'menuId',
-                  children: 'children',
-                }"
-                check-strictly
-                :render-after-expand="false"
-                placeholder="请选择上级菜单（不选则为顶级）"
-                clearable
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="菜单类型" prop="menuType">
-              <el-select
-                v-model="formData.menuType"
-                placeholder="请选择"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="(item, key) in MENU_TYPE_MAP"
-                  :key="key"
-                  :label="item.label"
-                  :value="Number(key)"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="上级菜单" prop="parentId">
+          <el-tree-select
+            v-model="formData.parentId"
+            :data="parentMenuOptions"
+            :props="{
+              label: 'menuName',
+              value: 'menuId',
+              children: 'children',
+            }"
+            check-strictly
+            :render-after-expand="false"
+            placeholder="请选择上级菜单（不选则为顶级）"
+            clearable
+            style="width: 100%"
+          />
+        </el-form-item>
 
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="菜单名称" prop="menuName">
-              <el-input
-                v-model="formData.menuName"
-                placeholder="请输入菜单名称"
-                maxlength="100"
-                show-word-limit
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="权限标识" prop="menuCode">
-              <el-input
-                v-model="formData.menuCode"
-                placeholder="如：SYSTEM_USER_ADD"
-                maxlength="100"
-                show-word-limit
-              >
-                <template #append>
-                  <el-tooltip content="将自动转为大写" placement="top">
-                    <el-icon><QuestionFilled /></el-icon>
-                  </el-tooltip>
-                </template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="菜单类型" prop="menuType">
+          <el-select
+            v-model="formData.menuType"
+            placeholder="请选择"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="(item, key) in MENU_TYPE_MAP"
+              :key="key"
+              :label="item.label"
+              :value="Number(key)"
+            />
+          </el-select>
+        </el-form-item>
 
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="内容类型" prop="contentType">
-              <el-select
-                v-model="formData.contentType"
-                placeholder="请选择"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="(item, key) in CONTENT_TYPE_MAP"
-                  :key="key"
-                  :label="item.label"
-                  :value="Number(key)"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="菜单图标" prop="icon">
-              <el-input
-                v-model="formData.icon"
-                placeholder="图标组件名称"
-                clearable
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="菜单名称" prop="menuName">
+          <el-input
+            v-model="formData.menuName"
+            placeholder="请输入菜单名称"
+            maxlength="100"
+            show-word-limit
+          />
+        </el-form-item>
 
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="路由地址" prop="path">
-              <el-input
-                v-model="formData.path"
-                placeholder="如：/system/user"
-                clearable
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="组件路径" prop="component">
-              <el-input
-                v-model="formData.component"
-                placeholder="如：views/system/UserManagement"
-                clearable
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="权限标识" prop="menuCode">
+          <el-input
+            v-model="formData.menuCode"
+            placeholder="如：SYSTEM_USER_ADD"
+            maxlength="100"
+            show-word-limit
+          >
+            <template #append>
+              <el-tooltip content="将自动转为大写" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </template>
+          </el-input>
+        </el-form-item>
 
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="排序" prop="displayOrder">
-              <el-input-number
-                v-model="formData.displayOrder"
-                :min="0"
-                :max="999999"
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="状态" prop="status">
-              <el-radio-group v-model="formData.status">
-                <el-radio :value="1101">正常</el-radio>
-                <el-radio :value="1102">停用</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="是否隐藏" prop="hidden">
-              <el-switch
-                v-model="formData.hidden"
-                :active-value="1"
-                :inactive-value="0"
-                active-text="隐藏"
-                inactive-text="显示"
-                inline-prompt
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="内容类型" prop="contentType">
+          <el-select
+            v-model="formData.contentType"
+            placeholder="请选择"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="(item, key) in CONTENT_TYPE_MAP"
+              :key="key"
+              :label="item.label"
+              :value="Number(key)"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="菜单图标" prop="icon">
+          <el-input
+            v-model="formData.icon"
+            placeholder="图标组件名称，如：Monitor"
+            clearable
+          />
+        </el-form-item>
+
+        <el-form-item label="路由地址" prop="path">
+          <el-input
+            v-model="formData.path"
+            placeholder="如：/system/user"
+            clearable
+          />
+        </el-form-item>
+
+        <el-form-item label="组件路径" prop="component">
+          <el-input
+            v-model="formData.component"
+            placeholder="如：views/system/UserManagement"
+            clearable
+          />
+        </el-form-item>
+
+        <el-form-item label="排序" prop="displayOrder">
+          <el-input-number
+            v-model="formData.displayOrder"
+            :min="0"
+            :max="999999"
+            style="width: 200px"
+          />
+          <span class="form-tip-inline">数值越小越靠前</span>
+        </el-form-item>
+
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="formData.status">
+            <el-radio :value="1101">正常</el-radio>
+            <el-radio :value="1102">停用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="是否隐藏" prop="hidden">
+          <el-switch
+            v-model="formData.hidden"
+            :active-value="1"
+            :inactive-value="0"
+            active-text="隐藏"
+            inactive-text="显示"
+            inline-prompt
+          />
+        </el-form-item>
+
+        <el-form-item label="扩展字段" prop="ext">
+          <el-input
+            v-model="formData.ext"
+            type="textarea"
+            :rows="3"
+            placeholder='JSON格式，如：{"key": "value"}'
+            clearable
+          />
+        </el-form-item>
 
         <el-form-item label="备注" prop="remark">
           <el-input
@@ -511,16 +496,18 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button
-          type="primary"
-          :loading="submitLoading"
-          @click="handleSubmit"
-        >
-          {{ isEdit ? "保存修改" : "确认创建" }}
-        </el-button>
+        <div class="drawer-footer">
+          <el-button @click="drawerVisible = false">取消</el-button>
+          <el-button
+            type="primary"
+            :loading="submitLoading"
+            @click="handleSubmit"
+          >
+            {{ isEdit ? "保存修改" : "确认创建" }}
+          </el-button>
+        </div>
       </template>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
@@ -590,7 +577,7 @@ const loading = ref(false)
 const submitLoading = ref(false)
 const menuTreeData = ref<Menu[]>([])
 const selectedSubsystem = ref<number>(1)
-const dialogVisible = ref(false)
+const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
@@ -703,7 +690,7 @@ function handleAdd(parentRow: Menu | null) {
   formData.remark = ""
   formData.ext = ""
   formData.hidden = 0
-  dialogVisible.value = true
+  drawerVisible.value = true
 }
 
 function handleEdit(row: Menu) {
@@ -723,7 +710,7 @@ function handleEdit(row: Menu) {
   formData.remark = row.remark
   formData.ext = row.ext
   formData.hidden = row.hidden
-  dialogVisible.value = true
+  drawerVisible.value = true
 }
 
 async function handleSubmit() {
@@ -774,7 +761,7 @@ async function handleSubmit() {
       })
       ElMessage.success("新增成功，菜单已创建")
     }
-    dialogVisible.value = false
+    drawerVisible.value = false
     fetchMenuTree()
   } catch (err) {
     ElMessage.error("操作失败，请重试")
@@ -1300,35 +1287,45 @@ onMounted(() => {
     }
   }
 
-  // 对话框
-  :deep(.el-dialog) {
-    border-radius: 12px;
-    overflow: hidden;
-
-    .el-dialog__header {
+  // 抽屉
+  :deep(.el-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
       padding: 20px 24px;
-      margin: 0;
+      border-bottom: 1px solid #EBEEF5;
 
-      .el-dialog__title {
+      .el-drawer__title {
         font-weight: 600;
         font-size: 16px;
       }
     }
 
-    .el-dialog__body {
+    .el-drawer__body {
       padding: 24px;
+      overflow-y: auto;
     }
+  }
 
-    .el-dialog__footer {
-      padding: 16px 24px;
-      border-top: 1px solid #ebeef5;
-    }
+  .drawer-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #EBEEF5;
+    margin: 0 -24px -24px;
+    background: #FFFFFF;
   }
 
   // 表单
   .menu-form {
     .el-form-item {
       margin-bottom: 20px;
+    }
+
+    .form-tip-inline {
+      font-size: 12px;
+      color: #909399;
+      margin-left: 12px;
     }
   }
 }

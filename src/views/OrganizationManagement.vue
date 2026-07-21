@@ -47,17 +47,6 @@
               <div class="tree-node">
                 <el-icon class="node-icon"><OfficeBuilding /></el-icon>
                 <span class="node-label">{{ data.orgName }}</span>
-                <el-tag
-                  v-for="t in data.packageTypes"
-                  :key="t"
-                  :color="getTypeTagColor(t)"
-                  effect="dark"
-                  style="border: none; color: #fff; margin-left: 4px; font-size: 10px; height: 18px; padding: 0 5px;"
-                  size="small"
-                  round
-                >
-                  {{ getTypeName(t) }}
-                </el-tag>
               </div>
             </template>
           </el-tree>
@@ -75,35 +64,35 @@
 
         <!-- 搜索栏 -->
         <el-card class="search-card" shadow="never">
-          <el-form :model="searchForm" inline>
-            <el-form-item label="组织名称">
+          <el-form :model="memberSearchForm" inline>
+            <el-form-item label="成员姓名">
               <el-input
-                v-model="searchForm.orgName"
-                placeholder="输入组织名称"
+                v-model="memberSearchForm.name"
+                placeholder="输入成员姓名"
                 clearable
                 :prefix-icon="Search"
-                style="width: 200px"
-                @keyup.enter="handleSearch"
+                style="width: 180px"
+                @keyup.enter="handleMemberSearch"
               />
             </el-form-item>
-            <el-form-item label="组织编号">
+            <el-form-item label="手机号">
               <el-input
-                v-model="searchForm.orgCode"
-                placeholder="输入组织编号"
+                v-model="memberSearchForm.phone"
+                placeholder="输入手机号"
                 clearable
-                style="width: 180px"
-                @keyup.enter="handleSearch"
+                style="width: 160px"
+                @keyup.enter="handleMemberSearch"
               />
             </el-form-item>
             <el-form-item label="状态">
-              <el-select v-model="searchForm.status" placeholder="全部" clearable style="width: 120px">
+              <el-select v-model="memberSearchForm.status" placeholder="全部" clearable style="width: 120px">
                 <el-option label="正常" :value="1101" />
-                <el-option label="停用" :value="1001" />
+                <el-option label="停用" :value="1102" />
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-              <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+              <el-button type="primary" :icon="Search" @click="handleMemberSearch">搜索</el-button>
+              <el-button :icon="RefreshLeft" @click="handleMemberReset">重置</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -111,7 +100,7 @@
         <!-- 工具栏 -->
         <div class="toolbar">
           <div class="toolbar-left">
-            <el-button type="primary" :icon="Plus" @click="handleAdd">新增组织</el-button>
+            <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
             <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">
               批量删除
             </el-button>
@@ -123,7 +112,7 @@
             </transition>
           </div>
           <div class="toolbar-right">
-            <span class="total-count">共 {{ pagination.total }} 条数据</span>
+            <span class="total-count">共 {{ memberData.length }} 条数据</span>
           </div>
         </div>
 
@@ -131,66 +120,76 @@
         <el-card class="table-card" shadow="never">
           <el-table
             v-loading="loading"
-            :data="tableData"
+            :data="memberData"
             border
             stripe
             highlight-current-row
-            row-key="orgId"
+            row-key="memberId"
             @selection-change="handleSelectionChange"
             :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
             empty-text=" "
           >
             <el-table-column type="selection" width="50" align="center" />
 
-            <el-table-column prop="orgId" label="组织ID" width="80" align="center">
+            <el-table-column prop="memberId" label="ID" width="70" align="center">
               <template #default="{ row }">
-                <span class="id-text">{{ row.orgId }}</span>
+                <span class="id-text">{{ row.memberId }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="orgCode" label="组织编号" width="200">
+            <el-table-column prop="name" label="成员姓名" width="120" align="center">
               <template #default="{ row }">
-                <div class="code-cell">
-                  <span class="code-text">{{ row.orgCode }}</span>
-                  <el-tooltip content="复制编号" placement="top">
-                    <el-button type="primary" link size="small" @click="handleCopy(row.orgCode)">
-                      <el-icon><CopyDocument /></el-icon>
-                    </el-button>
-                  </el-tooltip>
+                <div class="member-name-cell">
+                  <el-avatar :size="32" :style="{ background: getSexColor(row.sex) }">
+                    {{ row.name.charAt(0) }}
+                  </el-avatar>
+                  <span class="name-text">{{ row.name }}</span>
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="orgName" label="组织名称" min-width="180">
+            <el-table-column prop="sex" label="性别" width="80" align="center">
               <template #default="{ row }">
-                <span class="name-text">{{ row.orgName }}</span>
+                <el-tag
+                  :color="getSexColor(row.sex)"
+                  effect="dark"
+                  style="border: none; color: #fff;"
+                  size="small"
+                  round
+                >
+                  {{ getSexLabel(row.sex) }}
+                </el-tag>
               </template>
             </el-table-column>
 
-            <el-table-column prop="packageTypes" label="关联套餐类型" min-width="200">
+            <el-table-column prop="phone" label="手机号" width="140" align="center">
               <template #default="{ row }">
-                <template v-if="row.packageTypes && row.packageTypes.length">
+                <span class="phone-text">{{ row.phone }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="email" label="邮箱" min-width="180">
+              <template #default="{ row }">
+                <span class="email-text">{{ row.email }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="roles" label="角色标签" min-width="200">
+              <template #default="{ row }">
+                <div class="role-tags">
                   <el-tag
-                    v-for="t in row.packageTypes"
-                    :key="t"
-                    :color="getTypeTagColor(t)"
+                    v-for="role in row.roles"
+                    :key="role.roleId"
+                    :color="getRoleTagColor(role.roleType)"
                     effect="dark"
-                    style="border: none; color: #fff; margin-right: 4px; margin-bottom: 2px"
+                    style="border: none; color: #fff; margin-right: 4px; margin-bottom: 2px;"
                     size="small"
-                    round
                   >
-                    {{ getTypeName(t) }}
+                    {{ role.roleName }}
                   </el-tag>
-                </template>
-                <span v-else class="empty-tag">未关联</span>
+                </div>
               </template>
             </el-table-column>
-
-            <el-table-column prop="contactPerson" label="联系人" width="100" align="center" />
-
-            <el-table-column prop="contactPhone" label="联系电话" width="140" align="center" />
-
-            <el-table-column prop="displayOrder" label="排序" width="70" align="center" />
 
             <el-table-column prop="status" label="状态" width="90" align="center">
               <template #default="{ row }">
@@ -212,38 +211,30 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="140" align="center" fixed="right">
               <template #default="{ row }">
-                <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
-                <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
+                <el-button type="primary" link :icon="Edit" @click="handleEditMember(row)">编辑</el-button>
+                <el-button type="danger" link :icon="Delete" @click="handleDeleteMember(row)">删除</el-button>
               </template>
             </el-table-column>
 
             <template #empty>
               <div class="empty-state">
-                <el-icon :size="64" color="#DCDFE6"><OfficeBuilding /></el-icon>
-                <p class="empty-title">暂无组织数据</p>
+                <el-icon :size="64" color="#DCDFE6"><User /></el-icon>
+                <p class="empty-title">暂无成员数据</p>
                 <p class="empty-desc">
-                  点击上方
-                  <el-button type="primary" link @click="handleAdd">"新增组织"</el-button>
-                  按钮创建第一个组织
+                  <template v-if="currentNode">
+                    点击上方
+                    <el-button type="primary" link @click="handleAdd">"新增成员"</el-button>
+                    按钮为 {{ currentNode.orgName }} 添加成员
+                  </template>
+                  <template v-else>
+                    请先在左侧选择一个组织
+                  </template>
                 </p>
               </div>
             </template>
           </el-table>
-
-          <div class="pagination-wrapper">
-            <el-pagination
-              v-model:current-page="pagination.page"
-              v-model:page-size="pagination.pageSize"
-              :total="pagination.total"
-              :page-sizes="[10, 20, 50, 100]"
-              layout="total, sizes, prev, pager, next, jumper"
-              background
-              @size-change="handleSizeChange"
-              @current-change="handlePageChange"
-            />
-          </div>
         </el-card>
       </div>
     </div>
@@ -376,6 +367,76 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 新增/编辑成员抽屉 -->
+    <el-drawer
+      v-model="memberDrawerVisible"
+      :title="isMemberEdit ? '编辑成员' : '新增成员'"
+      size="420px"
+      direction="rtl"
+      :before-close="handleMemberDrawerClose"
+      class="member-drawer"
+    >
+      <el-form
+        ref="memberFormRef"
+        :model="memberFormData"
+        label-width="80px"
+        label-position="right"
+        class="member-form"
+      >
+        <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' }]">
+          <el-input v-model="memberFormData.name" placeholder="请输入成员姓名" maxlength="20" show-word-limit />
+        </el-form-item>
+
+        <el-form-item label="手机号" prop="phone" :rules="[{ required: true, message: '请输入手机号', trigger: 'blur' }, { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }]">
+          <el-input v-model="memberFormData.phone" placeholder="请输入手机号" maxlength="11" />
+        </el-form-item>
+
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="memberFormData.sex">
+            <el-radio :value="1">
+              <el-icon color="#409EFF"><Male /></el-icon> 男
+            </el-radio>
+            <el-radio :value="2">
+              <el-icon color="#F56C6C"><Female /></el-icon> 女
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="邮箱" prop="email" :rules="[{ type: 'email', message: '邮箱格式不正确', trigger: 'blur' }]">
+          <el-input v-model="memberFormData.email" placeholder="请输入邮箱地址" />
+        </el-form-item>
+
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="memberFormData.status">
+            <el-radio :value="1101">
+              <el-icon color="#67C23A"><SuccessFilled /></el-icon> 正常
+            </el-radio>
+            <el-radio :value="1102">
+              <el-icon color="#909399"><CircleCloseFilled /></el-icon> 停用
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input
+            v-model="memberFormData.remark"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入备注信息"
+            maxlength="200"
+            show-word-limit
+          />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <div class="drawer-footer">
+          <el-button @click="memberDrawerVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleSubmitMember">确认</el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -387,10 +448,12 @@ import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   CopyDocument, SuccessFilled, CircleCloseFilled,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight
+  OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Male, Female
 } from '@element-plus/icons-vue'
 import type { Organization, OrgSearchForm, OrgForm, OrgTreeNode } from '../types/organization'
+import type { OrgMember, OrgMemberSearchForm } from '../types/orgMember'
 import { buildOrgTree } from '../mock/organizationData'
+import { searchMembers } from '../mock/orgMemberData'
 import { mealTypeOptions as packageTypeOptions } from '../mock/mealData'
 import {
   getOrgList,
@@ -405,6 +468,7 @@ import {
 const loading = ref(false)
 const submitLoading = ref(false)
 const tableData = ref<Organization[]>([])
+const memberData = ref<OrgMember[]>([])
 const selectedIds = ref<number[]>([])
 const dialogVisible = ref(false)
 const isEdit = ref(false)
@@ -415,11 +479,31 @@ const treeFilter = ref('')
 
 const treeData = ref<OrgTreeNode[]>([])
 const currentNode = ref<OrgTreeNode | null>(null)
+const memberDrawerVisible = ref(false)
+const isMemberEdit = ref(false)
+const memberFormRef = ref<FormInstance>()
 
 const searchForm = reactive<OrgSearchForm>({
   orgName: '',
   orgCode: '',
   status: ''
+})
+
+const memberSearchForm = reactive<OrgMemberSearchForm>({
+  name: '',
+  phone: '',
+  status: ''
+})
+
+const memberFormData = reactive({
+  memberId: 0,
+  name: '',
+  phone: '',
+  sex: 1,
+  email: '',
+  remark: '',
+  status: 1101,
+  roleIds: [] as number[]
 })
 
 const pagination = reactive({
@@ -476,6 +560,11 @@ const formRules: FormRules = {
 async function fetchTree() {
   const all = await getOrgTree()
   treeData.value = buildOrgTree(all)
+  // 默认选中广东省交通运输厅（orgId: 1）
+  if (treeData.value.length > 0) {
+    const defaultNode = treeData.value.find(n => n.orgId === 1) || treeData.value[0]
+    handleNodeClick(defaultNode)
+  }
 }
 
 async function fetchData() {
@@ -496,9 +585,21 @@ async function fetchData() {
   }
 }
 
+function fetchMemberData() {
+  if (!currentNode.value) {
+    memberData.value = []
+    return
+  }
+  memberData.value = searchMembers(currentNode.value.orgId, memberSearchForm)
+}
+
 function handleSearch() {
   pagination.page = 1
   fetchData()
+}
+
+function handleMemberSearch() {
+  fetchMemberData()
 }
 
 function handleReset() {
@@ -509,9 +610,17 @@ function handleReset() {
   fetchData()
 }
 
+function handleMemberReset() {
+  memberSearchForm.name = ''
+  memberSearchForm.phone = ''
+  memberSearchForm.status = ''
+  fetchMemberData()
+}
+
 function handleRefresh() {
   fetchTree()
   fetchData()
+  fetchMemberData()
 }
 
 function handleSizeChange(size: number) {
@@ -529,6 +638,7 @@ function handleNodeClick(data: OrgTreeNode) {
   currentNode.value = data
   pagination.page = 1
   fetchData()
+  fetchMemberData()
 }
 
 function handleClearNode() {
@@ -536,6 +646,7 @@ function handleClearNode() {
   treeRef.value?.setCurrentKey(undefined)
   pagination.page = 1
   fetchData()
+  fetchMemberData()
 }
 
 function filterTreeNode(value: string, data: OrgTreeNode): boolean {
@@ -678,6 +789,72 @@ function getTypeName(type: number): string {
   return names[type] || '未知'
 }
 
+function getSexLabel(sex: number): string {
+  const labels: Record<number, string> = { 0: '未知', 1: '男', 2: '女' }
+  return labels[sex] || '未知'
+}
+
+function getSexColor(sex: number): string {
+  const colors: Record<number, string> = { 0: '#909399', 1: '#409EFF', 2: '#F56C6C' }
+  return colors[sex] || '#909399'
+}
+
+function getRoleTagColor(roleType: number): string {
+  return roleType === 1 ? '#E6A23C' : '#67C23A'
+}
+
+function handleAddMember() {
+  isMemberEdit.value = false
+  memberFormData.memberId = 0
+  memberFormData.name = ''
+  memberFormData.phone = ''
+  memberFormData.sex = 1
+  memberFormData.email = ''
+  memberFormData.remark = ''
+  memberFormData.status = 1101
+  memberFormData.roleIds = []
+  memberDrawerVisible.value = true
+}
+
+function handleEditMember(row: OrgMember) {
+  isMemberEdit.value = true
+  memberFormData.memberId = row.memberId
+  memberFormData.name = row.name
+  memberFormData.phone = row.phone
+  memberFormData.sex = row.sex
+  memberFormData.email = row.email
+  memberFormData.remark = row.remark
+  memberFormData.status = row.status
+  memberFormData.roleIds = row.roles.map(r => r.roleId)
+  memberDrawerVisible.value = true
+}
+
+function handleSubmitMember() {
+  if (!memberFormRef.value) return
+  memberFormRef.value.validate((valid) => {
+    if (valid) {
+      ElMessage.success(isMemberEdit.value ? '编辑成功' : '新增成功')
+      memberDrawerVisible.value = false
+      fetchMemberData()
+    }
+  })
+}
+
+function handleDeleteMember(row: OrgMember) {
+  ElMessageBox.confirm(
+    `确定要删除成员 "${row.name}" 吗？`,
+    '确认删除',
+    { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' }
+  ).then(() => {
+    ElMessage.success('删除成功')
+    fetchMemberData()
+  }).catch(() => {})
+}
+
+function handleMemberDrawerClose() {
+  memberFormRef.value?.resetFields()
+}
+
 function getRelativeTime(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const min = 60_000; const hr = 60 * min; const day = 24 * hr; const wk = 7 * day
@@ -692,6 +869,7 @@ function getRelativeTime(dateStr: string): string {
 onMounted(() => {
   fetchTree()
   fetchData()
+  fetchMemberData()
 })
 </script>
 
@@ -873,6 +1051,26 @@ onMounted(() => {
     .name-text { font-weight: 500; color: #303133; }
     .time-text { font-size: 13px; color: #909399; }
     .empty-tag { color: #C0C4CC; font-size: 13px; }
+    .phone-text { font-family: 'Monaco','Menlo','Consolas', monospace; font-size: 13px; }
+    .email-text { font-size: 13px; color: #606266; }
+
+    .member-name-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .el-avatar {
+        font-size: 14px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+    }
+
+    .role-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
 
     .empty-state {
       padding: 48px 0;
@@ -910,6 +1108,42 @@ onMounted(() => {
     width: 100%;
     .type-option-label { font-weight: 500; }
     .type-option-desc { font-size: 12px; color: #909399; }
+  }
+
+  // 成员抽屉样式
+  :deep(.member-drawer) {
+    .el-drawer__header {
+      background: linear-gradient(135deg, #409EFF, #66B1FF);
+      padding: 20px 24px;
+      margin-bottom: 0;
+
+      .el-drawer__title {
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .el-drawer__close-btn {
+        color: rgba(255,255,255,0.8);
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+
+    .el-drawer__body {
+      padding: 24px;
+    }
+
+    .drawer-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 20px;
+      border-top: 1px solid #EBEEF5;
+      margin-top: 20px;
+    }
   }
 }
 

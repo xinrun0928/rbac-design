@@ -5,25 +5,17 @@
       <div class="header-left">
         <h1><span class="title-bar"></span>套餐管理</h1>
         <span class="page-desc">管理系统套餐配置，定义不同类型套餐的基本信息</span>
+        <el-alert
+          title="套餐只初始化创建人员的管理员角色，其他角色需要手动配置"
+          type="warning"
+          :closable="false"
+          show-icon
+          class="meal-tip"
+        />
       </div>
       <div class="header-right">
         <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
       </div>
-    </div>
-
-    <!-- 统计卡片 -->
-    <div class="stats-cards animate-item">
-      <el-card v-for="stat in statsData" :key="stat.label" shadow="hover">
-        <div class="stat-item">
-          <div class="stat-icon" :style="{ background: stat.bg }">
-            <el-icon :size="24" :color="stat.color"><component :is="stat.icon" /></el-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-value">{{ stat.value }}</div>
-            <div class="stat-label">{{ stat.label }}</div>
-          </div>
-        </div>
-      </el-card>
     </div>
 
     <!-- 搜索栏 -->
@@ -463,7 +455,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   CopyDocument, QuestionFilled,
   SuccessFilled, CircleCloseFilled, Box,
-  DataBoard, OfficeBuilding, Link,
+  Link,
   Bell, Document, Warning, Connection,
   DataAnalysis, Share, Monitor, Setting
 } from '@element-plus/icons-vue'
@@ -531,21 +523,6 @@ const editFormData = reactive<MealForm>({
   type: '',
   sort: 0,
   status: 1101
-})
-
-// ── 计算属性 ──
-const statsData = computed(() => {
-  const total = pagination.total
-  const normalCount = tableData.value.filter(p => p.status === 1101).length
-  const disabledCount = tableData.value.filter(p => p.status === 1001).length
-  const typeCount = new Set(tableData.value.map(p => p.type)).size
-
-  return [
-    { label: '套餐总数', value: total, icon: DataBoard, color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
-    { label: '正常状态', value: normalCount, icon: SuccessFilled, color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
-    { label: '已停用', value: disabledCount, icon: CircleCloseFilled, color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' },
-    { label: '类型分布', value: typeCount, icon: OfficeBuilding, color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' }
-  ]
 })
 
 // ── 表单验证规则 ──
@@ -913,6 +890,16 @@ function getMenuTypeTagType(menuType: number): '' | 'success' | 'warning' | 'inf
   return typeMap[menuType] || 'info'
 }
 
+function getMenuTypeClass(menuType: number): string {
+  const classMap: Record<number, string> = {
+    0: 'type-directory',
+    1: 'type-menu',
+    2: 'type-permission',
+    99: 'type-navigation'
+  }
+  return classMap[menuType] || ''
+}
+
 async function handleCopy(code: string) {
   try {
     await navigator.clipboard.writeText(code)
@@ -957,133 +944,6 @@ function getRelativeTime(dateStr: string): string {
   if (diff < week) return `${Math.floor(diff / day)}天前`
 
   return dateStr.split(' ')[0]
-}
-
-// ── 绑定菜单相关方法 ──
-async function handleBind(row: Meal) {
-  currentMeal.value = row
-  bindSelectedSubsystem.value = 1
-  bindDrawerVisible.value = true
-  await loadSubsystemMenuCounts()
-  await loadBindMenuTree(1)
-}
-
-async function loadSubsystemMenuCounts() {
-  const counts: Record<number, number> = {}
-  for (const sub of subsystems) {
-    const tree = await getMenuTreeBySubsystem(sub.subsysId)
-    counts[sub.subsysId] = getAllMenuIds(tree).length
-  }
-  subsystemMenuCount.value = counts
-}
-
-async function loadBindMenuTree(subsysId: number) {
-  bindSelectedSubsystem.value = subsysId
-  bindLoading.value = true
-  try {
-    const tree = await getMenuTreeBySubsystem(subsysId)
-    bindMenuTree.value = tree
-
-    // 加载已绑定的菜单
-    if (currentMeal.value) {
-      const checkedIds = await getMealMenuIds(currentMeal.value.id)
-      // 过滤出当前子系统的菜单ID
-      const currentSubsysMenuIds = getAllMenuIds(tree)
-      bindCheckedKeys.value = checkedIds.filter(id => currentSubsysMenuIds.includes(id))
-      updateCheckAllStatus()
-    }
-  } catch (err) {
-    ElMessage.error('加载菜单失败')
-  } finally {
-    bindLoading.value = false
-  }
-}
-
-function getAllMenuIds(tree: Menu[]): number[] {
-  const ids: number[] = []
-  function traverse(items: Menu[]) {
-    items.forEach(item => {
-      ids.push(item.menuId)
-      if (item.children && item.children.length > 0) {
-        traverse(item.children)
-      }
-    })
-  }
-  traverse(tree)
-  return ids
-}
-
-function handleBindCheckAll(val: boolean) {
-  if (val) {
-    const allIds = getAllMenuIds(bindMenuTree.value)
-    bindTreeRef.value?.setCheckedKeys(allIds)
-  } else {
-    bindTreeRef.value?.setCheckedKeys([])
-  }
-  bindIndeterminate.value = false
-}
-
-function updateCheckAllStatus() {
-  const allIds = getAllMenuIds(bindMenuTree.value)
-  const checkedIds = bindTreeRef.value?.getCheckedKeys() || []
-  bindCheckAll.value = checkedIds.length === allIds.length
-  bindIndeterminate.value = checkedIds.length > 0 && checkedIds.length < allIds.length
-}
-
-async function handleBindSave() {
-  if (!currentMeal.value) return
-
-  bindLoading.value = true
-  try {
-    const checkedKeys = bindTreeRef.value?.getCheckedKeys() || []
-    const halfCheckedKeys = bindTreeRef.value?.getHalfCheckedKeys() || []
-    const allSelectedIds = [...checkedKeys, ...halfCheckedKeys]
-
-    await saveMealMenuBinding(currentMeal.value.id, allSelectedIds, bindSelectedSubsystem.value)
-    ElMessage.success('绑定保存成功')
-    bindDrawerVisible.value = false
-  } catch (err) {
-    ElMessage.error('保存失败，请重试')
-  } finally {
-    bindLoading.value = false
-  }
-}
-
-// 子系统图标配置
-const subsystemIconMap: Record<number, { icon: string; color: string; bg: string }> = {
-  1: { icon: 'Bell', color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' },
-  2: { icon: 'Document', color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
-  3: { icon: 'Warning', color: '#F56C6C', bg: 'linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)' },
-  4: { icon: 'Connection', color: '#9B59B6', bg: 'linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%)' },
-  5: { icon: 'Box', color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
-  6: { icon: 'DataAnalysis', color: '#00BCD4', bg: 'linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%)' },
-  7: { icon: 'Share', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)' },
-  8: { icon: 'Monitor', color: '#3F51B5', bg: 'linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%)' },
-  99: { icon: 'Setting', color: '#606266', bg: 'linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)' }
-}
-
-function getSubsystemIconStyle(subsysId: number) {
-  return subsystemIconMap[subsysId] || subsystemIconMap[99]
-}
-
-function getMenuTypeLabel(menuType: number): string {
-  const typeMap: Record<number, string> = {
-    0: '目录',
-    1: '菜单',
-    2: '权限',
-    99: '导航'
-  }
-  return typeMap[menuType] || '未知'
-}
-
-function getMenuTypeClass(menuType: number): string {
-  const classMap: Record<number, string> = {
-    0: 'type-directory',
-    1: 'type-menu',
-    2: 'type-permission',
-    99: 'type-navigation'
-  }
-  return classMap[menuType] || ''
 }
 
 // ── 初始化 ──
@@ -1149,57 +1009,27 @@ onMounted(() => {
     }
   }
 
-  // 统计卡片
-  .stats-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
+  // 提示信息
+  .meal-tip {
+    margin-top: 10px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #FFF7E6 0%, #FFE7BA 100%);
+    border: 1px solid #FFD591;
 
-    .el-card {
-      border: none;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      }
-
-      :deep(.el-card__body) {
-        padding: 20px;
-      }
+    :deep(.el-alert__title) {
+      font-weight: 500;
+      color: #D46B08;
+      font-size: 13px;
     }
 
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    :deep(.el-alert__icon) {
+      color: #FA8C16;
     }
 
-    .stat-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .stat-info {
-      .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: #303133;
-        line-height: 1.2;
-      }
-
-      .stat-label {
-        font-size: 13px;
-        color: #909399;
-        margin-top: 4px;
-      }
+    :deep(.el-alert__description) {
+      margin: 0;
+      color: #AD6800;
+      font-size: 12px;
     }
   }
 

@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('../views/RoleManagement.vue')
     },
     {
+      path: '/post',
+      name: 'Post',
+      component: () => import('../views/PostManagement.vue')
+    },
+    {
       path: '/subsystem',
       name: 'Subsystem',
       component: () => import('../views/SubsystemManagement.vue')
@@ -36,6 +41,11 @@ const router = createRouter({
       path: '/organization',
       name: 'OrgManage',
       component: () => import('../views/OrgTreeView.vue')
+    },
+    {
+      path: '/dept',
+      name: 'Dept',
+      component: () => import('../views/DeptManagement.vue')
     },
     {
       path: '/logs/access',

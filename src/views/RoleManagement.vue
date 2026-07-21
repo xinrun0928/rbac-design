@@ -59,36 +59,27 @@
       <div class="list-panel">
         <!-- 当前选中提示 -->
         <div v-if="currentNode" class="current-node-bar">
-          <el-icon><Location /></el-icon>
-          <span>当前组织：<strong>{{ currentNode.name }}</strong></span>
-          <el-tag size="small" :type="getNodeTypeTagType(currentNode.nodeType)" effect="plain">
-            {{ getNodeTypeLabel(currentNode.nodeType) }}
-          </el-tag>
-        </div>
-
-        <!-- 组织套餐标签 -->
-        <div v-if="currentNode" class="package-tags-bar">
-          <span class="tags-label">关联套餐：</span>
-          <el-tag
-            v-if="currentNode.packageName"
-            :color="getPackageColor(currentNode.packageName)"
-            effect="dark"
-            style="border: none; color: #fff;"
-            size="small"
-          >
-            {{ currentNode.packageName }}
-          </el-tag>
-          <span v-else class="no-package">未关联套餐</span>
-        </div>
-
-        <!-- 工具栏 -->
-        <div class="toolbar">
-          <div class="toolbar-left">
-            <el-button type="primary" :icon="Plus" @click="handleAddRole" :disabled="!currentNode">新增角色</el-button>
+          <div class="node-info">
+            <el-icon><Location /></el-icon>
+            <span>当前组织：<strong>{{ currentNode.name }}</strong></span>
+            <el-tag size="small" :type="getNodeTypeTagType(currentNode.nodeType)" effect="plain">
+              {{ getNodeTypeLabel(currentNode.nodeType) }}
+            </el-tag>
           </div>
-          <div class="toolbar-right">
-            <span class="total-count">共 {{ roleList.length }} 个角色</span>
+          <div class="node-tags">
+            <span class="tags-label">关联套餐：</span>
+            <el-tag
+              v-if="currentNode.packageName"
+              :color="getPackageColor(currentNode.packageName)"
+              effect="dark"
+              style="border: none; color: #fff;"
+              size="small"
+            >
+              {{ currentNode.packageName }}
+            </el-tag>
+            <span v-else class="no-package">未关联套餐</span>
           </div>
+          <el-button type="primary" :icon="Plus" @click="handleAddRole" class="add-btn">新增角色</el-button>
         </div>
 
         <!-- 角色列表 -->
@@ -1014,13 +1005,43 @@ onMounted(() => {
   .current-node-bar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
+    gap: 16px;
+    padding: 12px 16px;
     background: #ECF5FF;
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     font-size: 13px;
     color: #409EFF;
+
+    .node-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .node-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 16px;
+      border-left: 1px solid #B3D8FF;
+      color: #D46B08;
+      background: #FFF7E6;
+      border-radius: 6px;
+      padding: 4px 12px;
+    }
+
+    .tags-label {
+      font-weight: 500;
+    }
+
+    .no-package {
+      color: #C0C4CC;
+    }
+
+    .add-btn {
+      margin-left: auto;
+    }
 
     strong { color: #303133; }
   }
@@ -1043,19 +1064,9 @@ onMounted(() => {
     .no-package {
       color: #C0C4CC;
     }
-  }
 
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 0 4px;
-
-    .toolbar-left { display: flex; align-items: center; gap: 12px; }
-    .total-count {
-      font-size: 13px; color: #909399;
-      padding: 6px 14px; background: #F0F2F5; border-radius: 6px;
+    .package-tags-right {
+      margin-left: auto;
     }
   }
 

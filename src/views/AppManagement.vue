@@ -13,38 +13,32 @@
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="App名称">
-          <el-input v-model="searchForm.appName" placeholder="输入App名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
-        </el-form-item>
-        <el-form-item label="平台">
-          <el-select v-model="searchForm.platform" placeholder="请选择平台" clearable style="width: 140px">
-            <el-option v-for="item in platformOptions" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
-            <el-option label="启用" :value="1101" />
-            <el-option label="停用" :value="1001" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-          <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="search-bar">
+        <el-form :model="searchForm" inline class="search-form">
+          <el-form-item label="App名称">
+            <el-input v-model="searchForm.appName" placeholder="输入App名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+          </el-form-item>
+          <el-form-item label="平台">
+            <el-select v-model="searchForm.platform" placeholder="请选择平台" clearable style="width: 140px">
+              <el-option v-for="item in platformOptions" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="状态">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
+              <el-option label="启用" :value="1101" />
+              <el-option label="停用" :value="1001" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="search-actions">
+          <el-button type="primary" :icon="Plus" @click="handleAdd">新增App</el-button>
+        </div>
+      </div>
     </el-card>
-
-    <!-- 工具栏 -->
-    <div class="toolbar animate-item">
-      <div class="toolbar-left">
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增App</el-button>
-        <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">批量删除</el-button>
-      </div>
-      <div class="toolbar-right">
-        <span class="total-count">共 {{ filteredData.length }} 条数据</span>
-      </div>
-    </div>
 
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
@@ -55,11 +49,8 @@
         stripe
         highlight-current-row
         row-key="appId"
-        @selection-change="handleSelectionChange"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
       >
-        <el-table-column type="selection" width="50" align="center" />
-
         <el-table-column label="序号" width="60" align="center" type="index">
           <template #default="{ $index }">
             <span class="index-text">{{ $index + 1 }}</span>
@@ -403,33 +394,26 @@ function getPlatformTagType(platform: number): '' | 'success' | 'warning' | 'inf
     border: none;
 
     :deep(.el-card__body) {
-      padding: 20px 24px 8px;
+      padding: 20px 24px 12px;
     }
 
-    .el-form-item {
-      margin-bottom: 12px;
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
     }
-  }
 
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 0 4px;
+    .search-form {
+      flex: 1;
+      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
+    }
 
-    .toolbar-left {
+    .search-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .total-count {
-      font-size: 13px;
-      color: #909399;
-      padding: 6px 14px;
-      background: #f0f2f5;
-      border-radius: 6px;
+      gap: 8px;
+      flex-shrink: 0;
     }
   }
 

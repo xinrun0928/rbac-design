@@ -20,58 +20,44 @@
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="套餐名称">
-          <el-input
-            v-model="searchForm.name"
-            placeholder="输入套餐名称，如：省交通本级"
-            clearable
-            :prefix-icon="Search"
-            style="width: 240px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="节点类型">
-          <el-select v-model="searchForm.type" placeholder="请选择类型" clearable style="width: 180px">
-            <el-option
-              v-for="item in mealTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+      <div class="search-bar">
+        <el-form :model="searchForm" inline class="search-form">
+          <el-form-item label="套餐名称">
+            <el-input
+              v-model="searchForm.name"
+              placeholder="输入套餐名称，如：省交通本级"
+              clearable
+              :prefix-icon="Search"
+              style="width: 240px"
+              @keyup.enter="handleSearch"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
-            <el-option label="正常" :value="1101" />
-            <el-option label="停用" :value="1001" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-          <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-        </el-form-item>
-      </el-form>
+          </el-form-item>
+          <el-form-item label="节点类型">
+            <el-select v-model="searchForm.type" placeholder="请选择类型" clearable style="width: 180px">
+              <el-option
+                v-for="item in mealTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="状态">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
+              <el-option label="正常" :value="1101" />
+              <el-option label="停用" :value="1001" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
+            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="search-actions">
+          <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
+        </div>
+      </div>
     </el-card>
-
-    <!-- 工具栏 -->
-    <div class="toolbar animate-item">
-      <div class="toolbar-left">
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
-        <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">
-          批量删除
-        </el-button>
-        <transition name="fade">
-          <span v-if="selectedIds.length" class="selected-count">
-            已选择 <strong>{{ selectedIds.length }}</strong> 项
-            <el-button type="primary" link @click="clearSelection">取消选择</el-button>
-          </span>
-        </transition>
-      </div>
-      <div class="toolbar-right">
-        <span class="total-count">共 {{ pagination.total }} 条数据</span>
-      </div>
-    </div>
 
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
@@ -82,12 +68,9 @@
         stripe
         highlight-current-row
         row-key="id"
-        @selection-change="handleSelectionChange"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
       >
-        <el-table-column type="selection" width="50" align="center" />
-
         <el-table-column prop="id" label="ID" width="70" align="center">
           <template #default="{ row }">
             <span class="id-text">{{ row.id }}</span>
@@ -1040,44 +1023,26 @@ onMounted(() => {
     border: none;
 
     :deep(.el-card__body) {
-      padding: 20px 24px 8px;
+      padding: 20px 24px 12px;
     }
 
-    .el-form-item {
-      margin-bottom: 12px;
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
     }
-  }
 
-  // 工具栏
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 0 4px;
+    .search-form {
+      flex: 1;
+      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
+    }
 
-    .toolbar-left {
+    .search-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .selected-count {
-      font-size: 13px;
-      color: #606266;
-      margin-left: 8px;
-
-      strong {
-        color: #409EFF;
-      }
-    }
-
-    .total-count {
-      font-size: 13px;
-      color: #909399;
-      padding: 6px 14px;
-      background: #F0F2F5;
-      border-radius: 6px;
+      gap: 8px;
+      flex-shrink: 0;
     }
   }
 

@@ -65,39 +65,34 @@
 
         <!-- 搜索栏 -->
         <el-card class="search-card" shadow="never">
-          <el-form :model="searchForm" inline>
-            <el-form-item label="部门名称">
-              <el-input
-                v-model="searchForm.deptName"
-                placeholder="输入部门名称"
-                clearable
-                :prefix-icon="Search"
-                style="width: 180px"
-                @keyup.enter="handleSearch"
-              />
-            </el-form-item>
-            <el-form-item label="状态">
-              <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 120px">
-                <el-option label="正常" :value="1" />
-                <el-option label="停用" :value="0" />
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-              <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-            </el-form-item>
-          </el-form>
+          <div class="search-bar">
+            <el-form :model="searchForm" inline class="search-form">
+              <el-form-item label="部门名称">
+                <el-input
+                  v-model="searchForm.deptName"
+                  placeholder="输入部门名称"
+                  clearable
+                  :prefix-icon="Search"
+                  style="width: 180px"
+                  @keyup.enter="handleSearch"
+                />
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 120px">
+                  <el-option label="正常" :value="1" />
+                  <el-option label="停用" :value="0" />
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+                <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <div class="search-actions">
+              <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
+            </div>
+          </div>
         </el-card>
-
-        <!-- 工具栏 -->
-        <div class="toolbar">
-          <div class="toolbar-left">
-            <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
-          </div>
-          <div class="toolbar-right">
-            <span class="total-count">共 {{ deptTreeData.length }} 条数据</span>
-          </div>
-        </div>
 
         <!-- 部门树表格 -->
         <el-card class="table-card" shadow="never">
@@ -172,7 +167,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="240" align="center">
+            <el-table-column label="操作" width="240" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Plus" @click.stop="handleAdd(row)">子部门</el-button>
                 <el-button type="primary" link :icon="Edit" @click.stop="handleEdit(row)">编辑</el-button>
@@ -658,21 +653,25 @@ onMounted(() => {
     margin-bottom: 16px;
     border-radius: 12px;
     border: none;
-    :deep(.el-card__body) { padding: 20px 24px 8px; }
-    .el-form-item { margin-bottom: 12px; }
-  }
+    :deep(.el-card__body) { padding: 20px 24px 12px; }
 
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 0 4px;
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
 
-    .toolbar-left { display: flex; align-items: center; gap: 12px; }
-    .total-count {
-      font-size: 13px; color: #909399;
-      padding: 6px 14px; background: #F0F2F5; border-radius: 6px;
+    .search-form {
+      flex: 1;
+      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
+    }
+
+    .search-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
   }
 

@@ -65,48 +65,43 @@
 
         <!-- 搜索栏 -->
         <el-card class="search-card" shadow="never">
-          <el-form :model="postSearchForm" inline>
-            <el-form-item label="岗位名称">
-              <el-input
-                v-model="postSearchForm.name"
-                placeholder="输入岗位名称"
-                clearable
-                :prefix-icon="Search"
-                style="width: 180px"
-                @keyup.enter="handlePostSearch"
-              />
-            </el-form-item>
-            <el-form-item label="岗位编号">
-              <el-input
-                v-model="postSearchForm.code"
-                placeholder="输入岗位编号"
-                clearable
-                style="width: 160px"
-                @keyup.enter="handlePostSearch"
-              />
-            </el-form-item>
-            <el-form-item label="状态">
-              <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 120px">
-                <el-option label="启用" :value="1" />
-                <el-option label="禁用" :value="0" />
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handlePostSearch">搜索</el-button>
-              <el-button :icon="RefreshLeft" @click="handlePostReset">重置</el-button>
-            </el-form-item>
-          </el-form>
+          <div class="search-bar">
+            <el-form :model="postSearchForm" inline class="search-form">
+              <el-form-item label="岗位名称">
+                <el-input
+                  v-model="postSearchForm.name"
+                  placeholder="输入岗位名称"
+                  clearable
+                  :prefix-icon="Search"
+                  style="width: 180px"
+                  @keyup.enter="handlePostSearch"
+                />
+              </el-form-item>
+              <el-form-item label="岗位编号">
+                <el-input
+                  v-model="postSearchForm.code"
+                  placeholder="输入岗位编号"
+                  clearable
+                  style="width: 160px"
+                  @keyup.enter="handlePostSearch"
+                />
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 120px">
+                  <el-option label="启用" :value="1" />
+                  <el-option label="禁用" :value="0" />
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" :icon="Search" @click="handlePostSearch">搜索</el-button>
+                <el-button :icon="RefreshLeft" @click="handlePostReset">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <div class="search-actions">
+              <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
+            </div>
+          </div>
         </el-card>
-
-        <!-- 工具栏 -->
-        <div class="toolbar">
-          <div class="toolbar-left">
-            <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
-          </div>
-          <div class="toolbar-right">
-            <span class="total-count">共 {{ filteredPostData.length }} 条数据</span>
-          </div>
-        </div>
 
         <!-- 数据表格 -->
         <el-card class="table-card" shadow="never">
@@ -149,6 +144,12 @@
                 <el-tag :type="row.status === 1 ? 'success' : 'danger'" effect="light" size="small">
                   {{ row.status === 1 ? '启用' : '禁用' }}
                 </el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip>
+              <template #default="{ row }">
+                <span class="remark-text">{{ row.remark || '-' }}</span>
               </template>
             </el-table-column>
 
@@ -609,21 +610,25 @@ onMounted(() => {
     margin-bottom: 16px;
     border-radius: 12px;
     border: none;
-    :deep(.el-card__body) { padding: 20px 24px 8px; }
-    .el-form-item { margin-bottom: 12px; }
-  }
+    :deep(.el-card__body) { padding: 20px 24px 12px; }
 
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 0 4px;
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
 
-    .toolbar-left { display: flex; align-items: center; gap: 12px; }
-    .total-count {
-      font-size: 13px; color: #909399;
-      padding: 6px 14px; background: #F0F2F5; border-radius: 6px;
+    .search-form {
+      flex: 1;
+      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
+    }
+
+    .search-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
   }
 
@@ -640,6 +645,7 @@ onMounted(() => {
     .code-text { font-family: 'Monaco','Menlo','Consolas', monospace; font-size: 13px; color: #606266; }
     .name-text { font-weight: 500; color: #303133; }
     .sort-text { font-size: 13px; color: #606266; }
+    .remark-text { font-size: 13px; color: #606266; }
 
     .empty-state {
       padding: 48px 0;

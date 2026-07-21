@@ -25,9 +25,9 @@
           <el-icon><Monitor /></el-icon>
           <span>子系统管理</span>
         </el-menu-item>
-        <el-menu-item index="/organization">
-          <el-icon><OfficeBuilding /></el-icon>
-          <span>组织架构</span>
+        <el-menu-item index="/member">
+          <el-icon><User /></el-icon>
+          <span>成员管理</span>
         </el-menu-item>
         <el-menu-item index="/orgtree">
           <el-icon><Share /></el-icon>

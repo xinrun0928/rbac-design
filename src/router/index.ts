@@ -23,9 +23,9 @@ const router = createRouter({
       component: () => import('../views/SubsystemManagement.vue')
     },
     {
-      path: '/organization',
-      name: 'Organization',
-      component: () => import('../views/OrganizationManagement.vue')
+      path: '/member',
+      name: 'Member',
+      component: () => import('../views/MemberManagement.vue')
     },
     {
       path: '/orgtree',

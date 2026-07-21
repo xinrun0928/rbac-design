@@ -17,6 +17,10 @@
           <el-icon><Box /></el-icon>
           <span>套餐管理</span>
         </el-menu-item>
+        <el-menu-item index="/subsystem">
+          <el-icon><Monitor /></el-icon>
+          <span>子系统管理</span>
+        </el-menu-item>
         <el-menu-item index="/organization">
           <el-icon><OfficeBuilding /></el-icon>
           <span>组织架构</span>
@@ -60,7 +64,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User } from '@element-plus/icons-vue'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

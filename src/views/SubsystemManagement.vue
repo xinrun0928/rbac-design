@@ -1,10 +1,10 @@
 <template>
-  <div class="meal-management">
+  <div class="subsystem-management">
     <!-- 页面头部 -->
     <div class="page-header animate-item">
       <div class="header-left">
-        <h1><span class="title-bar"></span>套餐管理</h1>
-        <span class="page-desc">管理系统套餐配置，定义不同类型套餐的基本信息</span>
+        <h1><span class="title-bar"></span>子系统管理</h1>
+        <span class="page-desc">管理各业务子系统配置，定义子系统基本信息</span>
       </div>
       <div class="header-right">
         <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
@@ -29,30 +29,30 @@
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
       <el-form :model="searchForm" inline>
-        <el-form-item label="套餐名称">
+        <el-form-item label="子系统编码">
           <el-input
-            v-model="searchForm.name"
-            placeholder="输入套餐名称，如：省交通本级"
+            v-model="searchForm.subsysCode"
+            placeholder="输入编码，如：EMERGENCY"
             clearable
             :prefix-icon="Search"
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="节点类型">
-          <el-select v-model="searchForm.type" placeholder="请选择类型" clearable style="width: 180px">
-            <el-option
-              v-for="item in mealTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+        <el-form-item label="子系统名称">
+          <el-input
+            v-model="searchForm.subsysName"
+            placeholder="输入子系统名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 200px"
+            @keyup.enter="handleSearch"
+          />
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
             <el-option label="正常" :value="1101" />
-            <el-option label="停用" :value="1001" />
+            <el-option label="停用" :value="1102" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -65,7 +65,7 @@
     <!-- 工具栏 -->
     <div class="toolbar animate-item">
       <div class="toolbar-left">
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
+        <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
         <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">
           批量删除
         </el-button>
@@ -89,25 +89,25 @@
         border
         stripe
         highlight-current-row
-        row-key="id"
+        row-key="subsysId"
         @selection-change="handleSelectionChange"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
       >
         <el-table-column type="selection" width="50" align="center" />
 
-        <el-table-column prop="id" label="ID" width="70" align="center">
+        <el-table-column prop="subsysId" label="ID" width="70" align="center">
           <template #default="{ row }">
-            <span class="id-text">{{ row.id }}</span>
+            <span class="id-text">{{ row.subsysId }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="code" label="套餐代码" width="200">
+        <el-table-column prop="subsysCode" label="子系统编码" width="200">
           <template #default="{ row }">
             <div class="code-cell">
-              <span class="code-text">{{ row.code }}</span>
-              <el-tooltip content="复制代码" placement="top">
-                <el-button type="primary" link size="small" @click="handleCopy(row.code)">
+              <span class="code-text">{{ row.subsysCode }}</span>
+              <el-tooltip content="复制编码" placement="top">
+                <el-button type="primary" link size="small" @click="handleCopy(row.subsysCode)">
                   <el-icon><CopyDocument /></el-icon>
                 </el-button>
               </el-tooltip>
@@ -115,28 +115,33 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="name" label="套餐名称" min-width="140">
+        <el-table-column prop="subsysName" label="子系统名称" min-width="180">
           <template #default="{ row }">
-            <span class="name-text">{{ row.name }}</span>
+            <span class="name-text">{{ row.subsysName }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="type" label="节点类型" width="150" align="center">
+        <el-table-column prop="subsysShortName" label="简称" width="100" align="center">
+          <template #default="{ row }">
+            <span class="short-name-text">{{ row.subsysShortName }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="displayOrder" label="显示顺序" width="100" align="center">
+          <template #default="{ row }">
+            <span class="sort-text">{{ row.displayOrder }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="isHidden" label="可见性" width="100" align="center">
           <template #default="{ row }">
             <el-tag
-              :color="getTypeTagColor(row.type)"
-              effect="dark"
-              style="border: none; color: #fff"
+              :type="row.isHidden ? 'info' : 'success'"
+              effect="plain"
               round
             >
-              {{ row.typeName }}
+              {{ row.isHidden ? '隐藏' : '显示' }}
             </el-tag>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="sort" label="排序" width="80" align="center">
-          <template #default="{ row }">
-            <span class="sort-text">{{ row.sort }}</span>
           </template>
         </el-table-column>
 
@@ -145,7 +150,7 @@
             <el-switch
               :model-value="row.status"
               :active-value="1101"
-              :inactive-value="1001"
+              :inactive-value="1102"
               active-text="正常"
               inactive-text="停用"
               inline-prompt
@@ -155,13 +160,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="creator" label="创建人" width="110" align="center">
+        <el-table-column prop="creater" label="创建人" width="110" align="center">
           <template #default="{ row }">
             <div class="creator-cell">
-              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creator) }">
-                {{ row.creator.charAt(0) }}
+              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creater) }">
+                {{ row.creater.charAt(0).toUpperCase() }}
               </el-avatar>
-              <span>{{ row.creator }}</span>
+              <span>{{ row.creater }}</span>
             </div>
           </template>
         </el-table-column>
@@ -169,7 +174,7 @@
         <el-table-column prop="createTime" label="创建时间" width="170" align="center">
           <template #default="{ row }">
             <el-tooltip :content="row.createTime" placement="top">
-              <span class="time-text">{{ getRelativeTime(row.createTime) }}</span>
+              <span class="time-text">{{ row.createTime }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -185,11 +190,11 @@
         <template #empty>
           <div class="empty-state">
             <el-icon :size="64" color="#DCDFE6"><Box /></el-icon>
-            <p class="empty-title">暂无套餐数据</p>
+            <p class="empty-title">暂无子系统数据</p>
             <p class="empty-desc">
               点击上方
-              <el-button type="primary" link @click="handleAdd">"新增套餐"</el-button>
-              按钮创建第一个套餐
+              <el-button type="primary" link @click="handleAdd">"新增子系统"</el-button>
+              按钮创建第一个子系统
             </p>
           </div>
         </template>
@@ -213,7 +218,7 @@
     <!-- 新增弹窗 -->
     <el-dialog
       v-model="addDialogVisible"
-      title="新增套餐"
+      title="新增子系统"
       width="580px"
       destroy-on-close
       :close-on-click-modal="false"
@@ -223,53 +228,55 @@
         ref="addFormRef"
         :model="addFormData"
         :rules="formRules"
-        label-width="100px"
+        label-width="110px"
         label-position="right"
-        class="meal-form"
+        class="subsystem-form"
       >
-        <el-form-item label="套餐代码" prop="code">
+        <el-form-item label="子系统编码" prop="subsysCode">
           <el-input
-            v-model="addFormData.code"
-            placeholder="请输入代码，如：PKG_PROV_TRANSPORT"
+            v-model="addFormData.subsysCode"
+            placeholder="请输入编码，如：EMERGENCY_WATCH"
             maxlength="50"
             show-word-limit
           >
             <template #append>
-              <el-tooltip content="代码将自动转为大写" placement="top">
+              <el-tooltip content="编码将自动转为大写" placement="top">
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </template>
           </el-input>
         </el-form-item>
 
-        <el-form-item label="节点类型" prop="type">
-          <el-select v-model="addFormData.type" placeholder="请选择节点类型" style="width: 100%">
-            <el-option
-              v-for="item in mealTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-              <div class="type-option">
-                <span class="type-option-label">{{ item.label }}</span>
-                <span class="type-option-desc">{{ item.description }}</span>
-              </div>
-            </el-option>
-          </el-select>
+        <el-form-item label="子系统名称" prop="subsysName">
+          <el-input
+            v-model="addFormData.subsysName"
+            placeholder="请输入子系统名称"
+            maxlength="100"
+            show-word-limit
+          />
         </el-form-item>
 
-        <el-form-item label="套餐名称" prop="name">
+        <el-form-item label="子系统简称" prop="subsysShortName">
           <el-input
-            v-model="addFormData.name"
-            placeholder="请输入套餐名称，如：省交通本级"
+            v-model="addFormData.subsysShortName"
+            placeholder="请输入简称，如：值守"
             maxlength="50"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="addFormData.sort" :min="0" :max="9999" style="width: 200px" />
+        <el-form-item label="显示顺序" prop="displayOrder">
+          <el-input-number v-model="addFormData.displayOrder" :min="0" :max="9999" style="width: 200px" />
           <span class="form-tip-inline">数值越小越靠前</span>
+        </el-form-item>
+
+        <el-form-item label="是否隐藏" prop="isHidden">
+          <el-switch
+            v-model="addFormData.isHidden"
+            active-text="隐藏"
+            inactive-text="显示"
+            inline-prompt
+          />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -278,11 +285,22 @@
               <el-icon color="#67C23A"><SuccessFilled /></el-icon>
               正常
             </el-radio>
-            <el-radio :value="1001">
+            <el-radio :value="1102">
               <el-icon color="#909399"><CircleCloseFilled /></el-icon>
               停用
             </el-radio>
           </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input
+            v-model="addFormData.remark"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入备注信息"
+            maxlength="500"
+            show-word-limit
+          />
         </el-form-item>
       </el-form>
 
@@ -297,7 +315,7 @@
     <!-- 编辑抽屉 -->
     <el-drawer
       v-model="drawerVisible"
-      title="编辑套餐"
+      title="编辑子系统"
       size="500px"
       direction="rtl"
       destroy-on-close
@@ -307,48 +325,50 @@
         ref="editFormRef"
         :model="editFormData"
         :rules="formRules"
-        label-width="100px"
+        label-width="110px"
         label-position="right"
-        class="meal-form"
+        class="subsystem-form"
       >
-        <el-form-item label="套餐代码" prop="code">
+        <el-form-item label="子系统编码" prop="subsysCode">
           <el-input
-            v-model="editFormData.code"
-            placeholder="请输入代码，如：PKG_PROV_TRANSPORT"
+            v-model="editFormData.subsysCode"
+            placeholder="请输入编码"
             disabled
             maxlength="50"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="节点类型" prop="type">
-          <el-select v-model="editFormData.type" placeholder="请选择节点类型" style="width: 100%">
-            <el-option
-              v-for="item in mealTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-              <div class="type-option">
-                <span class="type-option-label">{{ item.label }}</span>
-                <span class="type-option-desc">{{ item.description }}</span>
-              </div>
-            </el-option>
-          </el-select>
+        <el-form-item label="子系统名称" prop="subsysName">
+          <el-input
+            v-model="editFormData.subsysName"
+            placeholder="请输入子系统名称"
+            maxlength="100"
+            show-word-limit
+          />
         </el-form-item>
 
-        <el-form-item label="套餐名称" prop="name">
+        <el-form-item label="子系统简称" prop="subsysShortName">
           <el-input
-            v-model="editFormData.name"
-            placeholder="请输入套餐名称，如：省交通本级"
+            v-model="editFormData.subsysShortName"
+            placeholder="请输入简称"
             maxlength="50"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="editFormData.sort" :min="0" :max="9999" style="width: 200px" />
+        <el-form-item label="显示顺序" prop="displayOrder">
+          <el-input-number v-model="editFormData.displayOrder" :min="0" :max="9999" style="width: 200px" />
           <span class="form-tip-inline">数值越小越靠前</span>
+        </el-form-item>
+
+        <el-form-item label="是否隐藏" prop="isHidden">
+          <el-switch
+            v-model="editFormData.isHidden"
+            active-text="隐藏"
+            inactive-text="显示"
+            inline-prompt
+          />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -357,11 +377,22 @@
               <el-icon color="#67C23A"><SuccessFilled /></el-icon>
               正常
             </el-radio>
-            <el-radio :value="1001">
+            <el-radio :value="1102">
               <el-icon color="#909399"><CircleCloseFilled /></el-icon>
               停用
             </el-radio>
           </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input
+            v-model="editFormData.remark"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入备注信息"
+            maxlength="500"
+            show-word-limit
+          />
         </el-form-item>
       </el-form>
 
@@ -378,39 +409,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'  // eslint-disable-line
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   CopyDocument, QuestionFilled,
   SuccessFilled, CircleCloseFilled, Box,
-  DataBoard, OfficeBuilding
+  DataBoard, CircleCheck, CircleClose, Monitor
 } from '@element-plus/icons-vue'
-import type { Meal, SearchForm, MealForm } from '../types/meal'
-import { mealTypeOptions } from '../mock/mealData'
+import type { Subsystem, SubsystemForm, SubsystemSearchForm } from '../types/subsystem'
 import {
-  getMeals,
-  addMeal,
-  updateMeal,
-  deleteMeal,
-  batchDeleteMeals,
-  toggleMealStatus
-} from '../utils/mockApi'
+  getSubsystems,
+  addSubsystem,
+  updateSubsystem,
+  deleteSubsystem,
+  batchDeleteSubsystems,
+  toggleSubsystemStatus
+} from '../utils/subsystemMockApi'
 
 // ── 状态 ──
 const loading = ref(false)
 const submitLoading = ref(false)
-const tableData = ref<Meal[]>([])
+const tableData = ref<Subsystem[]>([])
 const selectedIds = ref<number[]>([])
 const addDialogVisible = ref(false)
 const drawerVisible = ref(false)
 const addFormRef = ref<FormInstance>()
 const editFormRef = ref<FormInstance>()
 
-const searchForm = reactive<SearchForm>({
-  name: '',
-  type: '',
+const searchForm = reactive<SubsystemSearchForm>({
+  subsysCode: '',
+  subsysName: '',
   status: ''
 })
 
@@ -420,52 +450,56 @@ const pagination = reactive({
   total: 0
 })
 
-const addFormData = reactive<MealForm>({
-  code: '',
-  name: '',
-  type: '',
-  sort: 0,
-  status: 1101
+const addFormData = reactive<SubsystemForm>({
+  subsysCode: '',
+  subsysName: '',
+  subsysShortName: '',
+  displayOrder: 0,
+  isHidden: false,
+  status: 1101,
+  remark: ''
 })
 
-const editFormData = reactive<MealForm>({
-  code: '',
-  name: '',
-  type: '',
-  sort: 0,
-  status: 1101
+const editFormData = reactive<SubsystemForm>({
+  subsysCode: '',
+  subsysName: '',
+  subsysShortName: '',
+  displayOrder: 0,
+  isHidden: false,
+  status: 1101,
+  remark: ''
 })
 
 // ── 计算属性 ──
 const statsData = computed(() => {
   const total = pagination.total
   const normalCount = tableData.value.filter(p => p.status === 1101).length
-  const disabledCount = tableData.value.filter(p => p.status === 1001).length
-  const typeCount = new Set(tableData.value.map(p => p.type)).size
+  const disabledCount = tableData.value.filter(p => p.status === 1102).length
+  const visibleCount = tableData.value.filter(p => !p.isHidden).length
 
   return [
-    { label: '套餐总数', value: total, icon: DataBoard, color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
+    { label: '子系统总数', value: total, icon: Monitor, color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
     { label: '正常状态', value: normalCount, icon: SuccessFilled, color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
     { label: '已停用', value: disabledCount, icon: CircleCloseFilled, color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' },
-    { label: '类型分布', value: typeCount, icon: OfficeBuilding, color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' }
+    { label: '可见状态', value: visibleCount, icon: CircleCheck, color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' }
   ]
 })
 
 // ── 表单验证规则 ──
 const formRules: FormRules = {
-  code: [
-    { required: true, message: '请输入套餐代码', trigger: 'blur' },
+  subsysCode: [
+    { required: true, message: '请输入子系统编码', trigger: 'blur' },
     { pattern: /^[A-Za-z_]+$/, message: '只能包含英文字母和下划线', trigger: 'blur' },
-    { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
   ],
-  type: [
-    { required: true, message: '请选择节点类型', trigger: 'change' }
+  subsysName: [
+    { required: true, message: '请输入子系统名称', trigger: 'blur' }
   ],
-  name: [
-    { required: true, message: '请输入套餐名称', trigger: 'blur' }
+  subsysShortName: [
+    { required: true, message: '请输入子系统简称', trigger: 'blur' }
   ],
-  sort: [
-    { required: true, message: '请输入排序值', trigger: 'blur' }
+  displayOrder: [
+    { required: true, message: '请输入显示顺序', trigger: 'blur' }
   ],
   status: [
     { required: true, message: '请选择状态', trigger: 'change' }
@@ -476,7 +510,7 @@ const formRules: FormRules = {
 async function fetchData() {
   loading.value = true
   try {
-    const res = await getMeals({
+    const res = await getSubsystems({
       page: pagination.page,
       pageSize: pagination.pageSize,
       search: searchForm
@@ -496,8 +530,8 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.name = ''
-  searchForm.type = ''
+  searchForm.subsysCode = ''
+  searchForm.subsysName = ''
   searchForm.status = ''
   pagination.page = 1
   fetchData()
@@ -518,8 +552,8 @@ function handlePageChange(page: number) {
   fetchData()
 }
 
-function handleSelectionChange(rows: Meal[]) {
-  selectedIds.value = rows.map(r => r.id)
+function handleSelectionChange(rows: Subsystem[]) {
+  selectedIds.value = rows.map(r => r.subsysId)
 }
 
 function clearSelection() {
@@ -527,21 +561,25 @@ function clearSelection() {
 }
 
 function handleAdd() {
-  addFormData.code = ''
-  addFormData.name = ''
-  addFormData.type = ''
-  addFormData.sort = pagination.total + 1
+  addFormData.subsysCode = ''
+  addFormData.subsysName = ''
+  addFormData.subsysShortName = ''
+  addFormData.displayOrder = pagination.total + 1
+  addFormData.isHidden = false
   addFormData.status = 1101
+  addFormData.remark = ''
   addDialogVisible.value = true
 }
 
-function handleEdit(row: Meal) {
-  editFormData.id = row.id
-  editFormData.code = row.code
-  editFormData.name = row.name
-  editFormData.type = row.type
-  editFormData.sort = row.sort
+function handleEdit(row: Subsystem) {
+  editFormData.subsysId = row.subsysId
+  editFormData.subsysCode = row.subsysCode
+  editFormData.subsysName = row.subsysName
+  editFormData.subsysShortName = row.subsysShortName
+  editFormData.displayOrder = row.displayOrder
+  editFormData.isHidden = row.isHidden
   editFormData.status = row.status
+  editFormData.remark = row.remark
   drawerVisible.value = true
 }
 
@@ -556,14 +594,16 @@ async function handleAddSubmit() {
 
   submitLoading.value = true
   try {
-    await addMeal({
-      code: addFormData.code,
-      name: addFormData.name,
-      type: addFormData.type as number,
-      sort: addFormData.sort,
-      status: addFormData.status
+    await addSubsystem({
+      subsysCode: addFormData.subsysCode,
+      subsysName: addFormData.subsysName,
+      subsysShortName: addFormData.subsysShortName,
+      displayOrder: addFormData.displayOrder,
+      isHidden: addFormData.isHidden,
+      status: addFormData.status,
+      remark: addFormData.remark
     })
-    ElMessage.success('新增成功，套餐已创建')
+    ElMessage.success('新增成功，子系统已创建')
     addDialogVisible.value = false
     fetchData()
   } catch (err) {
@@ -584,13 +624,15 @@ async function handleEditSubmit() {
 
   submitLoading.value = true
   try {
-    if (editFormData.id) {
-      await updateMeal(editFormData.id, {
-        code: editFormData.code,
-        name: editFormData.name,
-        type: editFormData.type as number,
-        sort: editFormData.sort,
-        status: editFormData.status
+    if (editFormData.subsysId) {
+      await updateSubsystem(editFormData.subsysId, {
+        subsysCode: editFormData.subsysCode,
+        subsysName: editFormData.subsysName,
+        subsysShortName: editFormData.subsysShortName,
+        displayOrder: editFormData.displayOrder,
+        isHidden: editFormData.isHidden,
+        status: editFormData.status,
+        remark: editFormData.remark
       })
       ElMessage.success('编辑成功，数据已更新')
       drawerVisible.value = false
@@ -608,10 +650,10 @@ function resetForm() {
   editFormRef.value?.resetFields()
 }
 
-async function handleDelete(row: Meal) {
+async function handleDelete(row: Subsystem) {
   try {
     await ElMessageBox.confirm(
-      `您即将删除以下套餐：\n\n套餐名称：${row.name}\n套餐代码：${row.code}\n\n删除后将无法恢复，确定要继续吗？`,
+      `您即将删除以下子系统：\n\n子系统名称：${row.subsysName}\n子系统编码：${row.subsysCode}\n\n删除后将无法恢复，确定要继续吗？`,
       '确认删除',
       {
         confirmButtonText: '确认删除',
@@ -622,7 +664,7 @@ async function handleDelete(row: Meal) {
     )
 
     loading.value = true
-    await deleteMeal(row.id)
+    await deleteSubsystem(row.subsysId)
     ElMessage.success('删除成功')
     fetchData()
   } catch (err) {
@@ -639,7 +681,7 @@ async function handleBatchDelete() {
 
   try {
     await ElMessageBox.confirm(
-      `您已选择 ${selectedIds.value.length} 条套餐数据，删除后将无法恢复，确定要继续吗？`,
+      `您已选择 ${selectedIds.value.length} 条子系统数据，删除后将无法恢复，确定要继续吗？`,
       '批量删除确认',
       {
         confirmButtonText: '确认删除',
@@ -649,7 +691,7 @@ async function handleBatchDelete() {
     )
 
     loading.value = true
-    await batchDeleteMeals(selectedIds.value)
+    await batchDeleteSubsystems(selectedIds.value)
     ElMessage.success(`成功删除 ${selectedIds.value.length} 条数据`)
     selectedIds.value = []
     fetchData()
@@ -662,13 +704,13 @@ async function handleBatchDelete() {
   }
 }
 
-async function handleStatusChange(row: Meal, newStatus: number) {
+async function handleStatusChange(row: Subsystem, newStatus: number) {
   const from = newStatus === 1101 ? '停用' : '正常'
   const to = newStatus === 1101 ? '正常' : '停用'
 
   try {
     await ElMessageBox.confirm(
-      `您将把套餐 "${row.name}" 的状态从 "${from}" 切换为 "${to}"，确定要继续吗？`,
+      `您将把子系统 "${row.subsysName}" 的状态从 "${from}" 切换为 "${to}"，确定要继续吗？`,
       '切换状态确认',
       {
         confirmButtonText: '确认切换',
@@ -677,9 +719,8 @@ async function handleStatusChange(row: Meal, newStatus: number) {
       }
     )
 
-    await toggleMealStatus(row.id, newStatus)
+    await toggleSubsystemStatus(row.subsysId, newStatus)
     row.status = newStatus
-    row.statusName = to
     ElMessage.success(`状态已切换为 "${to}"`)
   } catch (err) {
     if (err !== 'cancel') {
@@ -698,16 +739,6 @@ async function handleCopy(code: string) {
   }
 }
 
-function getTypeTagColor(type: number): string {
-  const colors: Record<number, string> = {
-    1: '#409EFF',
-    2: '#67C23A',
-    3: '#E6A23C',
-    4: '#9B59B6'
-  }
-  return colors[type] || '#909399'
-}
-
 function getAvatarColor(name: string): string {
   const colors = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#9B59B6', '#00BCD4']
   let hash = 0
@@ -717,24 +748,6 @@ function getAvatarColor(name: string): string {
   return colors[Math.abs(hash) % colors.length]
 }
 
-function getRelativeTime(dateStr: string): string {
-  const now = Date.now()
-  const date = new Date(dateStr).getTime()
-  const diff = now - date
-
-  const minute = 60 * 1000
-  const hour = 60 * minute
-  const day = 24 * hour
-  const week = 7 * day
-
-  if (diff < minute) return '刚刚'
-  if (diff < hour) return `${Math.floor(diff / minute)}分钟前`
-  if (diff < day) return `${Math.floor(diff / hour)}小时前`
-  if (diff < week) return `${Math.floor(diff / day)}天前`
-
-  return dateStr.split(' ')[0]
-}
-
 // ── 初始化 ──
 onMounted(() => {
   fetchData()
@@ -742,7 +755,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.meal-management {
+.subsystem-management {
   padding: 24px;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   min-height: 100vh;
@@ -943,6 +956,11 @@ onMounted(() => {
       color: #303133;
     }
 
+    .short-name-text {
+      color: #606266;
+      font-size: 13px;
+    }
+
     .sort-text {
       font-weight: 600;
       color: #606266;
@@ -1043,36 +1061,11 @@ onMounted(() => {
   }
 
   // 表单
-  .meal-form {
-    .form-tip {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: #909399;
-      margin-top: 4px;
-    }
-
+  .subsystem-form {
     .form-tip-inline {
       font-size: 12px;
       color: #909399;
       margin-left: 12px;
-    }
-  }
-
-  .type-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-
-    .type-option-label {
-      font-weight: 500;
-    }
-
-    .type-option-desc {
-      font-size: 12px;
-      color: #909399;
     }
   }
 }

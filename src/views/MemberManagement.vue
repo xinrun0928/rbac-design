@@ -96,15 +96,6 @@
         <div class="toolbar">
           <div class="toolbar-left">
             <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
-            <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">
-              批量删除
-            </el-button>
-            <transition name="fade">
-              <span v-if="selectedIds.length" class="selected-count">
-                已选择 <strong>{{ selectedIds.length }}</strong> 项
-                <el-button type="primary" link @click="clearSelection">取消选择</el-button>
-              </span>
-            </transition>
           </div>
           <div class="toolbar-right">
             <span class="total-count">共 {{ filteredMemberData.length }} 条数据</span>
@@ -120,15 +111,19 @@
             stripe
             highlight-current-row
             row-key="id"
-            @selection-change="handleSelectionChange"
             :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
             empty-text=" "
           >
-            <el-table-column type="selection" width="50" align="center" />
 
-            <el-table-column prop="id" label="ID" width="70" align="center">
+            <el-table-column label="序号" width="60" align="center" type="index">
+              <template #default="{ $index }">
+                <span class="index-text">{{ $index + 1 }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="phone" label="账号(手机号)" width="140" align="center">
               <template #default="{ row }">
-                <span class="id-text">{{ row.id }}</span>
+                <span class="phone-text">{{ row.phone }}</span>
               </template>
             </el-table-column>
 
@@ -143,15 +138,63 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="position" label="职务" width="140" align="center">
+            <el-table-column prop="roles" label="角色" width="150">
               <template #default="{ row }">
-                <span class="position-text">{{ row.position }}</span>
+                <div class="tag-cell">
+                  <el-tag
+                    v-for="(role, index) in row.roles"
+                    :key="index"
+                    size="small"
+                    :type="index === 0 ? '' : 'info'"
+                    effect="plain"
+                    style="margin-right: 4px; margin-bottom: 2px;"
+                  >
+                    {{ role }}
+                  </el-tag>
+                  <span v-if="!row.roles || row.roles.length === 0" class="empty-text">-</span>
+                </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="phone" label="联系电话" width="140" align="center">
+            <el-table-column prop="departments" label="部门" width="150">
               <template #default="{ row }">
-                <span class="phone-text">{{ row.phone }}</span>
+                <div class="tag-cell">
+                  <el-tag
+                    v-for="(dept, index) in row.departments"
+                    :key="index"
+                    size="small"
+                    type="success"
+                    effect="plain"
+                    style="margin-right: 4px; margin-bottom: 2px;"
+                  >
+                    {{ dept }}
+                  </el-tag>
+                  <span v-if="!row.departments || row.departments.length === 0" class="empty-text">-</span>
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="position" label="职务" width="150">
+              <template #default="{ row }">
+                <div class="tag-cell">
+                  <el-tag
+                    v-for="(pos, index) in row.position"
+                    :key="index"
+                    size="small"
+                    type="warning"
+                    effect="plain"
+                    style="margin-right: 4px; margin-bottom: 2px;"
+                  >
+                    {{ pos }}
+                  </el-tag>
+                  <span v-if="!row.position || row.position.length === 0" class="empty-text">-</span>
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="contactPhone" label="联系电话" width="140" align="center">
+              <template #default="{ row }">
+                <span class="phone-text">{{ row.contactPhone || '-' }}</span>
               </template>
             </el-table-column>
 
@@ -161,21 +204,17 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="responsibility" label="职责描述" min-width="200">
+            <el-table-column prop="responsibility" label="备注" min-width="120">
               <template #default="{ row }">
-                <span class="responsibility-text">{{ row.responsibility }}</span>
+                <span class="remark-text">{{ row.responsibility || '-' }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column label="所属组织" width="150" align="center">
-              <template #default="{ row }">
-                <el-tag size="small" effect="plain">{{ getOrgNameById(row.orgId) }}</el-tag>
-              </template>
-            </el-table-column>
-
-            <el-table-column label="操作" width="140" align="center" fixed="right">
+            <el-table-column label="操作" width="280" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditMember(row)">编辑</el-button>
+                <el-button type="warning" link :icon="Key" @click="handleChangePassword(row)">修改密码</el-button>
+                <el-button type="info" link :icon="RefreshRight" @click="handleResetPassword(row)">重置密码</el-button>
                 <el-button type="danger" link :icon="Delete" @click="handleDeleteMember(row)">删除</el-button>
               </template>
             </el-table-column>
@@ -197,6 +236,18 @@
               </div>
             </template>
           </el-table>
+
+          <!-- 分页 -->
+          <div v-if="showPagination" class="pagination-wrapper">
+            <el-pagination
+              v-model:current-page="pagination.page"
+              :page-size="pagination.pageSize"
+              :total="allFilteredData.length"
+              layout="total, prev, pager, next"
+              background
+              @current-change="handlePageChange"
+            />
+          </div>
         </el-card>
       </div>
     </div>
@@ -221,63 +272,49 @@
           <el-input v-model="memberFormData.name" placeholder="请输入成员姓名" maxlength="20" show-word-limit />
         </el-form-item>
 
-        <el-form-item label="职务" prop="position" :rules="[{ required: true, message: '请输入职务', trigger: 'blur' }]">
-          <el-input v-model="memberFormData.position" placeholder="请输入职务" maxlength="30" />
+        <el-form-item label="账号" prop="phone" :rules="[{ required: true, message: '请输入手机号作为账号', trigger: 'blur' }, { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }]">
+          <el-input v-model="memberFormData.phone" placeholder="请输入11位手机号作为账号" maxlength="11" />
         </el-form-item>
 
-        <el-form-item label="手机号" prop="phone" :rules="[{ required: true, message: '请输入手机号', trigger: 'blur' }, { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }]">
-          <el-input v-model="memberFormData.phone" placeholder="请输入手机号" maxlength="11" />
+        <el-form-item v-if="!isMemberEdit" label="密码" prop="password" :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 20, message: '密码长度为6-20位', trigger: 'blur' }]">
+          <el-input v-model="memberFormData.password" type="password" placeholder="请输入密码" show-password maxlength="20" />
+        </el-form-item>
+
+        <el-form-item label="角色" prop="roles" :rules="[{ required: true, message: '请选择角色', trigger: 'change' }]">
+          <el-select v-model="memberFormData.roles" multiple placeholder="请选择角色（可多选）" style="width: 100%">
+            <el-option v-for="item in roleOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="部门" prop="departments">
+          <el-select v-model="memberFormData.departments" multiple placeholder="请选择部门（可多选）" style="width: 100%">
+            <el-option v-for="item in departmentOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="职务" prop="position" :rules="[{ required: true, message: '请选择职务', trigger: 'change' }]">
+          <el-select v-model="memberFormData.position" multiple placeholder="请选择职务（可多选）" style="width: 100%">
+            <el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="联系电话" prop="contactPhone">
+          <el-input v-model="memberFormData.contactPhone" placeholder="请输入联系电话（座机等）" maxlength="20" />
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email" :rules="[{ required: true, message: '请输入邮箱', trigger: 'blur' }, { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }]">
           <el-input v-model="memberFormData.email" placeholder="请输入邮箱地址" />
         </el-form-item>
 
-        <el-form-item label="职责" prop="responsibility" :rules="[{ required: true, message: '请输入职责描述', trigger: 'blur' }]">
+        <el-form-item label="备注" prop="responsibility">
           <el-input
             v-model="memberFormData.responsibility"
             type="textarea"
             :rows="3"
-            placeholder="请输入职责描述"
+            placeholder="请输入备注信息"
             maxlength="200"
             show-word-limit
           />
-        </el-form-item>
-
-        <el-form-item label="角色" prop="roleIds">
-          <el-select
-            v-model="memberFormData.roleIds"
-            multiple
-            placeholder="请选择角色（可多选）"
-            style="width: 100%"
-          >
-            <el-option-group label="系统角色">
-              <el-option
-                v-for="item in systemRoles"
-                :key="item.roleId"
-                :label="item.roleName"
-                :value="item.roleId"
-              >
-                <div class="role-option">
-                  <span>{{ item.roleName }}</span>
-                  <el-tag size="small" type="warning" effect="plain">系统</el-tag>
-                </div>
-              </el-option>
-            </el-option-group>
-            <el-option-group label="自定义角色">
-              <el-option
-                v-for="item in customRoles"
-                :key="item.roleId"
-                :label="item.roleName"
-                :value="item.roleId"
-              >
-                <div class="role-option">
-                  <span>{{ item.roleName }}</span>
-                  <el-tag size="small" type="success" effect="plain">自定义</el-tag>
-                </div>
-              </el-option>
-            </el-option-group>
-          </el-select>
         </el-form-item>
       </el-form>
 
@@ -298,7 +335,7 @@ import type { FormInstance } from 'element-plus'
 import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
-  SuccessFilled, CircleCloseFilled,
+  SuccessFilled, CircleCloseFilled, Key, RefreshRight,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Male, Female
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '../mock/orgTreeData'
@@ -308,8 +345,11 @@ import type { OrgTreeNode } from '../types/orgTree'
 interface MemberItem {
   id: number
   name: string
-  position: string
-  phone: string
+  roles: string[]  // 角色
+  departments: string[]  // 部门
+  position: string[]  // 职务（支持多个）
+  phone: string  // 手机号码（11位，作为账号）
+  contactPhone: string  // 联系电话（座机等）
   email: string
   responsibility: string
   orgId: number
@@ -319,7 +359,6 @@ interface MemberItem {
 // ── 状态 ──
 const loading = ref(false)
 const memberData = ref<MemberItem[]>([])
-const selectedIds = ref<number[]>([])
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const treeCollapsed = ref(false)
 const treeFilter = ref('')
@@ -336,35 +375,42 @@ const memberSearchForm = reactive({
 const memberFormData = reactive({
   id: 0,
   name: '',
-  position: '',
+  roles: [] as string[],
+  departments: [] as string[],
+  position: [] as string[],
   phone: '',
+  contactPhone: '',
   email: '',
   responsibility: '',
-  roleIds: [] as number[]
+  password: ''
 })
 
 // 角色选项
-const systemRoles = [
-  { roleId: 1, roleName: '超级管理员' },
-  { roleId: 2, roleName: '系统管理员' }
+const roleOptions = [
+  '系统管理员', '运维工程师', '值守主管', '技术支持', '数据分析师',
+  '普通用户', '事件处理员', '调度员', '预案管理员', '物资管理员',
+  '决策顾问', '调度主管', '融合协调员', '展示管理员', '测试工程师'
 ]
 
-const customRoles = [
-  { roleId: 3, roleName: '运维工程师' },
-  { roleId: 4, roleName: '值守主管' },
-  { roleId: 5, roleName: '技术支持' },
-  { roleId: 6, roleName: '数据分析师' },
-  { roleId: 7, roleName: '普通用户' },
-  { roleId: 8, roleName: '事件处理员' },
-  { roleId: 9, roleName: '调度员' },
-  { roleId: 10, roleName: '预案管理员' },
-  { roleId: 11, roleName: '物资管理员' },
-  { roleId: 12, roleName: '决策顾问' },
-  { roleId: 13, roleName: '调度主管' },
-  { roleId: 14, roleName: '融合协调员' },
-  { roleId: 15, roleName: '展示管理员' },
-  { roleId: 16, roleName: '测试工程师' }
+// 部门选项
+const departmentOptions = [
+  '厅总值班室', '科技处', '路政处', '基建处', '综合处',
+  '广州市交通局', '深圳市交通局', '茂名市交通局', '佛山市交通局',
+  '广州市公路事务中心', '深圳市公路事务中心', '佛山市公路事务中心'
 ]
+
+// 职务选项
+const positionOptions = [
+  '厅长', '副厅长', '处长', '副处长', '科员', '主任', '副主任',
+  '值班室主任', '值班员', '站长', '副站长', '养护工',
+  '局长', '副局长', '办公室主任', '技术员'
+]
+
+// 分页
+const pagination = reactive({
+  page: 1,
+  pageSize: 8
+})
 
 // ── 树节点筛选 ──
 watch(treeFilter, (val) => {
@@ -372,13 +418,27 @@ watch(treeFilter, (val) => {
 })
 
 // ── 计算属性 ──
-const filteredMemberData = computed(() => {
+const allFilteredData = computed(() => {
   return memberData.value.filter(m => {
+    // 按当前选中组织过滤
+    if (currentNode.value && m.orgId !== currentNode.value.id) return false
+    // 按搜索条件过滤
     if (memberSearchForm.name && !m.name.includes(memberSearchForm.name)) return false
     if (memberSearchForm.phone && !m.phone.includes(memberSearchForm.phone)) return false
     return true
   })
 })
+
+const filteredMemberData = computed(() => {
+  const start = (pagination.page - 1) * pagination.pageSize
+  return allFilteredData.value.slice(start, start + pagination.pageSize)
+})
+
+const showPagination = computed(() => allFilteredData.value.length > pagination.pageSize)
+
+function handlePageChange(page: number) {
+  pagination.page = page
+}
 
 // ── 方法 ──
 function fetchMemberData() {
@@ -386,11 +446,22 @@ function fetchMemberData() {
   try {
     // 从 orgTreeData 中提取所有成员
     const members: MemberItem[] = []
+    const roleList = ['系统管理员', '运维工程师', '值守主管', '普通用户', '调度员']
+    const deptList = ['厅总值班室', '科技处', '路政处', '基建处', '综合处']
+
     function extractMembers(nodes: OrgTreeNode[], parentName: string = '') {
       for (const node of nodes) {
         for (const member of node.members) {
+          // 随机生成角色、部门、职务
+          const randomRoles = roleList.sort(() => Math.random() - 0.5).slice(0, Math.floor(Math.random() * 2) + 1)
+          const randomDepts = [node.name]
+          const randomPositions = [member.position]
+
           members.push({
             ...member,
+            roles: randomRoles,
+            departments: randomDepts,
+            position: randomPositions,
             orgId: node.id,
             orgName: node.name
           })
@@ -422,14 +493,6 @@ function handleMemberReset() {
 
 function handleRefresh() {
   fetchMemberData()
-}
-
-function handleSelectionChange(rows: MemberItem[]) {
-  selectedIds.value = rows.map(r => r.id)
-}
-
-function clearSelection() {
-  selectedIds.value = []
 }
 
 function filterTreeNode(value: string, data: OrgTreeNode): boolean {
@@ -505,11 +568,14 @@ function handleAddMember() {
   isMemberEdit.value = false
   memberFormData.id = 0
   memberFormData.name = ''
-  memberFormData.position = ''
+  memberFormData.roles = []
+  memberFormData.departments = []
+  memberFormData.position = []
   memberFormData.phone = ''
+  memberFormData.contactPhone = ''
   memberFormData.email = ''
   memberFormData.responsibility = ''
-  memberFormData.roleIds = []
+  memberFormData.password = ''
   memberDrawerVisible.value = true
 }
 
@@ -517,11 +583,14 @@ function handleEditMember(row: MemberItem) {
   isMemberEdit.value = true
   memberFormData.id = row.id
   memberFormData.name = row.name
-  memberFormData.position = row.position
+  memberFormData.roles = [...row.roles]
+  memberFormData.departments = [...row.departments]
+  memberFormData.position = [...row.position]
   memberFormData.phone = row.phone
+  memberFormData.contactPhone = row.contactPhone
   memberFormData.email = row.email
   memberFormData.responsibility = row.responsibility
-  memberFormData.roleIds = []
+  memberFormData.password = ''
   memberDrawerVisible.value = true
 }
 
@@ -535,6 +604,40 @@ function handleSubmitMember() {
   })
 }
 
+// 修改密码
+function handleChangePassword(row: MemberItem) {
+  ElMessageBox.prompt('请输入新密码', '修改密码 - ' + row.name, {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    inputType: 'password',
+    inputPlaceholder: '请输入新密码',
+    inputValidator: (value) => {
+      if (!value) return '密码不能为空'
+      if (value.length < 6) return '密码长度不能少于6位'
+      if (value.length > 20) return '密码长度不能超过20位'
+      return true
+    },
+    inputErrorMessage: '密码长度为6-20位'
+  }).then(({ value }) => {
+    ElMessage.success('密码修改成功')
+  }).catch(() => {})
+}
+
+// 重置密码
+function handleResetPassword(row: MemberItem) {
+  ElMessageBox.confirm(
+    `确定要重置 "${row.name}" 的密码吗？重置后默认密码为 123456`,
+    '重置密码确认',
+    {
+      confirmButtonText: '确认重置',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(() => {
+    ElMessage.success('密码已重置为 123456')
+  }).catch(() => {})
+}
+
 function handleDeleteMember(row: MemberItem) {
   ElMessageBox.confirm(
     `确定要删除成员 "${row.name}" 吗？`,
@@ -546,20 +649,9 @@ function handleDeleteMember(row: MemberItem) {
   }).catch(() => {})
 }
 
-function handleBatchDelete() {
-  ElMessageBox.confirm(
-    `确定要删除选中的 ${selectedIds.value.length} 个成员吗？`,
-    '批量删除确认',
-    { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' }
-  ).then(() => {
-    ElMessage.success('批量删除成功')
-    selectedIds.value = []
-    fetchMemberData()
-  }).catch(() => {})
-}
-
-function handleMemberDrawerClose() {
+function handleMemberDrawerClose(done: () => void) {
   memberFormRef.value?.resetFields()
+  done()
 }
 
 // ── 初始化 ──
@@ -739,12 +831,12 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    .id-text { color: #909399; font-size: 13px; }
+    .index-text { color: #909399; font-size: 13px; }
     .name-text { font-weight: 500; color: #303133; }
     .position-text { font-size: 13px; color: #606266; }
     .phone-text { font-family: 'Monaco','Menlo','Consolas', monospace; font-size: 13px; }
     .email-text { font-size: 13px; color: #606266; }
-    .responsibility-text { font-size: 13px; color: #909399; }
+    .remark-text { font-size: 13px; color: #909399; }
 
     .member-name-cell {
       display: flex;
@@ -758,17 +850,15 @@ onMounted(() => {
       }
     }
 
-    .role-tags {
+    .tag-cell {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 2px;
     }
 
-    .role-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
+    .empty-text {
+      color: #C0C4CC;
+      font-size: 13px;
     }
 
     .empty-state {
@@ -776,27 +866,26 @@ onMounted(() => {
       .empty-title { font-size: 16px; color: #606266; margin: 16px 0 8px; }
       .empty-desc { font-size: 13px; color: #909399; }
     }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #EBEEF5;
+    }
   }
 
   // 成员抽屉样式
   :deep(.member-drawer) {
     .el-drawer__header {
-      background: linear-gradient(135deg, #409EFF, #66B1FF);
-      padding: 20px 24px;
+      padding: 16px 24px;
       margin-bottom: 0;
+      border-bottom: 1px solid #EBEEF5;
 
       .el-drawer__title {
-        color: #fff;
         font-weight: 600;
         font-size: 16px;
-      }
-
-      .el-drawer__close-btn {
-        color: rgba(255,255,255,0.8);
-
-        &:hover {
-          color: #fff;
-        }
       }
     }
 

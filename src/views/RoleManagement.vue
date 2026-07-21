@@ -103,13 +103,19 @@
             :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
             empty-text=" "
           >
-            <el-table-column prop="roleId" label="ID" width="70" align="center">
-              <template #default="{ row }">
-                <span class="id-text">{{ row.roleId }}</span>
+            <el-table-column label="序号" width="60" align="center" type="index">
+              <template #default="{ $index }">
+                <span class="index-text">{{ $index + 1 }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="roleName" label="角色名称" min-width="150">
+            <el-table-column prop="roleCode" label="角色编码" width="140">
+              <template #default="{ row }">
+                <span class="code-text">{{ row.roleCode }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="roleName" label="角色名称" min-width="140">
               <template #default="{ row }">
                 <div class="role-name-cell">
                   <el-icon :style="{ color: row.isSystem ? '#E6A23C' : '#67C23A' }">
@@ -121,25 +127,38 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="description" label="角色描述" min-width="200">
+            <el-table-column prop="description" label="角色描述" min-width="150">
               <template #default="{ row }">
                 <span class="desc-text">{{ row.description || '-' }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="menuCount" label="菜单权限" width="120" align="center">
+            <el-table-column prop="dataScope" label="数据范围" width="150" align="center">
               <template #default="{ row }">
-                <el-tag size="small" effect="plain">{{ row.menuCount }} 个菜单</el-tag>
+                <el-tag
+                  :color="getDataScopeColor(row.dataScope)"
+                  effect="dark"
+                  style="border: none; color: #fff;"
+                  size="small"
+                >
+                  {{ getDataScopeLabel(row.dataScope) }}
+                </el-tag>
               </template>
             </el-table-column>
 
-            <el-table-column prop="memberCount" label="关联成员" width="100" align="center">
+            <el-table-column prop="roleLevel" label="角色级别" width="100" align="center">
               <template #default="{ row }">
-                <span class="count-text">{{ row.memberCount }} 人</span>
+                <span class="level-text">{{ row.roleLevel }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="status" label="状态" width="90" align="center">
+            <el-table-column prop="menuCount" label="菜单权限" width="100" align="center">
+              <template #default="{ row }">
+                <el-tag size="small" effect="plain">{{ row.menuCount }}</el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="status" label="状态" width="80" align="center">
               <template #default="{ row }">
                 <el-tag
                   :type="row.status === 1101 ? 'success' : 'info'"
@@ -204,8 +223,33 @@
         label-position="right"
         class="role-form"
       >
+        <el-form-item label="角色编码" prop="roleCode" :rules="[{ required: true, message: '请输入角色编码', trigger: 'blur' }, { pattern: /^[A-Z_]+$/, message: '只能包含大写字母和下划线', trigger: 'blur' }]">
+          <el-input v-model="roleFormData.roleCode" placeholder="如：SYSTEM_ADMIN" maxlength="50" show-word-limit :disabled="isRoleEdit" />
+        </el-form-item>
+
         <el-form-item label="角色名称" prop="roleName" :rules="[{ required: true, message: '请输入角色名称', trigger: 'blur' }]">
           <el-input v-model="roleFormData.roleName" placeholder="请输入角色名称" maxlength="30" show-word-limit />
+        </el-form-item>
+
+        <el-form-item label="数据范围" prop="dataScope">
+          <el-select v-model="roleFormData.dataScope" placeholder="请选择数据范围" style="width: 100%">
+            <el-option
+              v-for="item in dataScopeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <div class="scope-option">
+                <span>{{ item.label }}</span>
+                <el-tag size="small" :color="item.color" effect="dark" style="border: none; color: #fff;">{{ item.value }}</el-tag>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="角色级别" prop="roleLevel">
+          <el-input-number v-model="roleFormData.roleLevel" :min="1" :max="9999" style="width: 100%" />
+          <div class="form-tip">数字越小权限越高</div>
         </el-form-item>
 
         <el-form-item label="角色描述" prop="description">
@@ -243,60 +287,67 @@
     <el-drawer
       v-model="menuDrawerVisible"
       :title="`配置菜单 - ${currentRole?.roleName || ''}`"
-      size="500px"
+      size="50%"
       direction="rtl"
       class="menu-drawer"
     >
-      <div class="menu-config-content">
-        <!-- 组织套餐信息 -->
-        <div class="package-info">
-          <span class="info-label">组织套餐：</span>
-          <el-tag
-            v-if="currentNode?.packageName"
-            :color="getPackageColor(currentNode.packageName)"
-            effect="dark"
-            style="border: none; color: #fff;"
-            size="small"
-          >
-            {{ currentNode.packageName }}
-          </el-tag>
-          <span v-else class="no-package">未关联套餐</span>
+      <div class="bind-container">
+        <!-- 左侧子系统列表 -->
+        <div class="bind-left">
+          <div class="bind-left-header">
+            <span>子系统</span>
+          </div>
+          <div class="bind-subsystem-list">
+            <div
+              v-for="sub in subsystems"
+              :key="sub.subsysId"
+              class="bind-subsystem-item"
+              :class="{ active: bindSelectedSubsystem === sub.subsysId }"
+              @click="loadBindMenuTree(sub.subsysId)"
+            >
+              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
+                <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
+                  <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+                </el-icon>
+              </div>
+              <span class="subsystem-name">{{ sub.subsysShortName }}</span>
+              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsysId] || 0 }}）</span>
+            </div>
+          </div>
         </div>
 
-        <!-- 菜单树 -->
-        <div class="menu-tree-container">
-          <div class="tree-header">
-            <span class="tree-title">菜单权限</span>
-            <el-checkbox v-model="menuExpandAll" @change="handleExpandAll">全部展开</el-checkbox>
+        <!-- 右侧菜单树 -->
+        <div class="bind-right">
+          <div class="bind-right-header">
+            <span>菜单列表</span>
+            <el-checkbox v-model="bindCheckAll" :indeterminate="bindIndeterminate" @change="handleBindCheckAll" :disabled="currentRole?.isSystem">
+              全选
+            </el-checkbox>
           </div>
-          <el-tree
-            ref="menuTreeRef"
-            :data="menuTreeData"
-            :props="{ label: 'menuName', children: 'children' }"
-            node-key="menuId"
-            show-checkbox
-            default-expand-all
-            :default-checked-keys="checkedMenuIds"
-            :check-strictly="true"
-            class="menu-tree"
-          >
-            <template #default="{ data }">
-              <div class="menu-tree-node">
-                <el-icon :style="{ color: getMenuTypeColor(data.menuType) }">
-                  <component :is="getMenuTypeIcon(data.menuType)" />
-                </el-icon>
-                <span class="menu-name">{{ data.menuName }}</span>
-                <el-tag
-                  size="small"
-                  :type="getMenuTypeTagType(data.menuType)"
-                  effect="plain"
-                  style="margin-left: 8px; font-size: 10px;"
-                >
-                  {{ getMenuTypeLabel(data.menuType) }}
-                </el-tag>
-              </div>
-            </template>
-          </el-tree>
+          <div class="bind-menu-tree">
+            <el-tree
+              ref="bindTreeRef"
+              :data="bindMenuTree"
+              show-checkbox
+              node-key="menuId"
+              :default-checked-keys="bindCheckedKeys"
+              :props="{ label: 'menuName', children: 'children' }"
+              default-expand-all
+              :indent="24"
+              :highlight-current="true"
+              :check-strictly="true"
+              @check-change="updateCheckAllStatus"
+            >
+              <template #default="{ node, data }">
+                <span class="bind-tree-node">
+                  <span class="node-label">{{ node.label }}</span>
+                  <span class="menu-type-tag" :class="getMenuTypeClass(data.menuType)">
+                    {{ getMenuTypeLabel(data.menuType) }}
+                  </span>
+                </span>
+              </template>
+            </el-tree>
+          </div>
         </div>
       </div>
 
@@ -322,6 +373,7 @@ import {
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '../mock/orgTreeData'
 import { mockMenuData } from '../mock/menuData'
+import { mockSubsystemData } from '../mock/subsystemData'
 import type { OrgTreeNode } from '../types/orgTree'
 import type { Menu } from '../types/menu'
 import { buildMenuTree } from '../utils/menuMockApi'
@@ -329,8 +381,11 @@ import { buildMenuTree } from '../utils/menuMockApi'
 // 角色接口
 interface RoleItem {
   roleId: number
+  roleCode: string
   roleName: string
   description: string
+  dataScope: string
+  roleLevel: number
   orgId: number
   orgName: string
   isSystem: boolean
@@ -340,10 +395,17 @@ interface RoleItem {
   menuIds: number[]
 }
 
+// 数据范围选项
+const dataScopeOptions = [
+  { value: 'SELF', label: '仅本人', color: '#67C23A' },
+  { value: 'ORG', label: '本机构', color: '#409EFF' },
+  { value: 'ORG_AND_CHILDREN', label: '本机构及下级机构', color: '#F56C6C' }
+]
+
 // ── 状态 ──
 const loading = ref(false)
 const treeRef = ref<InstanceType<typeof ElTree>>()
-const menuTreeRef = ref<InstanceType<typeof ElTree>>()
+const bindTreeRef = ref<InstanceType<typeof ElTree>>()
 const treeCollapsed = ref(false)
 const treeFilter = ref('')
 const currentNode = ref<OrgTreeNode | null>(null)
@@ -352,10 +414,20 @@ const isRoleEdit = ref(false)
 const roleFormRef = ref<FormInstance>()
 const menuDrawerVisible = ref(false)
 const currentRole = ref<RoleItem | null>(null)
-const menuExpandAll = ref(true)
 
 const allRoles = ref<RoleItem[]>([])
 const checkedMenuIds = ref<number[]>([])
+
+// 菜单绑定相关状态
+const bindSelectedSubsystem = ref<number>(1)
+const bindMenuTree = ref<Menu[]>([])
+const bindCheckedKeys = ref<number[]>([])
+const bindCheckAll = ref(false)
+const bindIndeterminate = ref(false)
+const subsystemMenuCount = ref<Record<number, number>>({})
+
+// 子系统列表（排除隐藏的）
+const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
 
 // 根据当前选中节点筛选角色
 const roleList = computed(() => {
@@ -365,19 +437,17 @@ const roleList = computed(() => {
 
 const roleFormData = reactive({
   roleId: 0,
+  roleCode: '',
   roleName: '',
   description: '',
+  dataScope: 'SELF',
+  roleLevel: 100,
   status: 1101
 })
 
 // ── 树节点筛选 ──
 watch(treeFilter, (val) => {
   treeRef.value?.filter(val)
-})
-
-// ── 菜单树数据 ──
-const menuTreeData = computed(() => {
-  return buildMenuTree(mockMenuData)
 })
 
 // ── 方法 ──
@@ -389,47 +459,124 @@ function fetchRoleData() {
     let roleIdCounter = 1
 
     function processNode(node: OrgTreeNode) {
-      // 每个组织都有系统管理员角色
+      // 1. 系统管理员 - 本机构及下级机构
       roles.push({
         roleId: roleIdCounter++,
+        roleCode: 'SYSTEM_ADMIN',
         roleName: '系统管理员',
         description: '拥有所有菜单权限，不可修改菜单配置',
+        dataScope: 'ORG_AND_CHILDREN',
+        roleLevel: 1,
         orgId: node.id,
         orgName: node.name,
         isSystem: true,
         menuCount: mockMenuData.length,
-        memberCount: Math.floor(Math.random() * 5) + 1,
+        memberCount: Math.floor(Math.random() * 3) + 1,
         status: 1101,
         menuIds: mockMenuData.map(m => m.menuId)
       })
 
-      // 根据套餐添加其他角色
-      if (node.packageName) {
-        roles.push({
-          roleId: roleIdCounter++,
-          roleName: '运维工程师',
-          description: '负责系统运维和技术支持',
-          orgId: node.id,
-          orgName: node.name,
-          isSystem: false,
-          menuCount: Math.floor(Math.random() * 10) + 5,
-          memberCount: Math.floor(Math.random() * 3) + 1,
-          status: 1101,
-          menuIds: [1, 2, 3, 10, 11]
-        })
-        roles.push({
-          roleId: roleIdCounter++,
-          roleName: '普通用户',
-          description: '基本操作权限',
-          orgId: node.id,
-          orgName: node.name,
-          isSystem: false,
-          menuCount: Math.floor(Math.random() * 5) + 2,
-          memberCount: Math.floor(Math.random() * 10) + 3,
-          status: 1101,
-          menuIds: [1, 2]
-        })
-      }
+      // 2. 机构管理员 - 本机构及下级机构
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'ORG_ADMIN',
+        roleName: '机构管理员',
+        description: '管理本机构及下级机构的数据和用户',
+        dataScope: 'ORG_AND_CHILDREN',
+        roleLevel: 5,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: Math.floor(Math.random() * 15) + 10,
+        memberCount: Math.floor(Math.random() * 3) + 1,
+        status: 1101,
+        menuIds: [1, 2, 3, 4, 5, 10, 11, 12]
+      })
+
+      // 3. 运维工程师 - 本机构
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'OPS_ENGINEER',
+        roleName: '运维工程师',
+        description: '负责系统运维和技术支持',
+        dataScope: 'ORG',
+        roleLevel: 15,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: Math.floor(Math.random() * 10) + 8,
+        memberCount: Math.floor(Math.random() * 3) + 1,
+        status: 1101,
+        menuIds: [1, 2, 3, 10, 11, 12]
+      })
+
+      // 4. 值班人员 - 本机构
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'ON_DUTY',
+        roleName: '值班人员',
+        description: '负责日常值守和信息报送',
+        dataScope: 'ORG',
+        roleLevel: 30,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: Math.floor(Math.random() * 5) + 3,
+        memberCount: Math.floor(Math.random() * 8) + 3,
+        status: 1101,
+        menuIds: [1, 2, 10]
+      })
+
+      // 5. 调度员 - 本机构
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'DISPATCHER',
+        roleName: '调度员',
+        description: '负责交通调度和应急指挥',
+        dataScope: 'ORG',
+        roleLevel: 40,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: Math.floor(Math.random() * 8) + 4,
+        memberCount: Math.floor(Math.random() * 4) + 2,
+        status: 1101,
+        menuIds: [1, 2, 3, 4, 10]
+      })
+
+      // 6. 普通用户 - 仅本人
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'NORMAL_USER',
+        roleName: '普通用户',
+        description: '基本操作权限，仅可查看本人数据',
+        dataScope: 'SELF',
+        roleLevel: 100,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: Math.floor(Math.random() * 3) + 2,
+        memberCount: Math.floor(Math.random() * 10) + 5,
+        status: 1101,
+        menuIds: [1, 2]
+      })
+
+      // 7. 只读用户 - 仅本人
+      roles.push({
+        roleId: roleIdCounter++,
+        roleCode: 'READONLY_USER',
+        roleName: '只读用户',
+        description: '仅可查看数据，无操作权限',
+        dataScope: 'SELF',
+        roleLevel: 200,
+        orgId: node.id,
+        orgName: node.name,
+        isSystem: false,
+        menuCount: 2,
+        memberCount: Math.floor(Math.random() * 15) + 5,
+        status: 1101,
+        menuIds: [1, 2]
+      })
 
       if (node.children) {
         node.children.forEach(processNode)
@@ -512,6 +659,16 @@ function getPackageColor(packageName: string): string {
   return colors[packageName] || '#909399'
 }
 
+function getDataScopeColor(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.color || '#909399'
+}
+
+function getDataScopeLabel(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.label || '未知'
+}
+
 function getMenuTypeColor(menuType: number): string {
   const colors: Record<number, string> = {
     0: '#409EFF',
@@ -549,8 +706,11 @@ function getMenuTypeTagType(menuType: number): '' | 'success' | 'warning' | 'inf
 function handleAddRole() {
   isRoleEdit.value = false
   roleFormData.roleId = 0
+  roleFormData.roleCode = ''
   roleFormData.roleName = ''
   roleFormData.description = ''
+  roleFormData.dataScope = 'SELF'
+  roleFormData.roleLevel = 100
   roleFormData.status = 1101
   roleDrawerVisible.value = true
 }
@@ -558,8 +718,11 @@ function handleAddRole() {
 function handleEditRole(row: RoleItem) {
   isRoleEdit.value = true
   roleFormData.roleId = row.roleId
+  roleFormData.roleCode = row.roleCode
   roleFormData.roleName = row.roleName
   roleFormData.description = row.description
+  roleFormData.dataScope = row.dataScope
+  roleFormData.roleLevel = row.roleLevel
   roleFormData.status = row.status
   roleDrawerVisible.value = true
 }
@@ -594,30 +757,130 @@ function handleConfigMenu(row: RoleItem) {
   currentRole.value = row
   checkedMenuIds.value = row.menuIds
   menuDrawerVisible.value = true
-}
-
-function handleExpandAll(val: boolean) {
-  if (menuTreeRef.value) {
-    const nodes = menuTreeRef.value.store.root.childNodes
-    nodes.forEach((node: any) => {
-      node.expanded = val
-    })
+  // 计算每个子系统的菜单数量
+  calculateSubsystemMenuCount()
+  // 默认选中第一个子系统
+  if (subsystems.length > 0) {
+    loadBindMenuTree(subsystems[0].subsysId)
   }
 }
 
+function calculateSubsystemMenuCount() {
+  const counts: Record<number, number> = {}
+  for (const sub of subsystems) {
+    counts[sub.subsysId] = mockMenuData.filter(m => m.subsysId === sub.subsysId && m.deleted === 0).length
+  }
+  subsystemMenuCount.value = counts
+}
+
+function loadBindMenuTree(subsysId: number) {
+  bindSelectedSubsystem.value = subsysId
+  // 获取该子系统的菜单并构建树
+  const subMenus = mockMenuData.filter(m => m.subsysId === subsysId && m.deleted === 0)
+  bindMenuTree.value = buildMenuTree(subMenus)
+
+  // 设置已选中的菜单
+  if (currentRole.value) {
+    const roleSubMenus = currentRole.value.menuIds.filter(id => {
+      const menu = mockMenuData.find(m => m.menuId === id)
+      return menu && menu.subsysId === subsysId
+    })
+    bindCheckedKeys.value = roleSubMenus
+  } else {
+    bindCheckedKeys.value = []
+  }
+
+  // 重置全选状态
+  bindCheckAll.value = false
+  bindIndeterminate.value = false
+}
+
+function handleBindCheckAll(val: boolean | string | number) {
+  if (!bindTreeRef.value) return
+  const checked = val === true
+  if (checked) {
+    // 获取所有节点的key
+    const allKeys = getAllTreeKeys(bindMenuTree.value)
+    bindTreeRef.value.setCheckedKeys(allKeys)
+    bindCheckedKeys.value = allKeys
+  } else {
+    bindTreeRef.value.setCheckedKeys([])
+    bindCheckedKeys.value = []
+  }
+  bindIndeterminate.value = false
+}
+
+function getAllTreeKeys(data: Menu[]): number[] {
+  const keys: number[] = []
+  function traverse(items: Menu[]) {
+    for (const item of items) {
+      keys.push(item.menuId)
+      if (item.children && item.children.length > 0) {
+        traverse(item.children)
+      }
+    }
+  }
+  traverse(data)
+  return keys
+}
+
+function updateCheckAllStatus() {
+  if (!bindTreeRef.value) return
+  const checkedKeys = bindTreeRef.value.getCheckedKeys()
+  const allKeys = getAllTreeKeys(bindMenuTree.value)
+
+  bindCheckAll.value = checkedKeys.length === allKeys.length
+  bindIndeterminate.value = checkedKeys.length > 0 && checkedKeys.length < allKeys.length
+}
+
 function handleSubmitMenu() {
-  if (!menuTreeRef.value) return
-  const checkedKeys = menuTreeRef.value.getCheckedKeys()
-  const halfCheckedKeys = menuTreeRef.value.getHalfCheckedKeys()
-  const allKeys = [...checkedKeys, ...halfCheckedKeys]
+  if (!bindTreeRef.value || !currentRole.value) return
+  const checkedKeys = bindTreeRef.value.getCheckedKeys()
+
+  // 合并其他子系统已选中的菜单
+  const otherSubMenus = currentRole.value.menuIds.filter(id => {
+    const menu = mockMenuData.find(m => m.menuId === id)
+    return menu && menu.subsysId !== bindSelectedSubsystem.value
+  })
+
+  const allMenuIds = [...new Set([...otherSubMenus, ...checkedKeys])]
 
   ElMessage.success('菜单配置保存成功')
   menuDrawerVisible.value = false
   fetchRoleData()
 }
 
-function handleRoleDrawerClose() {
+// 子系统图标配置
+const subsystemIconMap: Record<number, { icon: string; color: string; bg: string }> = {
+  1: { icon: 'Bell', color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' },
+  2: { icon: 'Document', color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
+  3: { icon: 'Warning', color: '#F56C6C', bg: 'linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)' },
+  4: { icon: 'DataLine', color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
+  5: { icon: 'Box', color: '#9B59B6', bg: 'linear-gradient(135deg, #F5EEF8 0%, #E8DAEF 100%)' },
+  6: { icon: 'TrendCharts', color: '#1ABC9C', bg: 'linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%)' },
+  7: { icon: 'Connection', color: '#3498DB', bg: 'linear-gradient(135deg, #EBF5FB 0%, #D6EAF8 100%)' },
+  8: { icon: 'Monitor', color: '#E74C3C', bg: 'linear-gradient(135deg, #FDEDEC 0%, #FADBD8 100%)' },
+  99: { icon: 'Setting', color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' }
+}
+
+function getSubsystemIconStyle(subsysId: number) {
+  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+}
+
+// 菜单类型样式
+function getMenuTypeClass(menuType: number): string {
+  const classes: Record<number, string> = {
+    0: 'type-directory',
+    1: 'type-menu',
+    2: 'type-permission',
+    99: 'type-navigation'
+  }
+  return classes[menuType] || ''
+}
+
+function handleRoleDrawerClose(done: () => void) {
   roleFormRef.value?.resetFields()
+  done()
 }
 
 // ── 初始化 ──
@@ -805,10 +1068,11 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    .id-text { color: #909399; font-size: 13px; }
+    .index-text { color: #909399; font-size: 13px; }
+    .code-text { font-family: 'Monaco','Menlo','Consolas', monospace; color: #409EFF; font-size: 12px; }
     .name-text { font-weight: 500; color: #303133; }
     .desc-text { font-size: 13px; color: #909399; }
-    .count-text { font-size: 13px; color: #606266; }
+    .level-text { font-weight: 600; color: #E6A23C; }
 
     .role-name-cell {
       display: flex;
@@ -830,22 +1094,13 @@ onMounted(() => {
   // 角色抽屉样式
   :deep(.role-drawer) {
     .el-drawer__header {
-      background: linear-gradient(135deg, #67C23A, #85CE61);
-      padding: 20px 24px;
+      padding: 16px 24px;
       margin-bottom: 0;
+      border-bottom: 1px solid #EBEEF5;
 
       .el-drawer__title {
-        color: #fff;
         font-weight: 600;
         font-size: 16px;
-      }
-
-      .el-drawer__close-btn {
-        color: rgba(255,255,255,0.8);
-
-        &:hover {
-          color: #fff;
-        }
       }
     }
 
@@ -860,89 +1115,164 @@ onMounted(() => {
       padding-top: 20px;
       border-top: 1px solid #EBEEF5;
       margin-top: 20px;
+    }
+
+    .scope-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 4px 0;
+    }
+
+    :deep(.el-select-dropdown__item) {
+      width: 100%;
+    }
+
+    .form-tip {
+      font-size: 12px;
+      color: #909399;
+      margin-top: 4px;
     }
   }
 
   // 菜单配置抽屉样式
   :deep(.menu-drawer) {
     .el-drawer__header {
-      background: linear-gradient(135deg, #E6A23C, #EBB563);
-      padding: 20px 24px;
+      padding: 16px 24px;
       margin-bottom: 0;
+      border-bottom: 1px solid #EBEEF5;
 
       .el-drawer__title {
-        color: #fff;
         font-weight: 600;
         font-size: 16px;
-      }
-
-      .el-drawer__close-btn {
-        color: rgba(255,255,255,0.8);
-
-        &:hover {
-          color: #fff;
-        }
       }
     }
 
     .el-drawer__body {
-      padding: 24px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    .menu-config-content {
-      .package-info {
+    .bind-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .bind-left {
+      width: 200px;
+      border-right: 1px solid #EBEEF5;
+      display: flex;
+      flex-direction: column;
+
+      .bind-left-header {
+        padding: 12px 16px;
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 1px solid #EBEEF5;
+        background: #F5F7FA;
+      }
+
+      .bind-subsystem-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+      }
+
+      .bind-subsystem-item {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 12px 16px;
-        background: #FFF7E6;
+        padding: 10px 12px;
         border-radius: 8px;
-        margin-bottom: 16px;
-        font-size: 13px;
-        color: #D46B08;
+        cursor: pointer;
+        transition: all 0.2s;
 
-        .info-label {
-          font-weight: 500;
+        &:hover {
+          background: #F5F7FA;
         }
 
-        .no-package {
-          color: #C0C4CC;
+        &.active {
+          background: #ECF5FF;
+          color: #409EFF;
+        }
+
+        .subsystem-icon {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .subsystem-name {
+          flex: 1;
+          font-size: 13px;
+        }
+
+        .subsystem-count {
+          font-size: 12px;
+          color: #909399;
+        }
+      }
+    }
+
+    .bind-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .bind-right-header {
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #EBEEF5;
+        background: #F5F7FA;
+
+        span {
+          font-weight: 600;
+          font-size: 14px;
         }
       }
 
-      .menu-tree-container {
-        .tree-header {
+      .bind-menu-tree {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+
+        .bind-tree-node {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          margin-bottom: 12px;
+          gap: 8px;
 
-          .tree-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #303133;
-          }
-        }
-
-        .menu-tree {
-          max-height: calc(100vh - 380px);
-          overflow-y: auto;
-          border: 1px solid #EBEEF5;
-          border-radius: 8px;
-          padding: 12px;
-
-          .menu-tree-node {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+          .node-label {
             font-size: 13px;
+          }
 
-            .el-icon {
-              font-size: 14px;
+          .menu-type-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+
+            &.type-directory {
+              background: #409EFF;
             }
 
-            .menu-name {
-              flex: 1;
+            &.type-menu {
+              background: #67C23A;
+            }
+
+            &.type-permission {
+              background: #F56C6C;
+            }
+
+            &.type-navigation {
+              background: #E6A23C;
             }
           }
         }
@@ -953,9 +1283,8 @@ onMounted(() => {
       display: flex;
       justify-content: flex-end;
       gap: 12px;
-      padding-top: 20px;
+      padding: 16px 24px;
       border-top: 1px solid #EBEEF5;
-      margin-top: 20px;
     }
   }
 }

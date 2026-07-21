@@ -23,8 +23,10 @@ export interface OrgMember {
   name: string
   /** 职务 */
   position: string
-  /** 联系电话 */
+  /** 手机号码（11位，作为账号） */
   phone: string
+  /** 联系电话（座机等） */
+  contactPhone: string
   /** 联系邮箱 */
   email: string
   /** 负责区域/职责描述 */

@@ -4,6 +4,8 @@ export interface Subsystem {
   subsysCode: string
   subsysName: string
   subsysShortName: string
+  pathPrefix: string
+  tablePrefix: string
   displayOrder: number
   isHidden: boolean
   status: number
@@ -23,6 +25,8 @@ export interface SubsystemForm {
   subsysCode: string
   subsysName: string
   subsysShortName: string
+  pathPrefix: string
+  tablePrefix: string
   displayOrder: number
   isHidden: boolean
   status: number

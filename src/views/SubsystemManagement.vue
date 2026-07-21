@@ -13,54 +13,45 @@
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="子系统编码">
-          <el-input
-            v-model="searchForm.subsysCode"
-            placeholder="输入编码，如：EMERGENCY"
-            clearable
-            :prefix-icon="Search"
-            style="width: 220px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="子系统名称">
-          <el-input
-            v-model="searchForm.subsysName"
-            placeholder="输入子系统名称"
-            clearable
-            :prefix-icon="Search"
-            style="width: 200px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
-            <el-option label="正常" :value="1101" />
-            <el-option label="停用" :value="1102" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-          <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="search-content">
+        <el-form :model="searchForm" inline>
+          <el-form-item label="子系统编码">
+            <el-input
+              v-model="searchForm.subsysCode"
+              placeholder="输入编码，如：EMERGENCY"
+              clearable
+              :prefix-icon="Search"
+              style="width: 220px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="子系统名称">
+            <el-input
+              v-model="searchForm.subsysName"
+              placeholder="输入子系统名称"
+              clearable
+              :prefix-icon="Search"
+              style="width: 200px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="状态">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
+              <el-option label="正常" :value="1101" />
+              <el-option label="停用" :value="1102" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
+            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
+      </div>
     </el-card>
 
     <!-- 工具栏 -->
     <div class="toolbar animate-item">
-      <div class="toolbar-left">
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
-        <el-button type="danger" :icon="Delete" :disabled="!selectedIds.length" @click="handleBatchDelete">
-          批量删除
-        </el-button>
-        <transition name="fade">
-          <span v-if="selectedIds.length" class="selected-count">
-            已选择 <strong>{{ selectedIds.length }}</strong> 项
-            <el-button type="primary" link @click="clearSelection">取消选择</el-button>
-          </span>
-        </transition>
-      </div>
       <div class="toolbar-right">
         <span class="total-count">共 {{ pagination.total }} 条数据</span>
       </div>
@@ -79,8 +70,6 @@
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
       >
-        <el-table-column type="selection" width="50" align="center" />
-
         <el-table-column prop="subsysId" label="ID" width="70" align="center">
           <template #default="{ row }">
             <span class="id-text">{{ row.subsysId }}</span>
@@ -109,6 +98,30 @@
         <el-table-column prop="subsysShortName" label="简称" width="100" align="center">
           <template #default="{ row }">
             <span class="short-name-text">{{ row.subsysShortName }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="pathPrefix" label="路径前缀" width="120" align="center">
+          <template #default="{ row }">
+            <span class="prefix-text">{{ row.pathPrefix || '-' }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="tablePrefix" label="表前缀" min-width="180">
+          <template #default="{ row }">
+            <div v-if="row.tablePrefix" class="table-prefix-cell">
+              <el-tag
+                v-for="(prefix, index) in row.tablePrefix.split(',')"
+                :key="index"
+                :color="getTablePrefixColor(index)"
+                effect="dark"
+                style="border: none; color: #fff; margin-right: 4px; margin-bottom: 2px;"
+                size="small"
+              >
+                {{ prefix }}
+              </el-tag>
+            </div>
+            <span v-else class="empty-text">-</span>
           </template>
         </el-table-column>
 
@@ -342,6 +355,24 @@
           />
         </el-form-item>
 
+        <el-form-item label="路径前缀" prop="pathPrefix">
+          <el-input
+            v-model="editFormData.pathPrefix"
+            placeholder="如：/duty"
+            maxlength="50"
+          />
+          <div class="form-tip">URL路径前缀，以/开头</div>
+        </el-form-item>
+
+        <el-form-item label="表前缀" prop="tablePrefix">
+          <el-input
+            v-model="editFormData.tablePrefix"
+            placeholder="如：duty_"
+            maxlength="50"
+          />
+          <div class="form-tip">数据库表名前缀，如duty_、plan_、event_等</div>
+        </el-form-item>
+
         <el-form-item label="显示顺序" prop="displayOrder">
           <el-input-number v-model="editFormData.displayOrder" :min="0" :max="9999" style="width: 200px" />
           <span class="form-tip-inline">数值越小越靠前</span>
@@ -439,6 +470,8 @@ const addFormData = reactive<SubsystemForm>({
   subsysCode: '',
   subsysName: '',
   subsysShortName: '',
+  pathPrefix: '',
+  tablePrefix: '',
   displayOrder: 0,
   isHidden: false,
   status: 1101,
@@ -449,6 +482,8 @@ const editFormData = reactive<SubsystemForm>({
   subsysCode: '',
   subsysName: '',
   subsysShortName: '',
+  pathPrefix: '',
+  tablePrefix: '',
   displayOrder: 0,
   isHidden: false,
   status: 1101,
@@ -507,6 +542,13 @@ function handleReset() {
   fetchData()
 }
 
+// 表前缀颜色
+const tablePrefixColors = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#9B59B6', '#1ABC9C', '#3498DB', '#E74C3C']
+
+function getTablePrefixColor(index: number): string {
+  return tablePrefixColors[index % tablePrefixColors.length]
+}
+
 function handleRefresh() {
   fetchData()
 }
@@ -546,6 +588,8 @@ function handleEdit(row: Subsystem) {
   editFormData.subsysCode = row.subsysCode
   editFormData.subsysName = row.subsysName
   editFormData.subsysShortName = row.subsysShortName
+  editFormData.pathPrefix = row.pathPrefix
+  editFormData.tablePrefix = row.tablePrefix
   editFormData.displayOrder = row.displayOrder
   editFormData.isHidden = row.isHidden
   editFormData.status = row.status
@@ -788,11 +832,21 @@ onMounted(() => {
     border: none;
 
     :deep(.el-card__body) {
-      padding: 20px 24px 8px;
+      padding: 16px 20px;
     }
 
-    .el-form-item {
-      margin-bottom: 12px;
+    .search-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .el-form {
+        flex: 1;
+      }
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -874,6 +928,26 @@ onMounted(() => {
 
     .short-name-text {
       color: #606266;
+      font-size: 13px;
+    }
+
+    .prefix-text {
+      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      color: #409EFF;
+      font-size: 12px;
+      background: #ECF5FF;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .table-prefix-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+    }
+
+    .empty-text {
+      color: #C0C4CC;
       font-size: 13px;
     }
 
@@ -982,6 +1056,12 @@ onMounted(() => {
       font-size: 12px;
       color: #909399;
       margin-left: 12px;
+    }
+
+    .form-tip {
+      font-size: 12px;
+      color: #909399;
+      margin-top: 4px;
     }
   }
 }

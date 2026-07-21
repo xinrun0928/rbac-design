@@ -4,10 +4,14 @@
     <div class="page-header animate-item">
       <div class="header-left">
         <h1><span class="title-bar"></span>菜单管理</h1>
-        <span class="page-desc">管理各子系统的菜单配置，支持多级菜单和权限控制</span>
+        <span class="page-desc"
+          >管理各子系统的菜单配置，支持多级菜单和权限控制</span
+        >
       </div>
       <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
+        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading"
+          >刷新</el-button
+        >
       </div>
     </div>
 
@@ -26,7 +30,10 @@
             :class="{ active: selectedSubsystem === sub.subsysId }"
             @click="selectSubsystem(sub.subsysId)"
           >
-            <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
+            <div
+              class="subsystem-icon"
+              :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }"
+            >
               <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
                 <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
               </el-icon>
@@ -44,7 +51,9 @@
         <div class="panel-header">
           <span class="panel-title">菜单列表 - {{ currentSubsystemName }}</span>
           <div class="panel-actions">
-            <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增菜单</el-button>
+            <el-button type="primary" :icon="Plus" @click="handleAdd(null)"
+              >新增菜单</el-button
+            >
             <el-input
               v-model="searchForm.menuName"
               placeholder="搜索菜单名称"
@@ -58,7 +67,14 @@
         </div>
 
         <!-- 搜索栏 -->
-        <div class="search-bar" v-if="searchForm.menuName || searchForm.menuCode || searchForm.status !== ''">
+        <div
+          class="search-bar"
+          v-if="
+            searchForm.menuName ||
+            searchForm.menuCode ||
+            searchForm.status !== ''
+          "
+        >
           <el-form :model="searchForm" inline>
             <el-form-item label="菜单编码">
               <el-input
@@ -70,7 +86,12 @@
               />
             </el-form-item>
             <el-form-item label="状态">
-              <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 120px">
+              <el-select
+                v-model="searchForm.status"
+                placeholder="请选择"
+                clearable
+                style="width: 120px"
+              >
                 <el-option label="正常" :value="1101" />
                 <el-option label="停用" :value="1102" />
               </el-select>
@@ -89,17 +110,30 @@
             :data="menuTreeData"
             row-key="menuId"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+            :header-cell-style="{
+              background: '#F5F7FA',
+              color: '#606266',
+              fontWeight: '600',
+            }"
             border
             stripe
             default-expand-all
             :indent="24"
             empty-text=" "
           >
-            <el-table-column prop="menuName" label="菜单名称" min-width="240" fixed>
+            <el-table-column
+              prop="menuName"
+              label="菜单名称"
+              min-width="240"
+              fixed
+            >
               <template #default="{ row }">
                 <div class="menu-name-cell">
-                  <el-icon v-if="row.icon" class="menu-icon" :color="getMenuTypeColor(row.menuType)">
+                  <el-icon
+                    v-if="row.icon"
+                    class="menu-icon"
+                    :color="getMenuTypeColor(row.menuType)"
+                  >
                     <component :is="row.icon" />
                   </el-icon>
                   <span class="menu-name">{{ row.menuName }}</span>
@@ -107,7 +141,12 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="menuType" label="类型" width="80" align="center">
+            <el-table-column
+              prop="menuType"
+              label="类型"
+              width="80"
+              align="center"
+            >
               <template #default="{ row }">
                 <el-tag
                   :color="MENU_TYPE_MAP[row.menuType]?.color"
@@ -116,14 +155,18 @@
                   round
                   size="small"
                 >
-                  {{ MENU_TYPE_MAP[row.menuType]?.label || '未知' }}
+                  {{ MENU_TYPE_MAP[row.menuType]?.label || "未知" }}
                 </el-tag>
               </template>
             </el-table-column>
 
             <el-table-column prop="icon" label="图标" width="80" align="center">
               <template #default="{ row }">
-                <el-icon v-if="row.icon" :size="18" :color="getMenuTypeColor(row.menuType)">
+                <el-icon
+                  v-if="row.icon"
+                  :size="18"
+                  :color="getMenuTypeColor(row.menuType)"
+                >
                   <component :is="row.icon" />
                 </el-icon>
                 <span v-else class="empty-text">-</span>
@@ -135,7 +178,12 @@
                 <div class="code-cell" v-if="row.menuCode">
                   <span class="code-text">{{ row.menuCode }}</span>
                   <el-tooltip content="复制" placement="top">
-                    <el-button type="primary" link size="small" @click.stop="handleCopy(row.menuCode)">
+                    <el-button
+                      type="primary"
+                      link
+                      size="small"
+                      @click.stop="handleCopy(row.menuCode)"
+                    >
                       <el-icon><CopyDocument /></el-icon>
                     </el-button>
                   </el-tooltip>
@@ -144,14 +192,19 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="contentType" label="内容类型" width="100" align="center">
+            <el-table-column
+              prop="contentType"
+              label="内容类型"
+              width="100"
+              align="center"
+            >
               <template #default="{ row }">
                 <el-tag
                   :type="getContentTypeTagType(row.contentType)"
                   effect="plain"
                   size="small"
                 >
-                  {{ CONTENT_TYPE_MAP[row.contentType]?.label || '未知' }}
+                  {{ CONTENT_TYPE_MAP[row.contentType]?.label || "未知" }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -165,25 +218,37 @@
 
             <el-table-column prop="component" label="组件路径" width="180">
               <template #default="{ row }">
-                <span class="component-text" v-if="row.component">{{ row.component }}</span>
+                <span class="component-text" v-if="row.component">{{
+                  row.component
+                }}</span>
                 <span class="empty-text" v-else>-</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="displayOrder" label="排序" width="60" align="center">
+            <el-table-column
+              prop="displayOrder"
+              label="排序"
+              width="60"
+              align="center"
+            >
               <template #default="{ row }">
                 <span class="sort-text">{{ row.displayOrder }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="hidden" label="可见" width="60" align="center">
+            <el-table-column
+              prop="hidden"
+              label="可见"
+              width="60"
+              align="center"
+            >
               <template #default="{ row }">
                 <el-tag
                   :type="row.hidden === 1 ? 'info' : 'success'"
                   effect="plain"
                   size="small"
                 >
-                  {{ row.hidden === 1 ? '隐藏' : '显示' }}
+                  {{ row.hidden === 1 ? "隐藏" : "显示" }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -192,7 +257,12 @@
               <template #default="{ row }">
                 <el-popover v-if="row.ext" trigger="hover" width="300">
                   <template #reference>
-                    <el-tag type="info" effect="plain" size="small" class="ext-tag">
+                    <el-tag
+                      type="info"
+                      effect="plain"
+                      size="small"
+                      class="ext-tag"
+                    >
                       JSON
                     </el-tag>
                   </template>
@@ -204,24 +274,58 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="status" label="状态" width="80" align="center">
+            <el-table-column
+              prop="status"
+              label="状态"
+              width="80"
+              align="center"
+            >
               <template #default="{ row }">
                 <el-switch
                   :model-value="row.status"
                   :active-value="1101"
                   :inactive-value="1102"
                   inline-prompt
-                  style="--el-switch-on-color: #67C23A; --el-switch-off-color: #909399"
+                  style="
+                    --el-switch-on-color: #67c23a;
+                    --el-switch-off-color: #909399;
+                  "
                   @change="(val: number) => handleStatusChange(row, val)"
                 />
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="180" align="center" fixed="right">
+            <el-table-column
+              label="操作"
+              width="180"
+              align="center"
+              fixed="right"
+            >
               <template #default="{ row }">
-                <el-button type="primary" link size="small" :icon="Plus" @click.stop="handleAdd(row)">子菜单</el-button>
-                <el-button type="primary" link size="small" :icon="Edit" @click.stop="handleEdit(row)">编辑</el-button>
-                <el-button type="danger" link size="small" :icon="Delete" @click.stop="handleDelete(row)">删除</el-button>
+                <el-button
+                  type="primary"
+                  link
+                  size="small"
+                  :icon="Plus"
+                  @click.stop="handleAdd(row)"
+                  >子菜单</el-button
+                >
+                <el-button
+                  type="primary"
+                  link
+                  size="small"
+                  :icon="Edit"
+                  @click.stop="handleEdit(row)"
+                  >编辑</el-button
+                >
+                <el-button
+                  type="danger"
+                  link
+                  size="small"
+                  :icon="Delete"
+                  @click.stop="handleDelete(row)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -252,7 +356,11 @@
               <el-tree-select
                 v-model="formData.parentId"
                 :data="parentMenuOptions"
-                :props="{ label: 'menuName', value: 'menuId', children: 'children' }"
+                :props="{
+                  label: 'menuName',
+                  value: 'menuId',
+                  children: 'children',
+                }"
                 check-strictly
                 :render-after-expand="false"
                 placeholder="请选择上级菜单（不选则为顶级）"
@@ -263,7 +371,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="菜单类型" prop="menuType">
-              <el-select v-model="formData.menuType" placeholder="请选择" style="width: 100%">
+              <el-select
+                v-model="formData.menuType"
+                placeholder="请选择"
+                style="width: 100%"
+              >
                 <el-option
                   v-for="(item, key) in MENU_TYPE_MAP"
                   :key="key"
@@ -307,7 +419,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="内容类型" prop="contentType">
-              <el-select v-model="formData.contentType" placeholder="请选择" style="width: 100%">
+              <el-select
+                v-model="formData.contentType"
+                placeholder="请选择"
+                style="width: 100%"
+              >
                 <el-option
                   v-for="(item, key) in CONTENT_TYPE_MAP"
                   :key="key"
@@ -352,7 +468,12 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="排序" prop="displayOrder">
-              <el-input-number v-model="formData.displayOrder" :min="0" :max="999999" style="width: 100%" />
+              <el-input-number
+                v-model="formData.displayOrder"
+                :min="0"
+                :max="999999"
+                style="width: 100%"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -391,8 +512,12 @@
 
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit">
-          {{ isEdit ? '保存修改' : '确认创建' }}
+        <el-button
+          type="primary"
+          :loading="submitLoading"
+          @click="handleSubmit"
+        >
+          {{ isEdit ? "保存修改" : "确认创建" }}
         </el-button>
       </template>
     </el-dialog>
@@ -400,32 +525,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ref, reactive, computed, onMounted, watch } from "vue"
+import { ElMessage, ElMessageBox } from "element-plus"
+import type { FormInstance, FormRules } from "element-plus"
 import {
-  Refresh, Search, Plus, Delete, Edit,
-  CopyDocument, QuestionFilled, Monitor,
-  Bell, Document, Warning, Connection, Box,
-  DataAnalysis, Share, Sunrise, Setting,
-  Notebook, Calendar, Reading,
-  Folder, VideoPlay, Grid,
-  EditPen, ChatDotRound, List, Clock, Collection,
-  Star, Location, PieChart, DataLine, User, Link, Sunny,
-  SetUp, OfficeBuilding,
-  HomeFilled, Tools,
-  MapLocation, Position, Cpu, VideoCamera, DataBoard
-} from '@element-plus/icons-vue'
-import type { Menu, MenuForm, MenuSearchForm } from '../types/menu'
-import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from '../types/menu'
-import { mockSubsystemData } from '../mock/subsystemData'
+  Refresh,
+  Search,
+  Plus,
+  Delete,
+  Edit,
+  CopyDocument,
+  QuestionFilled,
+  Monitor,
+  Bell,
+  Document,
+  Warning,
+  Connection,
+  Box,
+  DataAnalysis,
+  Share,
+  Sunrise,
+  Setting,
+  Notebook,
+  Calendar,
+  Reading,
+  Folder,
+  VideoPlay,
+  Grid,
+  EditPen,
+  ChatDotRound,
+  List,
+  Clock,
+  Collection,
+  Star,
+  Location,
+  PieChart,
+  DataLine,
+  User,
+  Link,
+  Sunny,
+  SetUp,
+  OfficeBuilding,
+  HomeFilled,
+  Tools,
+  MapLocation,
+  Position,
+  Cpu,
+  VideoCamera,
+  DataBoard,
+} from "@element-plus/icons-vue"
+import type { Menu, MenuForm, MenuSearchForm } from "../types/menu"
+import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "../types/menu"
+import { mockSubsystemData } from "../mock/subsystemData"
 import {
   getMenuTreeBySubsystem,
   addMenu,
   updateMenu,
   deleteMenu,
-  toggleMenuStatus
-} from '../utils/menuMockApi'
+  toggleMenuStatus,
+} from "../utils/menuMockApi"
 
 // ── 状态 ──
 const loading = ref(false)
@@ -437,50 +595,44 @@ const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
 // 子系统列表（排除隐藏的）
-const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
+const subsystems = mockSubsystemData.filter(
+  sub => !sub.isHidden && sub.deleted === 0,
+)
 
 const currentSubsystemName = computed(() => {
   const sub = subsystems.find(s => s.subsysId === selectedSubsystem.value)
-  return sub ? sub.subsysName : ''
+  return sub ? sub.subsysName : ""
 })
 
 const searchForm = reactive<MenuSearchForm>({
-  menuName: '',
-  menuCode: '',
-  status: ''
+  menuName: "",
+  menuCode: "",
+  status: "",
 })
 
 const formData = reactive<MenuForm>({
   parentId: 0,
-  menuName: '',
-  menuCode: '',
+  menuName: "",
+  menuCode: "",
   menuType: 0,
   contentType: 1,
   subsysId: 99,
-  icon: '',
-  path: '',
-  component: '',
+  icon: "",
+  path: "",
+  component: "",
   displayOrder: 0,
   status: 1101,
-  remark: '',
-  ext: '',
-  hidden: 0
+  remark: "",
+  ext: "",
+  hidden: 0,
 })
 
 // ── 表单验证规则 ──
 const formRules: FormRules = {
-  menuName: [
-    { required: true, message: '请输入菜单名称', trigger: 'blur' }
-  ],
-  menuType: [
-    { required: true, message: '请选择菜单类型', trigger: 'change' }
-  ],
-  displayOrder: [
-    { required: true, message: '请输入排序值', trigger: 'blur' }
-  ],
-  status: [
-    { required: true, message: '请选择状态', trigger: 'change' }
-  ]
+  menuName: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
+  menuType: [{ required: true, message: "请选择菜单类型", trigger: "change" }],
+  displayOrder: [{ required: true, message: "请输入排序值", trigger: "blur" }],
+  status: [{ required: true, message: "请选择状态", trigger: "change" }],
 }
 
 // 父级菜单选项
@@ -491,10 +643,10 @@ const parentMenuOptions = computed(() => {
       .map(item => ({
         menuId: item.menuId,
         menuName: item.menuName,
-        children: buildTree(item.menuId)
+        children: buildTree(item.menuId),
       }))
   }
-  return [{ menuId: 0, menuName: '顶级菜单', children: buildTree(0) }]
+  return [{ menuId: 0, menuName: "顶级菜单", children: buildTree(0) }]
 })
 
 // ── 方法 ──
@@ -510,7 +662,7 @@ async function fetchMenuTree() {
     const tree = await getMenuTreeBySubsystem(selectedSubsystem.value)
     menuTreeData.value = tree
   } catch (err) {
-    ElMessage.error('获取数据失败，请重试')
+    ElMessage.error("获取数据失败，请重试")
   } finally {
     loading.value = false
   }
@@ -521,9 +673,9 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.menuName = ''
-  searchForm.menuCode = ''
-  searchForm.status = ''
+  searchForm.menuName = ""
+  searchForm.menuCode = ""
+  searchForm.status = ""
   fetchMenuTree()
 }
 
@@ -534,18 +686,22 @@ function handleRefresh() {
 function handleAdd(parentRow: Menu | null) {
   isEdit.value = false
   formData.parentId = parentRow ? parentRow.menuId : 0
-  formData.menuName = ''
-  formData.menuCode = ''
-  formData.menuType = parentRow ? (parentRow.menuType === 0 ? 1 : parentRow.menuType) : 0
+  formData.menuName = ""
+  formData.menuCode = ""
+  formData.menuType = parentRow
+    ? parentRow.menuType === 0
+      ? 1
+      : parentRow.menuType
+    : 0
   formData.contentType = 1
   formData.subsysId = selectedSubsystem.value
-  formData.icon = ''
-  formData.path = ''
-  formData.component = ''
+  formData.icon = ""
+  formData.path = ""
+  formData.component = ""
   formData.displayOrder = 0
   formData.status = 1101
-  formData.remark = ''
-  formData.ext = ''
+  formData.remark = ""
+  formData.ext = ""
   formData.hidden = 0
   dialogVisible.value = true
 }
@@ -596,9 +752,9 @@ async function handleSubmit() {
         status: formData.status,
         remark: formData.remark,
         ext: formData.ext,
-        hidden: formData.hidden
+        hidden: formData.hidden,
       })
-      ElMessage.success('编辑成功，数据已更新')
+      ElMessage.success("编辑成功，数据已更新")
     } else {
       await addMenu({
         parentId: formData.parentId,
@@ -614,14 +770,14 @@ async function handleSubmit() {
         status: formData.status,
         remark: formData.remark,
         ext: formData.ext,
-        hidden: formData.hidden
+        hidden: formData.hidden,
       })
-      ElMessage.success('新增成功，菜单已创建')
+      ElMessage.success("新增成功，菜单已创建")
     }
     dialogVisible.value = false
     fetchMenuTree()
   } catch (err) {
-    ElMessage.error('操作失败，请重试')
+    ElMessage.error("操作失败，请重试")
   } finally {
     submitLoading.value = false
   }
@@ -634,23 +790,23 @@ function resetForm() {
 async function handleDelete(row: Menu) {
   try {
     await ElMessageBox.confirm(
-      `您即将删除以下菜单：\n\n菜单名称：${row.menuName}\n菜单编码：${row.menuCode || '-'}\n\n删除后将同时删除其子菜单，确定要继续吗？`,
-      '确认删除',
+      `您即将删除以下菜单：\n\n菜单名称：${row.menuName}\n菜单编码：${row.menuCode || "-"}\n\n删除后将同时删除其子菜单，确定要继续吗？`,
+      "确认删除",
       {
-        confirmButtonText: '确认删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-        dangerouslyUseHTMLString: false
-      }
+        confirmButtonText: "确认删除",
+        cancelButtonText: "取消",
+        type: "warning",
+        dangerouslyUseHTMLString: false,
+      },
     )
 
     loading.value = true
     await deleteMenu(row.menuId)
-    ElMessage.success('删除成功')
+    ElMessage.success("删除成功")
     fetchMenuTree()
   } catch (err) {
-    if (err !== 'cancel') {
-      ElMessage.error('删除失败，请重试')
+    if (err !== "cancel") {
+      ElMessage.error("删除失败，请重试")
     }
   } finally {
     loading.value = false
@@ -658,26 +814,26 @@ async function handleDelete(row: Menu) {
 }
 
 async function handleStatusChange(row: Menu, newStatus: number) {
-  const from = newStatus === 1101 ? '停用' : '正常'
-  const to = newStatus === 1101 ? '正常' : '停用'
+  const from = newStatus === 1101 ? "停用" : "正常"
+  const to = newStatus === 1101 ? "正常" : "停用"
 
   try {
     await ElMessageBox.confirm(
       `您将把菜单 "${row.menuName}" 的状态从 "${from}" 切换为 "${to}"，确定要继续吗？`,
-      '切换状态确认',
+      "切换状态确认",
       {
-        confirmButtonText: '确认切换',
-        cancelButtonText: '取消',
-        type: 'info'
-      }
+        confirmButtonText: "确认切换",
+        cancelButtonText: "取消",
+        type: "info",
+      },
     )
 
     await toggleMenuStatus(row.menuId, newStatus)
     row.status = newStatus
     ElMessage.success(`状态已切换为 "${to}"`)
   } catch (err) {
-    if (err !== 'cancel') {
-      ElMessage.error('状态切换失败，请重试')
+    if (err !== "cancel") {
+      ElMessage.error("状态切换失败，请重试")
     }
     fetchMenuTree()
   }
@@ -686,24 +842,29 @@ async function handleStatusChange(row: Menu, newStatus: number) {
 async function handleCopy(code: string) {
   try {
     await navigator.clipboard.writeText(code)
-    ElMessage.success('已复制到剪贴板')
+    ElMessage.success("已复制到剪贴板")
   } catch {
-    ElMessage.warning('复制失败，请手动复制')
+    ElMessage.warning("复制失败，请手动复制")
   }
 }
 
 function getMenuTypeColor(type: number): string {
-  return MENU_TYPE_MAP[type]?.color || '#909399'
+  return MENU_TYPE_MAP[type]?.color || "#909399"
 }
 
-function getContentTypeTagType(contentType: number): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const typeMap: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    1: '',        // 菜单页面 - 默认蓝色
-    2: 'success', // 大屏 - 绿色
-    3: 'warning', // 嵌入页面 - 橙色
-    4: 'info'     // 外部链接 - 灰色
+function getContentTypeTagType(
+  contentType: number,
+): "" | "success" | "warning" | "info" | "danger" {
+  const typeMap: Record<
+    number,
+    "" | "success" | "warning" | "info" | "danger"
+  > = {
+    1: "", // 菜单页面 - 默认蓝色
+    2: "success", // 大屏 - 绿色
+    3: "warning", // 嵌入页面 - 橙色
+    4: "info", // 外部链接 - 灰色
   }
-  return typeMap[contentType] || 'info'
+  return typeMap[contentType] || "info"
 }
 
 function formatJson(jsonStr: string): string {
@@ -716,16 +877,55 @@ function formatJson(jsonStr: string): string {
 }
 
 // 子系统图标配置
-const subsystemIconMap: Record<number, { icon: string; color: string; bg: string }> = {
-  1: { icon: 'Bell', color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' },
-  2: { icon: 'Document', color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
-  3: { icon: 'Warning', color: '#F56C6C', bg: 'linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)' },
-  4: { icon: 'Connection', color: '#9B59B6', bg: 'linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%)' },
-  5: { icon: 'Box', color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
-  6: { icon: 'DataAnalysis', color: '#00BCD4', bg: 'linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%)' },
-  7: { icon: 'Share', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)' },
-  8: { icon: 'Monitor', color: '#3F51B5', bg: 'linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%)' },
-  99: { icon: 'Setting', color: '#606266', bg: 'linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)' }
+const subsystemIconMap: Record<
+  number,
+  { icon: string; color: string; bg: string }
+> = {
+  1: {
+    icon: "Bell",
+    color: "#E6A23C",
+    bg: "linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)",
+  },
+  2: {
+    icon: "Document",
+    color: "#409EFF",
+    bg: "linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)",
+  },
+  3: {
+    icon: "Warning",
+    color: "#F56C6C",
+    bg: "linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)",
+  },
+  4: {
+    icon: "Connection",
+    color: "#9B59B6",
+    bg: "linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%)",
+  },
+  5: {
+    icon: "Box",
+    color: "#67C23A",
+    bg: "linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)",
+  },
+  6: {
+    icon: "DataAnalysis",
+    color: "#00BCD4",
+    bg: "linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%)",
+  },
+  7: {
+    icon: "Share",
+    color: "#FF9800",
+    bg: "linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)",
+  },
+  8: {
+    icon: "Monitor",
+    color: "#3F51B5",
+    bg: "linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%)",
+  },
+  99: {
+    icon: "Setting",
+    color: "#606266",
+    bg: "linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)",
+  },
 }
 
 function getSubsystemIconStyle(subsysId: number) {
@@ -736,9 +936,11 @@ function getSubsystemIconStyle(subsysId: number) {
 const menuPathMap = computed(() => {
   const map = new Map<number, string>()
 
-  function buildPath(items: Menu[], parentPath: string = '') {
+  function buildPath(items: Menu[], parentPath: string = "") {
     items.forEach(item => {
-      const currentPath = parentPath ? `${parentPath} / ${item.menuName}` : item.menuName
+      const currentPath = parentPath
+        ? `${parentPath} / ${item.menuName}`
+        : item.menuName
       map.set(item.menuId, parentPath)
       if (item.children && item.children.length > 0) {
         buildPath(item.children, currentPath)
@@ -751,8 +953,8 @@ const menuPathMap = computed(() => {
 })
 
 function getPathLabel(row: Menu): string {
-  if (row.parentId === 0) return ''
-  return menuPathMap.value.get(row.menuId) || ''
+  if (row.parentId === 0) return ""
+  return menuPathMap.value.get(row.menuId) || ""
 }
 
 // ── 监听子系统切换 ──
@@ -769,17 +971,21 @@ onMounted(() => {
 <style lang="scss" scoped>
 .menu-management {
   padding: 24px;
-  background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
+  background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   min-height: 100vh;
-  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   // 入场动画
   .animate-item {
     animation: fadeInUp 0.5s ease forwards;
     opacity: 0;
 
-    &:nth-child(1) { animation-delay: 0.05s; }
-    &:nth-child(2) { animation-delay: 0.12s; }
+    &:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+    &:nth-child(2) {
+      animation-delay: 0.12s;
+    }
   }
 
   // 页面头部
@@ -789,7 +995,7 @@ onMounted(() => {
     align-items: flex-start;
     margin-bottom: 20px;
     padding: 24px 28px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
@@ -808,7 +1014,7 @@ onMounted(() => {
         display: inline-block;
         width: 4px;
         height: 22px;
-        background: linear-gradient(180deg, #409EFF 0%, #66B1FF 100%);
+        background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
         border-radius: 2px;
       }
 
@@ -830,7 +1036,7 @@ onMounted(() => {
   // 左侧子系统面板
   .left-panel {
     width: 260px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     flex-shrink: 0;
@@ -839,7 +1045,7 @@ onMounted(() => {
 
     .panel-header {
       padding: 16px 20px;
-      border-bottom: 1px solid #EBEEF5;
+      border-bottom: 1px solid #ebeef5;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -873,20 +1079,20 @@ onMounted(() => {
       margin-bottom: 8px;
 
       &:hover {
-        background: #F5F7FA;
+        background: #f5f7fa;
       }
 
       &.active {
-        background: linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%);
-        border: 1px solid #B3D8FF;
+        background: linear-gradient(135deg, #ecf5ff 0%, #d9ecff 100%);
+        border: 1px solid #b3d8ff;
 
         .subsystem-icon {
-          background: #409EFF;
-          color: #FFFFFF;
+          background: #409eff;
+          color: #ffffff;
         }
 
         .subsystem-name {
-          color: #409EFF;
+          color: #409eff;
           font-weight: 600;
         }
       }
@@ -895,7 +1101,7 @@ onMounted(() => {
         width: 40px;
         height: 40px;
         border-radius: 8px;
-        background: #F0F2F5;
+        background: #f0f2f5;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -933,7 +1139,7 @@ onMounted(() => {
   // 右侧菜单面板
   .right-panel {
     flex: 1;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     display: flex;
@@ -942,7 +1148,7 @@ onMounted(() => {
 
     .panel-header {
       padding: 16px 20px;
-      border-bottom: 1px solid #EBEEF5;
+      border-bottom: 1px solid #ebeef5;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -961,8 +1167,8 @@ onMounted(() => {
 
     .search-bar {
       padding: 12px 20px;
-      background: #FAFAFA;
-      border-bottom: 1px solid #EBEEF5;
+      background: #fafafa;
+      border-bottom: 1px solid #ebeef5;
 
       .el-form-item {
         margin-bottom: 0;
@@ -975,11 +1181,14 @@ onMounted(() => {
       overflow: auto;
 
       :deep(.el-table) {
-        --el-table-row-hover-bg-color: #F5F7FA;
+        --el-table-row-hover-bg-color: #f5f7fa;
 
         .el-table__row {
           .cell {
             padding: 0 12px;
+
+            display: flex;
+            align-items: center;
           }
         }
 
@@ -994,7 +1203,7 @@ onMounted(() => {
           width: 24px;
           height: 24px;
           margin-right: 4px;
-          display: inline-flex !important;
+          // display: inline-flex !important;
           vertical-align: middle;
 
           .el-icon {
@@ -1044,28 +1253,28 @@ onMounted(() => {
   }
 
   .code-text {
-    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-    color: #409EFF;
+    font-family: "Monaco", "Menlo", "Consolas", monospace;
+    color: #409eff;
     font-size: 12px;
-    background: #ECF5FF;
+    background: #ecf5ff;
     padding: 2px 6px;
     border-radius: 4px;
   }
 
   .path-text {
-    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-family: "Monaco", "Menlo", "Consolas", monospace;
     color: #606266;
     font-size: 12px;
   }
 
   .component-text {
-    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-family: "Monaco", "Menlo", "Consolas", monospace;
     color: #909399;
     font-size: 11px;
   }
 
   .empty-text {
-    color: #C0C4CC;
+    color: #c0c4cc;
   }
 
   .sort-text {
@@ -1080,12 +1289,12 @@ onMounted(() => {
   .ext-content {
     pre {
       margin: 0;
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      font-family: "Monaco", "Menlo", "Consolas", monospace;
       font-size: 12px;
       color: #606266;
       white-space: pre-wrap;
       word-break: break-all;
-      background: #F5F7FA;
+      background: #f5f7fa;
       padding: 8px;
       border-radius: 4px;
     }
@@ -1112,7 +1321,7 @@ onMounted(() => {
 
     .el-dialog__footer {
       padding: 16px 24px;
-      border-top: 1px solid #EBEEF5;
+      border-top: 1px solid #ebeef5;
     }
   }
 

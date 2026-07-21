@@ -65,38 +65,38 @@
 
         <!-- 搜索栏 -->
         <el-card class="search-card" shadow="never">
-          <el-form :model="memberSearchForm" inline>
-            <el-form-item label="成员姓名">
-              <el-input
-                v-model="memberSearchForm.name"
-                placeholder="输入成员姓名"
-                clearable
-                :prefix-icon="Search"
-                style="width: 180px"
-                @keyup.enter="handleMemberSearch"
-              />
-            </el-form-item>
-            <el-form-item label="手机号">
-              <el-input
-                v-model="memberSearchForm.phone"
-                placeholder="输入手机号"
-                clearable
-                style="width: 160px"
-                @keyup.enter="handleMemberSearch"
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handleMemberSearch">搜索</el-button>
-              <el-button :icon="RefreshLeft" @click="handleMemberReset">重置</el-button>
-            </el-form-item>
-          </el-form>
+          <div class="search-content">
+            <el-form :model="memberSearchForm" inline>
+              <el-form-item label="成员姓名">
+                <el-input
+                  v-model="memberSearchForm.name"
+                  placeholder="输入成员姓名"
+                  clearable
+                  :prefix-icon="Search"
+                  style="width: 180px"
+                  @keyup.enter="handleMemberSearch"
+                />
+              </el-form-item>
+              <el-form-item label="手机号">
+                <el-input
+                  v-model="memberSearchForm.phone"
+                  placeholder="输入手机号"
+                  clearable
+                  style="width: 160px"
+                  @keyup.enter="handleMemberSearch"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" :icon="Search" @click="handleMemberSearch">搜索</el-button>
+                <el-button :icon="RefreshLeft" @click="handleMemberReset">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
+          </div>
         </el-card>
 
         <!-- 工具栏 -->
         <div class="toolbar">
-          <div class="toolbar-left">
-            <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
-          </div>
           <div class="toolbar-right">
             <span class="total-count">共 {{ filteredMemberData.length }} 条数据</span>
           </div>
@@ -800,8 +800,24 @@ onMounted(() => {
     margin-bottom: 16px;
     border-radius: 12px;
     border: none;
-    :deep(.el-card__body) { padding: 20px 24px 8px; }
-    .el-form-item { margin-bottom: 12px; }
+
+    :deep(.el-card__body) {
+      padding: 16px 20px;
+    }
+
+    .search-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .el-form {
+        flex: 1;
+      }
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .toolbar {

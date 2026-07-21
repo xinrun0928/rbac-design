@@ -66,6 +66,10 @@
             <el-icon><User /></el-icon>
             <span>登录日志</span>
           </el-menu-item>
+          <el-menu-item index="/mq/log">
+            <el-icon><Promotion /></el-icon>
+            <span>MQ消费日志</span>
+          </el-menu-item>
         </el-sub-menu>
         <el-menu-item index="/app">
           <el-icon><Cellphone /></el-icon>

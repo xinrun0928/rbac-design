@@ -76,6 +76,11 @@ const router = createRouter({
       path: '/app/log',
       name: 'AppPublishLog',
       component: () => import('../views/AppPublishLog.vue')
+    },
+    {
+      path: '/mq/log',
+      name: 'MqConsumeLog',
+      component: () => import('../views/MqConsumeLog.vue')
     }
   ]
 })

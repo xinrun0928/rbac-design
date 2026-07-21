@@ -16,6 +16,10 @@ export const orgTreeData: OrgTreeNode[] = [
     packageName: '省交通本级',
     description: '广东省交通运输主管部门，负责全省交通运输行业管理与监督',
     isKey: true,
+    areaName: '广东省',
+    leader: '陈志远',
+    contactPhone: '020-83730001',
+    email: 'chenzy@gd.gov.cn',
     members: [
       { id: 101, name: '陈志远', position: '厅长', phone: '13800138101', contactPhone: '020-83730001', email: 'chenzy@gd.gov.cn', responsibility: '主持厅全面工作' },
       { id: 102, name: '刘建国', position: '副厅长', phone: '13800138102', contactPhone: '020-83730002', email: 'liujg@gd.gov.cn', responsibility: '分管基建、科技工作' },
@@ -31,6 +35,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '省交通本级',
         description: '负责厅机关值班值守、应急信息报送与协调处置',
         isKey: true,
+    areaName: '广东省',
+    leader: '赵国庆',
+    contactPhone: '020-83730101',
+    email: 'zhaogq@gd.gov.cn',
         members: [
           { id: 1101, name: '赵国庆', position: '值班室主任', phone: '138001381101', contactPhone: '020-83730101', email: 'zhaogq@gd.gov.cn', responsibility: '统筹值班安排与应急调度' },
           { id: 1102, name: '孙晓峰', position: '值班员', phone: '138001381102', contactPhone: '020-83730102', email: 'sunxf@gd.gov.cn', responsibility: '日常值班与信息报送' },
@@ -44,6 +52,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '省交通本级',
         description: '负责交通运输科技发展规划、科研项目管理与技术推广',
         isKey: false,
+    areaName: '广东省',
+    leader: '周文博',
+    contactPhone: '020-83730201',
+    email: 'zhouwb@gd.gov.cn',
         members: [
           { id: 1201, name: '周文博', position: '处长', phone: '138001381201', contactPhone: '020-83730201', email: 'zhouwb@gd.gov.cn', responsibility: '统筹科技发展与创新工作' },
           { id: 1202, name: '吴思远', position: '副处长', phone: '138001381202', contactPhone: '020-83730202', email: 'wusy@gd.gov.cn', responsibility: '分管科研项目管理' },
@@ -57,6 +69,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '省交通本级',
         description: '负责公路路政管理、超限超载治理及路产路权维护',
         isKey: false,
+    areaName: '广东省',
+    leader: '黄志强',
+    contactPhone: '020-83730301',
+    email: 'huangzq@gd.gov.cn',
         members: [
           { id: 1301, name: '黄志强', position: '处长', phone: '138001381301', contactPhone: '020-83730301', email: 'huangzq@gd.gov.cn', responsibility: '统筹路政管理工作' },
           { id: 1302, name: '林美玲', position: '副处长', phone: '138001381302', contactPhone: '020-83730302', email: 'linml@gd.gov.cn', responsibility: '分管超限治理' },
@@ -70,6 +86,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '省交通本级',
         description: '负责交通基础设施建设项目管理、工程质量监督与验收',
         isKey: false,
+    areaName: '广东省',
+    leader: '杨明辉',
+    contactPhone: '020-83730401',
+    email: 'yangmh@gd.gov.cn',
         members: [
           { id: 1401, name: '杨明辉', position: '处长', phone: '138001381401', contactPhone: '020-83730401', email: 'yangmh@gd.gov.cn', responsibility: '统筹基建项目管理' },
           { id: 1402, name: '朱晓燕', position: '副处长', phone: '138001381402', contactPhone: '020-83730402', email: 'zhuxy@gd.gov.cn', responsibility: '分管工程质量监督' },
@@ -85,6 +105,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '市交通',
         description: '各地级市交通运输局，负责辖区内交通运输管理工作',
         isKey: false,
+    areaName: '广东省',
+    leader: '',
+    contactPhone: '',
+    email: '',
         members: [],
         children: [
           {
@@ -94,6 +118,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市交通',
             description: '广州市交通运输主管部门',
             isKey: true,
+    areaName: '广州市',
+    leader: '李伟强',
+    contactPhone: '020-86010001',
+    email: 'liwq@gz.gov.cn',
             members: [
               { id: 2101, name: '李伟强', position: '局长', phone: '138001382101', contactPhone: '020-86010001', email: 'liwq@gz.gov.cn', responsibility: '主持局全面工作' },
               { id: 2102, name: '陈晓东', position: '副局长', phone: '138001382102', contactPhone: '020-86010002', email: 'chenxd@gz.gov.cn', responsibility: '分管交通运输管理' },
@@ -107,6 +135,10 @@ export const orgTreeData: OrgTreeNode[] = [
                 packageName: '县交通',
                 description: '从化区交通运输管理机构',
                 isKey: false,
+    areaName: '广州市从化区',
+    leader: '王建军',
+    contactPhone: '020-87962001',
+    email: 'wangjj@ch.gov.cn',
                 members: [
                   { id: 2111, name: '王建军', position: '局长', phone: '138001382111', contactPhone: '020-87962001', email: 'wangjj@ch.gov.cn', responsibility: '主持局全面工作' },
                   { id: 2112, name: '刘小红', position: '副局长', phone: '138001382112', contactPhone: '020-87962002', email: 'liuxh@ch.gov.cn', responsibility: '分管运输管理' },
@@ -135,6 +167,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市交通',
             description: '茂名市交通运输主管部门',
             isKey: false,
+    areaName: '茂名市',
+    leader: '林志明',
+    contactPhone: '0668-2890001',
+    email: 'linzm@mm.gov.cn',
             members: [
               { id: 2301, name: '林志明', position: '局长', phone: '138001382301', contactPhone: '0668-2890001', email: 'linzm@mm.gov.cn', responsibility: '主持局全面工作' },
               { id: 2302, name: '黄丽娟', position: '副局长', phone: '138001382302', contactPhone: '0668-2890002', email: 'huanglj@mm.gov.cn', responsibility: '分管基建与规划' },
@@ -148,6 +184,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市交通',
             description: '佛山市交通运输主管部门',
             isKey: false,
+    areaName: '佛山市',
+    leader: '陈伟达',
+    contactPhone: '0757-83200001',
+    email: 'chenwd@fs.gov.cn',
             members: [
               { id: 2401, name: '陈伟达', position: '局长', phone: '138001382401', contactPhone: '0757-83200001', email: 'chenwd@fs.gov.cn', responsibility: '主持局全面工作' },
               { id: 2402, name: '刘丽珍', position: '副局长', phone: '138001382402', contactPhone: '0757-83200002', email: 'liulz@fs.gov.cn', responsibility: '分管公路运输' }
@@ -164,6 +204,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '省事务中心',
         description: '负责全省公路事务管理、养护监督与技术指导',
         isKey: true,
+    areaName: '广东省',
+    leader: '谢志坚',
+    contactPhone: '020-87650001',
+    email: 'xiezj@gd.gov.cn',
         members: [
           { id: 301, name: '谢志坚', position: '主任', phone: '138001380301', contactPhone: '020-87650001', email: 'xiezj@gd.gov.cn', responsibility: '主持中心全面工作' },
           { id: 302, name: '何小燕', position: '副主任', phone: '138001380302', contactPhone: '020-87650002', email: 'hexy@gd.gov.cn', responsibility: '分管公路养护' }
@@ -176,6 +220,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '事务中心',
             description: '负责综合事务协调与后勤保障',
             isKey: false,
+    areaName: '广东省',
+    leader: '钟伟杰',
+    contactPhone: '020-87650101',
+    email: 'zhongwj@gd.gov.cn',
             members: [
               { id: 3001, name: '钟伟杰', position: '主任', phone: '138001383001', contactPhone: '020-87650101', email: 'zhongwj@gd.gov.cn', responsibility: '统筹综合事务管理' },
               { id: 3002, name: '冯小明', position: '科员', phone: '138001383002', contactPhone: '020-87650102', email: 'fengxm@gd.gov.cn', responsibility: '日常行政事务' }
@@ -188,6 +236,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市事务中心',
             description: '广州市公路事务管理机构',
             isKey: true,
+    areaName: '广州市',
+    leader: '钟伟明',
+    contactPhone: '020-86680001',
+    email: 'zhongwm@gz.gov.cn',
             members: [
               { id: 3101, name: '钟伟明', position: '主任', phone: '138001383101', contactPhone: '020-86680001', email: 'zhongwm@gz.gov.cn', responsibility: '主持中心全面工作' },
               { id: 3102, name: '冯晓敏', position: '副主任', phone: '138001383102', contactPhone: '020-86680002', email: 'fengxm@gz.gov.cn', responsibility: '分管养护与路政' },
@@ -201,6 +253,10 @@ export const orgTreeData: OrgTreeNode[] = [
                 packageName: '县事务中心',
                 description: '从化区道路事务管理机构',
                 isKey: false,
+    areaName: '广州市从化区',
+    leader: '张伟东',
+    contactPhone: '020-87963001',
+    email: 'zhangwd@ch.gov.cn',
                 members: [
                   { id: 3111, name: '张伟东', position: '主任', phone: '138001383111', contactPhone: '020-87963001', email: 'zhangwd@ch.gov.cn', responsibility: '主持中心全面工作' },
                   { id: 3112, name: '刘丽萍', position: '副主任', phone: '138001383112', contactPhone: '020-87963002', email: 'liulp@ch.gov.cn', responsibility: '分管道路养护' },
@@ -216,6 +272,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市事务中心',
             description: '深圳市公路事务管理机构',
             isKey: false,
+    areaName: '深圳市',
+    leader: '周国强',
+    contactPhone: '0755-83280001',
+    email: 'zhougq@sz.gov.cn',
             members: [
               { id: 3201, name: '周国强', position: '主任', phone: '138001383201', contactPhone: '0755-83280001', email: 'zhougq@sz.gov.cn', responsibility: '主持中心全面工作' },
               { id: 3202, name: '赵晓燕', position: '副主任', phone: '138001383202', contactPhone: '0755-83280002', email: 'zhaoxy@sz.gov.cn', responsibility: '分管养护管理' }
@@ -228,6 +288,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '市事务中心',
             description: '佛山市公路事务管理机构',
             isKey: false,
+    areaName: '佛山市',
+    leader: '陈国华',
+    contactPhone: '0757-83350001',
+    email: 'chengh@fs.gov.cn',
             members: [
               { id: 3301, name: '陈国华', position: '主任', phone: '138001383301', contactPhone: '0757-83350001', email: 'chengh@fs.gov.cn', responsibility: '主持中心全面工作' },
               { id: 3302, name: '黄美珍', position: '副主任', phone: '138001383302', contactPhone: '0757-83350002', email: 'huangmz@fs.gov.cn', responsibility: '分管路政管理' }
@@ -244,6 +308,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '普通公路',
         description: '负责普通重点公路的日常养护与管理工作',
         isKey: true,
+    areaName: '广东省',
+    leader: '陈国华',
+    contactPhone: '020-87651001',
+    email: 'chengh@gd.gov.cn',
         members: [
           { id: 401, name: '陈国华', position: '总负责人', phone: '138001380401', contactPhone: '020-87651001', email: 'chengh@gd.gov.cn', responsibility: '统筹三级包保单位工作' }
         ],
@@ -255,6 +323,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '交通',
             description: '负责从化区良口镇辖区道路日常养护与应急抢修',
             isKey: true,
+    areaName: '广州市从化区',
+    leader: '刘德华',
+    contactPhone: '020-87964001',
+    email: 'liudh@ch.gov.cn',
             members: [
               { id: 4101, name: '刘德华', position: '站长', phone: '138001384101', contactPhone: '020-87964001', email: 'liudh@ch.gov.cn', responsibility: '主持站全面工作' },
               { id: 4102, name: '张建华', position: '副站长', phone: '138001384102', contactPhone: '020-87964002', email: 'zhangjh@ch.gov.cn', responsibility: '分管日常养护' },
@@ -269,6 +341,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '交通',
             description: '负责增城区辖区道路日常养护与管理',
             isKey: false,
+    areaName: '广州市增城区',
+    leader: '陈志强',
+    contactPhone: '020-82750001',
+    email: 'chenzq@zc.gov.cn',
             members: [
               { id: 4201, name: '陈志强', position: '主任', phone: '138001384201', contactPhone: '020-82750001', email: 'chenzq@zc.gov.cn', responsibility: '主持中心全面工作' },
               { id: 4202, name: '黄晓峰', position: '副主任', phone: '138001384202', contactPhone: '020-82750002', email: 'huangxf@zc.gov.cn', responsibility: '分管养护作业' },
@@ -282,6 +358,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '交通',
             description: '负责东城辖区长平路段日常养护与应急抢修',
             isKey: false,
+    areaName: '广州市天河区',
+    leader: '赵立强',
+    contactPhone: '020-83500001',
+    email: 'zhaolq@dc.gov.cn',
             members: [
               { id: 4301, name: '赵立强', position: '站长', phone: '138001384301', contactPhone: '020-83500001', email: 'zhaolq@dc.gov.cn', responsibility: '主持站全面工作' },
               { id: 4302, name: '孙晓明', position: '养护工', phone: '138001384302', contactPhone: '020-83500002', email: 'sunxm@dc.gov.cn', responsibility: '道路日常巡查与养护' }
@@ -294,6 +374,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '交通',
             description: '负责增城区中新镇辖区道路日常养护与管理',
             isKey: false,
+    areaName: '广州市增城区',
+    leader: '周建华',
+    contactPhone: '020-82860001',
+    email: 'zhoujh@zc.gov.cn',
             members: [
               { id: 4401, name: '周建华', position: '站长', phone: '138001384401', contactPhone: '020-82860001', email: 'zhoujh@zc.gov.cn', responsibility: '主持站全面工作' },
               { id: 4402, name: '吴晓峰', position: '副站长', phone: '138001384402', contactPhone: '020-82860002', email: 'wuxf@zc.gov.cn', responsibility: '分管养护作业' },
@@ -311,6 +395,10 @@ export const orgTreeData: OrgTreeNode[] = [
         packageName: '高速公路',
         description: '广东省高速公路运营管理单位',
         isKey: false,
+    areaName: '广东省',
+    leader: '',
+    contactPhone: '',
+    email: '',
         members: [],
         children: [
           {
@@ -320,6 +408,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '省交通公司',
             description: '省属高速公路投资、建设与运营管理企业',
             isKey: true,
+    areaName: '广东省',
+    leader: '李明远',
+    contactPhone: '020-38100001',
+    email: 'limy@gdexpress.com',
             members: [
               { id: 5101, name: '李明远', position: '董事长', phone: '138001385101', contactPhone: '020-38100001', email: 'limy@gdexpress.com', responsibility: '主持公司全面工作' },
               { id: 5102, name: '张晓东', position: '总经理', phone: '138001385102', contactPhone: '020-38100002', email: 'zhangxd@gdexpress.com', responsibility: '分管运营与管理' },
@@ -334,6 +426,10 @@ export const orgTreeData: OrgTreeNode[] = [
                 packageName: '公司',
                 description: '负责广佛高速公路的运营管理与维护',
                 isKey: false,
+    areaName: '广州市',
+    leader: '刘国强',
+    contactPhone: '020-81900001',
+    email: 'liugq@gfexpress.com',
                 members: [
                   { id: 5111, name: '刘国强', position: '总经理', phone: '138001385111', contactPhone: '020-81900001', email: 'liugq@gfexpress.com', responsibility: '主持公司全面工作' },
                   { id: 5112, name: '黄晓燕', position: '副总经理', phone: '138001385112', contactPhone: '020-81900002', email: 'huangxy@gfexpress.com', responsibility: '分管运营与收费' },
@@ -348,6 +444,10 @@ export const orgTreeData: OrgTreeNode[] = [
                 packageName: '公司',
                 description: '负责广深高速公路的运营管理与维护',
                 isKey: false,
+    areaName: '广州市',
+    leader: '王志坚',
+    contactPhone: '020-82200001',
+    email: 'wangzj@gsexpress.com',
                 members: [
                   { id: 5121, name: '王志坚', position: '总经理', phone: '138001385121', contactPhone: '020-82200001', email: 'wangzj@gsexpress.com', responsibility: '主持公司全面工作' },
                   { id: 5122, name: '张丽华', position: '副总经理', phone: '138001385122', contactPhone: '020-82200002', email: 'zhanglh@gsexpress.com', responsibility: '分管运营与维护' },
@@ -363,6 +463,10 @@ export const orgTreeData: OrgTreeNode[] = [
             packageName: '监控中心',
             description: '负责全省高速公路交通监控、应急指挥与信息服务',
             isKey: true,
+    areaName: '广东省',
+    leader: '张国华',
+    contactPhone: '020-83500001',
+    email: 'zhanggh@gd.gov.cn',
             members: [
               { id: 5201, name: '张国华', position: '主任', phone: '138001385201', contactPhone: '020-83500001', email: 'zhanggh@gd.gov.cn', responsibility: '主持中心全面工作' },
               { id: 5202, name: '刘小明', position: '副主任', phone: '138001385202', contactPhone: '020-83500002', email: 'liuxm@gd.gov.cn', responsibility: '分管监控与应急' },

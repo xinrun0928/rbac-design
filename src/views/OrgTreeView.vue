@@ -25,15 +25,13 @@
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
           <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+          <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
         </el-form-item>
       </el-form>
     </el-card>
 
     <!-- 工具栏 -->
     <div class="toolbar animate-item">
-      <div class="toolbar-left">
-        <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
-      </div>
       <div class="toolbar-right">
         <span class="total-count">共 {{ orgList.length }} 个组织</span>
       </div>
@@ -110,9 +108,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="210" align="center" fixed="right">
+        <el-table-column label="操作" width="240" align="center" fixed="right">
           <template #default="{ row }">
-            <el-button type="primary" link :icon="Plus" @click="handleAdd(row)">新增</el-button>
+            <el-button type="primary" link :icon="Plus" @click="handleAdd(row)">新增子集</el-button>
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
             <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
           </template>

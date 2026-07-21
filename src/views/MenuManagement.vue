@@ -93,10 +93,10 @@
             border
             stripe
             default-expand-all
-            :indent="20"
+            :indent="24"
             empty-text=" "
           >
-            <el-table-column prop="menuName" label="菜单名称" min-width="280">
+            <el-table-column prop="menuName" label="菜单名称" min-width="240" fixed>
               <template #default="{ row }">
                 <div class="menu-name-cell">
                   <el-icon v-if="row.icon" class="menu-icon" :color="getMenuTypeColor(row.menuType)">
@@ -104,6 +104,29 @@
                   </el-icon>
                   <span class="menu-name">{{ row.menuName }}</span>
                 </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="menuType" label="类型" width="80" align="center">
+              <template #default="{ row }">
+                <el-tag
+                  :color="MENU_TYPE_MAP[row.menuType]?.color"
+                  effect="dark"
+                  style="border: none; color: #fff"
+                  round
+                  size="small"
+                >
+                  {{ MENU_TYPE_MAP[row.menuType]?.label || '未知' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="icon" label="图标" width="80" align="center">
+              <template #default="{ row }">
+                <el-icon v-if="row.icon" :size="18" :color="getMenuTypeColor(row.menuType)">
+                  <component :is="row.icon" />
+                </el-icon>
+                <span v-else class="empty-text">-</span>
               </template>
             </el-table-column>
 
@@ -121,26 +144,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="menuType" label="类型" width="90" align="center">
+            <el-table-column prop="contentType" label="内容类型" width="100" align="center">
               <template #default="{ row }">
                 <el-tag
-                  :color="MENU_TYPE_MAP[row.menuType]?.color"
-                  effect="dark"
-                  style="border: none; color: #fff"
-                  round
-                  size="small"
-                >
-                  {{ MENU_TYPE_MAP[row.menuType]?.label || '未知' }}
-                </el-tag>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="contentType" label="内容" width="90" align="center">
-              <template #default="{ row }">
-                <el-tag
-                  :color="CONTENT_TYPE_MAP[row.contentType]?.color"
+                  :type="getContentTypeTagType(row.contentType)"
                   effect="plain"
-                  round
                   size="small"
                 >
                   {{ CONTENT_TYPE_MAP[row.contentType]?.label || '未知' }}
@@ -148,25 +156,31 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="path" label="路由地址" width="160">
+            <el-table-column prop="path" label="路由地址" width="180">
               <template #default="{ row }">
                 <span class="path-text" v-if="row.path">{{ row.path }}</span>
                 <span class="empty-text" v-else>-</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="displayOrder" label="排序" width="70" align="center">
+            <el-table-column prop="component" label="组件路径" width="180">
+              <template #default="{ row }">
+                <span class="component-text" v-if="row.component">{{ row.component }}</span>
+                <span class="empty-text" v-else>-</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="displayOrder" label="排序" width="60" align="center">
               <template #default="{ row }">
                 <span class="sort-text">{{ row.displayOrder }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="hidden" label="可见" width="70" align="center">
+            <el-table-column prop="hidden" label="可见" width="60" align="center">
               <template #default="{ row }">
                 <el-tag
                   :type="row.hidden === 1 ? 'info' : 'success'"
                   effect="plain"
-                  round
                   size="small"
                 >
                   {{ row.hidden === 1 ? '隐藏' : '显示' }}
@@ -174,7 +188,23 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="status" label="状态" width="90" align="center">
+            <el-table-column prop="ext" label="扩展字段" width="120">
+              <template #default="{ row }">
+                <el-popover v-if="row.ext" trigger="hover" width="300">
+                  <template #reference>
+                    <el-tag type="info" effect="plain" size="small" class="ext-tag">
+                      JSON
+                    </el-tag>
+                  </template>
+                  <div class="ext-content">
+                    <pre>{{ formatJson(row.ext) }}</pre>
+                  </div>
+                </el-popover>
+                <span v-else class="empty-text">-</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="status" label="状态" width="80" align="center">
               <template #default="{ row }">
                 <el-switch
                   :model-value="row.status"
@@ -401,7 +431,7 @@ import {
 const loading = ref(false)
 const submitLoading = ref(false)
 const menuTreeData = ref<Menu[]>([])
-const selectedSubsystem = ref<number>(99)
+const selectedSubsystem = ref<number>(1)
 const dialogVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
@@ -664,6 +694,25 @@ async function handleCopy(code: string) {
 
 function getMenuTypeColor(type: number): string {
   return MENU_TYPE_MAP[type]?.color || '#909399'
+}
+
+function getContentTypeTagType(contentType: number): '' | 'success' | 'warning' | 'info' | 'danger' {
+  const typeMap: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
+    1: '',        // 菜单页面 - 默认蓝色
+    2: 'success', // 大屏 - 绿色
+    3: 'warning', // 嵌入页面 - 橙色
+    4: 'info'     // 外部链接 - 灰色
+  }
+  return typeMap[contentType] || 'info'
+}
+
+function formatJson(jsonStr: string): string {
+  try {
+    const obj = JSON.parse(jsonStr)
+    return JSON.stringify(obj, null, 2)
+  } catch {
+    return jsonStr
+  }
 }
 
 // 子系统图标配置
@@ -936,7 +985,8 @@ onMounted(() => {
 
         // 树形缩进
         .el-table__indent {
-          padding-left: 20px;
+          padding-left: 24px !important;
+          display: inline-block !important;
         }
 
         // 展开图标
@@ -944,9 +994,25 @@ onMounted(() => {
           width: 24px;
           height: 24px;
           margin-right: 4px;
+          display: inline-flex !important;
+          vertical-align: middle;
 
           .el-icon {
             font-size: 14px;
+            transition: transform 0.2s ease;
+          }
+
+          &.expanded .el-icon {
+            transform: rotate(90deg);
+          }
+        }
+
+        // 树形单元格样式
+        .el-table__cell {
+          &.is-leaf {
+            .el-table__expand-icon {
+              visibility: hidden;
+            }
           }
         }
       }
@@ -992,6 +1058,12 @@ onMounted(() => {
     font-size: 12px;
   }
 
+  .component-text {
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    color: #909399;
+    font-size: 11px;
+  }
+
   .empty-text {
     color: #C0C4CC;
   }
@@ -999,6 +1071,24 @@ onMounted(() => {
   .sort-text {
     font-weight: 600;
     color: #606266;
+  }
+
+  .ext-tag {
+    cursor: pointer;
+  }
+
+  .ext-content {
+    pre {
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      font-size: 12px;
+      color: #606266;
+      white-space: pre-wrap;
+      word-break: break-all;
+      background: #F5F7FA;
+      padding: 8px;
+      border-radius: 4px;
+    }
   }
 
   // 对话框

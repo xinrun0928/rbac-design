@@ -4808,5 +4808,31 @@ export const mockMenuData: Menu[] = [
     deleted: 0,
     signature: '',
     signatureVersion: 0
+  },
+
+  // ── 综合展示子系统 (subsysId: 8) ──
+  {
+    menuId: 1000001,
+    parentId: 0,
+    menuName: '大屏展示',
+    menuCode: '',
+    menuType: 99,
+    contentType: 2,
+    subsysId: 8,
+    icon: 'Monitor',
+    path: '/display/dashboard',
+    component: '',
+    displayOrder: 1,
+    status: 1101,
+    remark: '',
+    ext: '',
+    hidden: 0,
+    creater: 'system',
+    createTime: '2026-07-21 10:00:00',
+    updater: '',
+    updateTime: '2026-07-21 10:00:00',
+    deleted: 0,
+    signature: '',
+    signatureVersion: 0
   }
 ]

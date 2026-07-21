@@ -66,6 +66,16 @@ const router = createRouter({
       path: '/logs/login',
       name: 'SysLoginLog',
       component: () => import('../views/logs/SysLoginLog.vue')
+    },
+    {
+      path: '/app',
+      name: 'AppManage',
+      component: () => import('../views/AppManagement.vue')
+    },
+    {
+      path: '/app/log',
+      name: 'AppPublishLog',
+      component: () => import('../views/AppPublishLog.vue')
     }
   ]
 })

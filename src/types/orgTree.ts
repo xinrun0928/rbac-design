@@ -6,6 +6,8 @@ export interface OrgTreeNode {
   nodeType: 'root' | 'dept' | 'branch' | 'station' | 'company'
   /** 关联套餐名称 */
   packageName: string
+  /** 套餐类型：1-顶节点 | 2-交通节点 | 3-事务中心节点 | 4-公司企业节点 */
+  packageType?: number
   /** 节点描述 */
   description: string
   /** 是否为关键/重点单位 */

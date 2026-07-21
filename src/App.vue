@@ -67,6 +67,10 @@
             <span>登录日志</span>
           </el-menu-item>
         </el-sub-menu>
+        <el-menu-item index="/app">
+          <el-icon><Cellphone /></el-icon>
+          <span>App管理</span>
+        </el-menu-item>
       </el-menu>
     </header>
 
@@ -80,7 +84,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase } from '@element-plus/icons-vue'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

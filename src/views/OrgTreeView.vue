@@ -13,21 +13,23 @@
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="组织名称">
-          <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
-        </el-form-item>
-        <el-form-item label="套餐类型">
-          <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 160px">
-            <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-          <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-          <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="search-content">
+        <el-form :model="searchForm" inline>
+          <el-form-item label="组织名称">
+            <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+          </el-form-item>
+          <el-form-item label="套餐类型">
+            <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 160px">
+              <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
+      </div>
     </el-card>
 
     <!-- 工具栏 -->
@@ -62,7 +64,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="packageName" label="套餐类型" width="140" align="center">
+        <el-table-column prop="packageName" label="套餐名称" width="140" align="center">
           <template #default="{ row }">
             <el-tag :color="getPackageColor(row.packageName)" effect="dark" style="border: none; color: #fff;" size="small" round>
               {{ row.packageName }}
@@ -70,10 +72,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="nodeType" label="节点类型" width="100" align="center">
+        <el-table-column prop="packageType" label="套餐类型" width="110" align="center">
           <template #default="{ row }">
-            <el-tag size="small" :type="getNodeTypeTagType(row.nodeType)" effect="plain">
-              {{ getNodeTypeLabel(row.nodeType) }}
+            <el-tag size="small" :type="getPackageTypeTagType(row.packageType)" effect="plain">
+              {{ getPackageTypeLabel(row.packageType) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -522,6 +524,26 @@ function getNodeTypeTagType(nodeType: string): '' | 'success' | 'warning' | 'inf
   return types[nodeType] || 'info'
 }
 
+function getPackageTypeLabel(packageType?: number): string {
+  const labels: Record<number, string> = {
+    1: '顶节点',
+    2: '交通节点',
+    3: '事务中心',
+    4: '公司企业'
+  }
+  return packageType ? labels[packageType] || '未知' : '未知'
+}
+
+function getPackageTypeTagType(packageType?: number): '' | 'success' | 'warning' | 'info' | 'danger' {
+  const types: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
+    1: '',
+    2: 'success',
+    3: 'warning',
+    4: 'danger'
+  }
+  return packageType ? types[packageType] || 'info' : 'info'
+}
+
 onMounted(() => {
   fetchData()
 })
@@ -583,11 +605,21 @@ onMounted(() => {
     border: none;
 
     :deep(.el-card__body) {
-      padding: 20px 24px 8px;
+      padding: 16px 20px;
     }
 
-    .el-form-item {
-      margin-bottom: 12px;
+    .search-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .el-form {
+        flex: 1;
+      }
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
     }
   }
 

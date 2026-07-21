@@ -121,7 +121,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="180" align="center" fixed="right">
+        <el-table-column label="操作" width="160" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
             <el-button type="warning" link :icon="Upload" @click="handlePublish(row)" v-if="row.publishStatus === 1">发布</el-button>

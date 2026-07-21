@@ -210,7 +210,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="280" align="center" fixed="right">
+            <el-table-column label="操作" width="160" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditMember(row)">编辑</el-button>
                 <el-button type="warning" link :icon="Key" @click="handleChangePassword(row)">修改密码</el-button>

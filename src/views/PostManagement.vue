@@ -153,7 +153,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" min-width="120" align="center" fixed="right">
+            <el-table-column label="操作" width="160" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditPost(row)">编辑</el-button>
                 <el-button type="danger" link :icon="Delete" @click="handleDeletePost(row)">删除</el-button>

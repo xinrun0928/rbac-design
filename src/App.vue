@@ -83,6 +83,10 @@
           <el-icon><Location /></el-icon>
           <span>区域管理</span>
         </el-menu-item>
+        <el-menu-item index="/dict">
+          <el-icon><Collection /></el-icon>
+          <span>字典管理</span>
+        </el-menu-item>
       </el-menu>
     </header>
 
@@ -96,7 +100,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location } from '@element-plus/icons-vue'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

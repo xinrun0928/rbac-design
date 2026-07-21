@@ -83,6 +83,16 @@ const router = createRouter({
       component: () => import('../views/AreaManagement.vue')
     },
     {
+      path: '/dict',
+      name: 'DictTypeManage',
+      component: () => import('../views/DictTypeManagement.vue')
+    },
+    {
+      path: '/dict/data',
+      name: 'DictDataManage',
+      component: () => import('../views/DictDataManagement.vue')
+    },
+    {
       path: '/app/log',
       name: 'AppPublishLog',
       component: () => import('../views/AppPublishLog.vue')

@@ -1,266 +1,120 @@
-export interface AreaItem {
-  areaId: number
-  areaName: string
-  areaCode: string
-  parentId: number
-  level: number
-  children?: AreaItem[]
-}
+import type { Area } from '../types/area'
 
-export const areaData: AreaItem[] = [
+export const areaData: Area[] = [
   {
-    areaId: 1,
-    areaName: '广东省',
-    areaCode: '440000',
-    parentId: 0,
-    level: 1,
+    id: 1,
+    code: '440000',
+    name: '广东省',
+    level: 'province',
+    parentCode: null,
+    displayOrder: 1,
+    deleted: 0,
+    signature: null,
+    signatureVersion: 0,
     children: [
       {
-        areaId: 11,
-        areaName: '广州市',
-        areaCode: '440100',
-        parentId: 1,
-        level: 2,
+        id: 2,
+        code: '440100',
+        name: '广州市',
+        level: 'city',
+        parentCode: '440000',
+        displayOrder: 1,
+        deleted: 0,
+        signature: null,
+        signatureVersion: 0,
         children: [
-          { areaId: 111, areaName: '天河区', areaCode: '440106', parentId: 11, level: 3 },
-          { areaId: 112, areaName: '越秀区', areaCode: '440104', parentId: 11, level: 3 },
-          { areaId: 113, areaName: '海珠区', areaCode: '440105', parentId: 11, level: 3 },
-          { areaId: 114, areaName: '荔湾区', areaCode: '440103', parentId: 11, level: 3 },
-          { areaId: 115, areaName: '白云区', areaCode: '440111', parentId: 11, level: 3 },
-          { areaId: 116, areaName: '番禺区', areaCode: '440113', parentId: 11, level: 3 },
-          { areaId: 117, areaName: '花都区', areaCode: '440114', parentId: 11, level: 3 },
-          { areaId: 118, areaName: '增城区', areaCode: '440118', parentId: 11, level: 3 },
-          { areaId: 119, areaName: '从化区', areaCode: '440117', parentId: 11, level: 3 },
-          { areaId: 120, areaName: '黄埔区', areaCode: '440112', parentId: 11, level: 3 },
-          { areaId: 121, areaName: '南沙区', areaCode: '440115', parentId: 11, level: 3 }
+          { id: 3, code: '440103', name: '荔湾区', level: 'district', parentCode: '440100', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 4, code: '440104', name: '越秀区', level: 'district', parentCode: '440100', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 5, code: '440105', name: '海珠区', level: 'district', parentCode: '440100', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 6, code: '440106', name: '天河区', level: 'district', parentCode: '440100', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 7, code: '440111', name: '白云区', level: 'district', parentCode: '440100', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 8, code: '440112', name: '黄埔区', level: 'district', parentCode: '440100', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 9, code: '440113', name: '番禺区', level: 'district', parentCode: '440100', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 10, code: '440114', name: '花都区', level: 'district', parentCode: '440100', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 11, code: '440115', name: '南沙区', level: 'district', parentCode: '440100', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 12, code: '440117', name: '从化区', level: 'district', parentCode: '440100', displayOrder: 10, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 13, code: '440118', name: '增城区', level: 'district', parentCode: '440100', displayOrder: 11, deleted: 0, signature: null, signatureVersion: 0, children: [] }
         ]
       },
       {
-        areaId: 12,
-        areaName: '深圳市',
-        areaCode: '440300',
-        parentId: 1,
-        level: 2,
+        id: 14,
+        code: '440300',
+        name: '深圳市',
+        level: 'city',
+        parentCode: '440000',
+        displayOrder: 2,
+        deleted: 0,
+        signature: null,
+        signatureVersion: 0,
         children: [
-          { areaId: 121, areaName: '福田区', areaCode: '440304', parentId: 12, level: 3 },
-          { areaId: 122, areaName: '罗湖区', areaCode: '440303', parentId: 12, level: 3 },
-          { areaId: 123, areaName: '南山区', areaCode: '440305', parentId: 12, level: 3 },
-          { areaId: 124, areaName: '宝安区', areaCode: '440306', parentId: 12, level: 3 },
-          { areaId: 125, areaName: '龙岗区', areaCode: '440307', parentId: 12, level: 3 },
-          { areaId: 126, areaName: '龙华区', areaCode: '440309', parentId: 12, level: 3 },
-          { areaId: 127, areaName: '坪山区', areaCode: '440310', parentId: 12, level: 3 },
-          { areaId: 128, areaName: '光明区', areaCode: '440311', parentId: 12, level: 3 }
+          { id: 15, code: '440303', name: '罗湖区', level: 'district', parentCode: '440300', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 16, code: '440304', name: '福田区', level: 'district', parentCode: '440300', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 17, code: '440305', name: '南山区', level: 'district', parentCode: '440300', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 18, code: '440306', name: '宝安区', level: 'district', parentCode: '440300', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 19, code: '440307', name: '龙岗区', level: 'district', parentCode: '440300', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 20, code: '440308', name: '盐田区', level: 'district', parentCode: '440300', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 21, code: '440309', name: '龙华区', level: 'district', parentCode: '440300', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 22, code: '440310', name: '坪山区', level: 'district', parentCode: '440300', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 23, code: '440311', name: '光明区', level: 'district', parentCode: '440300', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] }
         ]
       },
       {
-        areaId: 13,
-        areaName: '珠海市',
-        areaCode: '440400',
-        parentId: 1,
-        level: 2,
+        id: 24,
+        code: '440400',
+        name: '珠海市',
+        level: 'city',
+        parentCode: '440000',
+        displayOrder: 3,
+        deleted: 0,
+        signature: null,
+        signatureVersion: 0,
         children: [
-          { areaId: 131, areaName: '香洲区', areaCode: '440402', parentId: 13, level: 3 },
-          { areaId: 132, areaName: '斗门区', areaCode: '440403', parentId: 13, level: 3 },
-          { areaId: 133, areaName: '金湾区', areaCode: '440404', parentId: 13, level: 3 }
+          { id: 25, code: '440402', name: '香洲区', level: 'district', parentCode: '440400', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 26, code: '440403', name: '斗门区', level: 'district', parentCode: '440400', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 27, code: '440404', name: '金湾区', level: 'district', parentCode: '440400', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] }
         ]
       },
       {
-        areaId: 14,
-        areaName: '汕头市',
-        areaCode: '440500',
-        parentId: 1,
-        level: 2,
+        id: 28,
+        code: '440600',
+        name: '佛山市',
+        level: 'city',
+        parentCode: '440000',
+        displayOrder: 4,
+        deleted: 0,
+        signature: null,
+        signatureVersion: 0,
         children: [
-          { areaId: 141, areaName: '龙湖区', areaCode: '440507', parentId: 14, level: 3 },
-          { areaId: 142, areaName: '金平区', areaCode: '440511', parentId: 14, level: 3 },
-          { areaId: 143, areaName: '濠江区', areaCode: '440512', parentId: 14, level: 3 },
-          { areaId: 144, areaName: '潮阳区', areaCode: '440513', parentId: 14, level: 3 },
-          { areaId: 145, areaName: '潮南区', areaCode: '440514', parentId: 14, level: 3 },
-          { areaId: 146, areaName: '澄海区', areaCode: '440515', parentId: 14, level: 3 }
+          { id: 29, code: '440604', name: '禅城区', level: 'district', parentCode: '440600', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 30, code: '440605', name: '南海区', level: 'district', parentCode: '440600', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 31, code: '440606', name: '顺德区', level: 'district', parentCode: '440600', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 32, code: '440607', name: '三水区', level: 'district', parentCode: '440600', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+          { id: 33, code: '440608', name: '高明区', level: 'district', parentCode: '440600', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] }
         ]
       },
-      {
-        areaId: 15,
-        areaName: '佛山市',
-        areaCode: '440600',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 151, areaName: '禅城区', areaCode: '440604', parentId: 15, level: 3 },
-          { areaId: 152, areaName: '南海区', areaCode: '440605', parentId: 15, level: 3 },
-          { areaId: 153, areaName: '顺德区', areaCode: '440606', parentId: 15, level: 3 },
-          { areaId: 154, areaName: '三水区', areaCode: '440607', parentId: 15, level: 3 },
-          { areaId: 155, areaName: '高明区', areaCode: '440608', parentId: 15, level: 3 }
-        ]
-      },
-      {
-        areaId: 16,
-        areaName: '韶关市',
-        areaCode: '440200',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 161, areaName: '武江区', areaCode: '440203', parentId: 16, level: 3 },
-          { areaId: 162, areaName: '浈江区', areaCode: '440204', parentId: 16, level: 3 },
-          { areaId: 163, areaName: '曲江区', areaCode: '440205', parentId: 16, level: 3 }
-        ]
-      },
-      {
-        areaId: 17,
-        areaName: '湛江市',
-        areaCode: '440800',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 171, areaName: '赤坎区', areaCode: '440802', parentId: 17, level: 3 },
-          { areaId: 172, areaName: '霞山区', areaCode: '440803', parentId: 17, level: 3 },
-          { areaId: 173, areaName: '坡头区', areaCode: '440804', parentId: 17, level: 3 },
-          { areaId: 174, areaName: '麻章区', areaCode: '440811', parentId: 17, level: 3 }
-        ]
-      },
-      {
-        areaId: 18,
-        areaName: '茂名市',
-        areaCode: '440900',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 181, areaName: '茂南区', areaCode: '440902', parentId: 18, level: 3 },
-          { areaId: 182, areaName: '电白区', areaCode: '440904', parentId: 18, level: 3 }
-        ]
-      },
-      {
-        areaId: 19,
-        areaName: '肇庆市',
-        areaCode: '441200',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 191, areaName: '端州区', areaCode: '441202', parentId: 19, level: 3 },
-          { areaId: 192, areaName: '鼎湖区', areaCode: '441203', parentId: 19, level: 3 },
-          { areaId: 193, areaName: '高要区', areaCode: '441204', parentId: 19, level: 3 }
-        ]
-      },
-      {
-        areaId: 20,
-        areaName: '惠州市',
-        areaCode: '441300',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 201, areaName: '惠城区', areaCode: '441302', parentId: 20, level: 3 },
-          { areaId: 202, areaName: '惠阳区', areaCode: '441303', parentId: 20, level: 3 }
-        ]
-      },
-      {
-        areaId: 21,
-        areaName: '梅州市',
-        areaCode: '441400',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 211, areaName: '梅江区', areaCode: '441402', parentId: 21, level: 3 },
-          { areaId: 212, areaName: '梅县区', areaCode: '441403', parentId: 21, level: 3 }
-        ]
-      },
-      {
-        areaId: 22,
-        areaName: '汕尾市',
-        areaCode: '441500',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 221, areaName: '城区', areaCode: '441502', parentId: 22, level: 3 }
-        ]
-      },
-      {
-        areaId: 23,
-        areaName: '河源市',
-        areaCode: '441600',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 231, areaName: '源城区', areaCode: '441602', parentId: 23, level: 3 }
-        ]
-      },
-      {
-        areaId: 24,
-        areaName: '阳江市',
-        areaCode: '441700',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 241, areaName: '江城区', areaCode: '441702', parentId: 24, level: 3 },
-          { areaId: 242, areaName: '阳东区', areaCode: '441704', parentId: 24, level: 3 }
-        ]
-      },
-      {
-        areaId: 25,
-        areaName: '清远市',
-        areaCode: '441800',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 251, areaName: '清城区', areaCode: '441802', parentId: 25, level: 3 },
-          { areaId: 252, areaName: '清新区', areaCode: '441803', parentId: 25, level: 3 }
-        ]
-      },
-      {
-        areaId: 26,
-        areaName: '东莞市',
-        areaCode: '441900',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 261, areaName: '莞城街道', areaCode: '441900001', parentId: 26, level: 3 },
-          { areaId: 262, areaName: '南城街道', areaCode: '441900002', parentId: 26, level: 3 },
-          { areaId: 263, areaName: '东城街道', areaCode: '441900003', parentId: 26, level: 3 }
-        ]
-      },
-      {
-        areaId: 27,
-        areaName: '中山市',
-        areaCode: '442000',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 271, areaName: '石岐街道', areaCode: '442000001', parentId: 27, level: 3 },
-          { areaId: 272, areaName: '东区街道', areaCode: '442000002', parentId: 27, level: 3 }
-        ]
-      },
-      {
-        areaId: 28,
-        areaName: '潮州市',
-        areaCode: '445100',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 281, areaName: '湘桥区', areaCode: '445102', parentId: 28, level: 3 },
-          { areaId: 282, areaName: '潮安区', areaCode: '445103', parentId: 28, level: 3 }
-        ]
-      },
-      {
-        areaId: 29,
-        areaName: '揭阳市',
-        areaCode: '445200',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 291, areaName: '榕城区', areaCode: '445202', parentId: 29, level: 3 },
-          { areaId: 292, areaName: '揭东区', areaCode: '445203', parentId: 29, level: 3 }
-        ]
-      },
-      {
-        areaId: 30,
-        areaName: '云浮市',
-        areaCode: '445300',
-        parentId: 1,
-        level: 2,
-        children: [
-          { areaId: 301, areaName: '云城区', areaCode: '445302', parentId: 30, level: 3 },
-          { areaId: 302, areaName: '云安区', areaCode: '445303', parentId: 30, level: 3 }
-        ]
-      }
+      { id: 34, code: '441300', name: '惠州市', level: 'city', parentCode: '440000', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 35, code: '441400', name: '梅州市', level: 'city', parentCode: '440000', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 36, code: '441500', name: '汕尾市', level: 'city', parentCode: '440000', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 37, code: '441600', name: '河源市', level: 'city', parentCode: '440000', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 38, code: '441700', name: '阳江市', level: 'city', parentCode: '440000', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 39, code: '441800', name: '清远市', level: 'city', parentCode: '440000', displayOrder: 10, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 40, code: '441900', name: '东莞市', level: 'city', parentCode: '440000', displayOrder: 11, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 41, code: '442000', name: '中山市', level: 'city', parentCode: '440000', displayOrder: 12, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 42, code: '442100', name: '潮州市', level: 'city', parentCode: '440000', displayOrder: 13, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 43, code: '445100', name: '揭阳市', level: 'city', parentCode: '440000', displayOrder: 14, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 44, code: '445200', name: '云浮市', level: 'city', parentCode: '440000', displayOrder: 15, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 45, code: '440900', name: '茂名市', level: 'city', parentCode: '440000', displayOrder: 16, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 46, code: '441200', name: '肇庆市', level: 'city', parentCode: '440000', displayOrder: 17, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 47, code: '441100', name: '韶关市', level: 'city', parentCode: '440000', displayOrder: 18, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 48, code: '440800', name: '湛江市', level: 'city', parentCode: '440000', displayOrder: 19, deleted: 0, signature: null, signatureVersion: 0, children: [] },
+      { id: 49, code: '440500', name: '汕头市', level: 'city', parentCode: '440000', displayOrder: 20, deleted: 0, signature: null, signatureVersion: 0, children: [] }
     ]
   }
+]
+
+export const areaLevelOptions = [
+  { value: 'province', label: '省级' },
+  { value: 'city', label: '市级' },
+  { value: 'district', label: '区县级' },
+  { value: 'street', label: '街道级' }
 ]

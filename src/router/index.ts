@@ -68,9 +68,19 @@ const router = createRouter({
       component: () => import('../views/logs/SysLoginLog.vue')
     },
     {
+      path: '/attachment',
+      name: 'AttachmentManage',
+      component: () => import('../views/AttachmentManagement.vue')
+    },
+    {
       path: '/app',
       name: 'AppManage',
       component: () => import('../views/AppManagement.vue')
+    },
+    {
+      path: '/area',
+      name: 'AreaManage',
+      component: () => import('../views/AreaManagement.vue')
     },
     {
       path: '/app/log',

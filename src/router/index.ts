@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/meal'
+      redirect: '/subsystem'
     },
     {
       path: '/meal',
@@ -86,6 +86,11 @@ const router = createRouter({
       path: '/dict',
       name: 'DictTypeManage',
       component: () => import('../views/DictTypeManagement.vue')
+    },
+    {
+      path: '/config',
+      name: 'ConfigManage',
+      component: () => import('../views/ConfigManagement.vue')
     },
     {
       path: '/dict/data',

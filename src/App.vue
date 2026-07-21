@@ -14,6 +14,10 @@
           class="app-nav"
           @select="handleMenuSelect"
         >
+          <el-menu-item index="/subsystem">
+            <el-icon><Monitor /></el-icon>
+            <span>子系统管理</span>
+          </el-menu-item>
           <el-menu-item index="/meal">
             <el-icon><Box /></el-icon>
             <span>套餐管理</span>
@@ -22,29 +26,41 @@
             <el-icon><Menu /></el-icon>
             <span>菜单管理</span>
           </el-menu-item>
-          <el-menu-item index="/role">
-            <el-icon><UserFilled /></el-icon>
-            <span>角色管理</span>
-          </el-menu-item>
-          <el-menu-item index="/post">
-            <el-icon><Briefcase /></el-icon>
-            <span>岗位管理</span>
-          </el-menu-item>
-          <el-menu-item index="/dept">
-            <el-icon><OfficeBuilding /></el-icon>
-            <span>部门管理</span>
-          </el-menu-item>
-          <el-menu-item index="/subsystem">
-            <el-icon><Monitor /></el-icon>
-            <span>子系统管理</span>
+          <el-menu-item index="/organization">
+            <el-icon><Share /></el-icon>
+            <span>组织管理</span>
           </el-menu-item>
           <el-menu-item index="/member">
             <el-icon><User /></el-icon>
             <span>成员管理</span>
           </el-menu-item>
-          <el-menu-item index="/organization">
-            <el-icon><Share /></el-icon>
-            <span>组织管理</span>
+          <el-menu-item index="/role">
+            <el-icon><UserFilled /></el-icon>
+            <span>角色管理</span>
+          </el-menu-item>
+          <el-menu-item index="/dept">
+            <el-icon><OfficeBuilding /></el-icon>
+            <span>部门管理</span>
+          </el-menu-item>
+          <el-menu-item index="/post">
+            <el-icon><Briefcase /></el-icon>
+            <span>岗位管理</span>
+          </el-menu-item>
+          <el-menu-item index="/dict">
+            <el-icon><Collection /></el-icon>
+            <span>字典管理</span>
+          </el-menu-item>
+          <el-menu-item index="/config">
+            <el-icon><Tools /></el-icon>
+            <span>配置管理</span>
+          </el-menu-item>
+          <el-menu-item index="/attachment">
+            <el-icon><Paperclip /></el-icon>
+            <span>附件管理</span>
+          </el-menu-item>
+          <el-menu-item index="/app">
+            <el-icon><Cellphone /></el-icon>
+            <span>App管理</span>
           </el-menu-item>
           <el-sub-menu index="logs">
             <template #title>
@@ -72,22 +88,6 @@
               <span>MQ消费日志</span>
             </el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="/attachment">
-            <el-icon><Paperclip /></el-icon>
-            <span>附件管理</span>
-          </el-menu-item>
-          <el-menu-item index="/app">
-            <el-icon><Cellphone /></el-icon>
-            <span>App管理</span>
-          </el-menu-item>
-          <el-menu-item index="/area">
-            <el-icon><Location /></el-icon>
-            <span>区域管理</span>
-          </el-menu-item>
-          <el-menu-item index="/dict">
-            <el-icon><Collection /></el-icon>
-            <span>字典管理</span>
-          </el-menu-item>
         </el-menu>
       </div>
       <div class="header-right">
@@ -120,7 +120,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton } from '@element-plus/icons-vue'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton, Tools } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

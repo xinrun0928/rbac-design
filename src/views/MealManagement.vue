@@ -174,8 +174,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="200" align="center" fixed="right">
           <template #default="{ row }">
+            <el-button type="primary" link :icon="Link" @click="handleBind(row)">绑定</el-button>
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
             <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
           </template>
@@ -374,6 +375,83 @@
         </div>
       </template>
     </el-drawer>
+
+    <!-- 绑定菜单抽屉 -->
+    <el-drawer
+      v-model="bindDrawerVisible"
+      :title="`绑定菜单 - ${currentMeal?.name || ''}`"
+      size="50%"
+      direction="rtl"
+      destroy-on-close
+    >
+      <div class="bind-container">
+        <!-- 左侧子系统列表 -->
+        <div class="bind-left">
+          <div class="bind-left-header">
+            <span>子系统</span>
+          </div>
+          <div class="bind-subsystem-list">
+            <div
+              v-for="sub in subsystems"
+              :key="sub.subsysId"
+              class="bind-subsystem-item"
+              :class="{ active: bindSelectedSubsystem === sub.subsysId }"
+              @click="loadBindMenuTree(sub.subsysId)"
+            >
+              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
+                <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
+                  <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+                </el-icon>
+              </div>
+              <span class="subsystem-name">{{ sub.subsysShortName }}</span>
+              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsysId] || 0 }}）</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧菜单树 -->
+        <div class="bind-right">
+          <div class="bind-right-header">
+            <span>菜单列表</span>
+            <el-checkbox v-model="bindCheckAll" :indeterminate="bindIndeterminate" @change="handleBindCheckAll">
+              全选
+            </el-checkbox>
+          </div>
+          <div class="bind-menu-tree">
+            <el-tree
+              ref="bindTreeRef"
+              :data="bindMenuTree"
+              show-checkbox
+              node-key="menuId"
+              :default-checked-keys="bindCheckedKeys"
+              :props="{ label: 'menuName', children: 'children' }"
+              default-expand-all
+              :indent="24"
+              :highlight-current="true"
+              @check-change="updateCheckAllStatus"
+            >
+              <template #default="{ node, data }">
+                <span class="bind-tree-node">
+                  <span class="node-label">{{ node.label }}</span>
+                  <span class="menu-type-tag" :class="getMenuTypeClass(data.menuType)">
+                    {{ getMenuTypeLabel(data.menuType) }}
+                  </span>
+                </span>
+              </template>
+            </el-tree>
+          </div>
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="drawer-footer">
+          <el-button @click="bindDrawerVisible = false">取消</el-button>
+          <el-button type="primary" :loading="bindLoading" @click="handleBindSave">
+            保存绑定
+          </el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -385,10 +463,14 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   CopyDocument, QuestionFilled,
   SuccessFilled, CircleCloseFilled, Box,
-  DataBoard, OfficeBuilding
+  DataBoard, OfficeBuilding, Link,
+  Bell, Document, Warning, Connection,
+  DataAnalysis, Share, Monitor, Setting
 } from '@element-plus/icons-vue'
 import type { Meal, SearchForm, MealForm } from '../types/meal'
 import { mealTypeOptions } from '../mock/mealData'
+import { mockSubsystemData } from '../mock/subsystemData'
+import type { Menu } from '../types/menu'
 import {
   getMeals,
   addMeal,
@@ -397,6 +479,8 @@ import {
   batchDeleteMeals,
   toggleMealStatus
 } from '../utils/mockApi'
+import { getMenuTreeBySubsystem } from '../utils/menuMockApi'
+import { getMealMenuIds, saveMealMenuBinding } from '../utils/mealMenuMockApi'
 
 // ── 状态 ──
 const loading = ref(false)
@@ -407,6 +491,19 @@ const addDialogVisible = ref(false)
 const drawerVisible = ref(false)
 const addFormRef = ref<FormInstance>()
 const editFormRef = ref<FormInstance>()
+
+// 绑定菜单状态
+const bindDrawerVisible = ref(false)
+const bindLoading = ref(false)
+const currentMeal = ref<Meal | null>(null)
+const bindSelectedSubsystem = ref<number>(1)
+const bindMenuTree = ref<Menu[]>([])
+const bindCheckedKeys = ref<number[]>([])
+const bindCheckAll = ref(false)
+const bindIndeterminate = ref(false)
+const bindTreeRef = ref<any>(null)
+const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
+const subsystemMenuCount = ref<Record<number, number>>({})
 
 const searchForm = reactive<SearchForm>({
   name: '',
@@ -689,6 +786,133 @@ async function handleStatusChange(row: Meal, newStatus: number) {
   }
 }
 
+// ── 绑定菜单相关方法 ──
+async function handleBind(row: Meal) {
+  currentMeal.value = row
+  bindSelectedSubsystem.value = 1
+  bindDrawerVisible.value = true
+  await loadSubsystemMenuCounts()
+  await loadBindMenuTree(1)
+}
+
+async function loadSubsystemMenuCounts() {
+  const counts: Record<number, number> = {}
+  for (const sub of subsystems) {
+    const tree = await getMenuTreeBySubsystem(sub.subsysId)
+    counts[sub.subsysId] = getAllMenuIds(tree).length
+  }
+  subsystemMenuCount.value = counts
+}
+
+async function loadBindMenuTree(subsysId: number) {
+  bindSelectedSubsystem.value = subsysId
+  bindLoading.value = true
+  try {
+    const tree = await getMenuTreeBySubsystem(subsysId)
+    bindMenuTree.value = tree
+
+    // 加载已绑定的菜单
+    if (currentMeal.value) {
+      const checkedIds = await getMealMenuIds(currentMeal.value.id)
+      // 过滤出当前子系统的菜单ID
+      const currentSubsysMenuIds = getAllMenuIds(tree)
+      bindCheckedKeys.value = checkedIds.filter(id => currentSubsysMenuIds.includes(id))
+      updateCheckAllStatus()
+    }
+  } catch (err) {
+    ElMessage.error('加载菜单失败')
+  } finally {
+    bindLoading.value = false
+  }
+}
+
+function getAllMenuIds(tree: Menu[]): number[] {
+  const ids: number[] = []
+  function traverse(items: Menu[]) {
+    items.forEach(item => {
+      ids.push(item.menuId)
+      if (item.children && item.children.length > 0) {
+        traverse(item.children)
+      }
+    })
+  }
+  traverse(tree)
+  return ids
+}
+
+function handleBindCheckAll(val: boolean) {
+  if (val) {
+    const allIds = getAllMenuIds(bindMenuTree.value)
+    bindTreeRef.value?.setCheckedKeys(allIds)
+  } else {
+    bindTreeRef.value?.setCheckedKeys([])
+  }
+  bindIndeterminate.value = false
+}
+
+function updateCheckAllStatus() {
+  const allIds = getAllMenuIds(bindMenuTree.value)
+  const checkedIds = bindTreeRef.value?.getCheckedKeys() || []
+  bindCheckAll.value = checkedIds.length === allIds.length
+  bindIndeterminate.value = checkedIds.length > 0 && checkedIds.length < allIds.length
+}
+
+async function handleBindSave() {
+  if (!currentMeal.value) return
+
+  bindLoading.value = true
+  try {
+    const checkedKeys = bindTreeRef.value?.getCheckedKeys() || []
+    const halfCheckedKeys = bindTreeRef.value?.getHalfCheckedKeys() || []
+    const allSelectedIds = [...checkedKeys, ...halfCheckedKeys]
+
+    await saveMealMenuBinding(currentMeal.value.id, allSelectedIds, bindSelectedSubsystem.value)
+    ElMessage.success('绑定保存成功')
+    bindDrawerVisible.value = false
+  } catch (err) {
+    ElMessage.error('保存失败，请重试')
+  } finally {
+    bindLoading.value = false
+  }
+}
+
+// 子系统图标配置
+const subsystemIconMap: Record<number, { icon: string; color: string; bg: string }> = {
+  1: { icon: 'Bell', color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' },
+  2: { icon: 'Document', color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
+  3: { icon: 'Warning', color: '#F56C6C', bg: 'linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)' },
+  4: { icon: 'Connection', color: '#9B59B6', bg: 'linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%)' },
+  5: { icon: 'Box', color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
+  6: { icon: 'DataAnalysis', color: '#00BCD4', bg: 'linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%)' },
+  7: { icon: 'Share', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)' },
+  8: { icon: 'Monitor', color: '#3F51B5', bg: 'linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%)' },
+  99: { icon: 'Setting', color: '#606266', bg: 'linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)' }
+}
+
+function getSubsystemIconStyle(subsysId: number) {
+  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+}
+
+function getMenuTypeLabel(menuType: number): string {
+  const typeMap: Record<number, string> = {
+    0: '目录',
+    1: '菜单',
+    2: '权限',
+    99: '导航'
+  }
+  return typeMap[menuType] || '未知'
+}
+
+function getMenuTypeTagType(menuType: number): '' | 'success' | 'warning' | 'info' | 'danger' {
+  const typeMap: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
+    0: '',        // 目录 - 蓝色
+    1: 'success', // 菜单 - 绿色
+    2: 'danger',  // 权限 - 红色
+    99: 'warning' // 导航 - 橙色
+  }
+  return typeMap[menuType] || 'info'
+}
+
 async function handleCopy(code: string) {
   try {
     await navigator.clipboard.writeText(code)
@@ -733,6 +957,133 @@ function getRelativeTime(dateStr: string): string {
   if (diff < week) return `${Math.floor(diff / day)}天前`
 
   return dateStr.split(' ')[0]
+}
+
+// ── 绑定菜单相关方法 ──
+async function handleBind(row: Meal) {
+  currentMeal.value = row
+  bindSelectedSubsystem.value = 1
+  bindDrawerVisible.value = true
+  await loadSubsystemMenuCounts()
+  await loadBindMenuTree(1)
+}
+
+async function loadSubsystemMenuCounts() {
+  const counts: Record<number, number> = {}
+  for (const sub of subsystems) {
+    const tree = await getMenuTreeBySubsystem(sub.subsysId)
+    counts[sub.subsysId] = getAllMenuIds(tree).length
+  }
+  subsystemMenuCount.value = counts
+}
+
+async function loadBindMenuTree(subsysId: number) {
+  bindSelectedSubsystem.value = subsysId
+  bindLoading.value = true
+  try {
+    const tree = await getMenuTreeBySubsystem(subsysId)
+    bindMenuTree.value = tree
+
+    // 加载已绑定的菜单
+    if (currentMeal.value) {
+      const checkedIds = await getMealMenuIds(currentMeal.value.id)
+      // 过滤出当前子系统的菜单ID
+      const currentSubsysMenuIds = getAllMenuIds(tree)
+      bindCheckedKeys.value = checkedIds.filter(id => currentSubsysMenuIds.includes(id))
+      updateCheckAllStatus()
+    }
+  } catch (err) {
+    ElMessage.error('加载菜单失败')
+  } finally {
+    bindLoading.value = false
+  }
+}
+
+function getAllMenuIds(tree: Menu[]): number[] {
+  const ids: number[] = []
+  function traverse(items: Menu[]) {
+    items.forEach(item => {
+      ids.push(item.menuId)
+      if (item.children && item.children.length > 0) {
+        traverse(item.children)
+      }
+    })
+  }
+  traverse(tree)
+  return ids
+}
+
+function handleBindCheckAll(val: boolean) {
+  if (val) {
+    const allIds = getAllMenuIds(bindMenuTree.value)
+    bindTreeRef.value?.setCheckedKeys(allIds)
+  } else {
+    bindTreeRef.value?.setCheckedKeys([])
+  }
+  bindIndeterminate.value = false
+}
+
+function updateCheckAllStatus() {
+  const allIds = getAllMenuIds(bindMenuTree.value)
+  const checkedIds = bindTreeRef.value?.getCheckedKeys() || []
+  bindCheckAll.value = checkedIds.length === allIds.length
+  bindIndeterminate.value = checkedIds.length > 0 && checkedIds.length < allIds.length
+}
+
+async function handleBindSave() {
+  if (!currentMeal.value) return
+
+  bindLoading.value = true
+  try {
+    const checkedKeys = bindTreeRef.value?.getCheckedKeys() || []
+    const halfCheckedKeys = bindTreeRef.value?.getHalfCheckedKeys() || []
+    const allSelectedIds = [...checkedKeys, ...halfCheckedKeys]
+
+    await saveMealMenuBinding(currentMeal.value.id, allSelectedIds, bindSelectedSubsystem.value)
+    ElMessage.success('绑定保存成功')
+    bindDrawerVisible.value = false
+  } catch (err) {
+    ElMessage.error('保存失败，请重试')
+  } finally {
+    bindLoading.value = false
+  }
+}
+
+// 子系统图标配置
+const subsystemIconMap: Record<number, { icon: string; color: string; bg: string }> = {
+  1: { icon: 'Bell', color: '#E6A23C', bg: 'linear-gradient(135deg, #FDF6EC 0%, #FAECD8 100%)' },
+  2: { icon: 'Document', color: '#409EFF', bg: 'linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%)' },
+  3: { icon: 'Warning', color: '#F56C6C', bg: 'linear-gradient(135deg, #FEF0F0 0%, #FDE2E2 100%)' },
+  4: { icon: 'Connection', color: '#9B59B6', bg: 'linear-gradient(135deg, #F4ECF7 0%, #E8DAEF 100%)' },
+  5: { icon: 'Box', color: '#67C23A', bg: 'linear-gradient(135deg, #F0F9EB 0%, #E1F3D8 100%)' },
+  6: { icon: 'DataAnalysis', color: '#00BCD4', bg: 'linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%)' },
+  7: { icon: 'Share', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)' },
+  8: { icon: 'Monitor', color: '#3F51B5', bg: 'linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%)' },
+  99: { icon: 'Setting', color: '#606266', bg: 'linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)' }
+}
+
+function getSubsystemIconStyle(subsysId: number) {
+  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+}
+
+function getMenuTypeLabel(menuType: number): string {
+  const typeMap: Record<number, string> = {
+    0: '目录',
+    1: '菜单',
+    2: '权限',
+    99: '导航'
+  }
+  return typeMap[menuType] || '未知'
+}
+
+function getMenuTypeClass(menuType: number): string {
+  const classMap: Record<number, string> = {
+    0: 'type-directory',
+    1: 'type-menu',
+    2: 'type-permission',
+    99: 'type-navigation'
+  }
+  return classMap[menuType] || ''
 }
 
 // ── 初始化 ──
@@ -1074,6 +1425,195 @@ onMounted(() => {
       font-size: 12px;
       color: #909399;
     }
+  }
+
+  // 绑定菜单容器
+  .bind-container {
+    display: flex;
+    height: calc(100vh - 180px);
+    border: 1px solid #EBEEF5;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .bind-left {
+      width: 180px;
+      border-right: 1px solid #EBEEF5;
+      display: flex;
+      flex-direction: column;
+
+      .bind-left-header {
+        padding: 12px 16px;
+        background: #F5F7FA;
+        font-weight: 600;
+        font-size: 14px;
+        color: #303133;
+        border-bottom: 1px solid #EBEEF5;
+      }
+
+      .bind-subsystem-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+      }
+
+      .bind-subsystem-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 4px;
+
+        &:hover {
+          background: #F5F7FA;
+        }
+
+        &.active {
+          background: linear-gradient(135deg, #ECF5FF 0%, #D9ECFF 100%);
+
+          .subsystem-name {
+            color: #409EFF;
+            font-weight: 500;
+          }
+
+          .subsystem-count {
+            color: #409EFF;
+          }
+        }
+
+        .subsystem-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+
+          .el-icon {
+            font-size: 16px;
+          }
+        }
+
+        .subsystem-name {
+          font-size: 13px;
+          color: #606266;
+        }
+
+        .subsystem-count {
+          font-size: 12px;
+          color: #909399;
+        }
+      }
+    }
+
+    .bind-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .bind-right-header {
+        padding: 12px 16px;
+        background: #F5F7FA;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #303133;
+        border-bottom: 1px solid #EBEEF5;
+      }
+
+      .bind-menu-tree {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+
+        :deep(.el-tree) {
+          --el-tree-node-content-height: 36px;
+
+          .bind-tree-node {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            overflow: hidden;
+
+            .node-label {
+              flex: 1;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              font-size: 13px;
+              color: #303133;
+            }
+
+            .menu-type-tag {
+              flex-shrink: 0;
+              font-size: 11px;
+              height: 20px;
+              padding: 0 8px;
+              border-radius: 10px;
+              font-weight: 500;
+
+              &.type-directory {
+                background: #409EFF;
+                color: #FFFFFF;
+                border: none;
+              }
+
+              &.type-menu {
+                background: #67C23A;
+                color: #FFFFFF;
+                border: none;
+              }
+
+              &.type-permission {
+                background: #F56C6C;
+                color: #FFFFFF;
+                border: none;
+              }
+
+              &.type-navigation {
+                background: #E6A23C;
+                color: #FFFFFF;
+                border: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 抽屉样式
+  :deep(.el-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
+      padding: 20px 24px;
+      border-bottom: 1px solid #EBEEF5;
+
+      .el-drawer__title {
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+
+    .el-drawer__body {
+      padding: 20px;
+    }
+  }
+
+  .drawer-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #EBEEF5;
+    margin: 0 -20px -20px;
+    background: #FFFFFF;
   }
 }
 </style>

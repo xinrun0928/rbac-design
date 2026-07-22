@@ -93,6 +93,11 @@ const router = createRouter({
       component: () => import('../views/ConfigManagement.vue')
     },
     {
+      path: '/msg/template',
+      name: 'MessageTemplateManage',
+      component: () => import('../views/MessageTemplateManagement.vue')
+    },
+    {
       path: '/dict/data',
       name: 'DictDataManage',
       component: () => import('../views/DictDataManagement.vue')

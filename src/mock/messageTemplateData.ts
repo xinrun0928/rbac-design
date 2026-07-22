@@ -1,0 +1,121 @@
+import type { MessageTemplate } from '../types/messageTemplate'
+
+export const messageTemplateData: MessageTemplate[] = [
+  {
+    id: 1,
+    templateId: '10054733',
+    msgId: '8ff450fe920444dc9367e0dfd6b1661f',
+    name: null,
+    template: '您好！为了您的项目${2}满足最终立项审定要求，已对您项目的部分信息进行修改，请登录广东省交通标准管理系统查看。',
+    content: '您好！为了您的项目${[%s]}满足最终立项审定要求，已对您项目的部分信息进行修改，请登录广东省交通标准管理系统查看。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"8ff450fe920444dc9367e0dfd6b1661f","templateId":"10054733"}]}},"timestamp":1691113076356}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"5fcd100051ce45d79117b18f1738eae1","desc":"","status":"2"}]}},"timestamp":1752130383607}',
+    status: 1,
+    createTime: '2023-03-24 16:37:00',
+    deleted: 0
+  },
+  {
+    id: 2,
+    templateId: '10054734',
+    msgId: '96955ed731da4262ba037836fbd3869b',
+    name: null,
+    template: '您好！您的项目${2}已通过立项审查，现可登录广东省交通标准管理系统查看立项审查结果。',
+    content: '您好！您的项目${[%s]}已通过立项审查，现可登录广东省交通标准管理系统查看立项审查结果。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"96955ed731da4262ba037836fbd3869b","templateId":"10054734"}]}},"timestamp":1691113593965}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"7b4b314b40334b5694dcc27e8e436984","desc":"","status":"2"}]}},"timestamp":1752130431143}',
+    status: 1,
+    createTime: '2023-03-24 16:37:00',
+    deleted: 0
+  },
+  {
+    id: 3,
+    templateId: '10054775',
+    msgId: '09aeca2ff0ca4b58a743af39d0ba11cb',
+    name: null,
+    template: '您好！您的项目${2}已确定项目主审人，现可登录广东省交通标准管理系统查看。',
+    content: '您好！您的项目${[%s]}已确定项目主审人，现可登录广东省交通标准管理系统查看。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"09aeca2ff0ca4b58a743af39d0ba11cb","templateId":"10054775"}]}},"timestamp":1691374560439}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"0e5c1d1a77c3405c86feaa29fbab16e7","desc":"","status":"2"}]}},"timestamp":1752130437669}',
+    status: 1,
+    createTime: '2023-03-24 16:37:00',
+    deleted: 0
+  },
+  {
+    id: 4,
+    templateId: '10063371',
+    msgId: 'cbf4ae7299294c2baa1d388ee3016483',
+    name: null,
+    template: '${2}您好，${3}已进入${4}，您可登录标准项目管理系统查看项目进展${5}',
+    content: '${[%s]}您好，${[%s]}已进入${[%s]}，您可登录标准项目管理系统查看项目进展${[%s]}',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"cbf4ae7299294c2baa1d388ee3016483","templateId":"10063371"}]}},"timestamp":1717400179597}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"4c647d01469d4960a06dac611433c794","desc":"","status":"2"}]}},"timestamp":1752132189698}',
+    status: 1,
+    createTime: '2023-03-24 16:37:00',
+    deleted: 0
+  },
+  {
+    id: 5,
+    templateId: '10532544',
+    msgId: 'dc1467ff88744366a8062769d264bd79',
+    name: null,
+    template: '短信验证码是${2}，有效期5分钟，如果不是本人操作，不要理会。',
+    content: '短信验证码是${[%s]}，有效期5分钟，如果不是本人操作，不要理会。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"dc1467ff88744366a8062769d264bd79","templateId":"10532544"}]}},"timestamp":1751622299018}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"33cc04c4821a4d53bc3bfb8e45847382","desc":"","status":"1"}]}},"timestamp":1752130346182}',
+    status: 0,
+    createTime: '2025-07-04 17:44:59',
+    deleted: 0
+  },
+  {
+    id: 6,
+    templateId: '10532545',
+    msgId: '354f8b4da0d34207a32f6003e91a550e',
+    name: null,
+    template: '修改密码短信验证码是${2}，有效期5分钟，如果不是本人操作，不要理会。',
+    content: '修改密码短信验证码是${[%s]}，有效期5分钟，如果不是本人操作，不要理会。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"354f8b4da0d34207a32f6003e91a550e","templateId":"10532545"}]}},"timestamp":1751622357359}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"e196be6874bd41b5a76e7f34082a68ac","desc":"","status":"1"}]}},"timestamp":1752130365918}',
+    status: 0,
+    createTime: '2025-07-04 17:45:57',
+    deleted: 0
+  },
+  {
+    id: 7,
+    templateId: '10532546',
+    msgId: '7d76ea7dc2394da29ccadf5bc4659d83',
+    name: null,
+    template: '您登录系统的验证码为${2}，有效期为5分钟，请注意保密。',
+    content: '您登录系统的验证码为${[%s]}，有效期为5分钟，请注意保密。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"7d76ea7dc2394da29ccadf5bc4659d83","templateId":"10532546"}]}},"timestamp":1751622384200}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"b7c4a8c0428e41e5bfbd2aa2bc94548d","desc":"","status":"1"}]}},"timestamp":1752130371576}',
+    status: 0,
+    createTime: '2025-07-04 17:46:24',
+    deleted: 0
+  },
+  {
+    id: 8,
+    templateId: '10532547',
+    msgId: '86d9038b9c88462e8f9e1d7c3eab10cc',
+    name: null,
+    template: '恭喜您，成功注册广东交通标准管理系统，账号：您的手机号码，初始密码：${2}。',
+    content: '恭喜您，成功注册广东交通标准管理系统，账号：您的手机号码，初始密码：${[%s]}。',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"86d9038b9c88462e8f9e1d7c3eab10cc","templateId":"10532547"}]}},"timestamp":1751622400411}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"bd5d2afe27244452865da155d8027e15","desc":"","status":"1"}]}},"timestamp":1752130375589}',
+    status: 0,
+    createTime: '2025-07-04 17:46:40',
+    deleted: 0
+  },
+  {
+    id: 9,
+    templateId: '10536402',
+    msgId: '826fe59d824d4d009666a591a20144aa',
+    name: null,
+    template: '您好！您单位负责的标准项目即将进入"${2}"，请尽快登录系统查看任务详情并按时完成相关工作。如有疑问，请联系系统管理员。感谢配合！',
+    content: '您好！您单位负责的标准项目即将进入"${[%s]}"，请尽快登录系统查看任务详情并按时完成相关工作。如有疑问，请联系系统管理员。感谢配合！',
+    extJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"添加短信模板成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","msgId":"826fe59d824d4d009666a591a20144aa","templateId":"10536402"}]}},"timestamp":1765182588888}',
+    approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已驳回","msgId":"849dfcfd9508403585e5a3de94252764","desc":"该短信模板未存在于账号所申请发信模板中，如需新增短信模板，需提交短信变更流程。","status":"8"}]}},"timestamp":1765353725613}',
+    status: 0,
+    createTime: '2025-12-08 16:29:48',
+    deleted: 0
+  }
+]

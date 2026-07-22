@@ -58,6 +58,10 @@
             <el-icon><Paperclip /></el-icon>
             <span>附件管理</span>
           </el-menu-item>
+          <el-menu-item index="/msg/template">
+            <el-icon><ChatDotSquare /></el-icon>
+            <span>短信模版</span>
+          </el-menu-item>
           <el-menu-item index="/app">
             <el-icon><Cellphone /></el-icon>
             <span>App管理</span>
@@ -120,7 +124,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton, Tools } from '@element-plus/icons-vue'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton, Tools, ChatDotSquare } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

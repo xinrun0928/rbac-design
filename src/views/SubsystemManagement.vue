@@ -40,13 +40,6 @@
       </div>
     </el-card>
 
-    <!-- 工具栏 -->
-    <div class="toolbar animate-item">
-      <div class="toolbar-right">
-        <span class="total-count">共 {{ pagination.total }} 条数据</span>
-      </div>
-    </div>
-
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
       <el-table
@@ -88,6 +81,25 @@
         <el-table-column prop="subsysShortName" label="简称" width="100" align="center">
           <template #default="{ row }">
             <span class="short-name-text">{{ row.subsysShortName }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="icon" label="图标" width="80" align="center">
+          <template #default="{ row }">
+            <div v-if="row.icon" class="icon-preview" :style="{ background: row.color || '#409EFF' }">
+              <el-icon :size="16" color="#fff"><component :is="row.icon" /></el-icon>
+            </div>
+            <span v-else class="empty-text">-</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="color" label="颜色" width="100" align="center">
+          <template #default="{ row }">
+            <div v-if="row.color" class="color-preview">
+              <div class="color-block" :style="{ background: row.color }"></div>
+              <span class="color-text">{{ row.color.substring(0, 15) }}...</span>
+            </div>
+            <span v-else class="empty-text">-</span>
           </template>
         </el-table-column>
 
@@ -203,13 +215,13 @@
       </div>
     </el-card>
 
-    <!-- 新增弹窗 -->
-    <el-dialog
+    <!-- 新增抽屉 -->
+    <el-drawer
       v-model="addDialogVisible"
       title="新增子系统"
-      width="580px"
+      size="500px"
+      direction="rtl"
       destroy-on-close
-      :close-on-click-modal="false"
       @closed="resetForm"
     >
       <el-form
@@ -253,6 +265,38 @@
           />
         </el-form-item>
 
+        <el-form-item label="图标" prop="icon">
+          <el-select v-model="addFormData.icon" placeholder="请选择图标" clearable style="width: 100%">
+            <el-option v-for="item in iconOptions" :key="item.value" :label="item.label" :value="item.value">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <el-icon><component :is="item.value" /></el-icon>
+                <span>{{ item.label }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="颜色" prop="color">
+          <el-select v-model="addFormData.color" placeholder="请选择颜色" clearable style="width: 100%">
+            <el-option v-for="item in colorOptions" :key="item.value" :label="item.label" :value="item.value">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div :style="{ width: '20px', height: '20px', borderRadius: '4px', background: item.value }"></div>
+                <span>{{ item.label }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="路径前缀" prop="pathPrefix">
+          <el-input v-model="addFormData.pathPrefix" placeholder="如：/duty" maxlength="50" />
+          <div class="form-tip">URL路径前缀，以/开头</div>
+        </el-form-item>
+
+        <el-form-item label="表前缀" prop="tablePrefix">
+          <el-input v-model="addFormData.tablePrefix" placeholder="如：duty_" maxlength="50" />
+          <div class="form-tip">数据库表名前缀，如duty_、plan_、event_等</div>
+        </el-form-item>
+
         <el-form-item label="显示顺序" prop="displayOrder">
           <el-input-number v-model="addFormData.displayOrder" :min="0" :max="9999" style="width: 200px" />
           <span class="form-tip-inline">数值越小越靠前</span>
@@ -269,14 +313,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="addFormData.status">
-            <el-radio :value="1101">
-              <el-icon color="#67C23A"><SuccessFilled /></el-icon>
-              正常
-            </el-radio>
-            <el-radio :value="1102">
-              <el-icon color="#909399"><CircleCloseFilled /></el-icon>
-              停用
-            </el-radio>
+            <el-radio :value="1101">正常</el-radio>
+            <el-radio :value="1102">停用</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -298,7 +336,7 @@
           确认创建
         </el-button>
       </template>
-    </el-dialog>
+    </el-drawer>
 
     <!-- 编辑抽屉 -->
     <el-drawer
@@ -345,6 +383,28 @@
           />
         </el-form-item>
 
+        <el-form-item label="图标" prop="icon">
+          <el-select v-model="editFormData.icon" placeholder="请选择图标" clearable style="width: 100%">
+            <el-option v-for="item in iconOptions" :key="item.value" :label="item.label" :value="item.value">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <el-icon><component :is="item.value" /></el-icon>
+                <span>{{ item.label }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="颜色" prop="color">
+          <el-select v-model="editFormData.color" placeholder="请选择颜色" clearable style="width: 100%">
+            <el-option v-for="item in colorOptions" :key="item.value" :label="item.label" :value="item.value">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div :style="{ width: '20px', height: '20px', borderRadius: '4px', background: item.value }"></div>
+                <span>{{ item.label }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="路径前缀" prop="pathPrefix">
           <el-input
             v-model="editFormData.pathPrefix"
@@ -379,14 +439,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="editFormData.status">
-            <el-radio :value="1101">
-              <el-icon color="#67C23A"><SuccessFilled /></el-icon>
-              正常
-            </el-radio>
-            <el-radio :value="1102">
-              <el-icon color="#909399"><CircleCloseFilled /></el-icon>
-              停用
-            </el-radio>
+            <el-radio :value="1101">正常</el-radio>
+            <el-radio :value="1102">停用</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -465,7 +519,9 @@ const addFormData = reactive<SubsystemForm>({
   displayOrder: 0,
   isHidden: false,
   status: 1101,
-  remark: ''
+  remark: '',
+  icon: '',
+  color: ''
 })
 
 const editFormData = reactive<SubsystemForm>({
@@ -477,8 +533,36 @@ const editFormData = reactive<SubsystemForm>({
   displayOrder: 0,
   isHidden: false,
   status: 1101,
-  remark: ''
+  remark: '',
+  icon: '',
+  color: ''
 })
+
+// 图标选项
+const iconOptions = [
+  { label: 'Monitor', value: 'Monitor' },
+  { label: 'Document', value: 'Document' },
+  { label: 'Warning', value: 'Warning' },
+  { label: 'Connection', value: 'Connection' },
+  { label: 'Box', value: 'Box' },
+  { label: 'DataAnalysis', value: 'DataAnalysis' },
+  { label: 'Upload', value: 'Upload' },
+  { label: 'Setting', value: 'Setting' },
+  { label: 'Odometer', value: 'Odometer' }
+]
+
+// 颜色选项
+const colorOptions = [
+  { label: '紫蓝渐变', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+  { label: '粉紫渐变', value: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+  { label: '蓝青渐变', value: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+  { label: '绿色渐变', value: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+  { label: '粉黄渐变', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+  { label: '紫粉渐变', value: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
+  { label: '橙粉渐变', value: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
+  { label: '蓝青渐变2', value: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)' },
+  { label: '深蓝渐变', value: 'linear-gradient(135deg, #2c3e50 0%, #3498db 100%)' }
+]
 
 // ── 表单验证规则 ──
 const formRules: FormRules = {
@@ -584,6 +668,8 @@ function handleEdit(row: Subsystem) {
   editFormData.isHidden = row.isHidden
   editFormData.status = row.status
   editFormData.remark = row.remark
+  editFormData.icon = row.icon || ''
+  editFormData.color = row.color || ''
   drawerVisible.value = true
 }
 
@@ -602,10 +688,14 @@ async function handleAddSubmit() {
       subsysCode: addFormData.subsysCode,
       subsysName: addFormData.subsysName,
       subsysShortName: addFormData.subsysShortName,
+      pathPrefix: addFormData.pathPrefix,
+      tablePrefix: addFormData.tablePrefix,
       displayOrder: addFormData.displayOrder,
       isHidden: addFormData.isHidden,
       status: addFormData.status,
-      remark: addFormData.remark
+      remark: addFormData.remark,
+      icon: addFormData.icon,
+      color: addFormData.color
     })
     ElMessage.success('新增成功，子系统已创建')
     addDialogVisible.value = false
@@ -633,10 +723,14 @@ async function handleEditSubmit() {
         subsysCode: editFormData.subsysCode,
         subsysName: editFormData.subsysName,
         subsysShortName: editFormData.subsysShortName,
+        pathPrefix: editFormData.pathPrefix,
+        tablePrefix: editFormData.tablePrefix,
         displayOrder: editFormData.displayOrder,
         isHidden: editFormData.isHidden,
         status: editFormData.status,
-        remark: editFormData.remark
+        remark: editFormData.remark,
+        icon: editFormData.icon,
+        color: editFormData.color
       })
       ElMessage.success('编辑成功，数据已更新')
       drawerVisible.value = false
@@ -763,6 +857,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画
@@ -781,12 +878,12 @@ onMounted(() => {
 
   // 搜索栏
   .search-card {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     border-radius: 12px;
     border: none;
 
     :deep(.el-card__body) {
-      padding: 16px 20px;
+      padding: 14px 20px;
     }
 
     .search-content {
@@ -828,27 +925,29 @@ onMounted(() => {
       }
     }
 
-    .total-count {
-      font-size: 13px;
-      color: #909399;
-      padding: 6px 14px;
-      background: #F0F2F5;
-      border-radius: 6px;
-    }
   }
 
   // 表格卡片
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     :deep(.el-table) {
       border-radius: 8px;
       overflow: hidden;
+      flex: 1;
 
       .el-table__row {
         transition: background-color 0.2s ease;
@@ -873,6 +972,33 @@ onMounted(() => {
       background: #ECF5FF;
       padding: 3px 8px;
       border-radius: 4px;
+    }
+
+    .icon-preview {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .color-preview {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .color-block {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .color-text {
+      font-size: 11px;
+      color: #909399;
     }
 
     .name-text {

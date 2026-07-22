@@ -51,10 +51,14 @@ export async function addSubsystem(data: {
   subsysCode: string
   subsysName: string
   subsysShortName: string
+  pathPrefix?: string
+  tablePrefix?: string
   displayOrder: number
   isHidden: boolean
   status: number
   remark: string
+  icon?: string
+  color?: string
 }): Promise<Subsystem> {
   await delay(400 + Math.random() * 300)
 
@@ -65,10 +69,14 @@ export async function addSubsystem(data: {
     subsysCode: data.subsysCode.toUpperCase(),
     subsysName: data.subsysName,
     subsysShortName: data.subsysShortName,
+    pathPrefix: data.pathPrefix || '',
+    tablePrefix: data.tablePrefix || '',
     displayOrder: data.displayOrder,
     isHidden: data.isHidden,
     status: data.status,
     remark: data.remark,
+    icon: data.icon || '',
+    color: data.color || '',
     creater: '当前用户',
     createTime: formatNow(),
     updater: '',
@@ -89,10 +97,14 @@ export async function updateSubsystem(
     subsysCode: string
     subsysName: string
     subsysShortName: string
+    pathPrefix?: string
+    tablePrefix?: string
     displayOrder: number
     isHidden: boolean
     status: number
     remark: string
+    icon?: string
+    color?: string
   }
 ): Promise<Subsystem> {
   await delay(400 + Math.random() * 300)
@@ -107,10 +119,14 @@ export async function updateSubsystem(
     subsysCode: data.subsysCode.toUpperCase(),
     subsysName: data.subsysName,
     subsysShortName: data.subsysShortName,
+    pathPrefix: data.pathPrefix || mockSubsystemData[index].pathPrefix,
+    tablePrefix: data.tablePrefix || mockSubsystemData[index].tablePrefix,
     displayOrder: data.displayOrder,
     isHidden: data.isHidden,
     status: data.status,
     remark: data.remark,
+    icon: data.icon || mockSubsystemData[index].icon,
+    color: data.color || mockSubsystemData[index].color,
     updater: '当前用户',
     updateTime: formatNow()
   }

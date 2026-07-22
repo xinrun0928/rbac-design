@@ -34,6 +34,8 @@ export interface SubsystemForm {
   isHidden: boolean
   status: number
   remark: string
+  icon?: string
+  color?: string
 }
 
 /** 搜索表单类型 */

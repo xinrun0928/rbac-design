@@ -39,12 +39,12 @@
           @click="handleSelectSubsystem(subsystem)"
         >
           <div class="subsystem-icon" :style="{ background: subsystem.color }">
-            <el-icon :size="28">
-              <component :is="subsystem.icon" />
+            <el-icon :size="32">
+              <component :is="getIconComponent(subsystem.icon)" />
             </el-icon>
           </div>
           <div class="subsystem-info">
-            <h4>{{ subsystem.subsysName }}</h4>
+            <h4>{{ subsystem.subsysName.replace('子系统', '') }}</h4>
             <p>{{ subsystem.remark }}</p>
           </div>
         </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -70,6 +70,8 @@ import {
   Odometer,
   Setting
 } from '@element-plus/icons-vue'
+import { mockSubsystemData } from '../mock/subsystemData'
+import type { Subsystem } from '../types/subsystem'
 
 const router = useRouter()
 
@@ -90,99 +92,45 @@ onMounted(() => {
   }
 })
 
-// 子系统列表（8个主要子系统）
-const subsystemList = ref([
-  {
-    subsysId: 1,
-    subsysName: '应急值守管理',
-    subsysShortName: '值守',
-    remark: '值班、排班、交接班',
-    icon: Monitor,
-    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-  },
-  {
-    subsysId: 2,
-    subsysName: '应急预案管理',
-    subsysShortName: '预案',
-    remark: '预案编制、演练、复盘',
-    icon: Document,
-    color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-  },
-  {
-    subsysId: 3,
-    subsysName: '应急事件管理',
-    subsysShortName: '事件',
-    remark: '事件接报、响应、处置',
-    icon: Warning,
-    color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-  },
-  {
-    subsysId: 4,
-    subsysName: '应急指挥调度',
-    subsysShortName: '调度',
-    remark: '资源调度、任务下达',
-    icon: Connection,
-    color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
-  },
-  {
-    subsysId: 5,
-    subsysName: '应急物资管理',
-    subsysShortName: '物资',
-    remark: '物资库存、调度、盘点',
-    icon: Box,
-    color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-  },
-  {
-    subsysId: 6,
-    subsysName: '辅助决策系统',
-    subsysShortName: '决策',
-    remark: '态势分析、辅助决策',
-    icon: DataAnalysis,
-    color: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
-  },
-  {
-    subsysId: 7,
-    subsysName: '数据融合系统',
-    subsysShortName: '融合',
-    remark: '多源数据接入、融合',
-    icon: Upload,
-    color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
-  },
-  {
-    subsysId: 8,
-    subsysName: '综合展示系统',
-    subsysShortName: '展示',
-    remark: '大屏展示、数据可视化',
-    icon: Odometer,
-    color: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
-  }
-])
+// 子系统列表（从 mock 数据中读取，过滤掉隐藏的）
+const subsystemList = computed(() => {
+  return mockSubsystemData.filter(sub => !sub.isHidden)
+})
+
+// 图标名称到组件的映射
+const iconComponents: Record<string, any> = {
+  Monitor,
+  Document,
+  Warning,
+  Connection,
+  Box,
+  DataAnalysis,
+  Upload,
+  Odometer,
+  Setting
+}
+
+// 获取图标组件
+const getIconComponent = (iconName: string | undefined) => {
+  return iconName ? iconComponents[iconName] || Setting : Setting
+}
 
 // 选择子系统
 const handleSelectSubsystem = (subsystem: any) => {
-  ElMessageBox.confirm(
-    `确定要进入「${subsystem.subsysName}」吗？`,
-    '确认进入',
-    {
-      confirmButtonText: '确定进入',
-      cancelButtonText: '取消',
-      type: 'info'
-    }
-  ).then(() => {
-    // 存储选择的子系统信息
-    localStorage.setItem('currentSubsystem', JSON.stringify(subsystem))
-    ElMessage.success(`已进入「${subsystem.subsysName}」`)
-    // 根据子系统类型跳转
-    if (subsystem.subsysId === 8) {
-      // 后台管理系统
-      router.push('/')
-    } else {
-      // 其他子系统（暂未开发，提示）
-      ElMessage.info(`${subsystem.subsysName}模块开发中...`)
-    }
-  }).catch(() => {
-    // 取消选择
-  })
+  // 存储选择的子系统信息
+  localStorage.setItem('currentSubsystem', JSON.stringify(subsystem))
+
+  // 根据子系统类型跳转
+  if (subsystem.subsysId === 99) {
+    // 后台管理系统
+    router.push('/')
+  } else {
+    // 其他子系统（暂未开发，提示后跳转到对应路径）
+    ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)
+    setTimeout(() => {
+      router.push(subsystem.pathPrefix)
+    }, 1000)
+  }
 }
 
 // 切换组织
@@ -304,8 +252,8 @@ const handleLogout = () => {
 /* 子系统网格 */
 .subsystem-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   flex: 1;
   align-content: center;
 }
@@ -315,12 +263,12 @@ const handleLogout = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 20px;
+  padding: 24px 16px;
   border: 1px solid #ebeef5;
-  border-radius: 16px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 160px;
+  min-height: 140px;
 }
 
 .subsystem-card:hover {
@@ -330,14 +278,14 @@ const handleLogout = () => {
 }
 
 .subsystem-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .subsystem-info {
@@ -345,16 +293,15 @@ const handleLogout = () => {
 }
 
 .subsystem-info h4 {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #303133;
   margin-bottom: 4px;
-  white-space: nowrap;
 }
 
 .subsystem-info p {
-  font-size: 13px;
+  font-size: 12px;
   color: #909399;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 </style>

@@ -17,6 +17,9 @@ export interface Subsystem {
   deleted: number
   signature: string
   signatureVersion: number
+  // 前端扩展字段
+  icon?: string  // 图标名称
+  color?: string // 渐变背景色
 }
 
 /** 子系统表单类型 */

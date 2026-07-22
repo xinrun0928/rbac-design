@@ -18,7 +18,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Monitor',
+    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   },
   {
     subsysId: 2,
@@ -37,7 +40,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Document',
+    color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
   },
   {
     subsysId: 3,
@@ -56,7 +62,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Warning',
+    color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
   },
   {
     subsysId: 4,
@@ -75,7 +84,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Connection',
+    color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
   },
   {
     subsysId: 5,
@@ -94,7 +106,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Box',
+    color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
   },
   {
     subsysId: 6,
@@ -113,7 +128,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'DataAnalysis',
+    color: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
   },
   {
     subsysId: 7,
@@ -132,7 +150,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Upload',
+    color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
   },
   {
     subsysId: 8,
@@ -151,7 +172,10 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Odometer',
+    color: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
   },
   {
     subsysId: 99,
@@ -170,6 +194,9 @@ export const mockSubsystemData: Subsystem[] = [
     updateTime: '2026-05-31 11:59:20',
     deleted: 0,
     signature: '',
-    signatureVersion: 0
+    signatureVersion: 0,
+    // 前端扩展字段
+    icon: 'Setting',
+    color: 'linear-gradient(135deg, #2c3e50 0%, #3498db 100%)'
   }
 ]

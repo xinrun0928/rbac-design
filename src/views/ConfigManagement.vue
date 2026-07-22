@@ -1,15 +1,5 @@
 <template>
   <div class="config-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>参数配置</h1>
-        <span class="page-desc">管理系统参数配置，动态调整系统运行参数</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
@@ -304,9 +294,9 @@ function resetForm() {
 
 <style lang="scss" scoped>
 .config-management {
-  padding: 24px;
+  padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
-  min-height: 100vh;
+  height: 100%;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   .animate-item {
@@ -317,40 +307,6 @@ function resetForm() {
     &:nth-child(3) { animation-delay: 0.2s; }
   }
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #303133;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .title-bar {
-      display: inline-block;
-      width: 4px;
-      height: 22px;
-      background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
-      border-radius: 2px;
-    }
-
-    .page-desc {
-      font-size: 13px;
-      color: #909399;
-      padding-left: 14px;
-    }
-  }
 
   .search-card {
     margin-bottom: 16px;

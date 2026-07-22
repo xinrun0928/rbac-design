@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/subsystem'
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -28,109 +28,125 @@ const router = createRouter({
       component: () => import('../views/SubsystemSelectView.vue')
     },
     {
-      path: '/meal',
-      name: 'Meal',
-      component: () => import('../views/MealManagement.vue')
-    },
-    {
-      path: '/menu',
-      name: 'Menu',
-      component: () => import('../views/MenuManagement.vue')
-    },
-    {
-      path: '/role',
-      name: 'Role',
-      component: () => import('../views/RoleManagement.vue')
-    },
-    {
-      path: '/post',
-      name: 'Post',
-      component: () => import('../views/PostManagement.vue')
-    },
-    {
-      path: '/subsystem',
-      name: 'Subsystem',
-      component: () => import('../views/SubsystemManagement.vue')
-    },
-    {
-      path: '/member',
-      name: 'Member',
-      component: () => import('../views/MemberManagement.vue')
-    },
-    {
-      path: '/organization',
-      name: 'OrgManage',
-      component: () => import('../views/OrgTreeView.vue')
-    },
-    {
-      path: '/dept',
-      name: 'Dept',
-      component: () => import('../views/DeptManagement.vue')
-    },
-    {
-      path: '/logs/access',
-      name: 'SysAccessLog',
-      component: () => import('../views/logs/SysAccessLog.vue')
-    },
-    {
-      path: '/logs/message',
-      name: 'SysMessageLog',
-      component: () => import('../views/logs/SysMessageLog.vue')
-    },
-    {
-      path: '/logs/http',
-      name: 'SysHttpLog',
-      component: () => import('../views/logs/SysHttpLog.vue')
-    },
-    {
-      path: '/logs/login',
-      name: 'SysLoginLog',
-      component: () => import('../views/logs/SysLoginLog.vue')
-    },
-    {
-      path: '/attachment',
-      name: 'AttachmentManage',
-      component: () => import('../views/AttachmentManagement.vue')
-    },
-    {
-      path: '/app',
-      name: 'AppManage',
-      component: () => import('../views/AppManagement.vue')
-    },
-    {
-      path: '/area',
-      name: 'AreaManage',
-      component: () => import('../views/AreaManagement.vue')
-    },
-    {
-      path: '/dict',
-      name: 'DictTypeManage',
-      component: () => import('../views/DictTypeManagement.vue')
-    },
-    {
-      path: '/config',
-      name: 'ConfigManage',
-      component: () => import('../views/ConfigManagement.vue')
-    },
-    {
-      path: '/msg/template',
-      name: 'MessageTemplateManage',
-      component: () => import('../views/MessageTemplateManagement.vue')
-    },
-    {
-      path: '/dict/data',
-      name: 'DictDataManage',
-      component: () => import('../views/DictDataManagement.vue')
-    },
-    {
-      path: '/app/log',
-      name: 'AppPublishLog',
-      component: () => import('../views/AppPublishLog.vue')
-    },
-    {
-      path: '/mq/log',
-      name: 'MqConsumeLog',
-      component: () => import('../views/MqConsumeLog.vue')
+      path: '/admin',
+      component: () => import('../views/admin/AdminLayout.vue'),
+      redirect: '/admin/subsystem',
+      children: [
+        {
+          path: 'subsystem',
+          name: 'AdminSubsystem',
+          component: () => import('../views/SubsystemManagement.vue'),
+          meta: { title: '子系统管理' }
+        },
+        {
+          path: 'meal',
+          name: 'AdminMeal',
+          component: () => import('../views/MealManagement.vue'),
+          meta: { title: '套餐管理' }
+        },
+        {
+          path: 'menu',
+          name: 'AdminMenu',
+          component: () => import('../views/MenuManagement.vue'),
+          meta: { title: '菜单管理' }
+        },
+        {
+          path: 'organization',
+          name: 'AdminOrgManage',
+          component: () => import('../views/OrgTreeView.vue'),
+          meta: { title: '组织管理' }
+        },
+        {
+          path: 'member',
+          name: 'AdminMember',
+          component: () => import('../views/MemberManagement.vue'),
+          meta: { title: '成员管理' }
+        },
+        {
+          path: 'role',
+          name: 'AdminRole',
+          component: () => import('../views/RoleManagement.vue'),
+          meta: { title: '角色管理' }
+        },
+        {
+          path: 'dept',
+          name: 'AdminDept',
+          component: () => import('../views/DeptManagement.vue'),
+          meta: { title: '部门管理' }
+        },
+        {
+          path: 'post',
+          name: 'AdminPost',
+          component: () => import('../views/PostManagement.vue'),
+          meta: { title: '岗位管理' }
+        },
+        {
+          path: 'dict',
+          name: 'AdminDictTypeManage',
+          component: () => import('../views/DictTypeManagement.vue'),
+          meta: { title: '字典管理' }
+        },
+        {
+          path: 'dict/data',
+          name: 'AdminDictDataManage',
+          component: () => import('../views/DictDataManagement.vue'),
+          meta: { title: '字典数据' }
+        },
+        {
+          path: 'config',
+          name: 'AdminConfigManage',
+          component: () => import('../views/ConfigManagement.vue'),
+          meta: { title: '配置管理' }
+        },
+        {
+          path: 'attachment',
+          name: 'AdminAttachmentManage',
+          component: () => import('../views/AttachmentManagement.vue'),
+          meta: { title: '附件管理' }
+        },
+        {
+          path: 'msg/template',
+          name: 'AdminMessageTemplateManage',
+          component: () => import('../views/MessageTemplateManagement.vue'),
+          meta: { title: '短信模版' }
+        },
+        {
+          path: 'app',
+          name: 'AdminAppManage',
+          component: () => import('../views/AppManagement.vue'),
+          meta: { title: 'App管理' }
+        },
+        {
+          path: 'logs/access',
+          name: 'AdminSysAccessLog',
+          component: () => import('../views/logs/SysAccessLog.vue'),
+          meta: { title: '访问日志' }
+        },
+        {
+          path: 'logs/message',
+          name: 'AdminSysMessageLog',
+          component: () => import('../views/logs/SysMessageLog.vue'),
+          meta: { title: '短信日志' }
+        },
+        {
+          path: 'logs/http',
+          name: 'AdminSysHttpLog',
+          component: () => import('../views/logs/SysHttpLog.vue'),
+          meta: { title: '接口日志' }
+        },
+        {
+          path: 'logs/login',
+          name: 'AdminSysLoginLog',
+          component: () => import('../views/logs/SysLoginLog.vue'),
+          meta: { title: '登录日志' }
+        },
+        {
+          path: 'mq/log',
+          name: 'AdminMqConsumeLog',
+          component: () => import('../views/MqConsumeLog.vue'),
+          meta: { title: 'MQ消费日志' }
+        }
+      ]
     }
   ]
 })

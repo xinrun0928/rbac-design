@@ -1,15 +1,5 @@
 <template>
   <div class="role-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>角色管理</h1>
-        <span class="page-desc">管理系统角色，配置角色菜单权限</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
 
     <div class="main-content animate-item">
       <!-- 左侧：组织树 -->
@@ -886,9 +876,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .role-management {
-  padding: 24px;
+  padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
-  min-height: 100vh;
+  height: 100%;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   .animate-item {
@@ -899,33 +889,6 @@ onMounted(() => {
   }
 
   // 头部
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-
-    .header-left h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #303133;
-      margin: 0 0 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .title-bar {
-      width: 4px; height: 22px;
-      background: linear-gradient(180deg, #409EFF, #66B1FF);
-      border-radius: 2px;
-      display: inline-block;
-    }
-    .page-desc { font-size: 13px; color: #909399; padding-left: 14px; }
-  }
 
   // 主内容区：左树右表
   .main-content {

@@ -123,7 +123,7 @@ const handleSelectSubsystem = (subsystem: any) => {
   // 根据子系统类型跳转
   if (subsystem.subsysId === 99) {
     // 后台管理系统
-    router.push('/')
+    router.push('/admin')
   } else {
     // 其他子系统（暂未开发，提示后跳转到对应路径）
     ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)

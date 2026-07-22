@@ -496,9 +496,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .http-log-management {
-  padding: 24px;
+  padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
-  min-height: 100vh;
+  height: 100%;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画

@@ -138,9 +138,9 @@ import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound
 const router = useRouter()
 const route = useRoute()
 
-// 判断是否是登录相关页面
+// 判断是否是登录相关页面或管理后台页面
 const isLoginPage = computed(() => {
-  return route.path === '/login' || route.path === '/forgot-password' || route.path === '/org-select' || route.path === '/subsystem-select'
+  return route.path === '/login' || route.path === '/forgot-password' || route.path === '/org-select' || route.path === '/subsystem-select' || route.path.startsWith('/admin')
 })
 
 const activeMenu = computed(() => {

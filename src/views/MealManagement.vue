@@ -1,22 +1,5 @@
 <template>
   <div class="meal-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>套餐管理</h1>
-        <span class="page-desc">管理系统套餐配置，定义不同类型套餐的基本信息</span>
-        <el-alert
-          title="套餐只初始化创建人员的管理员角色，其他角色需要手动配置"
-          type="warning"
-          :closable="false"
-          show-icon
-          class="meal-tip"
-        />
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
 
     <!-- 搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">
@@ -937,9 +920,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .meal-management {
-  padding: 24px;
+  padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
-  min-height: 100vh;
+  height: 100%;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画
@@ -955,42 +938,6 @@ onMounted(() => {
   }
 
   // 页面头部
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left {
-      h1 {
-        font-size: 22px;
-        font-weight: 600;
-        color: #303133;
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .title-bar {
-        display: inline-block;
-        width: 4px;
-        height: 22px;
-        background: linear-gradient(180deg, #409EFF 0%, #66B1FF 100%);
-        border-radius: 2px;
-      }
-
-      .page-desc {
-        font-size: 13px;
-        color: #909399;
-        padding-left: 14px;
-      }
-    }
-  }
 
   // 提示信息
   .meal-tip {

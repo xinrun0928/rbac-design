@@ -1,26 +1,16 @@
 <template>
   <div class="menu-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>菜单管理</h1>
-        <span class="page-desc"
-          >管理各子系统的菜单配置，支持多级菜单和权限控制</span
-        >
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading"
-          >刷新</el-button
-        >
-      </div>
-    </div>
-
     <div class="main-container animate-item">
       <!-- 左侧子系统列表 -->
-      <div class="left-panel">
+      <div class="left-panel" :class="{ collapsed: leftPanelCollapsed }">
         <div class="panel-header">
-          <span class="panel-title">子系统列表</span>
-          <span class="panel-count">共 {{ subsystems.length }} 个</span>
+          <span v-if="!leftPanelCollapsed" class="panel-title">子系统列表</span>
+          <el-button
+            :icon="leftPanelCollapsed ? DArrowRight : DArrowLeft"
+            link
+            @click="leftPanelCollapsed = !leftPanelCollapsed"
+            class="collapse-btn"
+          />
         </div>
         <div class="subsystem-list">
           <div
@@ -38,7 +28,7 @@
                 <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
               </el-icon>
             </div>
-            <div class="subsystem-info">
+            <div v-if="!leftPanelCollapsed" class="subsystem-info">
               <div class="subsystem-name">{{ sub.subsysShortName }}</div>
               <div class="subsystem-full-name">{{ sub.subsysName }}</div>
             </div>
@@ -560,6 +550,8 @@ import {
   Cpu,
   VideoCamera,
   DataBoard,
+  DArrowLeft,
+  DArrowRight,
 } from "@element-plus/icons-vue"
 import type { Menu, MenuForm, MenuSearchForm } from "../types/menu"
 import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "../types/menu"
@@ -580,6 +572,7 @@ const selectedSubsystem = ref<number>(1)
 const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
+const leftPanelCollapsed = ref(false)
 
 // 子系统列表（排除隐藏的）
 const subsystems = mockSubsystemData.filter(
@@ -957,9 +950,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .menu-management {
-  padding: 24px;
+  padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
-  min-height: 100vh;
+  height: 100%;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   // 入场动画
@@ -976,48 +969,13 @@ onMounted(() => {
   }
 
   // 页面头部
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left {
-      h1 {
-        font-size: 22px;
-        font-weight: 600;
-        color: #303133;
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .title-bar {
-        display: inline-block;
-        width: 4px;
-        height: 22px;
-        background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
-        border-radius: 2px;
-      }
-
-      .page-desc {
-        font-size: 13px;
-        color: #909399;
-        padding-left: 14px;
-      }
-    }
-  }
 
   // 主容器
   .main-container {
     display: flex;
     gap: 20px;
-    min-height: calc(100vh - 160px);
+    height: calc(100vh - 160px);
+    overflow: hidden;
   }
 
   // 左侧子系统面板
@@ -1029,6 +987,30 @@ onMounted(() => {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    transition: width 0.3s ease;
+
+    &.collapsed {
+      width: 64px;
+
+      .panel-header {
+        padding: 16px 8px;
+        justify-content: center;
+      }
+
+      .subsystem-list {
+        padding: 8px;
+      }
+
+      .subsystem-item {
+        padding: 8px;
+        justify-content: center;
+        margin-bottom: 4px;
+      }
+
+      .subsystem-icon {
+        margin: 0;
+      }
+    }
 
     .panel-header {
       padding: 16px 20px;
@@ -1046,6 +1028,13 @@ onMounted(() => {
       .panel-count {
         font-size: 12px;
         color: #909399;
+      }
+
+      .collapse-btn {
+        color: #909399;
+        &:hover {
+          color: #409eff;
+        }
       }
     }
 

@@ -1,5 +1,11 @@
 <template>
-  <div class="app-container">
+  <!-- 登录页面 -->
+  <div v-if="isLoginPage" class="login-wrapper">
+    <router-view />
+  </div>
+
+  <!-- 其他页面 -->
+  <div v-else class="app-container">
     <!-- 顶部导航 -->
     <header class="app-header">
       <div class="logo">
@@ -107,7 +113,9 @@
             <el-dropdown-menu>
               <el-dropdown-item :icon="User">个人中心</el-dropdown-item>
               <el-dropdown-item :icon="Setting">系统设置</el-dropdown-item>
-              <el-dropdown-item divided :icon="SwitchButton">退出登录</el-dropdown-item>
+              <el-dropdown-item divided :icon="Share" @click="handleSwitchOrg">切换组织</el-dropdown-item>
+              <el-dropdown-item :icon="Grid" @click="handleSwitchSubsystem">切换子系统</el-dropdown-item>
+              <el-dropdown-item divided :icon="SwitchButton" @click="handleLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -124,10 +132,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton, Tools, ChatDotSquare } from '@element-plus/icons-vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { DataBoard, Box, OfficeBuilding, Share, Document, Notebook, ChatDotRound, Connection, User, Monitor, Menu, Briefcase, Cellphone, Paperclip, Location, Collection, ArrowDown, Setting, SwitchButton, Tools, ChatDotSquare, Grid } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
+
+// 判断是否是登录相关页面
+const isLoginPage = computed(() => {
+  return route.path === '/login' || route.path === '/forgot-password' || route.path === '/org-select' || route.path === '/subsystem-select'
+})
 
 const activeMenu = computed(() => {
   if (route.path.startsWith('/logs/')) {
@@ -141,6 +155,29 @@ const activeMenu = computed(() => {
 
 function handleMenuSelect(index: string) {
   router.push(index)
+}
+
+function handleLogout() {
+  ElMessageBox.confirm('确定要退出登录吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    localStorage.removeItem('currentOrg')
+    localStorage.removeItem('currentSubsystem')
+    ElMessage.success('已退出登录')
+    router.push('/login')
+  }).catch(() => {
+    // 取消操作
+  })
+}
+
+function handleSwitchOrg() {
+  router.push('/org-select')
+}
+
+function handleSwitchSubsystem() {
+  router.push('/subsystem-select')
 }
 </script>
 
@@ -160,6 +197,10 @@ body {
 </style>
 
 <style scoped>
+.login-wrapper {
+  min-height: 100vh;
+}
+
 .app-container {
   min-height: 100vh;
   display: flex;

@@ -8,6 +8,26 @@ const router = createRouter({
       redirect: '/subsystem'
     },
     {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: () => import('../views/ForgotPasswordView.vue')
+    },
+    {
+      path: '/org-select',
+      name: 'OrgSelect',
+      component: () => import('../views/OrganizationSelectView.vue')
+    },
+    {
+      path: '/subsystem-select',
+      name: 'SubsystemSelect',
+      component: () => import('../views/SubsystemSelectView.vue')
+    },
+    {
       path: '/meal',
       name: 'Meal',
       component: () => import('../views/MealManagement.vue')

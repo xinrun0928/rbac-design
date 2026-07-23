@@ -1,18 +1,9 @@
 <template>
   <div class="area-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>区域管理</h1>
-        <span class="page-desc">管理系统行政区划信息，维护省市区层级结构</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
 
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="区域名称">
@@ -35,10 +26,6 @@
           <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增区域</el-button>
         </div>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -321,79 +308,46 @@ function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | '
     &:nth-child(3) { animation-delay: 0.2s; }
   }
 
-  .page-header {
+  .search-bar {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #303133;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .title-bar {
-      display: inline-block;
-      width: 4px;
-      height: 22px;
-      background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
-      border-radius: 2px;
-    }
-
-    .page-desc {
-      font-size: 13px;
-      color: #909399;
-      padding-left: 14px;
-    }
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
   }
 
-  .search-card {
-    margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
 
-    :deep(.el-card__body) {
-      padding: 20px 24px 12px;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .search-form {
-      flex: 1;
-      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
-    }
-
-    .search-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
     }
 
     :deep(.el-table) {
+      flex: 1;
       border-radius: 8px;
       overflow: hidden;
 

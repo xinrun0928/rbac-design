@@ -1,8 +1,9 @@
 <template>
   <div class="config-management">
 
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="参数名称">
@@ -26,10 +27,6 @@
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增参数</el-button>
         </div>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -38,6 +35,7 @@
         highlight-current-row
         row-key="configId"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
           <template #default="{ $index }">
@@ -311,41 +309,46 @@ function resetForm() {
   }
 
 
-  .search-card {
+  .search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    :deep(.el-card__body) {
-      padding: 20px 24px 12px;
-    }
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
 
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .search-form {
-      flex: 1;
-      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
-    }
-
-    .search-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .data-table {
+      flex: 1;
     }
 
     .index-text { color: #909399; font-size: 13px; }
@@ -369,9 +372,8 @@ function resetForm() {
   .pagination-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #EBEEF5;
+    margin-top: 16px;
+    flex-shrink: 0;
   }
 
   :deep(.el-drawer) {

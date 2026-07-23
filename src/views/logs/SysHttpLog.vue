@@ -597,8 +597,6 @@ onMounted(() => {
       display: flex;
       justify-content: flex-end;
       margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #EBEEF5;
       flex-shrink: 0;
     }
   }

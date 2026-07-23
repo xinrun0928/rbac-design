@@ -387,13 +387,11 @@ async function handleCopyPayload() {
   }
 
   .pagination-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid #EBEEF5;
-    flex-shrink: 0;
-  }
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      flex-shrink: 0;
+    }
 
   :deep(.detail-drawer) {
     .el-drawer__header {

@@ -117,6 +117,12 @@ const router = createRouter({
           meta: { title: 'App管理' }
         },
         {
+          path: 'app/log',
+          name: 'AdminAppPublishLog',
+          component: () => import('../views/AppPublishLog.vue'),
+          meta: { title: 'App发布日志' }
+        },
+        {
           path: 'logs/access',
           name: 'AdminSysAccessLog',
           component: () => import('../views/logs/SysAccessLog.vue'),

@@ -1,8 +1,9 @@
 <template>
   <div class="meal-management">
 
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="套餐名称">
@@ -40,10 +41,6 @@
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
         </div>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -952,45 +949,47 @@ onMounted(() => {
   }
 
   // 搜索栏
-  .search-card {
+  .search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    :deep(.el-card__body) {
-      padding: 20px 24px 12px;
-    }
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
 
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .search-form {
-      flex: 1;
-      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
-    }
-
-    .search-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   // 表格卡片
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
     }
 
     :deep(.el-table) {
+      flex: 1;
       border-radius: 8px;
       overflow: hidden;
 

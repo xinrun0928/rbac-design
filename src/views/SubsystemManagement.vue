@@ -1,10 +1,11 @@
 <template>
   <div class="subsystem-management">
 
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
-      <div class="search-content">
-        <el-form :model="searchForm" inline>
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
+      <div class="search-bar">
+        <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="子系统编码">
             <el-input
               v-model="searchForm.subsysCode"
@@ -36,12 +37,10 @@
             <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
           </el-form-item>
         </el-form>
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
+        <div class="search-actions">
+          <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
+        </div>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -877,54 +876,26 @@ onMounted(() => {
   // 页面头部
 
   // 搜索栏
-  .search-card {
-    margin-bottom: 12px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 14px 20px;
-    }
-
-    .search-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .el-form {
-        flex: 1;
-      }
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  // 工具栏
-  .toolbar {
+  .search-bar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
-    padding: 0 4px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    .toolbar-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
 
-    .selected-count {
-      font-size: 13px;
-      color: #606266;
-      margin-left: 8px;
-
-      strong {
-        color: #409EFF;
-      }
-    }
-
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   // 表格卡片
@@ -1074,9 +1045,8 @@ onMounted(() => {
   .pagination-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #EBEEF5;
+    margin-top: 16px;
+    flex-shrink: 0;
   }
 
   // 对话框

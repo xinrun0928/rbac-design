@@ -1,8 +1,9 @@
 <template>
   <div class="app-management">
 
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="App名称">
@@ -28,10 +29,6 @@
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增App</el-button>
         </div>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -40,6 +37,7 @@
         highlight-current-row
         row-key="appId"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
           <template #default="{ $index }">
@@ -102,6 +100,20 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 分页 -->
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :total="pagination.total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+        />
+      </div>
     </el-card>
 
     <!-- 新增/编辑抽屉 -->
@@ -142,12 +154,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="formData.status">
-            <el-radio :value="1101">
-              <el-icon color="#67C23A"><SuccessFilled /></el-icon> 启用
-            </el-radio>
-            <el-radio :value="1001">
-              <el-icon color="#909399"><CircleCloseFilled /></el-icon> 停用
-            </el-radio>
+            <el-radio :value="1101">启用</el-radio>
+            <el-radio :value="1001">停用</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -171,8 +179,7 @@ import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit, Document,
-  SuccessFilled, CircleCloseFilled
+  Refresh, Search, RefreshLeft, Plus, Delete, Edit, Document
 } from '@element-plus/icons-vue'
 import { appInfoData } from '../mock/appData'
 import type { AppInfo } from '../types/appInfo'
@@ -197,6 +204,12 @@ const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0
+})
+
 const searchForm = reactive({
   appName: '',
   platform: '' as number | '',
@@ -217,23 +230,37 @@ const formData = reactive({
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  return tableData.value.filter(item => {
+  let data = tableData.value.filter(item => {
     if (searchForm.appName && !item.appName.includes(searchForm.appName)) return false
     if (searchForm.platform !== '' && item.platform !== searchForm.platform) return false
     if (searchForm.status !== '' && item.status !== searchForm.status) return false
     return true
   })
+
+  pagination.total = data.length
+  const start = (pagination.page - 1) * pagination.pageSize
+  return data.slice(start, start + pagination.pageSize)
 })
 
 // ── 方法 ──
 function handleSearch() {
-  // 搜索通过 computed 属性自动处理
+  pagination.page = 1
 }
 
 function handleReset() {
   searchForm.appName = ''
   searchForm.platform = ''
   searchForm.status = ''
+  pagination.page = 1
+}
+
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
+
+function handlePageChange(page: number) {
+  pagination.page = page
 }
 
 function handleRefresh() {
@@ -307,7 +334,7 @@ function handleBatchDelete() {
 }
 
 function handleViewLog(row: AppInfo) {
-  router.push({ path: '/app/log', query: { appId: row.appId, appName: row.appName } })
+  router.push({ path: '/admin/app/log', query: { appId: row.appId, appName: row.appName } })
 }
 
 function handleDrawerClose(done: () => void) {
@@ -347,41 +374,46 @@ function getPlatformTagType(platform: number): '' | 'success' | 'warning' | 'inf
   }
 
 
-  .search-card {
+  .search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    :deep(.el-card__body) {
-      padding: 20px 24px 12px;
-    }
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
 
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .search-form {
-      flex: 1;
-      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
-    }
-
-    .search-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .data-table {
+      flex: 1;
     }
 
     .index-text { color: #909399; font-size: 13px; }
@@ -407,6 +439,13 @@ function getPlatformTagType(platform: number): '' | 'success' | 'warning' | 'inf
     }
     .version-text { color: #606266; }
     .time-text { font-size: 13px; color: #909399; }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      flex-shrink: 0;
+    }
   }
 
   :deep(.app-drawer) {

@@ -248,7 +248,7 @@ function fetchData() {
 }
 
 function goBack() {
-  router.push('/app')
+  router.push('/admin/app')
 }
 
 function handleSearch() {

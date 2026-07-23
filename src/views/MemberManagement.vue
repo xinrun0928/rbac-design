@@ -53,10 +53,11 @@
           <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
         </div>
 
-        <!-- 搜索栏 -->
-        <el-card class="search-card" shadow="never">
-          <div class="search-content">
-            <el-form :model="memberSearchForm" inline>
+        <!-- 数据表格 -->
+        <el-card class="table-card" shadow="never">
+          <!-- 搜索栏 -->
+          <div class="search-bar">
+            <el-form :model="memberSearchForm" inline class="search-form">
               <el-form-item label="成员姓名">
                 <el-input
                   v-model="memberSearchForm.name"
@@ -81,12 +82,10 @@
                 <el-button :icon="RefreshLeft" @click="handleMemberReset">重置</el-button>
               </el-form-item>
             </el-form>
-            <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
+            <div class="search-actions">
+              <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
+            </div>
           </div>
-        </el-card>
-
-        <!-- 数据表格 -->
-        <el-card class="table-card" shadow="never">
           <el-table
             v-loading="loading"
             :data="filteredMemberData"
@@ -755,53 +754,46 @@ onMounted(() => {
     strong { color: #303133; }
   }
 
-  .search-card {
-    margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 16px 20px;
-    }
-
-    .search-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .el-form {
-        flex: 1;
-      }
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  .toolbar {
+  .search-bar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
-    padding: 0 4px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    .toolbar-left { display: flex; align-items: center; gap: 12px; }
-    .selected-count {
-      font-size: 13px; color: #606266; margin-left: 8px;
-      strong { color: #409EFF; }
-    }
-    .total-count {
-      font-size: 13px; color: #909399;
-      padding: 6px 14px; background: #F0F2F5; border-radius: 6px;
-    }
+  .search-form {
+    flex: 1;
+    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  }
+
+  .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
     border-radius: 12px;
     border: none;
-    :deep(.el-card__body) { padding: 20px; }
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    :deep(.el-card__body) {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
     :deep(.el-table) {
+      flex: 1;
       border-radius: 8px;
       overflow: hidden;
     }

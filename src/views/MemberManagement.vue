@@ -85,13 +85,6 @@
           </div>
         </el-card>
 
-        <!-- 工具栏 -->
-        <div class="toolbar">
-          <div class="toolbar-right">
-            <span class="total-count">共 {{ filteredMemberData.length }} 条数据</span>
-          </div>
-        </div>
-
         <!-- 数据表格 -->
         <el-card class="table-card" shadow="never">
           <el-table
@@ -399,7 +392,7 @@ const positionOptions = [
 // 分页
 const pagination = reactive({
   page: 1,
-  pageSize: 8
+  pageSize: 20
 })
 
 // ── 树节点筛选 ──

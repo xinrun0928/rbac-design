@@ -1,55 +1,35 @@
 <template>
   <div class="app-publish-log">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>{{ appName }} - 发布日志</h1>
-        <span class="page-desc">管理App版本发布记录</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Back" @click="goBack">返回</el-button>
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
-
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
-      <div class="search-content">
-        <el-form :model="searchForm" inline>
-          <el-form-item label="版本号">
-            <el-input v-model="searchForm.versionCode" placeholder="输入版本号" clearable :prefix-icon="Search" style="width: 160px" />
-          </el-form-item>
-          <el-form-item label="更新类型">
-            <el-select v-model="searchForm.updateType" placeholder="请选择" clearable style="width: 140px">
-              <el-option label="WGT热更" :value="1" />
-              <el-option label="APK整包" :value="2" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="发布状态">
-            <el-select v-model="searchForm.publishStatus" placeholder="请选择" clearable style="width: 120px">
-              <el-option label="待发布" :value="1" />
-              <el-option label="已发布" :value="2" />
-              <el-option label="已撤销" :value="3" />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <el-button type="primary" :icon="Plus" @click="handleAdd">新增发布</el-button>
-      </div>
-    </el-card>
-
-    <!-- 工具栏 -->
-    <div class="toolbar animate-item">
-      <div class="toolbar-right">
-        <span class="total-count">共 {{ filteredData.length }} 条记录</span>
-      </div>
-    </div>
-
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
+      <div class="search-bar">
+        <div class="search-content">
+          <el-form :model="searchForm" inline>
+            <el-form-item label="版本号">
+              <el-input v-model="searchForm.versionCode" placeholder="输入版本号" clearable :prefix-icon="Search" style="width: 160px" />
+            </el-form-item>
+            <el-form-item label="更新类型">
+              <el-select v-model="searchForm.updateType" placeholder="请选择" clearable style="width: 140px">
+                <el-option label="WGT热更" :value="1" />
+                <el-option label="APK整包" :value="2" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="发布状态">
+              <el-select v-model="searchForm.publishStatus" placeholder="请选择" clearable style="width: 120px">
+                <el-option label="待发布" :value="1" />
+                <el-option label="已发布" :value="2" />
+                <el-option label="已撤销" :value="3" />
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+              <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" :icon="Plus" @click="handleAdd">新增发布</el-button>
+        </div>
+      </div>
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -58,6 +38,7 @@
         highlight-current-row
         row-key="publishId"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
           <template #default="{ $index }">
@@ -399,54 +380,10 @@ onMounted(() => {
     &:nth-child(3) { animation-delay: 0.2s; }
   }
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #303133;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .title-bar {
-      display: inline-block;
-      width: 4px;
-      height: 22px;
-      background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
-      border-radius: 2px;
-    }
-
-    .page-desc {
-      font-size: 13px;
-      color: #909399;
-      padding-left: 14px;
-    }
-
-    .header-right {
-      display: flex;
-      gap: 12px;
-    }
-  }
-
-  .search-card {
+  .search-bar {
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 16px 20px;
-    }
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
 
     .search-content {
       display: flex;
@@ -488,9 +425,21 @@ onMounted(() => {
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .data-table {
+      flex: 1;
     }
 
     .id-text { color: #909399; font-size: 13px; }

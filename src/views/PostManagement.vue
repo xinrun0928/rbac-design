@@ -293,7 +293,7 @@ const postFormData = reactive({
 // 分页
 const pagination = reactive({
   page: 1,
-  pageSize: 10
+  pageSize: 20
 })
 
 // ── 树节点筛选 ──

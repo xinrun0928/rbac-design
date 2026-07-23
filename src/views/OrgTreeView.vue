@@ -22,13 +22,6 @@
       </div>
     </el-card>
 
-    <!-- 工具栏 -->
-    <div class="toolbar animate-item">
-      <div class="toolbar-right">
-        <span class="total-count">共 {{ orgList.length }} 个组织</span>
-      </div>
-    </div>
-
     <!-- 组织树表格 -->
     <el-card class="table-card animate-item" shadow="never">
       <el-table

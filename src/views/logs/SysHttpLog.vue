@@ -1,78 +1,62 @@
 <template>
   <div class="http-log-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>系统接口请求日志</h1>
-        <span class="page-desc">查看系统接口调用记录，监控请求状态</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Document" @click="sqlDialogVisible = true">建表SQL</el-button>
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
-
-    <!-- 顶部搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="请求方式">
-          <el-select
-            v-model="searchForm.req_method"
-            placeholder="请选择"
-            clearable
-            style="width: 140px"
-          >
-            <el-option label="POST_JSON" value="POST_JSON" />
-            <el-option label="POST_FORM" value="POST_FORM" />
-            <el-option label="GET" value="GET" />
-            <el-option label="POST" value="POST" />
-            <el-option label="PUT" value="PUT" />
-            <el-option label="DELETE" value="DELETE" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="响应状态">
-          <el-select
-            v-model="searchForm.rep_state"
-            placeholder="请选择"
-            clearable
-            style="width: 120px"
-          >
-            <el-option label="SUCCESS" value="SUCCESS" />
-            <el-option label="FAIL" value="FAIL" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="请求地址">
-          <el-input
-            v-model="searchForm.req_url"
-            placeholder="请输入请求地址"
-            clearable
-            :prefix-icon="Search"
-            style="width: 280px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="调用时间">
-          <el-date-picker
-            v-model="searchForm.create_time"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="YYYY-MM-DD"
-            style="width: 260px"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-          <el-button :icon="RefreshRight" @click="handleReset">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
-      <div class="toolbar">
-        <span class="total-count">共 {{ pagination.total }} 条记录</span>
+      <!-- 顶部搜索栏 -->
+      <div class="search-bar">
+        <el-form :model="searchForm" inline>
+          <el-form-item label="请求方式">
+            <el-select
+              v-model="searchForm.req_method"
+              placeholder="请选择"
+              clearable
+              style="width: 140px"
+            >
+              <el-option label="POST_JSON" value="POST_JSON" />
+              <el-option label="POST_FORM" value="POST_FORM" />
+              <el-option label="GET" value="GET" />
+              <el-option label="POST" value="POST" />
+              <el-option label="PUT" value="PUT" />
+              <el-option label="DELETE" value="DELETE" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="响应状态">
+            <el-select
+              v-model="searchForm.rep_state"
+              placeholder="请选择"
+              clearable
+              style="width: 120px"
+            >
+              <el-option label="SUCCESS" value="SUCCESS" />
+              <el-option label="FAIL" value="FAIL" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="请求地址">
+            <el-input
+              v-model="searchForm.req_url"
+              placeholder="请输入请求地址"
+              clearable
+              :prefix-icon="Search"
+              style="width: 280px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="调用时间">
+            <el-date-picker
+              v-model="searchForm.create_time"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="YYYY-MM-DD"
+              style="width: 260px"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
+            <el-button :icon="RefreshRight" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
       </div>
 
       <el-table
@@ -358,7 +342,7 @@ const searchForm = reactive<SearchForm>({
 
 const pagination = reactive({
   page: 1,
-  pageSize: 10,
+  pageSize: 20,
   total: 0
 })
 
@@ -499,6 +483,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画
@@ -511,56 +498,14 @@ onMounted(() => {
     &:nth-child(3) { animation-delay: 0.19s; }
   }
 
-  // 页面头部
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left {
-      h1 {
-        font-size: 22px;
-        font-weight: 600;
-        color: #303133;
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .title-bar {
-        display: inline-block;
-        width: 4px;
-        height: 22px;
-        background: linear-gradient(180deg, #409EFF 0%, #66B1FF 100%);
-        border-radius: 2px;
-      }
-
-      .page-desc {
-        font-size: 13px;
-        color: #909399;
-        padding-left: 14px;
-      }
-    }
-  }
-
   // 搜索栏
-  .search-card {
+  .search-bar {
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 20px 24px 8px;
-    }
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
 
     .el-form-item {
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
   }
 
@@ -568,9 +513,17 @@ onMounted(() => {
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
     }
 
     .toolbar {
@@ -589,6 +542,7 @@ onMounted(() => {
     }
 
     :deep(.el-table) {
+      flex: 1;
       border-radius: 8px;
       overflow: hidden;
 
@@ -642,9 +596,10 @@ onMounted(() => {
     .pagination-wrapper {
       display: flex;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin-top: 16px;
       padding-top: 16px;
       border-top: 1px solid #EBEEF5;
+      flex-shrink: 0;
     }
   }
 

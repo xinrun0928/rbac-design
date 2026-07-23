@@ -1,70 +1,54 @@
 <template>
   <div class="message-log-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>短信消息日志</h1>
-        <span class="page-desc">查看系统短信发送记录，监控消息状态</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Document" @click="sqlDialogVisible = true">建表SQL</el-button>
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
-
-    <!-- 顶部搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
-      <el-form :model="searchForm" inline>
-        <el-form-item label="模板ID">
-          <el-input
-            v-model="searchForm.template_id"
-            placeholder="请输入模板ID"
-            clearable
-            :prefix-icon="Search"
-            style="width: 180px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="手机号码">
-          <el-input
-            v-model="searchForm.phone"
-            placeholder="请输入手机号码"
-            clearable
-            style="width: 160px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="内容">
-          <el-input
-            v-model="searchForm.content"
-            placeholder="请输入内容关键词"
-            clearable
-            style="width: 180px"
-            @keyup.enter="handleSearch"
-          />
-        </el-form-item>
-        <el-form-item label="发送时间">
-          <el-date-picker
-            v-model="searchForm.create_time"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="YYYY-MM-DD"
-            style="width: 260px"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-          <el-button :icon="RefreshRight" @click="handleReset">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
-      <div class="toolbar">
-        <span class="total-count">共 {{ pagination.total }} 条记录</span>
+      <!-- 顶部搜索栏 -->
+      <div class="search-bar">
+        <el-form :model="searchForm" inline>
+          <el-form-item label="模板ID">
+            <el-input
+              v-model="searchForm.template_id"
+              placeholder="请输入模板ID"
+              clearable
+              :prefix-icon="Search"
+              style="width: 180px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="手机号码">
+            <el-input
+              v-model="searchForm.phone"
+              placeholder="请输入手机号码"
+              clearable
+              style="width: 160px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="内容">
+            <el-input
+              v-model="searchForm.content"
+              placeholder="请输入内容关键词"
+              clearable
+              style="width: 180px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="发送时间">
+            <el-date-picker
+              v-model="searchForm.create_time"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="YYYY-MM-DD"
+              style="width: 260px"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
+            <el-button :icon="RefreshRight" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
       </div>
 
       <el-table
@@ -341,7 +325,7 @@ const searchForm = reactive<SearchForm>({
 
 const pagination = reactive({
   page: 1,
-  pageSize: 10,
+  pageSize: 20,
   total: 0
 })
 
@@ -484,6 +468,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画
@@ -496,56 +483,14 @@ onMounted(() => {
     &:nth-child(3) { animation-delay: 0.19s; }
   }
 
-  // 页面头部
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left {
-      h1 {
-        font-size: 22px;
-        font-weight: 600;
-        color: #303133;
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .title-bar {
-        display: inline-block;
-        width: 4px;
-        height: 22px;
-        background: linear-gradient(180deg, #409EFF 0%, #66B1FF 100%);
-        border-radius: 2px;
-      }
-
-      .page-desc {
-        font-size: 13px;
-        color: #909399;
-        padding-left: 14px;
-      }
-    }
-  }
-
   // 搜索栏
-  .search-card {
+  .search-bar {
     margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 20px 24px 8px;
-    }
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
 
     .el-form-item {
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
   }
 
@@ -553,9 +498,17 @@ onMounted(() => {
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
     }
 
     .toolbar {
@@ -574,6 +527,7 @@ onMounted(() => {
     }
 
     :deep(.el-table) {
+      flex: 1;
       border-radius: 8px;
       overflow: hidden;
 
@@ -641,9 +595,10 @@ onMounted(() => {
     .pagination-wrapper {
       display: flex;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin-top: 16px;
       padding-top: 16px;
       border-top: 1px solid #EBEEF5;
+      flex-shrink: 0;
     }
   }
 

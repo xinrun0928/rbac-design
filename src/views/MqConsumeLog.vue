@@ -1,18 +1,8 @@
 <template>
   <div class="mq-log-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>MQ消息消费日志</h1>
-        <span class="page-desc">查看MQ消息消费记录，监控消息处理状态</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
-
-    <!-- 搜索栏 -->
-    <el-card class="search-card animate-item" shadow="never">
+    <!-- 数据表格 -->
+    <el-card class="table-card animate-item" shadow="never">
+      <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="队列名称">
@@ -45,10 +35,6 @@
           </el-form-item>
         </el-form>
       </div>
-    </el-card>
-
-    <!-- 数据表格 -->
-    <el-card class="table-card animate-item" shadow="never">
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -57,6 +43,7 @@
         highlight-current-row
         row-key="id"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
           <template #default="{ $index }">
@@ -353,69 +340,30 @@ async function handleCopyPayload() {
     &:nth-child(3) { animation-delay: 0.2s; }
   }
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 24px 28px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-
-    .header-left h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #303133;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .title-bar {
-      display: inline-block;
-      width: 4px;
-      height: 22px;
-      background: linear-gradient(180deg, #409eff 0%, #66b1ff 100%);
-      border-radius: 2px;
-    }
-
-    .page-desc {
-      font-size: 13px;
-      color: #909399;
-      padding-left: 14px;
-    }
-  }
-
-  .search-card {
-    margin-bottom: 16px;
-    border-radius: 12px;
-    border: none;
-
-    :deep(.el-card__body) {
-      padding: 20px 24px 12px;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .search-form {
-      flex: 1;
-      .el-form-item { margin-bottom: 8px; margin-right: 12px; }
-    }
-  }
-
   .table-card {
     border-radius: 12px;
     border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     :deep(.el-card__body) {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .search-bar {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ebeef5;
+    }
+
+    .search-form {
+      .el-form-item { margin-bottom: 0; margin-right: 12px; }
     }
 
     .index-text { color: #909399; font-size: 13px; }
@@ -424,6 +372,10 @@ async function handleCopyPayload() {
     .exchange-text { font-size: 12px; color: #606266; }
     .msgid-text { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-size: 12px; color: #909399; }
     .operation-text { font-weight: 500; color: #303133; }
+
+    .data-table {
+      flex: 1;
+    }
     .result-text {
       font-weight: 500;
       &.success { color: #67C23A; }
@@ -437,9 +389,10 @@ async function handleCopyPayload() {
   .pagination-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid #EBEEF5;
+    flex-shrink: 0;
   }
 
   :deep(.detail-drawer) {

@@ -506,7 +506,7 @@ const searchForm = reactive<SubsystemSearchForm>({
 
 const pagination = reactive({
   page: 1,
-  pageSize: 10,
+  pageSize: 20,
   total: 0
 })
 

@@ -77,10 +77,6 @@
                   @keyup.enter="handleMemberSearch"
                 />
               </el-form-item>
-              <el-form-item>
-                <el-button type="primary" :icon="Search" @click="handleMemberSearch">搜索</el-button>
-                <el-button :icon="RefreshLeft" @click="handleMemberReset">重置</el-button>
-              </el-form-item>
             </el-form>
             <div class="search-actions">
               <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>

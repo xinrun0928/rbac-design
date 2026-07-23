@@ -74,15 +74,12 @@
                   <el-option label="停用" :value="0" />
                 </el-select>
               </el-form-item>
-              <el-form-item>
-                <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-                <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-              </el-form-item>
             </el-form>
             <div class="search-actions">
               <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
             </div>
           </div>
+          <div class="table-wrapper">
           <el-table
             v-loading="loading"
             :data="deptTreeData"
@@ -179,6 +176,7 @@
               </div>
             </template>
           </el-table>
+          </div>
         </el-card>
       </div>
     </div>
@@ -528,6 +526,8 @@ onMounted(() => {
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    flex: 1;
+    overflow: hidden;
   }
 
   // 左侧树面板
@@ -539,6 +539,8 @@ onMounted(() => {
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     transition: width 0.3s ease;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &.collapsed { width: 48px; }
 
@@ -558,6 +560,10 @@ onMounted(() => {
 
     .tree-body {
       padding: 12px;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .tree-search {
@@ -565,7 +571,7 @@ onMounted(() => {
     }
 
     .org-tree {
-      max-height: calc(100vh - 320px);
+      flex: 1;
       overflow-y: auto;
 
       :deep(.el-tree-node__content) {
@@ -596,6 +602,9 @@ onMounted(() => {
   .list-panel {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   .current-node-bar {
@@ -650,10 +659,17 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    :deep(.el-table) {
+    .table-wrapper {
       flex: 1;
+      overflow: auto;
+    }
+
+    :deep(.el-table) {
       border-radius: 8px;
-      overflow: hidden;
+
+      .el-table__body-wrapper {
+        overflow-y: auto;
+      }
 
       .el-table__row .cell {
         display: flex;

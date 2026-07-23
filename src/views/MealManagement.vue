@@ -32,10 +32,6 @@
               <el-option label="停用" :value="1001" />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch" :loading="loading">搜索</el-button>
-            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-          </el-form-item>
         </el-form>
         <div class="search-actions">
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
@@ -50,6 +46,7 @@
         row-key="id"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
+        class="data-table"
       >
         <el-table-column prop="id" label="ID" width="70" align="center">
           <template #default="{ row }">
@@ -908,6 +905,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   // 入场动画
@@ -998,6 +998,10 @@ onMounted(() => {
       }
     }
 
+    .data-table {
+      flex: 1;
+    }
+
     .id-text {
       color: #909399;
       font-size: 13px;
@@ -1066,9 +1070,8 @@ onMounted(() => {
   .pagination-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #EBEEF5;
+    margin-top: 16px;
+    flex-shrink: 0;
   }
 
   // 对话框

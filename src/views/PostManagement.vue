@@ -83,10 +83,6 @@
                   <el-option label="禁用" :value="0" />
                 </el-select>
               </el-form-item>
-              <el-form-item>
-                <el-button type="primary" :icon="Search" @click="handlePostSearch">搜索</el-button>
-                <el-button :icon="RefreshLeft" @click="handlePostReset">重置</el-button>
-              </el-form-item>
             </el-form>
             <div class="search-actions">
               <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
@@ -485,6 +481,8 @@ onMounted(() => {
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    flex: 1;
+    overflow: hidden;
   }
 
   // 左侧树面板
@@ -553,6 +551,9 @@ onMounted(() => {
   .list-panel {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   .current-node-bar {

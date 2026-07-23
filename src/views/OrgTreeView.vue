@@ -14,10 +14,6 @@
               <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-          </el-form-item>
         </el-form>
         <div class="search-actions">
           <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>

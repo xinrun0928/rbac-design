@@ -12,10 +12,6 @@
           <el-form-item label="类型编码">
             <el-input v-model="searchForm.dictType" placeholder="输入类型编码" clearable style="width: 200px" @keyup.enter="handleSearch" />
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-            <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-          </el-form-item>
         </el-form>
         <div class="search-actions">
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增类型</el-button>
@@ -78,6 +74,20 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 分页 -->
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :total="pagination.total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+        />
+      </div>
     </el-card>
 
     <!-- 新增/编辑抽屉 -->
@@ -140,6 +150,12 @@ const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0
+})
+
 const searchForm = reactive({
   dictTypeName: '',
   dictType: ''
@@ -159,11 +175,15 @@ const formRules: FormRules = {
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  return tableData.value.filter(item => {
+  let data = tableData.value.filter(item => {
     if (searchForm.dictTypeName && !item.dictTypeName.includes(searchForm.dictTypeName)) return false
     if (searchForm.dictType && !item.dictType.includes(searchForm.dictType)) return false
     return true
   })
+
+  pagination.total = data.length
+  const start = (pagination.page - 1) * pagination.pageSize
+  return data.slice(start, start + pagination.pageSize)
 })
 
 // ── 方法 ──
@@ -182,6 +202,16 @@ function handleSearch() {
 function handleReset() {
   searchForm.dictTypeName = ''
   searchForm.dictType = ''
+  pagination.page = 1
+}
+
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
+
+function handlePageChange(page: number) {
+  pagination.page = page
 }
 
 function handleRefresh() {
@@ -299,6 +329,13 @@ fetchData()
 
     .data-table {
       flex: 1;
+    }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      flex-shrink: 0;
     }
 
     .index-text { color: #909399; font-size: 13px; }

@@ -86,10 +86,6 @@
                 <el-option label="停用" :value="1102" />
               </el-select>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="handleSearch">搜索</el-button>
-              <el-button @click="handleReset">重置</el-button>
-            </el-form-item>
           </el-form>
         </div>
 
@@ -1155,10 +1151,17 @@ onMounted(() => {
     .table-wrapper {
       flex: 1;
       padding: 16px;
-      overflow: auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
 
       :deep(.el-table) {
+        flex: 1;
         --el-table-row-hover-bg-color: #f5f7fa;
+
+        .el-table__body-wrapper {
+          overflow-y: auto;
+        }
 
         .el-table__row {
           .cell {

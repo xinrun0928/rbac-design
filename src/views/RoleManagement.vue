@@ -74,6 +74,7 @@
 
         <!-- 角色列表 -->
         <el-card class="table-card" shadow="never">
+          <div class="table-wrapper">
           <el-table
             v-loading="loading"
             :data="roleList"
@@ -184,6 +185,7 @@
               </div>
             </template>
           </el-table>
+          </div>
         </el-card>
       </div>
     </div>
@@ -908,6 +910,8 @@ onMounted(() => {
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     transition: width 0.3s ease;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &.collapsed { width: 48px; }
 
@@ -927,6 +931,10 @@ onMounted(() => {
 
     .tree-body {
       padding: 12px;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .tree-search {
@@ -934,7 +942,7 @@ onMounted(() => {
     }
 
     .org-tree {
-      max-height: calc(100vh - 320px);
+      flex: 1;
       overflow-y: auto;
 
       :deep(.el-tree-node__content) {
@@ -965,6 +973,9 @@ onMounted(() => {
   .list-panel {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   .current-node-bar {
@@ -1038,10 +1049,26 @@ onMounted(() => {
   .table-card {
     border-radius: 12px;
     border: none;
-    :deep(.el-card__body) { padding: 20px; }
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    :deep(.el-card__body) {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .table-wrapper {
+      flex: 1;
+      overflow: auto;
+    }
+
     :deep(.el-table) {
       border-radius: 8px;
-      overflow: hidden;
     }
 
     .index-text { color: #909399; font-size: 13px; }

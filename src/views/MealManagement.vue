@@ -170,12 +170,12 @@
     </el-card>
 
     <!-- 新增弹窗 -->
-    <el-dialog
+    <el-drawer
       v-model="addDialogVisible"
       title="新增套餐"
-      width="580px"
+      size="500px"
+      direction="rtl"
       destroy-on-close
-      :close-on-click-modal="false"
       @closed="resetForm"
     >
       <el-form
@@ -233,14 +233,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="addFormData.status">
-            <el-radio :value="1101">
-              <el-icon color="#67C23A"><SuccessFilled /></el-icon>
-              正常
-            </el-radio>
-            <el-radio :value="1001">
-              <el-icon color="#909399"><CircleCloseFilled /></el-icon>
-              停用
-            </el-radio>
+            <el-radio :value="1101">正常</el-radio>
+            <el-radio :value="1001">停用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -251,7 +245,7 @@
           确认创建
         </el-button>
       </template>
-    </el-dialog>
+    </el-drawer>
 
     <!-- 编辑抽屉 -->
     <el-drawer
@@ -312,14 +306,8 @@
 
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="editFormData.status">
-            <el-radio :value="1101">
-              <el-icon color="#67C23A"><SuccessFilled /></el-icon>
-              正常
-            </el-radio>
-            <el-radio :value="1001">
-              <el-icon color="#909399"><CircleCloseFilled /></el-icon>
-              停用
-            </el-radio>
+            <el-radio :value="1101">正常</el-radio>
+            <el-radio :value="1001">停用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

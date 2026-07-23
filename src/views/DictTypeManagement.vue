@@ -247,6 +247,9 @@ fetchData()
   padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   .animate-item {

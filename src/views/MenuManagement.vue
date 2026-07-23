@@ -953,6 +953,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
   // 入场动画
@@ -968,13 +971,11 @@ onMounted(() => {
     }
   }
 
-  // 页面头部
-
   // 主容器
   .main-container {
     display: flex;
     gap: 20px;
-    height: calc(100vh - 160px);
+    flex: 1;
     overflow: hidden;
   }
 

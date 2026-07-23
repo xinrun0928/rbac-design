@@ -547,7 +547,6 @@ onUnmounted(() => {
   cursor: pointer;
   border: 1px solid #dcdfe6;
 }
-}
 
 .next-btn {
   width: 100%;

@@ -1,16 +1,5 @@
 <template>
   <div class="access-log-management">
-    <!-- 页面头部 -->
-    <div class="page-header animate-item">
-      <div class="header-left">
-        <h1><span class="title-bar"></span>系统访问日志</h1>
-        <span class="page-desc">查看系统访问操作记录，监控操作状态</span>
-      </div>
-      <div class="header-right">
-        <el-button :icon="Document" @click="sqlDialogVisible = true">建表SQL</el-button>
-        <el-button :icon="Refresh" @click="handleRefresh" :loading="loading">刷新</el-button>
-      </div>
-    </div>
 
     <!-- 顶部搜索栏 -->
     <el-card class="search-card animate-item" shadow="never">

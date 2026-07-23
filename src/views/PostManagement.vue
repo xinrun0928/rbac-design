@@ -469,6 +469,9 @@ onMounted(() => {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   .animate-item {

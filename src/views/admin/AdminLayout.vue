@@ -353,5 +353,7 @@ const handleLogout = () => {
   flex: 1;
   padding: 16px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 </style>

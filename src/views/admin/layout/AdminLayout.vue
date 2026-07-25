@@ -70,6 +70,13 @@
           </el-breadcrumb>
         </div>
         <div class="header-right">
+          <!-- 全屏切换 -->
+          <el-tooltip :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom">
+            <div class="header-icon" @click="toggleFullscreen">
+              <el-icon :size="18"><FullScreen /></el-icon>
+            </div>
+          </el-tooltip>
+
           <el-dropdown trigger="click">
             <div class="user-info">
               <el-avatar :size="32" class="user-avatar">
@@ -115,7 +122,8 @@ import {
   Grid,
   Switch,
   Fold,
-  Expand
+  Expand,
+  FullScreen
 } from '@element-plus/icons-vue'
 import { adminMenus } from '@/config/menu'
 import TagsView from '@/components/TagsView.vue'
@@ -129,6 +137,24 @@ const isCollapsed = ref(false)
 const toggleCollapse = () => {
   isCollapsed.value = !isCollapsed.value
 }
+
+// 全屏设置
+const isFullscreen = ref(false)
+
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+    isFullscreen.value = true
+  } else {
+    document.exitFullscreen()
+    isFullscreen.value = false
+  }
+}
+
+// 监听全屏变化
+document.addEventListener('fullscreenchange', () => {
+  isFullscreen.value = !!document.fullscreenElement
+})
 
 const activeMenu = computed(() => {
   return route.path
@@ -311,6 +337,24 @@ const handleLogout = () => {
 }
 
 .collapse-btn:hover {
+  color: #409EFF;
+  background: #f5f7fa;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #606266;
+  transition: all 0.3s;
+  margin-right: 8px;
+}
+
+.header-icon:hover {
   color: #409EFF;
   background: #f5f7fa;
 }

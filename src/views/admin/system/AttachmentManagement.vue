@@ -165,7 +165,7 @@ import {
   Document, Picture, VideoPlay, Headset, Folder
 } from '@element-plus/icons-vue'
 import { attachmentData, storageTypeOptions, fileExtOptions } from '@/mock/attachmentData'
-import type { Attachment, AttachmentSearchForm } from '@/types/attachment'
+import type { Attachment, AttachmentSearchForm } from '@/types/system/attachment'
 
 // ── 状态 ──
 const loading = ref(false)

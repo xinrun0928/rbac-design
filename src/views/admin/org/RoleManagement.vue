@@ -357,8 +357,8 @@ import {
 import { orgTreeData } from '@/mock/orgTreeData'
 import { mockMenuData } from '@/mock/menuData'
 import { mockSubsystemData } from '@/mock/subsystemData'
-import type { OrgTreeNode } from '@/types/orgTree'
-import type { Menu } from '@/types/menu'
+import type { OrgTreeNode } from '@/types/org/orgTree'
+import type { Menu } from '@/types/menu/menu'
 import { buildMenuTree } from '@/utils/menuMockApi'
 
 // 角色接口

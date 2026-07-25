@@ -209,7 +209,7 @@ import {
   Refresh, Search, RefreshLeft, View, CopyDocument
 } from '@element-plus/icons-vue'
 import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '@/mock/mqConsumeLogData'
-import type { MqConsumeLog, MqConsumeLogSearchForm } from '@/types/mqConsumeLog'
+import type { MqConsumeLog, MqConsumeLogSearchForm } from '@/types/logs/mqConsumeLog'
 
 // ── 状态 ──
 const loading = ref(false)

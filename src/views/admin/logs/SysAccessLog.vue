@@ -307,7 +307,7 @@ import {
   Search, Refresh, RefreshRight, View,
   Notebook, CopyDocument, Document
 } from '@element-plus/icons-vue'
-import type { SysAccessLog } from '@/types/logs'
+import type { SysAccessLog } from '@/types/logs/logs'
 import { getAccessLogs, getAccessLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──

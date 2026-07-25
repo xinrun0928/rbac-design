@@ -4,7 +4,7 @@ import {
   mockHttpLogData,
   mockLoginLogData
 } from '@/mock/logsData'
-import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/logs'
+import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/logs/logs'
 
 /** 模拟网络延迟 */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

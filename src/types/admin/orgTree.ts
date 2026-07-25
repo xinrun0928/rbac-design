@@ -1,12 +1,14 @@
-/** 组织树节点（组织架构展示用） */
+/** 组织树节点类型（组织架构展示用） */
 export interface OrgTreeNode {
+  /** 节点ID */
   id: number
+  /** 节点名称 */
   name: string
-  /** 节点类型：root-根节点 | dept-部门 | branch-分支 | station-站点 | company-企业 */
+  /** 节点类型: root-根节点, dept-部门, branch-分支, station-站点, company-企业 */
   nodeType: 'root' | 'dept' | 'branch' | 'station' | 'company'
   /** 关联套餐名称 */
   packageName: string
-  /** 套餐类型：1-顶节点 | 2-交通节点 | 3-事务中心节点 | 4-公司企业节点 */
+  /** 套餐类型: 1-顶节点, 2-交通节点, 3-事务中心节点, 4-公司企业节点 */
   packageType?: number
   /** 节点描述 */
   description: string
@@ -26,8 +28,9 @@ export interface OrgTreeNode {
   children?: OrgTreeNode[]
 }
 
-/** 组织成员 */
+/** 组织成员类型 */
 export interface OrgMember {
+  /** 成员ID */
   id: number
   /** 姓名 */
   name: string

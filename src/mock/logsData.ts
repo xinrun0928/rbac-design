@@ -1,4 +1,4 @@
-import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/logs'
+import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/logs/logs'
 
 /** 系统访问日志 Mock 数据 */
 export const mockAccessLogData: SysAccessLog[] = [

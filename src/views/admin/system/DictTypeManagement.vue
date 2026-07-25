@@ -139,7 +139,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
 import { getDictTypes } from '@/mock/dictData'
-import type { DictType } from '@/types/dictData'
+import type { DictType } from '@/types/system/dictData'
 
 const router = useRouter()
 

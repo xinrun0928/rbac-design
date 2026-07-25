@@ -317,7 +317,7 @@ import {
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Male, Female
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '@/mock/orgTreeData'
-import type { OrgTreeNode } from '@/types/orgTree'
+import type { OrgTreeNode } from '@/types/org/orgTree'
 
 // 组织成员接口
 interface MemberItem {

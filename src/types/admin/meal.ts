@@ -1,38 +1,60 @@
-/** 套餐数据接口 */
+/** 套餐数据类型 */
 export interface Meal {
+  /** 套餐ID */
   id: number
+  /** 套餐编码 */
   code: string
+  /** 套餐名称 */
   name: string
+  /** 套餐类型: 1-顶节点, 2-交通节点, 3-事务中心节点, 4-公司企业节点 */
   type: number
+  /** 类型名称 */
   typeName: string
+  /** 显示排序 */
   sort: number
+  /** 状态: 1101-正常, 1001-停用 */
   status: number
+  /** 状态名称 */
   statusName: string
+  /** 创建人 */
   creator: string
+  /** 创建时间 */
   createTime: string
 }
 
-/** 搜索表单 */
+/** 套餐搜索表单类型 */
 export interface SearchForm {
+  /** 套餐名称 */
   name?: string
+  /** 套餐类型 */
   type?: number | ''
+  /** 状态筛选 */
   status?: number | ''
 }
 
-/** 套餐表单（新增/编辑） */
+/** 套餐表单类型（新增/编辑） */
 export interface MealForm {
+  /** 套餐ID（编辑时必填） */
   id?: number
+  /** 套餐编码 */
   code: string
+  /** 套餐名称 */
   name: string
+  /** 套餐类型 */
   type: number | ''
+  /** 显示排序 */
   sort: number
+  /** 状态: 1101-正常, 1001-停用 */
   status: number
 }
 
-/** 分页参数 */
+/** 分页参数类型 */
 export interface Pagination {
+  /** 当前页码 */
   page: number
+  /** 每页条数 */
   pageSize: number
+  /** 总记录数 */
   total: number
 }
 

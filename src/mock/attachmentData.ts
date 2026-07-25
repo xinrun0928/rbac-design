@@ -1,4 +1,4 @@
-import type { Attachment } from '@/types/attachment'
+import type { Attachment } from '@/types/system/attachment'
 
 export const attachmentData: Attachment[] = [
   {

@@ -71,7 +71,7 @@ import {
   Setting
 } from '@element-plus/icons-vue'
 import { mockSubsystemData } from '@/mock/subsystemData'
-import type { Subsystem } from '@/types/subsystem'
+import type { Subsystem } from '@/types/system/subsystem'
 
 const router = useRouter()
 

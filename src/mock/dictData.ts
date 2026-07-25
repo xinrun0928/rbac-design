@@ -1,4 +1,4 @@
-import type { DictData, DictType } from '@/types/dictData'
+import type { DictData, DictType } from '@/types/system/dictData'
 
 export const dictDataList: DictData[] = [
   { dictId: 100000000000, dictType: 'flood_fail_reason_type', dictLabel: '其他', dictValue: '1', dictCode: 'fail_reason_other', displayOrder: 1, dictClass: '', isDefault: 0, status: 1101, remark: '未达标原因类型-其他', creater: '系统管理员1号', updater: null, createTime: '2026-07-01 09:30:00', updateTime: '2026-07-01 01:34:35', deleted: 0, signature: null, signatureVersion: 0 },

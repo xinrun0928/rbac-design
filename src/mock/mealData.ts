@@ -1,4 +1,4 @@
-import type { Meal } from '@/types/meal'
+import type { Meal } from '@/types/meal/meal'
 
 export const mockMealData: Meal[] = [
   // ── 顶节点（类型1）──

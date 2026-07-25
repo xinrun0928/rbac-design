@@ -1,4 +1,4 @@
-import type { MqConsumeLog } from '@/types/mqConsumeLog'
+import type { MqConsumeLog } from '@/types/logs/mqConsumeLog'
 
 export const mqConsumeLogData: MqConsumeLog[] = [
   {

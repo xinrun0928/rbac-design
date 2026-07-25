@@ -1,4 +1,4 @@
-import type { OrgTreeNode } from '@/types/orgTree'
+import type { OrgTreeNode } from '@/types/org/orgTree'
 
 /**
  * 广东省交通运输厅组织架构 Mock 数据

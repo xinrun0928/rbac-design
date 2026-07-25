@@ -285,7 +285,7 @@ import {
   Search, Refresh, RefreshRight, View,
   CopyDocument, Document, User
 } from '@element-plus/icons-vue'
-import type { SysLoginLog } from '@/types/logs'
+import type { SysLoginLog } from '@/types/logs/logs'
 import { getLoginLogs, getLoginLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──

@@ -180,7 +180,7 @@ import {
   Refresh, Search, RefreshLeft, View, Delete, CopyDocument
 } from '@element-plus/icons-vue'
 import { messageTemplateData } from '@/mock/messageTemplateData'
-import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '@/types/messageTemplate'
+import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '@/types/system/messageTemplate'
 
 // ── 状态 ──
 const loading = ref(false)

@@ -1,5 +1,5 @@
 import { mockMenuData } from '@/mock/menuData'
-import type { Menu, MenuSearchForm } from '@/types/menu'
+import type { Menu, MenuSearchForm } from '@/types/menu/menu'
 
 /** 模拟网络延迟 */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

@@ -176,7 +176,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, ArrowLeft
 } from '@element-plus/icons-vue'
 import { dictDataList } from '@/mock/dictData'
-import type { DictData, DictDataSearchForm } from '@/types/dictData'
+import type { DictData, DictDataSearchForm } from '@/types/system/dictData'
 
 const router = useRouter()
 const route = useRoute()

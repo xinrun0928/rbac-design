@@ -1,4 +1,4 @@
-import type { OrgMember } from '@/types/orgMember'
+import type { OrgMember } from '@/types/org/orgMember'
 
 export const orgMemberList: OrgMember[] = [
   // orgId: 1 - 广东省交通运输厅（顶节点，12条数据）

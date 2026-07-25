@@ -4,7 +4,7 @@ export const mockSubsystemData: Subsystem[] = [
   {
     subsysId: 1,
     subsysCode: 'EMERGENCY_WATCH',
-    subsysName: '应急值守管理子系统',
+    subsysName: '值守管理子系统',
     subsysShortName: '值守',
     pathPrefix: '/duty',
     tablePrefix: 'duty_',
@@ -26,7 +26,7 @@ export const mockSubsystemData: Subsystem[] = [
   {
     subsysId: 2,
     subsysCode: 'EMERGENCY_PLAN',
-    subsysName: '应急预案管理子系统',
+    subsysName: '预案管理子系统',
     subsysShortName: '预案',
     pathPrefix: '/plan',
     tablePrefix: 'plan_',
@@ -48,7 +48,7 @@ export const mockSubsystemData: Subsystem[] = [
   {
     subsysId: 3,
     subsysCode: 'EMERGENCY_EVENT',
-    subsysName: '应急事件管理子系统',
+    subsysName: '事件管理子系统',
     subsysShortName: '事件',
     pathPrefix: '/event',
     tablePrefix: 'event_',
@@ -70,7 +70,7 @@ export const mockSubsystemData: Subsystem[] = [
   {
     subsysId: 4,
     subsysCode: 'EMERGENCY_DISPATCH',
-    subsysName: '应急指挥智能调度子系统',
+    subsysName: '指挥智能调度子系统',
     subsysShortName: '调度',
     pathPrefix: '/dispatch',
     tablePrefix: 'dispatch_',
@@ -92,7 +92,7 @@ export const mockSubsystemData: Subsystem[] = [
   {
     subsysId: 5,
     subsysCode: 'EMERGENCY_MATERIAL',
-    subsysName: '厅级应急物资管理子系统',
+    subsysName: '厅级物资管理子系统',
     subsysShortName: '物资',
     pathPrefix: '/resource',
     tablePrefix: 'resource_',

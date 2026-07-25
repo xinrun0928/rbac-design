@@ -187,8 +187,26 @@ export const dutyMenus: MenuItem[] = [
       { path: '/duty/daily-report/template', title: '日报模板', icon: Files },
     ]
   },
-  { path: '/duty/check', title: '值班查岗', icon: Search },
-  { path: '/duty/notice', title: '公告管理', icon: Bell },
+  {
+    path: '/duty/check-group',
+    title: '值班查岗',
+    icon: Search,
+    isGroup: true,
+    groupTitle: '值班查岗',
+    children: [
+      { path: '/duty/check', title: '值班查岗', icon: Search },
+    ]
+  },
+  {
+    path: '/duty/notice-group',
+    title: '公告管理',
+    icon: Bell,
+    isGroup: true,
+    groupTitle: '公告管理',
+    children: [
+      { path: '/duty/notice', title: '公告管理', icon: Bell },
+    ]
+  },
   {
     path: '/duty/schedule-group',
     title: '排班管理',

@@ -1,8 +1,8 @@
 <template>
   <div class="server-monitor">
-    <!-- CPU信息 -->
-    <div class="monitor-row animate-item">
-      <el-card shadow="never" class="info-card cpu-card">
+    <!-- CPU & 内存 -->
+    <div class="monitor-row two-col animate-item">
+      <el-card shadow="never" class="info-card">
         <template #header>
           <div class="card-header">
             <el-icon :size="18"><Cpu /></el-icon>
@@ -31,11 +31,8 @@
           </div>
         </div>
       </el-card>
-    </div>
 
-    <!-- 内存信息 -->
-    <div class="monitor-row animate-item">
-      <el-card shadow="never" class="info-card memory-card">
+      <el-card shadow="never" class="info-card">
         <template #header>
           <div class="card-header">
             <el-icon :size="18"><Coin /></el-icon>
@@ -73,12 +70,24 @@
             <span>服务器信息</span>
           </div>
         </template>
-        <el-descriptions :column="2" border size="small">
-          <el-descriptions-item label="服务器名称">{{ data.server.name }}</el-descriptions-item>
-          <el-descriptions-item label="操作系统">{{ data.server.os }}</el-descriptions-item>
-          <el-descriptions-item label="服务器IP">{{ data.server.ip }}</el-descriptions-item>
-          <el-descriptions-item label="系统架构">{{ data.server.arch }}</el-descriptions-item>
-        </el-descriptions>
+        <div class="server-grid">
+          <div class="server-item">
+            <div class="server-label">服务器名称</div>
+            <div class="server-value">{{ data.server.name }}</div>
+          </div>
+          <div class="server-item">
+            <div class="server-label">操作系统</div>
+            <div class="server-value">{{ data.server.os }}</div>
+          </div>
+          <div class="server-item">
+            <div class="server-label">服务器IP</div>
+            <div class="server-value ip">{{ data.server.ip }}</div>
+          </div>
+          <div class="server-item">
+            <div class="server-label">系统架构</div>
+            <div class="server-value">{{ data.server.arch }}</div>
+          </div>
+        </div>
       </el-card>
 
       <el-card shadow="never" class="info-card">
@@ -122,23 +131,23 @@
           :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
           size="small"
         >
-          <el-table-column prop="path" label="盘符路径" width="120" align="center">
+          <el-table-column prop="path" label="盘符路径" min-width="120" align="center">
             <template #default="{ row }">
               <span class="path-text">{{ row.path }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="fsType" label="文件系统" width="100" align="center" />
-          <el-table-column prop="type" label="盘符类型" width="100" align="center" />
-          <el-table-column prop="total" label="总大小" width="100" align="center">
+          <el-table-column prop="fsType" label="文件系统" min-width="100" align="center" />
+          <el-table-column prop="type" label="盘符类型" min-width="100" align="center" />
+          <el-table-column prop="total" label="总大小" min-width="100" align="center">
             <template #default="{ row }">{{ row.total }} GB</template>
           </el-table-column>
-          <el-table-column prop="free" label="可用大小" width="100" align="center">
+          <el-table-column prop="free" label="可用大小" min-width="100" align="center">
             <template #default="{ row }">{{ row.free }} GB</template>
           </el-table-column>
-          <el-table-column prop="used" label="已用大小" width="100" align="center">
+          <el-table-column prop="used" label="已用大小" min-width="100" align="center">
             <template #default="{ row }">{{ row.used }} GB</template>
           </el-table-column>
-          <el-table-column prop="usageRate" label="已用百分比" width="200" align="center">
+          <el-table-column prop="usageRate" label="已用百分比" min-width="180" align="center">
             <template #default="{ row }">
               <el-progress
                 :percentage="row.usageRate"
@@ -188,7 +197,6 @@ function getProgressColor(rate: number): string {
     &:nth-child(1) { animation-delay: 0.05s; }
     &:nth-child(2) { animation-delay: 0.12s; }
     &:nth-child(3) { animation-delay: 0.2s; }
-    &:nth-child(4) { animation-delay: 0.27s; }
   }
 
   .monitor-row {
@@ -278,6 +286,37 @@ function getProgressColor(rate: number): string {
       font-size: 13px;
       color: #909399;
       margin-bottom: 8px;
+    }
+  }
+
+  // Server Info
+  .server-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .server-item {
+    padding: 12px;
+    background: #f5f7fa;
+    border-radius: 8px;
+
+    .server-label {
+      font-size: 12px;
+      color: #909399;
+      margin-bottom: 6px;
+    }
+
+    .server-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+
+      &.ip {
+        font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+        color: #409EFF;
+      }
     }
   }
 

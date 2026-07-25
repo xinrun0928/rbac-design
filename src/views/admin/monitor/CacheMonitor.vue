@@ -89,14 +89,32 @@
             <span>内存信息</span>
           </div>
         </template>
-        <el-descriptions :column="1" border size="small">
-          <el-descriptions-item label="已用内存">{{ data.memory.usedMemory }}</el-descriptions-item>
-          <el-descriptions-item label="使用峰值">{{ data.memory.usedMemoryPeak }}</el-descriptions-item>
-          <el-descriptions-item label="内存碎片率">{{ data.memory.memFragmentationRatio }}</el-descriptions-item>
-          <el-descriptions-item label="AOF缓冲区">{{ data.memory.aofBuffer }}</el-descriptions-item>
-          <el-descriptions-item label="输入缓冲区">{{ data.memory.inputBuffer }}</el-descriptions-item>
-          <el-descriptions-item label="输出缓冲区">{{ data.memory.outputBuffer }}</el-descriptions-item>
-        </el-descriptions>
+        <div class="memory-info-grid">
+          <div class="memory-info-item">
+            <div class="info-label">已用内存</div>
+            <div class="info-value highlight">{{ data.memory.usedMemory }}</div>
+          </div>
+          <div class="memory-info-item">
+            <div class="info-label">使用峰值</div>
+            <div class="info-value">{{ data.memory.usedMemoryPeak }}</div>
+          </div>
+          <div class="memory-info-item">
+            <div class="info-label">内存碎片率</div>
+            <div class="info-value">{{ data.memory.memFragmentationRatio }}</div>
+          </div>
+          <div class="memory-info-item">
+            <div class="info-label">AOF缓冲区</div>
+            <div class="info-value">{{ data.memory.aofBuffer }}</div>
+          </div>
+          <div class="memory-info-item">
+            <div class="info-label">输入缓冲区</div>
+            <div class="info-value">{{ data.memory.inputBuffer }}</div>
+          </div>
+          <div class="memory-info-item">
+            <div class="info-label">输出缓冲区</div>
+            <div class="info-value">{{ data.memory.outputBuffer }}</div>
+          </div>
+        </div>
       </el-card>
     </div>
   </div>
@@ -198,12 +216,21 @@ onUnmounted(() => {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
+      align-items: stretch;
     }
   }
 
   .info-card {
     border-radius: 12px;
     border: none;
+    display: flex;
+    flex-direction: column;
+
+    :deep(.el-card__body) {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
     :deep(.el-card__header) {
       padding: 12px 20px;
@@ -243,6 +270,40 @@ onUnmounted(() => {
       font-size: 15px;
       font-weight: 600;
       color: #303133;
+    }
+  }
+
+  .memory-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    padding: 8px 0;
+    height: 100%;
+  }
+
+  .memory-info-item {
+    padding: 14px 16px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .info-label {
+      font-size: 12px;
+      color: #909399;
+      margin-bottom: 6px;
+    }
+
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+
+      &.highlight {
+        color: #E6A23C;
+      }
     }
   }
 

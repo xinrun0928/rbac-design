@@ -166,6 +166,14 @@ export interface CacheMonitorData {
   memory: RedisMemoryInfo
 }
 
+/** 缓存名称信息 */
+export interface CacheNameInfo {
+  /** 缓存名称 */
+  cacheName: string
+  /** 键数量 */
+  keyCount: number
+}
+
 /** 缓存键信息 */
 export interface CacheEntry {
   /** 缓存名称 */
@@ -176,6 +184,8 @@ export interface CacheEntry {
   value: string
   /** 数据类型: string, map */
   dataType: string
+  /** 过期时间（秒），-1表示永不过期 */
+  ttl: number
   /** 备注 */
   remark: string
 }

@@ -140,6 +140,12 @@ const adminRoutes: RouteRecordRaw = {
       component: () => import('@/views/admin/monitor/CacheList.vue'),
       meta: { title: '缓存列表' }
     },
+    {
+      path: 'monitor/cache/data',
+      name: 'AdminCacheData',
+      component: () => import('@/views/admin/monitor/CacheData.vue'),
+      meta: { title: '缓存数据' }
+    },
 
     // 日志管理
     {

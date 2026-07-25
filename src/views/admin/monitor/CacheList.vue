@@ -5,12 +5,7 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="缓存名称">
-            <el-select v-model="searchForm.cacheName" placeholder="请选择缓存" clearable style="width: 200px" @change="handleSearch">
-              <el-option v-for="name in cacheNames" :key="name" :label="name" :value="name" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="键名">
-            <el-input v-model="searchForm.key" placeholder="输入键名" clearable style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.cacheName" placeholder="输入缓存名称" clearable style="width: 240px" @keyup.enter="handleSearch" />
           </el-form-item>
         </el-form>
       </div>
@@ -21,7 +16,7 @@
         border
         stripe
         highlight-current-row
-        row-key="key"
+        row-key="cacheName"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         class="data-table"
       >
@@ -31,35 +26,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="cacheName" label="缓存名称" width="160" align="center">
+        <el-table-column prop="cacheName" label="缓存名称" min-width="260" align="center">
           <template #default="{ row }">
-            <el-button type="primary" link @click="handleCacheNameClick(row.cacheName)">
+            <el-button type="primary" link class="cache-name-link" @click="handleCacheNameClick(row.cacheName)">
               {{ row.cacheName }}
             </el-button>
           </template>
         </el-table-column>
 
-        <el-table-column prop="key" label="缓存键名" min-width="260" show-overflow-tooltip>
+        <el-table-column prop="keyCount" label="键数量" width="120" align="center">
           <template #default="{ row }">
-            <el-button type="primary" link class="key-link" @click="handleKeyClick(row)">
-              <span class="key-text">{{ row.key }}</span>
-            </el-button>
+            <el-tag type="info" effect="plain" size="small">{{ row.keyCount }}</el-tag>
           </template>
         </el-table-column>
-
-        <el-table-column prop="dataType" label="数据类型" width="100" align="center">
-          <template #default="{ row }">
-            <el-tag
-              :type="row.dataType === 'map' ? 'warning' : 'info'"
-              size="small"
-              effect="plain"
-            >
-              {{ row.dataType }}
-            </el-tag>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="remark" label="备注" width="180" show-overflow-tooltip />
 
         <el-table-column label="操作" width="100" align="center" fixed="right">
           <template #default="{ row }">
@@ -82,78 +61,23 @@
         />
       </div>
     </el-card>
-
-    <!-- 缓存详情抽屉 -->
-    <el-drawer
-      v-model="drawerVisible"
-      :title="`缓存详情 - ${currentEntry?.key || ''}`"
-      size="50%"
-      direction="rtl"
-      class="cache-detail-drawer"
-    >
-      <template v-if="currentEntry">
-        <el-descriptions :column="1" border class="detail-descriptions">
-          <el-descriptions-item label="缓存名称">{{ currentEntry.cacheName }}</el-descriptions-item>
-          <el-descriptions-item label="缓存键名">
-            <span class="key-text">{{ currentEntry.key }}</span>
-          </el-descriptions-item>
-          <el-descriptions-item label="数据类型">
-            <el-tag :type="currentEntry.dataType === 'map' ? 'warning' : 'info'" size="small" effect="plain">
-              {{ currentEntry.dataType }}
-            </el-tag>
-          </el-descriptions-item>
-          <el-descriptions-item label="备注">{{ currentEntry.remark }}</el-descriptions-item>
-        </el-descriptions>
-
-        <div class="value-section">
-          <div class="section-header">
-            <span class="section-title">缓存内容</span>
-          </div>
-          <!-- Map 类型 -->
-          <template v-if="currentEntry.dataType === 'map'">
-            <el-table
-              :data="parsedMapData"
-              border
-              stripe
-              size="small"
-              :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
-            >
-              <el-table-column prop="field" label="字段" width="180" />
-              <el-table-column prop="value" label="值" min-width="200" show-overflow-tooltip />
-            </el-table>
-          </template>
-          <!-- String 类型 -->
-          <template v-else>
-            <el-input
-              v-model="currentEntry.value"
-              type="textarea"
-              :rows="12"
-              readonly
-              class="value-textarea"
-            />
-          </template>
-        </div>
-      </template>
-    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete } from '@element-plus/icons-vue'
-import { cacheListData, cacheNameList } from '@/mock/admin/monitorData'
-import type { CacheEntry, CacheMapDetail } from '@/types/admin/monitor'
+import { cacheNameListData } from '@/mock/admin/monitorData'
+import type { CacheNameInfo } from '@/types/admin/monitor'
 
-const cacheNames = cacheNameList
+const router = useRouter()
 const loading = ref(false)
-const tableData = ref<CacheEntry[]>(cacheListData)
-const drawerVisible = ref(false)
-const currentEntry = ref<CacheEntry | null>(null)
+const tableData = ref<CacheNameInfo[]>(cacheNameListData)
 
 const searchForm = reactive({
-  cacheName: '',
-  key: ''
+  cacheName: ''
 })
 
 const pagination = reactive({
@@ -166,25 +90,12 @@ const filteredData = computed(() => {
   let data = tableData.value
 
   if (searchForm.cacheName) {
-    data = data.filter(item => item.cacheName === searchForm.cacheName)
-  }
-  if (searchForm.key) {
-    data = data.filter(item => item.key.includes(searchForm.key))
+    data = data.filter(item => item.cacheName.includes(searchForm.cacheName))
   }
 
   pagination.total = data.length
   const start = (pagination.page - 1) * pagination.pageSize
   return data.slice(start, start + pagination.pageSize)
-})
-
-const parsedMapData = computed(() => {
-  if (!currentEntry.value || currentEntry.value.dataType !== 'map') return []
-  try {
-    const obj: CacheMapDetail = JSON.parse(currentEntry.value.value)
-    return Object.entries(obj).map(([field, val]) => ({ field, value: val }))
-  } catch {
-    return [{ field: '(解析失败)', value: currentEntry.value.value }]
-  }
 })
 
 function handleSearch() {
@@ -201,23 +112,17 @@ function handlePageChange(page: number) {
 }
 
 function handleCacheNameClick(cacheName: string) {
-  searchForm.cacheName = cacheName
-  pagination.page = 1
+  router.push({ path: '/admin/monitor/cache/data', query: { cacheName } })
 }
 
-function handleKeyClick(row: CacheEntry) {
-  currentEntry.value = row
-  drawerVisible.value = true
-}
-
-function handleDelete(row: CacheEntry) {
+function handleDelete(row: CacheNameInfo) {
   ElMessageBox.confirm(
-    `确认要删除缓存键 "${row.key}" 吗？`,
+    `确认要删除缓存 "${row.cacheName}" 下的所有键吗？此操作不可恢复。`,
     '删除确认',
     { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
   ).then(() => {
-    tableData.value = tableData.value.filter(item => item.key !== row.key)
-    ElMessage.success('删除成功')
+    tableData.value = tableData.value.filter(item => item.cacheName !== row.cacheName)
+    ElMessage.success(`已删除缓存 ${row.cacheName}`)
   }).catch(() => {})
 }
 </script>
@@ -264,12 +169,10 @@ function handleDelete(row: CacheEntry) {
     }
 
     .index-text { color: #909399; font-size: 13px; }
-    .key-text {
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      font-size: 12px;
-    }
-    .key-link .key-text {
-      color: #409EFF;
+
+    .cache-name-link {
+      font-weight: 500;
+      font-size: 14px;
     }
 
     .data-table { flex: 1; }
@@ -280,54 +183,6 @@ function handleDelete(row: CacheEntry) {
     justify-content: flex-end;
     margin-top: 16px;
     flex-shrink: 0;
-  }
-
-  :deep(.cache-detail-drawer) {
-    .el-drawer__header {
-      margin-bottom: 0;
-      padding: 20px 24px;
-      border-bottom: 1px solid #EBEEF5;
-
-      .el-drawer__title {
-        font-weight: 600;
-        font-size: 16px;
-      }
-    }
-
-    .el-drawer__body {
-      padding: 24px;
-      overflow-y: auto;
-    }
-  }
-
-  .detail-descriptions {
-    margin-bottom: 24px;
-  }
-
-  .value-section {
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding: 10px 16px;
-      background: #F5F7FA;
-      border-radius: 6px;
-
-      .section-title {
-        font-weight: 600;
-        font-size: 14px;
-        color: #303133;
-      }
-    }
-
-    .value-textarea {
-      :deep(textarea) {
-        font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-        font-size: 12px;
-        line-height: 1.6;
-      }
-    }
   }
 }
 

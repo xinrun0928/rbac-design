@@ -2,7 +2,8 @@ import type {
   OnlineUser,
   ServerMonitorData,
   CacheMonitorData,
-  CacheEntry
+  CacheEntry,
+  CacheNameInfo
 } from '@/types/admin/monitor'
 
 // ─── 在线用户 ───────────────────────────────────────
@@ -111,11 +112,17 @@ const cacheNames = [
   'menu_list', 'role_perms', 'online_users', 'area_list', 'msg_template'
 ]
 
-export const cacheNameList = cacheNames
+export const cacheNameListData: CacheNameInfo[] = cacheNames.map(name => ({
+  cacheName: name,
+  keyCount: 8
+}))
 
 function randomKey(name: string, i: number): string {
   return `${name}:${String(i + 1).padStart(4, '0')}`
 }
+
+// TTL值池：-1永不过期 + 各种时长
+const ttlPool = [-1, 300, 1800, 3600, 7200, 86400, 604800, 2592000]
 
 export const cacheListData: CacheEntry[] = (() => {
   const entries: CacheEntry[] = []
@@ -136,6 +143,7 @@ export const cacheListData: CacheEntry[] = (() => {
             })
           : `cached_value_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`,
         dataType: isMap ? 'map' : 'string',
+        ttl: ttlPool[i % ttlPool.length],
         remark: `${name}的缓存数据${i + 1}`
       })
     }

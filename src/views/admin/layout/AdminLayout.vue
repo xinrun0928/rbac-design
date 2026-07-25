@@ -209,6 +209,8 @@ const handleLogout = () => {
 .sidebar-menu :deep(.el-sub-menu__title) {
   background: #1a1f2e !important;
   color: #bfcbd9 !important;
+  height: 50px !important;
+  line-height: 50px !important;
 }
 
 .sidebar-menu :deep(.el-menu-item:hover),
@@ -220,15 +222,17 @@ const handleLogout = () => {
 .sidebar-menu :deep(.el-menu-item.is-active) {
   background: #263445 !important;
   color: #409EFF !important;
-  border-right: none !important;
-}
-
-.sidebar-menu :deep(.el-menu-item.is-active::before) {
-  display: none !important;
+  position: relative;
 }
 
 .sidebar-menu :deep(.el-menu-item.is-active::after) {
-  display: none !important;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #409EFF !important;
 }
 
 .sidebar-menu :deep(.el-menu-item .el-icon),
@@ -244,6 +248,8 @@ const handleLogout = () => {
   background: #1a1f2e !important;
   color: #bfcbd9 !important;
   min-width: 0 !important;
+  height: 50px !important;
+  line-height: 50px !important;
 }
 
 .sidebar-menu :deep(.el-sub-menu .el-menu-item:hover) {
@@ -254,12 +260,17 @@ const handleLogout = () => {
 .sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active) {
   background: #263445 !important;
   color: #409EFF !important;
-  border-right: none !important;
+  position: relative;
 }
 
-.sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active::before),
 .sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active::after) {
-  display: none !important;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #409EFF !important;
 }
 
 .collapse-btn {

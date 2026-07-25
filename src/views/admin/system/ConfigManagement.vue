@@ -157,8 +157,8 @@ import type { FormInstance, FormRules } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
-import { configData } from '../mock/configData'
-import type { Config, ConfigSearchForm } from '../types/config'
+import { configData } from '@/mock/configData'
+import type { Config, ConfigSearchForm } from '@/types/config'
 
 // ── 状态 ──
 const loading = ref(false)

@@ -1,39 +1,43 @@
 <template>
-  <div class="message-log-management">
+  <div class="login-log-management">
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline>
-          <el-form-item label="模板ID">
+          <el-form-item label="用户名">
             <el-input
-              v-model="searchForm.template_id"
-              placeholder="请输入模板ID"
+              v-model="searchForm.user_name"
+              placeholder="请输入用户名"
               clearable
               :prefix-icon="Search"
-              style="width: 180px"
+              style="width: 200px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
-          <el-form-item label="手机号码">
-            <el-input
-              v-model="searchForm.phone"
-              placeholder="请输入手机号码"
+          <el-form-item label="客户端">
+            <el-select
+              v-model="searchForm.client_id"
+              placeholder="请选择"
               clearable
               style="width: 160px"
-              @keyup.enter="handleSearch"
-            />
+            >
+              <el-option label="flood-inspection" value="flood-inspection" />
+            </el-select>
           </el-form-item>
-          <el-form-item label="内容">
-            <el-input
-              v-model="searchForm.content"
-              placeholder="请输入内容关键词"
+          <el-form-item label="授权类型">
+            <el-select
+              v-model="searchForm.grant_type"
+              placeholder="请选择"
               clearable
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
+              style="width: 140px"
+            >
+              <el-option label="password" value="password" />
+              <el-option label="refresh_token" value="refresh_token" />
+              <el-option label="mobile" value="mobile" />
+            </el-select>
           </el-form-item>
-          <el-form-item label="发送时间">
+          <el-form-item label="登录时间">
             <el-date-picker
               v-model="searchForm.create_time"
               type="daterange"
@@ -53,59 +57,78 @@
         border
         stripe
         highlight-current-row
-        row-key="message_id"
+        row-key="log_id"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="message_id" label="消息ID" min-width="180">
+        <el-table-column prop="puser_id" label="用户ID" width="160">
           <template #default="{ row }">
-            <span class="id-text">{{ row.message_id }}</span>
+            <span class="id-text">{{ row.puser_id || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="template_id" label="模板ID" width="120">
+        <el-table-column prop="org_id" label="组织ID" width="160">
           <template #default="{ row }">
-            <span class="template-text">{{ row.template_id }}</span>
+            <span class="id-text">{{ row.org_id || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="phone" label="手机号" width="140" align="center">
+        <el-table-column prop="user_name" label="用户名" min-width="200">
           <template #default="{ row }">
-            <span class="phone-text">{{ row.phone }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="content" label="内容" min-width="200">
-          <template #default="{ row }">
-            <el-tooltip
-              :content="row.content"
-              placement="top"
-              :show-after="300"
-              :disabled="row.content.length <= 20"
-            >
-              <span class="content-text">
-                {{ truncateContent(row.content) }}
-              </span>
+            <el-tooltip v-if="row.user_name" :content="'点击复制'" placement="top" :show-after="300">
+              <span class="user-text copyable" @click="handleCopyText(row.user_name)">{{ row.user_name }}</span>
             </el-tooltip>
+            <span v-else class="user-text">-</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="status" label="发送状态" min-width="120" align="center">
+        <el-table-column prop="client_id" label="客户端" width="150">
+          <template #default="{ row }">
+            <el-tag type="info" effect="plain" round>{{ row.client_id }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="grant_type" label="授权类型" width="120" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="parseSendStatus(row.reply_text).success ? 'success' : 'danger'"
+              :type="getGrantTypeType(row.grant_type)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ parseSendStatus(row.reply_text).message }}
+              {{ row.grant_type }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" label="发送时间" width="180" align="center">
+        <el-table-column prop="operation_type" label="操作类型" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag
+              :type="row.operation_type === 1 ? 'success' : 'info'"
+              effect="dark"
+              style="border: none; color: #fff"
+              round
+            >
+              {{ row.operation_type === 1 ? '登录' : '登出' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="ip" label="IP地址" width="130">
+          <template #default="{ row }">
+            <span class="ip-text">{{ row.ip }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="browser" label="浏览器" width="120">
+          <template #default="{ row }">
+            <span class="browser-text">{{ row.browser }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="create_time" label="登录时间" width="180" align="center">
           <template #default="{ row }">
             <span class="time-text">{{ row.create_time }}</span>
           </template>
@@ -122,9 +145,9 @@
         <!-- 空状态插槽 -->
         <template #empty>
           <div class="empty-state">
-            <el-icon :size="64" color="#DCDFE6"><ChatDotRound /></el-icon>
-            <p class="empty-title">暂无短信消息记录</p>
-            <p class="empty-desc">系统尚未发送任何短信消息</p>
+            <el-icon :size="64" color="#DCDFE6"><User /></el-icon>
+            <p class="empty-title">暂无登录记录</p>
+            <p class="empty-desc">系统尚未记录任何登录操作</p>
           </div>
         </template>
       </el-table>
@@ -147,7 +170,7 @@
     <!-- 详情抽屉 -->
     <el-drawer
       v-model="detailDialogVisible"
-      title="短信消息详情"
+      title="登录详情"
       direction="rtl"
       size="520px"
       destroy-on-close
@@ -158,68 +181,78 @@
           <el-collapse-item title="基础信息" name="basic">
             <div class="detail-grid">
               <div class="detail-item">
-                <span class="detail-label">消息ID</span>
-                <span class="detail-value mono">{{ detailData.message_id }}</span>
+                <span class="detail-label">记录ID</span>
+                <span class="detail-value mono">{{ detailData.log_id }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">模板ID</span>
-                <span class="detail-value mono">{{ detailData.template_id }}</span>
+                <span class="detail-label">用户名</span>
+                <span class="detail-value">{{ detailData.user_name || '-' }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">发送状态</span>
+                <span class="detail-label">用户ID</span>
+                <span class="detail-value mono">{{ detailData.puser_id || '-' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">组织ID</span>
+                <span class="detail-value mono">{{ detailData.org_id || '-' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">操作类型</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="parseSendStatus(detailData.reply_text).success ? 'success' : 'danger'"
+                    :type="detailData.operation_type === 1 ? 'success' : 'info'"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ parseSendStatus(detailData.reply_text).message }}
+                    {{ detailData.operation_type === 1 ? '登录' : '登出' }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">创建时间</span>
+                <span class="detail-label">客户端</span>
+                <span class="detail-value">{{ detailData.client_id }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">授权类型</span>
+                <span class="detail-value">
+                  <el-tag
+                    :type="getGrantTypeType(detailData.grant_type)"
+                    effect="dark"
+                    style="border: none; color: #fff"
+                    round
+                    size="small"
+                  >
+                    {{ detailData.grant_type }}
+                  </el-tag>
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">登录时间</span>
                 <span class="detail-value">{{ detailData.create_time }}</span>
               </div>
             </div>
           </el-collapse-item>
 
-          <!-- 消息内容 -->
-          <el-collapse-item title="消息内容" name="content">
+          <!-- 终端信息 -->
+          <el-collapse-item title="终端信息" name="terminal">
             <div class="detail-grid">
               <div class="detail-item">
-                <span class="detail-label">手机号</span>
-                <span class="detail-value mono">{{ detailData.phone }}</span>
+                <span class="detail-label">IP地址</span>
+                <span class="detail-value mono">{{ detailData.ip }}</span>
               </div>
-              <div class="detail-item full-width">
-                <span class="detail-label">消息内容</span>
-                <span class="detail-value content-full">{{ detailData.content }}</span>
+              <div class="detail-item">
+                <span class="detail-label">地理位置</span>
+                <span class="detail-value">{{ detailData.location || '-' }}</span>
               </div>
-            </div>
-          </el-collapse-item>
-
-          <!-- 报文及回复 -->
-          <el-collapse-item title="报文及回复" name="request">
-            <div class="detail-grid">
-              <div class="detail-item full-width">
-                <div class="label-row">
-                  <span class="detail-label">请求头 (req_headers)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_headers)">
-                    <el-icon><CopyDocument /></el-icon> 复制
-                  </el-button>
-                </div>
-                <pre class="json-block">{{ formatJson(detailData.req_headers) }}</pre>
+              <div class="detail-item">
+                <span class="detail-label">浏览器</span>
+                <span class="detail-value">{{ detailData.browser }}</span>
               </div>
-              <div class="detail-item full-width">
-                <div class="label-row">
-                  <span class="detail-label">第三方回复 (reply_text)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.reply_text)">
-                    <el-icon><CopyDocument /></el-icon> 复制
-                  </el-button>
-                </div>
-                <pre class="json-block">{{ formatJson(detailData.reply_text) }}</pre>
+              <div class="detail-item">
+                <span class="detail-label">操作系统</span>
+                <span class="detail-value">{{ detailData.os }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -236,10 +269,10 @@
     >
       <div class="sql-content">
         <div class="sql-header">
-          <span class="sql-title">sys_message_log - 系统短信消息记录表</span>
+          <span class="sql-title">sys_login_log - 系统登录日志表</span>
           <el-button type="primary" :icon="CopyDocument" @click="handleCopySql">复制SQL</el-button>
         </div>
-        <pre class="sql-block">{{ messageLogSql }}</pre>
+        <pre class="sql-block">{{ loginLogSql }}</pre>
       </div>
     </el-dialog>
   </div>
@@ -250,72 +283,75 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Search, Refresh, RefreshRight, View,
-  ChatDotRound, CopyDocument, Document
+  CopyDocument, Document, User
 } from '@element-plus/icons-vue'
-import type { SysMessageLog } from '../../types/logs'
-import { getMessageLogs, getMessageLogDetail } from '../../utils/logMockApi'
+import type { SysLoginLog } from '@/types/logs'
+import { getLoginLogs, getLoginLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  template_id: string
-  phone: string
-  content: string
+  user_name: string
+  client_id: string
+  grant_type: string
   create_time: string[] | null
 }
 
 // ── 状态 ──
 const loading = ref(false)
-const tableData = ref<SysMessageLog[]>([])
+const tableData = ref<SysLoginLog[]>([])
 const detailDialogVisible = ref(false)
-const detailData = ref<SysMessageLog | null>(null)
-const activeCollapse = ref(['basic', 'content', 'request'])
+const detailData = ref<SysLoginLog | null>(null)
+const activeCollapse = ref(['basic', 'terminal'])
 const sqlDialogVisible = ref(false)
 
-const messageLogSql = `CREATE TABLE "public"."sys_message_log" (
-  "message_id" int8 NOT NULL DEFAULT nextval('sys_message_log_message_id_seq'::regclass),
-  "template_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
-  "phone" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "content" text COLLATE "pg_catalog"."default" NOT NULL,
-  "req_headers" text COLLATE "pg_catalog"."default",
-  "reply_text" text COLLATE "pg_catalog"."default",
-  "display_order" int4 DEFAULT 0,
-  "status" int2 NOT NULL DEFAULT 1101,
-  "remark" varchar(500) COLLATE "pg_catalog"."default",
-  "creater" varchar(64) COLLATE "pg_catalog"."default",
-  "updater" varchar(64) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "update_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+const loginLogSql = `CREATE TABLE "public"."sys_login_log" (
+  "log_id" int8 NOT NULL,
+  "puser_id" int8,
+  "user_name" varchar(255) COLLATE "pg_catalog"."default",
+  "org_id" int8,
+  "client_id" varchar(255) COLLATE "pg_catalog"."default",
+  "grant_type" varchar(255) COLLATE "pg_catalog"."default",
+  "ip" varchar(255) COLLATE "pg_catalog"."default",
+  "location" varchar(255) COLLATE "pg_catalog"."default",
+  "browser" varchar(255) COLLATE "pg_catalog"."default",
+  "os" varchar(255) COLLATE "pg_catalog"."default",
+  "operation_type" int4,
+  "create_time" timestamp(6),
   "deleted" int2 DEFAULT 0,
   "signature" varchar(512) COLLATE "pg_catalog"."default",
   "signature_version" int2 DEFAULT 1,
-  CONSTRAINT "sys_message_log_pkey" PRIMARY KEY ("message_id")
+  CONSTRAINT "sys_login_log_pkey" PRIMARY KEY ("log_id")
 );
 
-ALTER TABLE "public"."sys_message_log" OWNER TO "postgres";
+ALTER TABLE "public"."sys_login_log" OWNER TO "postgres";
 
-COMMENT ON COLUMN "public"."sys_message_log"."message_id" IS '消息ID';
-COMMENT ON COLUMN "public"."sys_message_log"."template_id" IS '模版ID';
-COMMENT ON COLUMN "public"."sys_message_log"."phone" IS '手机号码';
-COMMENT ON COLUMN "public"."sys_message_log"."content" IS '消息内容';
-COMMENT ON COLUMN "public"."sys_message_log"."req_headers" IS '请求头';
-COMMENT ON COLUMN "public"."sys_message_log"."reply_text" IS '消息回复';
-COMMENT ON COLUMN "public"."sys_message_log"."display_order" IS '排序字段';
-COMMENT ON COLUMN "public"."sys_message_log"."status" IS '状态（1101正常 1102停用）';
-COMMENT ON COLUMN "public"."sys_message_log"."remark" IS '备注信息';
-COMMENT ON COLUMN "public"."sys_message_log"."creater" IS '创建者';
-COMMENT ON COLUMN "public"."sys_message_log"."updater" IS '更新者';
-COMMENT ON COLUMN "public"."sys_message_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_message_log"."update_time" IS '更新时间';
-COMMENT ON COLUMN "public"."sys_message_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_message_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_message_log"."signature_version" IS '数据签名版本号';
+CREATE INDEX "idx_sys_login_log_create_time" ON "public"."sys_login_log" USING btree ("create_time" "pg_catalog"."timestamp_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_operation_type" ON "public"."sys_login_log" USING btree ("operation_type" "pg_catalog"."int4_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_org_id" ON "public"."sys_login_log" USING btree ("org_id" "pg_catalog"."int8_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_puser_id" ON "public"."sys_login_log" USING btree ("puser_id" "pg_catalog"."int8_ops" ASC NULLS LAST);
 
-COMMENT ON TABLE "public"."sys_message_log" IS '系统短信消息记录表';`
+COMMENT ON COLUMN "public"."sys_login_log"."log_id" IS '唯一ID';
+COMMENT ON COLUMN "public"."sys_login_log"."puser_id" IS '平台账户ID';
+COMMENT ON COLUMN "public"."sys_login_log"."user_name" IS '用户名称';
+COMMENT ON COLUMN "public"."sys_login_log"."org_id" IS '组织ID';
+COMMENT ON COLUMN "public"."sys_login_log"."client_id" IS '客户端ID';
+COMMENT ON COLUMN "public"."sys_login_log"."grant_type" IS '授权类型';
+COMMENT ON COLUMN "public"."sys_login_log"."ip" IS '客户端IP地址';
+COMMENT ON COLUMN "public"."sys_login_log"."location" IS 'IP地理位置';
+COMMENT ON COLUMN "public"."sys_login_log"."browser" IS '浏览器信息';
+COMMENT ON COLUMN "public"."sys_login_log"."os" IS '操作系统';
+COMMENT ON COLUMN "public"."sys_login_log"."operation_type" IS '操作类型（1-登录，2-登出）';
+COMMENT ON COLUMN "public"."sys_login_log"."create_time" IS '创建时间';
+COMMENT ON COLUMN "public"."sys_login_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
+COMMENT ON COLUMN "public"."sys_login_log"."signature" IS '数据签名';
+COMMENT ON COLUMN "public"."sys_login_log"."signature_version" IS '数据签名版本号';
+
+COMMENT ON TABLE "public"."sys_login_log" IS '系统登录日志表';`
 
 const searchForm = reactive<SearchForm>({
-  template_id: '',
-  phone: '',
-  content: '',
+  user_name: '',
+  client_id: '',
+  grant_type: '',
   create_time: null
 })
 
@@ -325,59 +361,28 @@ const pagination = reactive({
   total: 0
 })
 
+// ── 授权类型样式 ──
+function getGrantTypeType(type: string): string {
+  if (type === 'password') return ''
+  if (type === 'refresh_token') return 'success'
+  if (type === 'mobile') return 'warning'
+  return 'info'
+}
+
 // ── 复制SQL ──
 async function handleCopySql() {
   try {
-    await navigator.clipboard.writeText(messageLogSql)
+    await navigator.clipboard.writeText(loginLogSql)
     ElMessage.success('SQL已复制到剪贴板')
   } catch {
     ElMessage.warning('复制失败，请手动复制')
   }
 }
 
-// ── 内容截断 ──
-function truncateContent(content: string): string {
-  if (!content) return '-'
-  if (content.length <= 20) return content
-  return content.slice(0, 20) + '...'
-}
-
-// ── 解析发送状态 ──
-function parseSendStatus(replyText: string): { success: boolean; message: string } {
-  if (!replyText) return { success: false, message: '未知' }
+// ── 复制文本 ──
+async function handleCopyText(text: string) {
   try {
-    const reply = JSON.parse(replyText)
-    if (reply.data && reply.data.success === true) {
-      return { success: true, message: '发送成功' }
-    } else if (reply.data && reply.data.success === false) {
-      const msg = reply.data.msg || '发送失败'
-      if (reply.data.respdata && reply.data.respdata.records && reply.data.respdata.records.length > 0) {
-        const record = reply.data.respdata.records[0]
-        return { success: false, message: record.codeDesc || msg }
-      }
-      return { success: false, message: msg }
-    }
-    return { success: false, message: '未知状态' }
-  } catch {
-    return { success: false, message: '解析失败' }
-  }
-}
-
-// ── JSON 格式化 ──
-function formatJson(str: string): string {
-  if (!str) return '-'
-  try {
-    const obj = JSON.parse(str)
-    return JSON.stringify(obj, null, 2)
-  } catch {
-    return str
-  }
-}
-
-// ── 复制JSON ──
-async function handleCopyJson(content: string) {
-  try {
-    await navigator.clipboard.writeText(content)
+    await navigator.clipboard.writeText(text)
     ElMessage.success('已复制到剪贴板')
   } catch {
     ElMessage.warning('复制失败，请手动复制')
@@ -389,14 +394,14 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.template_id) searchParams.template_id = searchForm.template_id
-    if (searchForm.phone) searchParams.phone = searchForm.phone
-    if (searchForm.content) searchParams.content = searchForm.content
+    if (searchForm.user_name) searchParams.user_name = searchForm.user_name
+    if (searchForm.client_id) searchParams.client_id = searchForm.client_id
+    if (searchForm.grant_type) searchParams.grant_type = searchForm.grant_type
     if (searchForm.create_time && searchForm.create_time.length === 2) {
       searchParams.create_time = searchForm.create_time
     }
 
-    const res = await getMessageLogs({
+    const res = await getLoginLogs({
       page: pagination.page,
       pageSize: pagination.pageSize,
       search: searchParams
@@ -416,9 +421,9 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.template_id = ''
-  searchForm.phone = ''
-  searchForm.content = ''
+  searchForm.user_name = ''
+  searchForm.client_id = ''
+  searchForm.grant_type = ''
   searchForm.create_time = null
   pagination.page = 1
   fetchData()
@@ -439,9 +444,9 @@ function handlePageChange(page: number) {
   fetchData()
 }
 
-async function handleViewDetail(row: SysMessageLog) {
+async function handleViewDetail(row: SysLoginLog) {
   try {
-    const detail = await getMessageLogDetail(row.message_id)
+    const detail = await getLoginLogDetail(row.log_id)
     if (detail) {
       detailData.value = detail
       detailDialogVisible.value = true
@@ -460,7 +465,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.message-log-management {
+.login-log-management {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
@@ -534,36 +539,36 @@ onMounted(() => {
 
     .id-text {
       font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      font-size: 13px;
+      font-size: 12px;
       color: #606266;
       background: #F0F2F5;
       padding: 3px 8px;
       border-radius: 4px;
     }
 
-    .template-text {
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      font-size: 12px;
-      color: #409EFF;
-      background: #ECF5FF;
-      padding: 3px 8px;
-      border-radius: 4px;
-    }
-
-    .phone-text {
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    .user-text {
       font-size: 13px;
-      color: #606266;
-    }
+      color: #303133;
+      word-break: break-all;
 
-    .content-text {
-      font-size: 13px;
-      color: #606266;
-      cursor: pointer;
+      &.copyable {
+        cursor: pointer;
 
-      &:hover {
-        color: #409EFF;
+        &:hover {
+          color: #409EFF;
+        }
       }
+    }
+
+    .ip-text {
+      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      font-size: 13px;
+      color: #606266;
+    }
+
+    .browser-text {
+      font-size: 13px;
+      color: #606266;
     }
 
     .time-text {
@@ -671,13 +676,6 @@ onMounted(() => {
       font-weight: 500;
     }
 
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
     .detail-value {
       font-size: 14px;
       color: #303133;
@@ -686,28 +684,6 @@ onMounted(() => {
       &.mono {
         font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
       }
-
-      &.content-full {
-        line-height: 1.6;
-        background: #F5F7FA;
-        padding: 10px 14px;
-        border-radius: 6px;
-        white-space: pre-wrap;
-      }
-    }
-
-    .json-block {
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #303133;
-      background: #F5F7FA;
-      border: 1px solid #EBEEF5;
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin: 0;
-      overflow-x: auto;
-      white-space: pre;
     }
   }
 

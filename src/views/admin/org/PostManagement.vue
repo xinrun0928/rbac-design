@@ -242,8 +242,8 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '../mock/orgTreeData'
-import type { OrgTreeNode } from '../types/orgTree'
+import { orgTreeData } from '@/mock/orgTreeData'
+import type { OrgTreeNode } from '@/types/orgTree'
 
 // 岗位接口
 interface PostItem {

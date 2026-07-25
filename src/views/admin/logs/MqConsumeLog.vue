@@ -208,8 +208,8 @@ import { ElMessage } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, View, CopyDocument
 } from '@element-plus/icons-vue'
-import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '../mock/mqConsumeLogData'
-import type { MqConsumeLog, MqConsumeLogSearchForm } from '../types/mqConsumeLog'
+import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '@/mock/mqConsumeLogData'
+import type { MqConsumeLog, MqConsumeLogSearchForm } from '@/types/mqConsumeLog'
 
 // ── 状态 ──
 const loading = ref(false)

@@ -6,8 +6,8 @@
         <div class="left-content">
           <div class="brand">
             <el-icon :size="48" color="#fff"><DataBoard /></el-icon>
-            <h1>RBAC 管理系统</h1>
-            <p>企业级权限管理平台</p>
+            <h1>应急指挥调度平台</h1>
+            <p>应急指挥调度管理平台</p>
           </div>
           <div class="features">
             <div class="feature-item">

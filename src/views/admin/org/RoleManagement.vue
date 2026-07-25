@@ -354,12 +354,12 @@ import {
   SuccessFilled, CircleCloseFilled,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '../mock/orgTreeData'
-import { mockMenuData } from '../mock/menuData'
-import { mockSubsystemData } from '../mock/subsystemData'
-import type { OrgTreeNode } from '../types/orgTree'
-import type { Menu } from '../types/menu'
-import { buildMenuTree } from '../utils/menuMockApi'
+import { orgTreeData } from '@/mock/orgTreeData'
+import { mockMenuData } from '@/mock/menuData'
+import { mockSubsystemData } from '@/mock/subsystemData'
+import type { OrgTreeNode } from '@/types/orgTree'
+import type { Menu } from '@/types/menu'
+import { buildMenuTree } from '@/utils/menuMockApi'
 
 // 角色接口
 interface RoleItem {

@@ -1,42 +1,28 @@
 <template>
-  <div class="access-log-management">
-
+  <div class="http-log-management">
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="日志名称">
-            <el-input
-              v-model="searchForm.name"
-              placeholder="请输入日志名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="请求地址">
-            <el-input
-              v-model="searchForm.req_url"
-              placeholder="请输入请求地址"
-              clearable
-              style="width: 220px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="IP地址">
-            <el-input
-              v-model="searchForm.ip"
-              placeholder="请输入IP地址"
-              clearable
-              style="width: 150px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="操作结果">
+        <el-form :model="searchForm" inline>
+          <el-form-item label="请求方式">
             <el-select
-              v-model="searchForm.result"
+              v-model="searchForm.req_method"
+              placeholder="请选择"
+              clearable
+              style="width: 140px"
+            >
+              <el-option label="POST_JSON" value="POST_JSON" />
+              <el-option label="POST_FORM" value="POST_FORM" />
+              <el-option label="GET" value="GET" />
+              <el-option label="POST" value="POST" />
+              <el-option label="PUT" value="PUT" />
+              <el-option label="DELETE" value="DELETE" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="响应状态">
+            <el-select
+              v-model="searchForm.rep_state"
               placeholder="请选择"
               clearable
               style="width: 120px"
@@ -45,7 +31,17 @@
               <el-option label="FAIL" value="FAIL" />
             </el-select>
           </el-form-item>
-          <el-form-item label="访问时间">
+          <el-form-item label="请求地址">
+            <el-input
+              v-model="searchForm.req_url"
+              placeholder="请输入请求地址"
+              clearable
+              :prefix-icon="Search"
+              style="width: 280px"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item label="调用时间">
             <el-date-picker
               v-model="searchForm.create_time"
               type="daterange"
@@ -71,43 +67,42 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="name" label="日志名称" min-width="140">
+        <el-table-column prop="id" label="日志ID" min-width="180">
           <template #default="{ row }">
-            <span class="name-text">{{ row.name }}</span>
+            <span class="id-text">{{ row.id }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="req_url" label="请求地址" min-width="240">
-          <template #default="{ row }">
-            <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
-              <span class="url-text" @click="handleCopyText(row.req_url)">{{ row.req_url }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="op_method" label="方法" width="80" align="center">
+        <el-table-column prop="req_method" label="请求方式" width="120" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="getMethodType(row.op_method)"
+              :type="getMethodType(row.req_method)"
               effect="dark"
               style="border: none; color: #fff"
               round
-              size="small"
             >
-              {{ row.op_method }}
+              {{ row.req_method }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="result" label="结果" width="100" align="center">
+        <el-table-column prop="req_url" label="请求地址" min-width="300">
+          <template #default="{ row }">
+            <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
+              <span class="url-text" @click="handleCopyUrl(row.req_url)">{{ row.req_url }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="rep_state" label="响应状态" width="100" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="row.result === 'SUCCESS' ? 'success' : 'danger'"
+              :type="getStateType(row.rep_state)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.result }}
+              {{ row.rep_state }}
             </el-tag>
           </template>
         </el-table-column>
@@ -118,25 +113,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="ip" label="IP地址" width="130">
-          <template #default="{ row }">
-            <span class="ip-text">{{ row.ip }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="browser" label="浏览器" width="100">
-          <template #default="{ row }">
-            <span class="browser-text">{{ row.browser }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="os" label="操作系统" width="100">
-          <template #default="{ row }">
-            <span class="browser-text">{{ row.os }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="create_time" label="访问时间" width="170" align="center">
+        <el-table-column prop="create_time" label="调用时间" width="180" align="center">
           <template #default="{ row }">
             <span class="time-text">{{ row.create_time }}</span>
           </template>
@@ -153,9 +130,9 @@
         <!-- 空状态插槽 -->
         <template #empty>
           <div class="empty-state">
-            <el-icon :size="64" color="#DCDFE6"><Notebook /></el-icon>
-            <p class="empty-title">暂无访问日志</p>
-            <p class="empty-desc">系统尚未记录任何访问操作</p>
+            <el-icon :size="64" color="#DCDFE6"><Connection /></el-icon>
+            <p class="empty-title">暂无接口请求记录</p>
+            <p class="empty-desc">系统尚未记录任何接口调用</p>
           </div>
         </template>
       </el-table>
@@ -178,7 +155,7 @@
     <!-- 详情抽屉 -->
     <el-drawer
       v-model="detailDialogVisible"
-      title="访问日志详情"
+      title="接口请求详情"
       direction="rtl"
       size="580px"
       destroy-on-close
@@ -193,41 +170,43 @@
                 <span class="detail-value mono">{{ detailData.id }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">日志名称</span>
-                <span class="detail-value">{{ detailData.name }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">操作结果</span>
+                <span class="detail-label">请求方式</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="detailData.result === 'SUCCESS' ? 'success' : 'danger'"
+                    :type="getMethodType(detailData.req_method)"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ detailData.result }}
+                    {{ detailData.req_method }}
                   </el-tag>
                 </span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">响应耗时</span>
-                <span class="detail-value">{{ detailData.rep_time }} ms</span>
               </div>
               <div class="detail-item full-width">
                 <span class="detail-label">请求地址</span>
                 <span class="detail-value mono">{{ detailData.req_url }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">IP地址</span>
-                <span class="detail-value mono">{{ detailData.ip }}</span>
+                <span class="detail-label">响应状态</span>
+                <span class="detail-value">
+                  <el-tag
+                    :type="getStateType(detailData.rep_state)"
+                    effect="dark"
+                    style="border: none; color: #fff"
+                    round
+                    size="small"
+                  >
+                    {{ detailData.rep_state }}
+                  </el-tag>
+                </span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">浏览器</span>
-                <span class="detail-value">{{ detailData.browser }} / {{ detailData.os }}</span>
+                <span class="detail-label">耗时</span>
+                <span class="detail-value">{{ detailData.rep_time }} ms</span>
               </div>
               <div class="detail-item full-width">
-                <span class="detail-label">访问时间</span>
+                <span class="detail-label">调用时间</span>
                 <span class="detail-value">{{ detailData.create_time }}</span>
               </div>
             </div>
@@ -238,43 +217,30 @@
             <div class="detail-grid">
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">请求参数 (req_params)</span>
-                  <el-button v-if="detailData.req_params" type="primary" link size="small" @click="handleCopyText(detailData.req_params)">
+                  <span class="detail-label">请求头 (req_header)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_header || '-')">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.req_params || '-') }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.req_header || '-') }}</pre>
+              </div>
+              <div class="detail-item full-width">
+                <div class="label-row">
+                  <span class="detail-label">请求参数 (req_params)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_params)">
+                    <el-icon><CopyDocument /></el-icon> 复制
+                  </el-button>
+                </div>
+                <pre class="json-block">{{ formatJson(detailData.req_params) }}</pre>
               </div>
               <div class="detail-item full-width">
                 <div class="label-row">
                   <span class="detail-label">响应数据 (rep_data)</span>
-                  <el-button v-if="detailData.rep_data" type="primary" link size="small" @click="handleCopyText(detailData.rep_data)">
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.rep_data)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.rep_data || '-') }}</pre>
-              </div>
-            </div>
-          </el-collapse-item>
-
-          <!-- 其他信息 -->
-          <el-collapse-item title="其他信息" name="other">
-            <div class="detail-grid">
-              <div class="detail-item">
-                <span class="detail-label">类名</span>
-                <span class="detail-value mono text-small">{{ detailData.class_name }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">状态码</span>
-                <span class="detail-value">{{ detailData.status }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">用户ID</span>
-                <span class="detail-value mono">{{ detailData.user_id || '-' }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">用户名</span>
-                <span class="detail-value">{{ detailData.user_name || '-' }}</span>
+                <pre class="json-block">{{ formatJson(detailData.rep_data) }}</pre>
               </div>
             </div>
           </el-collapse-item>
@@ -291,10 +257,10 @@
     >
       <div class="sql-content">
         <div class="sql-header">
-          <span class="sql-title">sys_access_log - 系统访问日志表</span>
+          <span class="sql-title">sys_http_log - 系统接口请求日志</span>
           <el-button type="primary" :icon="CopyDocument" @click="handleCopySql">复制SQL</el-button>
         </div>
-        <pre class="sql-block">{{ accessLogSql }}</pre>
+        <pre class="sql-block">{{ httpLogSql }}</pre>
       </div>
     </el-dialog>
   </div>
@@ -305,104 +271,68 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Search, Refresh, RefreshRight, View,
-  Notebook, CopyDocument, Document
+  Connection, CopyDocument, Document
 } from '@element-plus/icons-vue'
-import type { SysAccessLog } from '../../types/logs'
-import { getAccessLogs, getAccessLogDetail } from '../../utils/logMockApi'
+import type { SysHttpLog } from '@/types/logs'
+import { getHttpLogs, getHttpLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  name: string
+  req_method: string
+  rep_state: string
   req_url: string
-  ip: string
-  result: string
   create_time: string[] | null
 }
 
 // ── 状态 ──
 const loading = ref(false)
+const tableData = ref<SysHttpLog[]>([])
+const detailDialogVisible = ref(false)
+const detailData = ref<SysHttpLog | null>(null)
+const activeCollapse = ref(['basic', 'request'])
 const sqlDialogVisible = ref(false)
 
-const accessLogSql = `CREATE TABLE "public"."sys_access_log" (
-  "id" int8 NOT NULL DEFAULT nextval('sys_access_log_id_seq'::regclass),
-  "name" varchar(40) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "req_url" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "op_method" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "ip" varchar(40) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "location" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+const httpLogSql = `CREATE TABLE "public"."sys_http_log" (
+  "id" int8 NOT NULL DEFAULT nextval('sys_http_log_id_seq'::regclass),
+  "req_method" varchar(50) COLLATE "pg_catalog"."default",
+  "req_url" text COLLATE "pg_catalog"."default",
+  "req_header" text COLLATE "pg_catalog"."default",
   "req_params" text COLLATE "pg_catalog"."default",
   "rep_data" text COLLATE "pg_catalog"."default",
-  "rep_time" varchar(20) COLLATE "pg_catalog"."default",
-  "class_name" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "result" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "rep_state" varchar(50) COLLATE "pg_catalog"."default",
+  "rep_time" varchar(30) COLLATE "pg_catalog"."default",
   "user_id" int8,
-  "user_name" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "org_id" int8 DEFAULT 0,
-  "org_name" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "browser" varchar(512) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "os" varchar(512) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "op_type" int2 DEFAULT 0,
-  "func_type" int2 DEFAULT 0,
-  "module_type" int2 DEFAULT 0,
-  "display_order" int4 DEFAULT 0,
-  "status" int2 NOT NULL DEFAULT 1101,
-  "remark" text COLLATE "pg_catalog"."default",
-  "sign_result" varchar(1024) COLLATE "pg_catalog"."default",
-  "creater" varchar(64) COLLATE "pg_catalog"."default",
-  "updater" varchar(64) COLLATE "pg_catalog"."default",
   "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "update_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
   "deleted" int2 DEFAULT 0,
   "signature" varchar(512) COLLATE "pg_catalog"."default",
   "signature_version" int2 DEFAULT 1,
-  CONSTRAINT "sys_access_log_pkey" PRIMARY KEY ("id")
+  CONSTRAINT "sys_http_log_pkey" PRIMARY KEY ("id")
 );
 
-ALTER TABLE "public"."sys_access_log" OWNER TO "postgres";
+ALTER TABLE "public"."sys_http_log" OWNER TO "postgres";
 
-COMMENT ON COLUMN "public"."sys_access_log"."id" IS '唯一ID';
-COMMENT ON COLUMN "public"."sys_access_log"."name" IS '日志名称';
-COMMENT ON COLUMN "public"."sys_access_log"."req_url" IS '请求地址';
-COMMENT ON COLUMN "public"."sys_access_log"."op_method" IS '调用方法';
-COMMENT ON COLUMN "public"."sys_access_log"."ip" IS '访问ip';
-COMMENT ON COLUMN "public"."sys_access_log"."location" IS '地址';
-COMMENT ON COLUMN "public"."sys_access_log"."req_params" IS '请求参数';
-COMMENT ON COLUMN "public"."sys_access_log"."rep_data" IS '响应数据';
-COMMENT ON COLUMN "public"."sys_access_log"."rep_time" IS '响应时间';
-COMMENT ON COLUMN "public"."sys_access_log"."class_name" IS '访问类名';
-COMMENT ON COLUMN "public"."sys_access_log"."result" IS '日志结果';
-COMMENT ON COLUMN "public"."sys_access_log"."user_id" IS '访问人ID';
-COMMENT ON COLUMN "public"."sys_access_log"."user_name" IS '用户名';
-COMMENT ON COLUMN "public"."sys_access_log"."org_id" IS '组织ID';
-COMMENT ON COLUMN "public"."sys_access_log"."org_name" IS '组织名称';
-COMMENT ON COLUMN "public"."sys_access_log"."browser" IS '请求终端';
-COMMENT ON COLUMN "public"."sys_access_log"."os" IS '终端系统';
-COMMENT ON COLUMN "public"."sys_access_log"."op_type" IS '日志类型';
-COMMENT ON COLUMN "public"."sys_access_log"."func_type" IS '功能类型';
-COMMENT ON COLUMN "public"."sys_access_log"."module_type" IS '模块分类';
-COMMENT ON COLUMN "public"."sys_access_log"."display_order" IS '排序字段';
-COMMENT ON COLUMN "public"."sys_access_log"."status" IS '状态（1101正常 1102停用）';
-COMMENT ON COLUMN "public"."sys_access_log"."remark" IS '备注信息';
-COMMENT ON COLUMN "public"."sys_access_log"."sign_result" IS '签名结果（由定时任务触发生成）';
-COMMENT ON COLUMN "public"."sys_access_log"."creater" IS '创建者';
-COMMENT ON COLUMN "public"."sys_access_log"."updater" IS '更新者';
-COMMENT ON COLUMN "public"."sys_access_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_access_log"."update_time" IS '更新时间';
-COMMENT ON COLUMN "public"."sys_access_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_access_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_access_log"."signature_version" IS '数据签名版本号';
+COMMENT ON COLUMN "public"."sys_http_log"."id" IS '日志ID';
+COMMENT ON COLUMN "public"."sys_http_log"."req_method" IS '请求方式';
+COMMENT ON COLUMN "public"."sys_http_log"."req_url" IS '请求链接';
+COMMENT ON COLUMN "public"."sys_http_log"."req_header" IS '请求头信息';
+COMMENT ON COLUMN "public"."sys_http_log"."req_params" IS '请求参数';
+COMMENT ON COLUMN "public"."sys_http_log"."rep_data" IS '响应数据';
+COMMENT ON COLUMN "public"."sys_http_log"."rep_state" IS '响应状态';
+COMMENT ON COLUMN "public"."sys_http_log"."rep_time" IS '响应时间（毫秒/耗时）';
+COMMENT ON COLUMN "public"."sys_http_log"."user_id" IS '用户ID';
+COMMENT ON COLUMN "public"."sys_http_log"."org_id" IS '组织ID';
+COMMENT ON COLUMN "public"."sys_http_log"."create_time" IS '创建时间';
+COMMENT ON COLUMN "public"."sys_http_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
+COMMENT ON COLUMN "public"."sys_http_log"."signature" IS '数据签名';
+COMMENT ON COLUMN "public"."sys_http_log"."signature_version" IS '数据签名版本号';
 
-COMMENT ON TABLE "public"."sys_access_log" IS '系统访问日志表';`
-const tableData = ref<SysAccessLog[]>([])
-const detailDialogVisible = ref(false)
-const detailData = ref<SysAccessLog | null>(null)
-const activeCollapse = ref(['basic', 'request', 'other'])
+COMMENT ON TABLE "public"."sys_http_log" IS '系统接口请求日志';`
 
 const searchForm = reactive<SearchForm>({
-  name: '',
+  req_method: '',
+  rep_state: '',
   req_url: '',
-  ip: '',
-  result: '',
   create_time: null
 })
 
@@ -412,33 +342,30 @@ const pagination = reactive({
   total: 0
 })
 
-// ── 方法类型样式 ──
-function getMethodType(method: string): string {
-  if (method === 'GET') return 'success'
-  if (method === 'POST') return ''
-  if (method === 'PUT') return 'warning'
-  if (method === 'DELETE') return 'danger'
-  return 'info'
-}
-
 // ── 复制SQL ──
 async function handleCopySql() {
   try {
-    await navigator.clipboard.writeText(accessLogSql)
+    await navigator.clipboard.writeText(httpLogSql)
     ElMessage.success('SQL已复制到剪贴板')
   } catch {
     ElMessage.warning('复制失败，请手动复制')
   }
 }
 
-// ── 复制文本 ──
-async function handleCopyText(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success('已复制到剪贴板')
-  } catch {
-    ElMessage.warning('复制失败，请手动复制')
-  }
+// ── 请求方式类型 ──
+function getMethodType(method: string): string {
+  if (method.includes('GET')) return 'success'
+  if (method.includes('POST')) return ''
+  if (method.includes('PUT')) return 'warning'
+  if (method.includes('DELETE')) return 'danger'
+  return 'info'
+}
+
+// ── 响应状态类型 ──
+function getStateType(state: string): string {
+  if (state === 'SUCCESS') return 'success'
+  if (state === 'FAIL') return 'danger'
+  return 'info'
 }
 
 // ── JSON 格式化 ──
@@ -457,15 +384,14 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.name) searchParams.name = searchForm.name
+    if (searchForm.req_method) searchParams.req_method = searchForm.req_method
+    if (searchForm.rep_state) searchParams.rep_state = searchForm.rep_state
     if (searchForm.req_url) searchParams.req_url = searchForm.req_url
-    if (searchForm.ip) searchParams.ip = searchForm.ip
-    if (searchForm.result) searchParams.result = searchForm.result
     if (searchForm.create_time && searchForm.create_time.length === 2) {
       searchParams.create_time = searchForm.create_time
     }
 
-    const res = await getAccessLogs({
+    const res = await getHttpLogs({
       page: pagination.page,
       pageSize: pagination.pageSize,
       search: searchParams
@@ -485,10 +411,9 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.name = ''
+  searchForm.req_method = ''
+  searchForm.rep_state = ''
   searchForm.req_url = ''
-  searchForm.ip = ''
-  searchForm.result = ''
   searchForm.create_time = null
   pagination.page = 1
   fetchData()
@@ -509,9 +434,29 @@ function handlePageChange(page: number) {
   fetchData()
 }
 
-async function handleViewDetail(row: SysAccessLog) {
+// ── 复制URL ──
+async function handleCopyUrl(url: string) {
   try {
-    const detail = await getAccessLogDetail(row.id)
+    await navigator.clipboard.writeText(url)
+    ElMessage.success('已复制到剪贴板')
+  } catch {
+    ElMessage.warning('复制失败，请手动复制')
+  }
+}
+
+// ── 复制JSON ──
+async function handleCopyJson(content: string) {
+  try {
+    await navigator.clipboard.writeText(content)
+    ElMessage.success('已复制到剪贴板')
+  } catch {
+    ElMessage.warning('复制失败，请手动复制')
+  }
+}
+
+async function handleViewDetail(row: SysHttpLog) {
+  try {
+    const detail = await getHttpLogDetail(row.id)
     if (detail) {
       detailData.value = detail
       detailDialogVisible.value = true
@@ -530,7 +475,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.access-log-management {
+.http-log-management {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);
   height: 100%;
@@ -555,10 +500,8 @@ onMounted(() => {
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
 
-    .search-form {
-      .el-form-item {
-        margin-bottom: 0;
-      }
+    .el-form-item {
+      margin-bottom: 0;
     }
   }
 
@@ -604,10 +547,13 @@ onMounted(() => {
       }
     }
 
-    .name-text {
-      font-size: 13px;
-      color: #303133;
-      font-weight: 500;
+    .id-text {
+      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+      font-size: 12px;
+      color: #606266;
+      background: #F0F2F5;
+      padding: 3px 8px;
+      border-radius: 4px;
     }
 
     .url-text {
@@ -619,17 +565,6 @@ onMounted(() => {
       &:hover {
         color: #66B1FF;
       }
-    }
-
-    .ip-text {
-      font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      font-size: 13px;
-      color: #606266;
-    }
-
-    .browser-text {
-      font-size: 13px;
-      color: #606266;
     }
 
     .time-text {
@@ -690,33 +625,6 @@ onMounted(() => {
     }
   }
 
-  // SQL弹窗
-  :deep(.el-dialog) {
-    .el-dialog__header {
-      padding: 20px 24px;
-      margin: 0;
-      border-bottom: 1px solid #EBEEF5;
-
-      .el-dialog__title {
-        color: #303133;
-        font-weight: 600;
-        font-size: 16px;
-      }
-
-      .el-dialog__headerbtn .el-dialog__close {
-        color: #909399;
-
-        &:hover {
-          color: #409EFF;
-        }
-      }
-    }
-
-    .el-dialog__body {
-      padding: 20px 24px;
-    }
-  }
-
   // 详情内容
   .detail-content {
     :deep(.el-collapse) {
@@ -764,6 +672,13 @@ onMounted(() => {
       font-weight: 500;
     }
 
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
     .detail-value {
       font-size: 14px;
       color: #303133;
@@ -772,17 +687,6 @@ onMounted(() => {
       &.mono {
         font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
       }
-
-      &.text-small {
-        font-size: 12px;
-      }
-    }
-
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
     }
 
     .json-block {
@@ -828,6 +732,33 @@ onMounted(() => {
       overflow-x: auto;
       white-space: pre;
       max-height: 500px;
+    }
+  }
+
+  // SQL弹窗样式
+  :deep(.el-dialog) {
+    .el-dialog__header {
+      padding: 20px 24px;
+      margin: 0;
+      border-bottom: 1px solid #EBEEF5;
+
+      .el-dialog__title {
+        color: #303133;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .el-dialog__headerbtn .el-dialog__close {
+        color: #909399;
+
+        &:hover {
+          color: #409EFF;
+        }
+      }
+    }
+
+    .el-dialog__body {
+      padding: 20px 24px;
     }
   }
 }

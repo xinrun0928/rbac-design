@@ -177,8 +177,8 @@ import type { FormInstance } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, Document
 } from '@element-plus/icons-vue'
-import { appInfoData } from '../mock/appData'
-import type { AppInfo } from '../types/appInfo'
+import { appInfoData } from '@/mock/appData'
+import type { AppInfo } from '@/types/appInfo'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

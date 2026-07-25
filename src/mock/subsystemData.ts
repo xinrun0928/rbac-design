@@ -1,4 +1,4 @@
-import type { Subsystem } from '../types/subsystem'
+import type { Subsystem } from '@/types/subsystem'
 
 export const mockSubsystemData: Subsystem[] = [
   {

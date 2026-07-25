@@ -1,26 +1,20 @@
 <template>
-  <div class="dict-data-management">
+  <div class="dict-type-management">
 
     <!-- 数据表格 -->
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="字典标签">
-            <el-input v-model="searchForm.dictLabel" placeholder="输入字典标签" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
+          <el-form-item label="类型名称">
+            <el-input v-model="searchForm.dictTypeName" placeholder="输入类型名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
           </el-form-item>
-          <el-form-item label="字典编码">
-            <el-input v-model="searchForm.dictCode" placeholder="输入字典编码" clearable style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
-              <el-option label="正常" :value="1101" />
-              <el-option label="停用" :value="1102" />
-            </el-select>
+          <el-form-item label="类型编码">
+            <el-input v-model="searchForm.dictType" placeholder="输入类型编码" clearable style="width: 200px" @keyup.enter="handleSearch" />
           </el-form-item>
         </el-form>
         <div class="search-actions">
-          <el-button type="primary" :icon="Plus" @click="handleAdd">新增字典项</el-button>
+          <el-button type="primary" :icon="Plus" @click="handleAdd">新增类型</el-button>
         </div>
       </div>
       <el-table
@@ -29,7 +23,7 @@
         border
         stripe
         highlight-current-row
-        row-key="dictId"
+        row-key="dictType"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         class="data-table"
       >
@@ -39,38 +33,27 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictLabel" label="字典标签" min-width="140">
+        <el-table-column prop="dictTypeName" label="类型名称" min-width="180">
           <template #default="{ row }">
-            <span class="label-text">{{ row.dictLabel }}</span>
+            <el-button type="primary" link class="type-name-link" @click="handleViewData(row)">
+              {{ row.dictTypeName }}
+            </el-button>
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictValue" label="字典值" width="100" align="center">
+        <el-table-column prop="dictType" label="类型编码" min-width="220">
           <template #default="{ row }">
-            <span class="value-text">{{ row.dictValue }}</span>
+            <span class="type-code-text">{{ row.dictType }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictCode" label="字典编码" min-width="200">
+        <el-table-column prop="count" label="字典项数量" width="110" align="center">
           <template #default="{ row }">
-            <span class="code-text">{{ row.dictCode }}</span>
+            <el-tag size="small" effect="plain">{{ row.count }}</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="displayOrder" label="排序" width="80" align="center">
-          <template #default="{ row }">
-            <span class="order-text">{{ row.displayOrder }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="isDefault" label="默认" width="70" align="center">
-          <template #default="{ row }">
-            <el-tag v-if="row.isDefault === 1" type="success" effect="plain" size="small">是</el-tag>
-            <span v-else class="no-text">否</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="status" label="状态" width="80" align="center">
+        <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="{ row }">
             <el-tag :type="row.status === 1101 ? 'success' : 'info'" effect="light" size="small">
               {{ row.status === 1101 ? '正常' : '停用' }}
@@ -78,9 +61,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="createTime" label="创建时间" width="170" align="center">
           <template #default="{ row }">
-            <span class="remark-text">{{ row.remark || '-' }}</span>
+            <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -110,39 +93,23 @@
     <!-- 新增/编辑抽屉 -->
     <el-drawer
       v-model="drawerVisible"
-      :title="isEdit ? '编辑字典项' : '新增字典项'"
-      size="500px"
+      :title="isEdit ? '编辑字典类型' : '新增字典类型'"
+      size="480px"
       direction="rtl"
       destroy-on-close
       @closed="resetForm"
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="90px" label-position="right">
-        <el-form-item label="字典标签" prop="dictLabel">
-          <el-input v-model="formData.dictLabel" placeholder="请输入字典标签" maxlength="100" />
+        <el-form-item label="类型编码" prop="dictType">
+          <el-input v-model="formData.dictType" placeholder="如：sys_normal_disable" maxlength="100" :disabled="isEdit" />
         </el-form-item>
 
-        <el-form-item label="字典值" prop="dictValue">
-          <el-input v-model="formData.dictValue" placeholder="请输入字典值" maxlength="255" />
+        <el-form-item label="类型名称" prop="dictTypeName">
+          <el-input v-model="formData.dictTypeName" placeholder="请输入类型名称" maxlength="100" />
         </el-form-item>
 
-        <el-form-item label="字典编码" prop="dictCode">
-          <el-input v-model="formData.dictCode" placeholder="请输入字典编码（唯一）" maxlength="100" :disabled="isEdit" />
-        </el-form-item>
-
-        <el-form-item label="排序" prop="displayOrder">
-          <el-input-number v-model="formData.displayOrder" :min="0" :max="9999" style="width: 200px" />
-          <span class="form-tip-inline">数值越小越靠前</span>
-        </el-form-item>
-
-        <el-form-item label="样式" prop="dictClass">
-          <el-input v-model="formData.dictClass" placeholder="CSS类名（用于自定义颜色）" maxlength="100" />
-        </el-form-item>
-
-        <el-form-item label="是否默认" prop="isDefault">
-          <el-radio-group v-model="formData.isDefault">
-            <el-radio :value="1">是</el-radio>
-            <el-radio :value="0">否</el-radio>
-          </el-radio-group>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="500" show-word-limit />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -150,10 +117,6 @@
             <el-radio :value="1101">正常</el-radio>
             <el-radio :value="1102">停用</el-radio>
           </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="500" show-word-limit />
         </el-form-item>
       </el-form>
 
@@ -168,26 +131,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit, ArrowLeft
+  Refresh, Search, RefreshLeft, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
-import { dictDataList } from '../mock/dictData'
-import type { DictData, DictDataSearchForm } from '../types/dictData'
+import { getDictTypes } from '@/mock/dictData'
+import type { DictType } from '@/types/dictData'
 
 const router = useRouter()
-const route = useRoute()
-
-// ── 路由参数 ──
-const dictType = computed(() => route.query.dictType as string || '')
-const dictTypeName = computed(() => route.query.dictTypeName as string || '')
 
 // ── 状态 ──
 const loading = ref(false)
-const tableData = ref<DictData[]>([])
+const tableData = ref<DictType[]>([])
 const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
@@ -198,36 +156,28 @@ const pagination = reactive({
   total: 0
 })
 
-const searchForm = reactive<DictDataSearchForm>({
-  dictLabel: '',
-  dictCode: '',
-  status: ''
+const searchForm = reactive({
+  dictTypeName: '',
+  dictType: ''
 })
 
 const formData = reactive({
-  dictId: 0,
-  dictLabel: '',
-  dictValue: '',
-  dictCode: '',
-  displayOrder: 0,
-  dictClass: '',
-  isDefault: 0,
-  status: 1101,
-  remark: ''
+  dictType: '',
+  dictTypeName: '',
+  remark: '',
+  status: 1101
 })
 
 const formRules: FormRules = {
-  dictLabel: [{ required: true, message: '请输入字典标签', trigger: 'blur' }],
-  dictValue: [{ required: true, message: '请输入字典值', trigger: 'blur' }],
-  dictCode: [{ required: true, message: '请输入字典编码', trigger: 'blur' }]
+  dictType: [{ required: true, message: '请输入类型编码', trigger: 'blur' }],
+  dictTypeName: [{ required: true, message: '请输入类型名称', trigger: 'blur' }]
 }
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
   let data = tableData.value.filter(item => {
-    if (searchForm.dictLabel && !item.dictLabel.includes(searchForm.dictLabel)) return false
-    if (searchForm.dictCode && !item.dictCode.includes(searchForm.dictCode)) return false
-    if (searchForm.status !== '' && item.status !== searchForm.status) return false
+    if (searchForm.dictTypeName && !item.dictTypeName.includes(searchForm.dictTypeName)) return false
+    if (searchForm.dictType && !item.dictType.includes(searchForm.dictType)) return false
     return true
   })
 
@@ -240,13 +190,9 @@ const filteredData = computed(() => {
 function fetchData() {
   loading.value = true
   setTimeout(() => {
-    tableData.value = dictDataList.filter(d => d.dictType === dictType.value && d.deleted === 0)
+    tableData.value = getDictTypes()
     loading.value = false
   }, 300)
-}
-
-function goBack() {
-  router.push('/admin/dict')
 }
 
 function handleSearch() {
@@ -254,9 +200,8 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.dictLabel = ''
-  searchForm.dictCode = ''
-  searchForm.status = ''
+  searchForm.dictTypeName = ''
+  searchForm.dictType = ''
   pagination.page = 1
 }
 
@@ -273,31 +218,25 @@ function handleRefresh() {
   fetchData()
 }
 
+function handleViewData(row: DictType) {
+  router.push({ path: '/admin/dict/data', query: { dictType: row.dictType, dictTypeName: row.dictTypeName } })
+}
+
 function handleAdd() {
   isEdit.value = false
-  formData.dictId = 0
-  formData.dictLabel = ''
-  formData.dictValue = ''
-  formData.dictCode = ''
-  formData.displayOrder = tableData.value.length + 1
-  formData.dictClass = ''
-  formData.isDefault = 0
-  formData.status = 1101
+  formData.dictType = ''
+  formData.dictTypeName = ''
   formData.remark = ''
+  formData.status = 1101
   drawerVisible.value = true
 }
 
-function handleEdit(row: DictData) {
+function handleEdit(row: DictType) {
   isEdit.value = true
-  formData.dictId = row.dictId
-  formData.dictLabel = row.dictLabel
-  formData.dictValue = row.dictValue
-  formData.dictCode = row.dictCode
-  formData.displayOrder = row.displayOrder
-  formData.dictClass = row.dictClass || ''
-  formData.isDefault = row.isDefault
+  formData.dictType = row.dictType
+  formData.dictTypeName = row.dictTypeName
+  formData.remark = row.remark
   formData.status = row.status
-  formData.remark = row.remark || ''
   drawerVisible.value = true
 }
 
@@ -312,9 +251,9 @@ function handleSubmit() {
   })
 }
 
-function handleDelete(row: DictData) {
+function handleDelete(row: DictType) {
   ElMessageBox.confirm(
-    `确定要删除字典项 "${row.dictLabel}" 吗？`,
+    `确定要删除字典类型 "${row.dictTypeName}" 吗？该类型下的所有字典数据也将被删除。`,
     '确认删除',
     { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' }
   ).then(() => {
@@ -328,13 +267,11 @@ function resetForm() {
 }
 
 // ── 初始化 ──
-onMounted(() => {
-  fetchData()
-})
+fetchData()
 </script>
 
 <style lang="scss" scoped>
-.dict-data-management {
+.dict-type-management {
   padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100%;
@@ -402,21 +339,23 @@ onMounted(() => {
     }
 
     .index-text { color: #909399; font-size: 13px; }
-    .label-text { font-weight: 500; color: #303133; }
-    .value-text { font-weight: 600; color: #409EFF; }
 
-    .code-text {
+    .type-name-link {
+      font-weight: 600;
+      font-size: 14px;
+      &:hover { text-decoration: underline; }
+    }
+
+    .type-code-text {
       font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
       font-size: 12px;
-      color: #606266;
-      background: #F5F7FA;
+      color: #409EFF;
+      background: #ECF5FF;
       padding: 2px 8px;
       border-radius: 4px;
     }
 
-    .order-text { font-weight: 600; color: #606266; }
-    .no-text { color: #909399; }
-    .remark-text { font-size: 13px; color: #606266; }
+    .time-text { font-size: 13px; color: #909399; }
   }
 
   :deep(.el-drawer) {
@@ -436,12 +375,6 @@ onMounted(() => {
     padding-top: 20px;
     border-top: 1px solid #EBEEF5;
     margin-top: 20px;
-  }
-
-  .form-tip-inline {
-    font-size: 12px;
-    color: #909399;
-    margin-left: 12px;
   }
 }
 

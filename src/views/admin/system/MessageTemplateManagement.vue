@@ -179,8 +179,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, View, Delete, CopyDocument
 } from '@element-plus/icons-vue'
-import { messageTemplateData } from '../mock/messageTemplateData'
-import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '../types/messageTemplate'
+import { messageTemplateData } from '@/mock/messageTemplateData'
+import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '@/types/messageTemplate'
 
 // ── 状态 ──
 const loading = ref(false)

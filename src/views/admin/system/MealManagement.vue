@@ -407,10 +407,10 @@ import {
   Bell, Document, Warning, Connection,
   DataAnalysis, Share, Monitor, Setting
 } from '@element-plus/icons-vue'
-import type { Meal, SearchForm, MealForm } from '../types/meal'
-import { mealTypeOptions } from '../mock/mealData'
-import { mockSubsystemData } from '../mock/subsystemData'
-import type { Menu } from '../types/menu'
+import type { Meal, SearchForm, MealForm } from '@/types/meal'
+import { mealTypeOptions } from '@/mock/mealData'
+import { mockSubsystemData } from '@/mock/subsystemData'
+import type { Menu } from '@/types/menu'
 import {
   getMeals,
   addMeal,
@@ -418,9 +418,9 @@ import {
   deleteMeal,
   batchDeleteMeals,
   toggleMealStatus
-} from '../utils/mockApi'
-import { getMenuTreeBySubsystem } from '../utils/menuMockApi'
-import { getMealMenuIds, saveMealMenuBinding } from '../utils/mealMenuMockApi'
+} from '@/utils/mockApi'
+import { getMenuTreeBySubsystem } from '@/utils/menuMockApi'
+import { getMealMenuIds, saveMealMenuBinding } from '@/utils/mealMenuMockApi'
 
 // ── 状态 ──
 const loading = ref(false)

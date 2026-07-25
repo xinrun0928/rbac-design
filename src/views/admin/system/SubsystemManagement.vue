@@ -473,7 +473,7 @@ import {
   SuccessFilled, CircleCloseFilled, Box,
   DataBoard, CircleCheck, CircleClose, Monitor
 } from '@element-plus/icons-vue'
-import type { Subsystem, SubsystemForm, SubsystemSearchForm } from '../types/subsystem'
+import type { Subsystem, SubsystemForm, SubsystemSearchForm } from '@/types/subsystem'
 import {
   getSubsystems,
   addSubsystem,
@@ -481,7 +481,7 @@ import {
   deleteSubsystem,
   batchDeleteSubsystems,
   toggleSubsystemStatus
-} from '../utils/subsystemMockApi'
+} from '@/utils/subsystemMockApi'
 
 // ── 状态 ──
 const loading = ref(false)

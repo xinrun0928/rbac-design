@@ -549,16 +549,16 @@ import {
   DArrowLeft,
   DArrowRight,
 } from "@element-plus/icons-vue"
-import type { Menu, MenuForm, MenuSearchForm } from "../types/menu"
-import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "../types/menu"
-import { mockSubsystemData } from "../mock/subsystemData"
+import type { Menu, MenuForm, MenuSearchForm } from "@/types/menu"
+import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "@/types/menu"
+import { mockSubsystemData } from "@/mock/subsystemData"
 import {
   getMenuTreeBySubsystem,
   addMenu,
   updateMenu,
   deleteMenu,
   toggleMenuStatus,
-} from "../utils/menuMockApi"
+} from "@/utils/menuMockApi"
 
 // ── 状态 ──
 const loading = ref(false)

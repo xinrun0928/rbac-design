@@ -4,7 +4,7 @@
     <aside class="admin-sidebar">
       <div class="sidebar-header">
         <el-icon :size="22" color="#409EFF"><DataBoard /></el-icon>
-        <span v-show="!isCollapsed" class="sidebar-title">RBAC 后台管理</span>
+        <span v-show="!isCollapsed" class="sidebar-title">应急指挥调度平台</span>
       </div>
 
       <el-menu
@@ -14,85 +14,28 @@
         class="sidebar-menu"
         router
       >
-        <el-menu-item index="/admin/subsystem">
-          <el-icon><Monitor /></el-icon>
-          <template #title>子系统管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/meal">
-          <el-icon><Box /></el-icon>
-          <template #title>套餐管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/menu">
-          <el-icon><Menu /></el-icon>
-          <template #title>菜单管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/organization">
-          <el-icon><Share /></el-icon>
-          <template #title>组织管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/member">
-          <el-icon><User /></el-icon>
-          <template #title>成员管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/role">
-          <el-icon><UserFilled /></el-icon>
-          <template #title>角色管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/dept">
-          <el-icon><OfficeBuilding /></el-icon>
-          <template #title>部门管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/post">
-          <el-icon><Briefcase /></el-icon>
-          <template #title>岗位管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/dict">
-          <el-icon><Collection /></el-icon>
-          <template #title>字典管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/config">
-          <el-icon><Tools /></el-icon>
-          <template #title>配置管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/attachment">
-          <el-icon><Paperclip /></el-icon>
-          <template #title>附件管理</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/msg/template">
-          <el-icon><ChatDotSquare /></el-icon>
-          <template #title>短信模版</template>
-        </el-menu-item>
-        <el-menu-item index="/admin/app">
-          <el-icon><Cellphone /></el-icon>
-          <template #title>App管理</template>
-        </el-menu-item>
-
-        <el-sub-menu index="logs">
-          <template #title>
-            <el-icon><Document /></el-icon>
-            <span>日志管理</span>
-          </template>
-          <el-menu-item index="/admin/logs/access">
-            <el-icon><Notebook /></el-icon>
-            <template #title>访问日志</template>
+        <template v-for="item in adminMenus" :key="item.path">
+          <!-- 有子菜单 -->
+          <el-sub-menu v-if="item.children" :index="item.path">
+            <template #title>
+              <el-icon><component :is="item.icon" /></el-icon>
+              <span>{{ item.title }}</span>
+            </template>
+            <el-menu-item
+              v-for="child in item.children"
+              :key="child.path"
+              :index="child.path"
+            >
+              <el-icon><component :is="child.icon" /></el-icon>
+              <template #title>{{ child.title }}</template>
+            </el-menu-item>
+          </el-sub-menu>
+          <!-- 无子菜单 -->
+          <el-menu-item v-else :index="item.path">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <template #title>{{ item.title }}</template>
           </el-menu-item>
-          <el-menu-item index="/admin/logs/message">
-            <el-icon><ChatDotRound /></el-icon>
-            <template #title>短信日志</template>
-          </el-menu-item>
-          <el-menu-item index="/admin/logs/http">
-            <el-icon><Connection /></el-icon>
-            <template #title>接口日志</template>
-          </el-menu-item>
-          <el-menu-item index="/admin/logs/login">
-            <el-icon><User /></el-icon>
-            <template #title>登录日志</template>
-          </el-menu-item>
-          <el-menu-item index="/admin/mq/log">
-            <el-icon><Promotion /></el-icon>
-            <template #title>MQ消费日志</template>
-          </el-menu-item>
-        </el-sub-menu>
+        </template>
       </el-menu>
 
       <!-- 收缩按钮 -->
@@ -152,24 +95,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import {
   DataBoard,
-  Monitor,
-  Box,
-  Menu,
-  Share,
   User,
-  UserFilled,
-  OfficeBuilding,
-  Briefcase,
-  Collection,
-  Tools,
-  Paperclip,
-  ChatDotSquare,
-  Cellphone,
-  Document,
-  Notebook,
-  ChatDotRound,
-  Connection,
-  Promotion,
   ArrowDown,
   Setting,
   SwitchButton,
@@ -178,6 +104,7 @@ import {
   Fold,
   Expand
 } from '@element-plus/icons-vue'
+import { adminMenus } from '@/config/menu'
 
 const router = useRouter()
 const route = useRoute()
@@ -285,6 +212,7 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background: #001529;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.65);
   transition: all 0.3s;

@@ -1,4 +1,4 @@
-import type { Area } from '../types/area'
+import type { Area } from '@/types/area'
 
 export const areaData: Area[] = [
   {

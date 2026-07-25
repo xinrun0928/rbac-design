@@ -1,5 +1,5 @@
-import { mockSubsystemData } from '../mock/subsystemData'
-import type { Subsystem, SubsystemSearchForm } from '../types/subsystem'
+import { mockSubsystemData } from '@/mock/subsystemData'
+import type { Subsystem, SubsystemSearchForm } from '@/types/subsystem'
 
 /** 模拟网络延迟 */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

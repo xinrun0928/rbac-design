@@ -1,4 +1,4 @@
-import type { Config } from '../types/config'
+import type { Config } from '@/types/config'
 
 export const configData: Config[] = [
   { configId: 1, configName: '主框架页-默认皮肤样式名称', configKey: 'sys.index.skinName', configValue: 'skin-blue', configType: 'Y', createBy: 'admin', createTime: '2026-07-01 09:30:00', updateBy: '', updateTime: '', remark: '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow' },

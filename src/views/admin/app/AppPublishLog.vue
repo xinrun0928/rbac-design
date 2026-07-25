@@ -190,8 +190,8 @@ import type { FormInstance } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, Back, Upload
 } from '@element-plus/icons-vue'
-import { appPublishLogData } from '../mock/appData'
-import type { AppPublishLog } from '../types/appInfo'
+import { appPublishLogData } from '@/mock/appData'
+import type { AppPublishLog } from '@/types/appInfo'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()

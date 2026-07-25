@@ -316,8 +316,8 @@ import {
   SuccessFilled, CircleCloseFilled, Key, RefreshRight,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Male, Female
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '../mock/orgTreeData'
-import type { OrgTreeNode } from '../types/orgTree'
+import { orgTreeData } from '@/mock/orgTreeData'
+import type { OrgTreeNode } from '@/types/orgTree'
 
 // 组织成员接口
 interface MemberItem {

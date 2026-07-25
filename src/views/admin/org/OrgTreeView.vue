@@ -209,10 +209,10 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   OfficeBuilding
 } from '@element-plus/icons-vue'
-import type { OrgTreeNode } from '../types/orgTree'
-import { orgTreeData as rawOrgTreeData } from '../mock/orgTreeData'
-import { mealTypeOptions, mealNameOptions } from '../mock/mealData'
-import { areaData } from '../mock/areaData'
+import type { OrgTreeNode } from '@/types/orgTree'
+import { orgTreeData as rawOrgTreeData } from '@/mock/orgTreeData'
+import { mealTypeOptions, mealNameOptions } from '@/mock/mealData'
+import { areaData } from '@/mock/areaData'
 
 // ── 状态 ──
 const loading = ref(false)

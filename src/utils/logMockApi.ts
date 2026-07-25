@@ -3,8 +3,8 @@ import {
   mockMessageLogData,
   mockHttpLogData,
   mockLoginLogData
-} from '../mock/logsData'
-import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '../types/logs'
+} from '@/mock/logsData'
+import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/logs'
 
 /** 模拟网络延迟 */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

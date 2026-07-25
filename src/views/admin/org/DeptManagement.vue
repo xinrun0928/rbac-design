@@ -299,10 +299,10 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   OfficeBuilding, Location, DArrowLeft, DArrowRight
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '../mock/orgTreeData'
-import { deptData as mockDeptData, buildDeptTree, flattenDeptData } from '../mock/deptData'
-import type { OrgTreeNode } from '../types/orgTree'
-import type { DeptItem } from '../mock/deptData'
+import { orgTreeData } from '@/mock/orgTreeData'
+import { deptData as mockDeptData, buildDeptTree, flattenDeptData } from '@/mock/deptData'
+import type { OrgTreeNode } from '@/types/orgTree'
+import type { DeptItem } from '@/mock/deptData'
 
 // 部门表单接口
 interface DeptForm {

@@ -19,12 +19,7 @@
               <Expand v-else />
             </el-icon>
           </div>
-          <Breadcrumb
-            home-path="/duty/dashboard"
-            home-title="首页"
-            home-name="DutyDashboard"
-            :menus="dutyMenus"
-          />
+          <Breadcrumb :menus="dutyMenus" />
         </div>
         <div class="header-right">
           <FullscreenToggle />
@@ -34,11 +29,7 @@
       </header>
 
       <!-- 历史会话标签页 -->
-      <TagsView
-        home-path="/duty/dashboard"
-        home-title="首页"
-        storage-key="duty-tags-view"
-      />
+      <TagsView :menus="dutyMenus" storage-key="duty-tags-view" />
 
       <!-- 页面内容 -->
       <main class="duty-content">

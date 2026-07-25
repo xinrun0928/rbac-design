@@ -19,7 +19,7 @@
               <Expand v-else />
             </el-icon>
           </div>
-          <Breadcrumb />
+          <Breadcrumb :menus="adminMenus" />
         </div>
         <div class="header-right">
           <FullscreenToggle />
@@ -29,7 +29,7 @@
       </header>
 
       <!-- 历史会话标签页 -->
-      <TagsView />
+      <TagsView :menus="adminMenus" storage-key="admin-tags-view" />
 
       <!-- 页面内容 -->
       <main class="admin-content">

@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Close, Refresh } from '@element-plus/icons-vue'
 
@@ -50,18 +50,42 @@ interface TagView {
   affix?: boolean
 }
 
+interface MenuItem {
+  path: string
+  title: string
+  icon?: any
+  children?: MenuItem[]
+  isGroup?: boolean
+  groupTitle?: string
+}
+
 const props = withDefaults(defineProps<{
-  /** 首页路径，用于固定标签判断 */
+  /** 菜单列表，用于自动获取首页路径和标题 */
+  menus?: MenuItem[]
+  /** 首页路径，用于固定标签判断（不传则从 menus 第一项获取） */
   homePath?: string
-  /** 首页标题 */
+  /** 首页标题（不传则从 menus 第一项获取） */
   homeTitle?: string
   /** localStorage 存储 key，不同子系统使用不同 key 避免冲突 */
   storageKey?: string
 }>(), {
-  homePath: '/admin/dashboard',
-  homeTitle: '首页',
+  menus: () => [],
+  homePath: '',
+  homeTitle: '',
   storageKey: 'visitedViews'
 })
+
+// 从菜单中获取第一个有效路径和标题
+const getHomeFromMenus = (): { path: string; title: string } => {
+  if (props.menus.length > 0) {
+    const first = props.menus[0]
+    return { path: first.path, title: first.title }
+  }
+  return { path: '/admin/dashboard', title: '首页' }
+}
+
+const resolvedHomePath = computed(() => props.homePath || getHomeFromMenus().path)
+const resolvedHomeTitle = computed(() => props.homeTitle || getHomeFromMenus().title)
 
 const route = useRoute()
 const router = useRouter()
@@ -87,15 +111,15 @@ const saveToStorage = () => {
 // 从本地存储加载
 const loadFromStorage = () => {
   const stored = localStorage.getItem(props.storageKey)
-  const homeTag: TagView = { path: props.homePath, title: props.homeTitle, affix: true }
+  const homeTag: TagView = { path: resolvedHomePath.value, title: resolvedHomeTitle.value, affix: true }
   if (stored) {
     try {
       const views = JSON.parse(stored) as TagView[]
-      // 确保首页标签存在且路径匹配
+      // 确保首页标签存在且路径和标题匹配
       const homeIndex = views.findIndex(v => v.affix)
       if (homeIndex === -1) {
         views.unshift(homeTag)
-      } else if (views[homeIndex].path !== props.homePath) {
+      } else if (views[homeIndex].path !== resolvedHomePath.value || views[homeIndex].title !== resolvedHomeTitle.value) {
         views[homeIndex] = homeTag
       }
       return views
@@ -168,6 +192,10 @@ const closeSelectedTag = (tag: TagView) => {
 
 // 关闭其他标签
 const closeOthersTags = () => {
+  visitedViews.value = visitedViews.value.filter(
+    tag => tag.affix || tag.path === selectedTag.value.path
+  )
+  saveToStorage()
   router.push(selectedTag.value.path)
   visible.value = false
 }
@@ -232,8 +260,12 @@ onMounted(() => {
   addView({
     path: route.path,
     title: (route.meta?.title as string) || '未命名',
-    affix: route.path === props.homePath
+    affix: route.path === resolvedHomePath.value
   })
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeMenu)
 })
 </script>
 

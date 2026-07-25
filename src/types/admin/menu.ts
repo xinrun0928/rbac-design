@@ -94,11 +94,19 @@ export interface MenuSearchForm {
 
 /** 菜单类型常量映射 */
 export const MENU_TYPE_MAP: Record<number, { label: string; color: string }> = {
+  99: { label: '导航', color: '#9B59B6' },
   0: { label: '目录', color: '#409EFF' },
   1: { label: '菜单', color: '#67C23A' },
-  2: { label: '按钮', color: '#E6A23C' },
-  99: { label: '导航', color: '#9B59B6' }
+  2: { label: '按钮', color: '#E6A23C' }
 }
+
+/** 菜单类型下拉选项（按指定顺序） */
+export const MENU_TYPE_OPTIONS = [
+  { value: 99, label: '导航', color: '#9B59B6' },
+  { value: 0, label: '目录', color: '#409EFF' },
+  { value: 1, label: '菜单', color: '#67C23A' },
+  { value: 2, label: '按钮', color: '#E6A23C' }
+]
 
 /** 内容类型常量映射 */
 export const CONTENT_TYPE_MAP: Record<number, { label: string; color: string }> = {

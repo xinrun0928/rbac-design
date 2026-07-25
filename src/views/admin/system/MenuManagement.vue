@@ -52,18 +52,18 @@
         <div class="panel-header">
           <span class="panel-title">菜单列表 - {{ currentSubsystemName }}</span>
           <div class="panel-actions">
-            <el-button type="primary" :icon="Plus" @click="handleAdd(null)"
-              >新增菜单</el-button
-            >
             <el-input
               v-model="searchForm.menuName"
               placeholder="搜索菜单名称"
               clearable
               :prefix-icon="Search"
-              style="width: 200px; margin-left: 12px"
+              style="width: 200px; margin-right: 12px"
               @keyup.enter="handleSearch"
               @clear="handleSearch"
             />
+            <el-button type="primary" :icon="Plus" @click="handleAdd(null)"
+              >新增菜单</el-button
+            >
           </div>
         </div>
 
@@ -123,6 +123,7 @@
               label="菜单名称"
               min-width="240"
               fixed
+              align="center"
             >
               <template #default="{ row }">
                 <div class="menu-name-cell">
@@ -159,20 +160,22 @@
 
             <el-table-column prop="icon" label="图标" width="80" align="center">
               <template #default="{ row }">
-                <el-icon
-                  v-if="row.icon"
-                  :size="18"
-                  :color="getMenuTypeColor(row.menuType)"
-                >
-                  <component :is="row.icon" />
-                </el-icon>
-                <span v-else class="empty-text">-</span>
+                <div style="display: flex; justify-content: center;">
+                  <el-icon
+                    v-if="row.icon"
+                    :size="18"
+                    :color="getMenuTypeColor(row.menuType)"
+                  >
+                    <component :is="row.icon" />
+                  </el-icon>
+                  <span v-else class="empty-text">-</span>
+                </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="menuCode" label="权限标识" width="200">
+            <el-table-column prop="menuCode" label="权限标识" min-width="180" align="center" show-overflow-tooltip>
               <template #default="{ row }">
-                <div class="code-cell" v-if="row.menuCode">
+                <div v-if="row.menuCode" class="overflow-cell">
                   <span class="code-text">{{ row.menuCode }}</span>
                   <el-tooltip content="复制" placement="top">
                     <el-button
@@ -206,18 +209,16 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="path" label="路由地址" width="180">
+            <el-table-column prop="path" label="路由地址" min-width="180" align="center" show-overflow-tooltip>
               <template #default="{ row }">
-                <span class="path-text" v-if="row.path">{{ row.path }}</span>
+                <span class="overflow-text" v-if="row.path">{{ row.path }}</span>
                 <span class="empty-text" v-else>-</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="component" label="组件路径" width="180">
+            <el-table-column prop="component" label="组件路径" min-width="180" align="center" show-overflow-tooltip>
               <template #default="{ row }">
-                <span class="component-text" v-if="row.component">{{
-                  row.component
-                }}</span>
+                <span class="overflow-text" v-if="row.component">{{ row.component }}</span>
                 <span class="empty-text" v-else>-</span>
               </template>
             </el-table-column>
@@ -250,7 +251,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="ext" label="扩展字段" width="120">
+            <el-table-column prop="ext" label="扩展字段" width="120" align="center">
               <template #default="{ row }">
                 <el-popover v-if="row.ext" trigger="hover" width="300">
                   <template #reference>
@@ -371,10 +372,10 @@
             style="width: 100%"
           >
             <el-option
-              v-for="(item, key) in MENU_TYPE_MAP"
-              :key="key"
+              v-for="item in MENU_TYPE_OPTIONS"
+              :key="item.value"
               :label="item.label"
-              :value="Number(key)"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -388,7 +389,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="权限标识" prop="menuCode">
+        <el-form-item v-if="formData.menuType === 2" label="权限标识" prop="menuCode">
           <el-input
             v-model="formData.menuCode"
             placeholder="如：SYSTEM_USER_ADD"
@@ -561,7 +562,7 @@ import {
   DArrowRight,
 } from "@element-plus/icons-vue"
 import type { Menu, MenuForm, MenuSearchForm } from "@/types/admin/menu"
-import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "@/types/admin/menu"
+import { MENU_TYPE_MAP, MENU_TYPE_OPTIONS, CONTENT_TYPE_MAP } from "@/types/admin/menu"
 import { mockSubsystemData } from "@/mock/admin/subsystemData"
 import {
   getMenuTreeBySubsystem,
@@ -1242,6 +1243,18 @@ onMounted(() => {
             display: flex;
             align-items: center;
           }
+
+          // 需要居中的列
+          .el-table__cell:not(:first-child) {
+            .cell {
+              justify-content: center;
+            }
+          }
+        }
+
+        // 菜单名称表头居中
+        .el-table__header-wrapper th:first-child .cell {
+          justify-content: center;
         }
 
         // 树形缩进
@@ -1311,6 +1324,32 @@ onMounted(() => {
     background: #ecf5ff;
     padding: 2px 6px;
     border-radius: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .overflow-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    justify-content: center;
+
+    .code-text {
+      min-width: 0;
+      flex: 1;
+    }
+  }
+
+  .overflow-text {
+    font-family: "Monaco", "Menlo", "Consolas", monospace;
+    font-size: 12px;
+    color: #606266;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
   }
 
   .path-text {

@@ -273,7 +273,7 @@ import {
   Search, Refresh, RefreshRight, View,
   Connection, CopyDocument, Document
 } from '@element-plus/icons-vue'
-import type { SysHttpLog } from '@/types/logs/logs'
+import type { SysHttpLog } from '@/types/admin/logs'
 import { getHttpLogs, getHttpLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──

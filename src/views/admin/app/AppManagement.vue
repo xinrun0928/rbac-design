@@ -178,7 +178,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, Document
 } from '@element-plus/icons-vue'
 import { appInfoData } from '@/mock/appData'
-import type { AppInfo } from '@/types/app/appInfo'
+import type { AppInfo } from '@/types/admin/appInfo'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

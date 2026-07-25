@@ -473,7 +473,7 @@ import {
   SuccessFilled, CircleCloseFilled, Box,
   DataBoard, CircleCheck, CircleClose, Monitor
 } from '@element-plus/icons-vue'
-import type { Subsystem, SubsystemForm, SubsystemSearchForm } from '@/types/system/subsystem'
+import type { Subsystem, SubsystemForm, SubsystemSearchForm } from '@/types/admin/subsystem'
 import {
   getSubsystems,
   addSubsystem,

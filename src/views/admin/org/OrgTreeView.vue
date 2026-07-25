@@ -209,7 +209,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   OfficeBuilding
 } from '@element-plus/icons-vue'
-import type { OrgTreeNode } from '@/types/org/orgTree'
+import type { OrgTreeNode } from '@/types/admin/orgTree'
 import { orgTreeData as rawOrgTreeData } from '@/mock/orgTreeData'
 import { mealTypeOptions, mealNameOptions } from '@/mock/mealData'
 import { areaData } from '@/mock/areaData'

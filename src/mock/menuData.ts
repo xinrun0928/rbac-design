@@ -1,4 +1,4 @@
-import type { Menu } from '@/types/menu/menu'
+import type { Menu } from '@/types/admin/menu'
 
 export const mockMenuData: Menu[] = [
   // ── 后台管理子系统 (subsysId: 99) ──

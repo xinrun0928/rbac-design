@@ -1,4 +1,4 @@
-import type { AppInfo, AppPublishLog } from '@/types/app/appInfo'
+import type { AppInfo, AppPublishLog } from '@/types/admin/appInfo'
 
 export const appInfoData: AppInfo[] = [
   {

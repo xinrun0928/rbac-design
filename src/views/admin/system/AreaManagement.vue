@@ -141,7 +141,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, Location
 } from '@element-plus/icons-vue'
 import { areaData, areaLevelOptions } from '@/mock/areaData'
-import type { Area, AreaSearchForm } from '@/types/system/area'
+import type { Area, AreaSearchForm } from '@/types/admin/area'
 
 // ── 状态 ──
 const loading = ref(false)

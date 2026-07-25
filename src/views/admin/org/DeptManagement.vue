@@ -301,7 +301,7 @@ import {
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '@/mock/orgTreeData'
 import { deptData as mockDeptData, buildDeptTree, flattenDeptData } from '@/mock/deptData'
-import type { OrgTreeNode } from '@/types/org/orgTree'
+import type { OrgTreeNode } from '@/types/admin/orgTree'
 import type { DeptItem } from '@/mock/deptData'
 
 // 部门表单接口

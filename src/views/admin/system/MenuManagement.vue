@@ -549,8 +549,8 @@ import {
   DArrowLeft,
   DArrowRight,
 } from "@element-plus/icons-vue"
-import type { Menu, MenuForm, MenuSearchForm } from "@/types/menu"
-import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "@/types/menu"
+import type { Menu, MenuForm, MenuSearchForm } from "@/types/admin/menu"
+import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "@/types/admin/menu"
 import { mockSubsystemData } from "@/mock/subsystemData"
 import {
   getMenuTreeBySubsystem,

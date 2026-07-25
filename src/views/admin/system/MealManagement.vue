@@ -407,10 +407,10 @@ import {
   Bell, Document, Warning, Connection,
   DataAnalysis, Share, Monitor, Setting
 } from '@element-plus/icons-vue'
-import type { Meal, SearchForm, MealForm } from '@/types/meal/meal'
+import type { Meal, SearchForm, MealForm } from '@/types/admin/meal'
 import { mealTypeOptions } from '@/mock/mealData'
 import { mockSubsystemData } from '@/mock/subsystemData'
-import type { Menu } from '@/types/menu/menu'
+import type { Menu } from '@/types/admin/menu'
 import {
   getMeals,
   addMeal,

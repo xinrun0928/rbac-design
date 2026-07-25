@@ -252,7 +252,7 @@ import {
   Search, Refresh, RefreshRight, View,
   ChatDotRound, CopyDocument, Document
 } from '@element-plus/icons-vue'
-import type { SysMessageLog } from '@/types/logs/logs'
+import type { SysMessageLog } from '@/types/admin/logs'
 import { getMessageLogs, getMessageLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──

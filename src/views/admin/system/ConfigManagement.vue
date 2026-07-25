@@ -158,7 +158,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
 import { configData } from '@/mock/configData'
-import type { Config, ConfigSearchForm } from '@/types/system/config'
+import type { Config, ConfigSearchForm } from '@/types/admin/config'
 
 // ── 状态 ──
 const loading = ref(false)

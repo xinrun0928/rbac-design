@@ -1,4 +1,4 @@
-import type { MealMenuBinding } from '@/types/meal/mealMenu'
+import type { MealMenuBinding } from '@/types/admin/mealMenu'
 
 /** 模拟网络延迟 */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

@@ -243,7 +243,7 @@ import {
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '@/mock/orgTreeData'
-import type { OrgTreeNode } from '@/types/org/orgTree'
+import type { OrgTreeNode } from '@/types/admin/orgTree'
 
 // 岗位接口
 interface PostItem {

@@ -155,7 +155,7 @@ const handleLogout = () => {
 .admin-sidebar {
   width: 200px;
   height: 100vh;
-  background: #001529;
+  background: #1a1f2e;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -189,7 +189,7 @@ const handleLogout = () => {
   border-right: none;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #001529 !important;
+  background: #1a1f2e !important;
 }
 
 .sidebar-menu::-webkit-scrollbar {
@@ -207,19 +207,28 @@ const handleLogout = () => {
 
 .sidebar-menu :deep(.el-menu-item),
 .sidebar-menu :deep(.el-sub-menu__title) {
-  background: #001529 !important;
-  color: rgba(255, 255, 255, 0.65) !important;
+  background: #1a1f2e !important;
+  color: #bfcbd9 !important;
 }
 
 .sidebar-menu :deep(.el-menu-item:hover),
 .sidebar-menu :deep(.el-sub-menu__title:hover) {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
+  background: #263445 !important;
+  color: #409EFF !important;
 }
 
 .sidebar-menu :deep(.el-menu-item.is-active) {
-  background: #409EFF !important;
-  color: #fff !important;
+  background: #263445 !important;
+  color: #409EFF !important;
+  border-right: none !important;
+}
+
+.sidebar-menu :deep(.el-menu-item.is-active::before) {
+  display: none !important;
+}
+
+.sidebar-menu :deep(.el-menu-item.is-active::after) {
+  display: none !important;
 }
 
 .sidebar-menu :deep(.el-menu-item .el-icon),
@@ -232,19 +241,25 @@ const handleLogout = () => {
 }
 
 .sidebar-menu :deep(.el-sub-menu .el-menu-item) {
-  background: #001529 !important;
-  color: rgba(255, 255, 255, 0.65) !important;
+  background: #1a1f2e !important;
+  color: #bfcbd9 !important;
   min-width: 0 !important;
 }
 
 .sidebar-menu :deep(.el-sub-menu .el-menu-item:hover) {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
+  background: #263445 !important;
+  color: #409EFF !important;
 }
 
 .sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active) {
-  background: #409EFF !important;
-  color: #fff !important;
+  background: #263445 !important;
+  color: #409EFF !important;
+  border-right: none !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active::before),
+.sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active::after) {
+  display: none !important;
 }
 
 .collapse-btn {

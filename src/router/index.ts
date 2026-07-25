@@ -38,6 +38,11 @@ const publicRoutes: RouteRecordRaw[] = [
     name: 'SubsystemSelect',
     component: () => import('@/views/auth/SubsystemSelectView.vue')
   },
+  {
+    path: '/redirect/:path(.*)',
+    name: 'Redirect',
+    component: () => import('@/views/redirect/index.vue')
+  },
 ]
 
 // 业务路由（各子系统）

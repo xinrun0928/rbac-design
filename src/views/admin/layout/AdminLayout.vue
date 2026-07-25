@@ -91,6 +91,9 @@
         </div>
       </header>
 
+      <!-- 历史会话标签页 -->
+      <TagsView />
+
       <!-- 页面内容 -->
       <main class="admin-content">
         <router-view />
@@ -115,6 +118,7 @@ import {
   Expand
 } from '@element-plus/icons-vue'
 import { adminMenus } from '@/config/menu'
+import TagsView from '@/components/TagsView.vue'
 
 const router = useRouter()
 const route = useRoute()

@@ -14,7 +14,7 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="键名">
-            <el-input v-model="searchForm.key" placeholder="输入键名" clearable style="width: 240px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.key" placeholder="输入键名" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
         </el-form>
       </div>

@@ -20,7 +20,8 @@
               v-model="searchForm.phone"
               placeholder="请输入手机号码"
               clearable
-              style="width: 160px"
+              :prefix-icon="Search"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
@@ -29,6 +30,7 @@
               v-model="searchForm.content"
               placeholder="请输入内容关键词"
               clearable
+              :prefix-icon="Search"
               style="width: 180px"
               @keyup.enter="handleSearch"
             />

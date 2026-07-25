@@ -11,7 +11,7 @@
               placeholder="请输入用户名"
               clearable
               :prefix-icon="Search"
-              style="width: 200px"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
@@ -20,7 +20,7 @@
               v-model="searchForm.client_id"
               placeholder="请选择"
               clearable
-              style="width: 160px"
+              style="width: 180px"
             >
               <el-option label="flood-inspection" value="flood-inspection" />
             </el-select>
@@ -30,7 +30,7 @@
               v-model="searchForm.grant_type"
               placeholder="请选择"
               clearable
-              style="width: 140px"
+              style="width: 180px"
             >
               <el-option label="password" value="password" />
               <el-option label="refresh_token" value="refresh_token" />

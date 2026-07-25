@@ -21,7 +21,8 @@
               v-model="searchForm.req_url"
               placeholder="请输入请求地址"
               clearable
-              style="width: 220px"
+              :prefix-icon="Search"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
@@ -30,7 +31,8 @@
               v-model="searchForm.ip"
               placeholder="请输入IP地址"
               clearable
-              style="width: 150px"
+              :prefix-icon="Search"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
@@ -39,7 +41,7 @@
               v-model="searchForm.result"
               placeholder="请选择"
               clearable
-              style="width: 120px"
+              style="width: 180px"
             >
               <el-option label="SUCCESS" value="SUCCESS" />
               <el-option label="FAIL" value="FAIL" />

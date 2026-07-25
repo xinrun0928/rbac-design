@@ -10,7 +10,7 @@
               v-model="searchForm.req_method"
               placeholder="请选择"
               clearable
-              style="width: 140px"
+              style="width: 180px"
             >
               <el-option label="POST_JSON" value="POST_JSON" />
               <el-option label="POST_FORM" value="POST_FORM" />
@@ -25,7 +25,7 @@
               v-model="searchForm.rep_state"
               placeholder="请选择"
               clearable
-              style="width: 120px"
+              style="width: 180px"
             >
               <el-option label="SUCCESS" value="SUCCESS" />
               <el-option label="FAIL" value="FAIL" />
@@ -37,7 +37,7 @@
               placeholder="请输入请求地址"
               clearable
               :prefix-icon="Search"
-              style="width: 280px"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>

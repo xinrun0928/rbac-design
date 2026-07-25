@@ -7,13 +7,13 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="参数名称">
-            <el-input v-model="searchForm.configName" placeholder="输入参数名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.configName" placeholder="输入参数名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="参数键名">
-            <el-input v-model="searchForm.configKey" placeholder="输入参数键名" clearable style="width: 220px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.configKey" placeholder="输入参数键名" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="系统内置">
-            <el-select v-model="searchForm.configType" placeholder="请选择" clearable style="width: 120px">
+            <el-select v-model="searchForm.configType" placeholder="请选择" clearable style="width: 180px">
               <el-option label="是" value="Y" />
               <el-option label="否" value="N" />
             </el-select>

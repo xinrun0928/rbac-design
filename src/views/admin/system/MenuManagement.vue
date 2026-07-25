@@ -57,7 +57,7 @@
               placeholder="搜索菜单名称"
               clearable
               :prefix-icon="Search"
-              style="width: 200px; margin-right: 12px"
+              style="width: 180px; margin-right: 12px"
               @keyup.enter="handleSearch"
               @clear="handleSearch"
             />

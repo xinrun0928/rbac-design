@@ -10,10 +10,10 @@
             <el-input v-model="searchForm.dictLabel" placeholder="输入字典标签" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="字典编码">
-            <el-input v-model="searchForm.dictCode" placeholder="输入字典编码" clearable style="width: 180px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.dictCode" placeholder="输入字典编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
               <el-option label="正常" :value="1101" />
               <el-option label="停用" :value="1102" />
             </el-select>
@@ -130,7 +130,7 @@
         </el-form-item>
 
         <el-form-item label="排序" prop="displayOrder">
-          <el-input-number v-model="formData.displayOrder" :min="0" :max="9999" style="width: 200px" />
+          <el-input-number v-model="formData.displayOrder" :min="0" :max="9999" style="width: 180px" />
           <span class="form-tip-inline">数值越小越靠前</span>
         </el-form-item>
 

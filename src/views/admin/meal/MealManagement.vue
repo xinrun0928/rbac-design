@@ -12,7 +12,7 @@
               placeholder="输入套餐名称，如：省交通本级"
               clearable
               :prefix-icon="Search"
-              style="width: 240px"
+              style="width: 180px"
               @keyup.enter="handleSearch"
             />
           </el-form-item>
@@ -27,7 +27,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 140px">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
               <el-option label="正常" :value="1101" />
               <el-option label="停用" :value="1001" />
             </el-select>
@@ -221,7 +221,7 @@
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="addFormData.sort" :min="0" :max="9999" style="width: 200px" />
+          <el-input-number v-model="addFormData.sort" :min="0" :max="9999" style="width: 180px" />
           <span class="form-tip-inline">数值越小越靠前</span>
         </el-form-item>
 
@@ -294,7 +294,7 @@
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="editFormData.sort" :min="0" :max="9999" style="width: 200px" />
+          <el-input-number v-model="editFormData.sort" :min="0" :max="9999" style="width: 180px" />
           <span class="form-tip-inline">数值越小越靠前</span>
         </el-form-item>
 

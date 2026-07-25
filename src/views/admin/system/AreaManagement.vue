@@ -7,13 +7,13 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="区域名称">
-            <el-input v-model="searchForm.name" placeholder="输入区域名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.name" placeholder="输入区域名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="区域编码">
-            <el-input v-model="searchForm.code" placeholder="输入区域编码" clearable style="width: 160px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.code" placeholder="输入区域编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="区域层级">
-            <el-select v-model="searchForm.level" placeholder="请选择层级" clearable style="width: 140px">
+            <el-select v-model="searchForm.level" placeholder="请选择层级" clearable style="width: 180px">
               <el-option v-for="item in areaLevelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -118,7 +118,7 @@
         </el-form-item>
 
         <el-form-item label="排序" prop="displayOrder">
-          <el-input-number v-model="formData.displayOrder" :min="0" :max="9999" style="width: 200px" />
+          <el-input-number v-model="formData.displayOrder" :min="0" :max="9999" style="width: 180px" />
           <span class="form-tip-inline">数值越小越靠前</span>
         </el-form-item>
       </el-form>

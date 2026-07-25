@@ -7,10 +7,10 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="组织名称">
-            <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="套餐类型">
-            <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 160px">
+            <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 180px">
               <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>

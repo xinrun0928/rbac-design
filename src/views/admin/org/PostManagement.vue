@@ -73,12 +73,13 @@
                   v-model="postSearchForm.code"
                   placeholder="输入岗位编号"
                   clearable
-                  style="width: 160px"
+                  :prefix-icon="Search"
+                  style="width: 180px"
                   @keyup.enter="handlePostSearch"
                 />
               </el-form-item>
               <el-form-item label="状态">
-                <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 120px">
+                <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 180px">
                   <el-option label="启用" :value="1" />
                   <el-option label="禁用" :value="0" />
                 </el-select>

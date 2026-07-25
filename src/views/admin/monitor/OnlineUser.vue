@@ -5,10 +5,10 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="登录名称">
-            <el-input v-model="searchForm.loginName" placeholder="输入登录名称" clearable style="width: 180px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.loginName" placeholder="输入登录名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="主机地址">
-            <el-input v-model="searchForm.host" placeholder="输入主机地址" clearable style="width: 180px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.host" placeholder="输入主机地址" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="登录时间">
             <el-date-picker

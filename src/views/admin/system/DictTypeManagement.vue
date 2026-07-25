@@ -7,10 +7,10 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="类型名称">
-            <el-input v-model="searchForm.dictTypeName" placeholder="输入类型名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.dictTypeName" placeholder="输入类型名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="类型编码">
-            <el-input v-model="searchForm.dictType" placeholder="输入类型编码" clearable style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.dictType" placeholder="输入类型编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
         </el-form>
         <div class="search-actions">

@@ -5,7 +5,7 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="缓存名称">
-            <el-input v-model="searchForm.cacheName" placeholder="输入缓存名称" clearable style="width: 240px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.cacheName" placeholder="输入缓存名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
         </el-form>
       </div>

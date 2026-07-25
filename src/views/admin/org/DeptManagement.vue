@@ -69,7 +69,7 @@
                 />
               </el-form-item>
               <el-form-item label="状态">
-                <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 120px">
+                <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 180px">
                   <el-option label="正常" :value="1" />
                   <el-option label="停用" :value="0" />
                 </el-select>
@@ -265,7 +265,7 @@
             v-model="formData.sort"
             :min="0"
             :max="9999"
-            style="width: 200px"
+            style="width: 180px"
           />
           <span class="form-tip-inline">数值越小越靠前</span>
         </el-form-item>

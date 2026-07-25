@@ -6,15 +6,15 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="队列名称">
-            <el-select v-model="searchForm.queueName" placeholder="请选择队列" clearable style="width: 240px">
+            <el-select v-model="searchForm.queueName" placeholder="请选择队列" clearable style="width: 180px">
               <el-option v-for="item in queueNameOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="路由键">
-            <el-input v-model="searchForm.routingKey" placeholder="输入路由键" clearable style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.routingKey" placeholder="输入路由键" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
               <el-option v-for="item in mqStatusOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>

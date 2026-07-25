@@ -7,15 +7,15 @@
       <div class="search-bar">
         <el-form :model="searchForm" inline class="search-form">
           <el-form-item label="App名称">
-            <el-input v-model="searchForm.appName" placeholder="输入App名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
+            <el-input v-model="searchForm.appName" placeholder="输入App名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
           </el-form-item>
           <el-form-item label="平台">
-            <el-select v-model="searchForm.platform" placeholder="请选择平台" clearable style="width: 140px">
+            <el-select v-model="searchForm.platform" placeholder="请选择平台" clearable style="width: 180px">
               <el-option v-for="item in platformOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 120px">
+            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
               <el-option label="启用" :value="1101" />
               <el-option label="停用" :value="1001" />
             </el-select>

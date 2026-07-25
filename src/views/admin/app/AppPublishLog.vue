@@ -7,16 +7,16 @@
         <div class="search-content">
           <el-form :model="searchForm" inline>
             <el-form-item label="版本号">
-              <el-input v-model="searchForm.versionCode" placeholder="输入版本号" clearable :prefix-icon="Search" style="width: 160px" />
+              <el-input v-model="searchForm.versionCode" placeholder="输入版本号" clearable :prefix-icon="Search" style="width: 180px" />
             </el-form-item>
             <el-form-item label="更新类型">
-              <el-select v-model="searchForm.updateType" placeholder="请选择" clearable style="width: 140px">
+              <el-select v-model="searchForm.updateType" placeholder="请选择" clearable style="width: 180px">
                 <el-option label="WGT热更" :value="1" />
                 <el-option label="APK整包" :value="2" />
               </el-select>
             </el-form-item>
             <el-form-item label="发布状态">
-              <el-select v-model="searchForm.publishStatus" placeholder="请选择" clearable style="width: 120px">
+              <el-select v-model="searchForm.publishStatus" placeholder="请选择" clearable style="width: 180px">
                 <el-option label="待发布" :value="1" />
                 <el-option label="已发布" :value="2" />
                 <el-option label="已撤销" :value="3" />

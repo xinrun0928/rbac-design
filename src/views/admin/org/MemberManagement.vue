@@ -73,7 +73,8 @@
                   v-model="memberSearchForm.phone"
                   placeholder="输入手机号"
                   clearable
-                  style="width: 160px"
+                  :prefix-icon="Search"
+                  style="width: 180px"
                   @keyup.enter="handleMemberSearch"
                 />
               </el-form-item>

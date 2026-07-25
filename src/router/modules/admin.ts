@@ -3,27 +3,15 @@ import type { RouteRecordRaw } from 'vue-router'
 /**
  * 后台管理子系统路由 (SYSTEM)
  * 路径前缀: /admin
- * 包含: 用户管理、菜单管理、角色管理、日志管理等
+ * 包含: 系统管理、组织架构、套餐管理、应用管理、日志管理
  */
 const adminRoutes: RouteRecordRaw = {
   path: '/admin',
   component: () => import('@/views/admin/layout/AdminLayout.vue'),
-  redirect: '/admin/subsystem',
+  redirect: '/admin/menu',
   meta: { title: '后台管理', subsystem: 'SYSTEM' },
   children: [
     // 系统管理
-    {
-      path: 'subsystem',
-      name: 'AdminSubsystem',
-      component: () => import('@/views/admin/system/SubsystemManagement.vue'),
-      meta: { title: '子系统管理' }
-    },
-    {
-      path: 'meal',
-      name: 'AdminMeal',
-      component: () => import('@/views/admin/system/MealManagement.vue'),
-      meta: { title: '套餐管理' }
-    },
     {
       path: 'menu',
       name: 'AdminMenu',
@@ -35,18 +23,6 @@ const adminRoutes: RouteRecordRaw = {
       name: 'AdminConfig',
       component: () => import('@/views/admin/system/ConfigManagement.vue'),
       meta: { title: '配置管理' }
-    },
-    {
-      path: 'msg/template',
-      name: 'AdminMessageTemplate',
-      component: () => import('@/views/admin/system/MessageTemplateManagement.vue'),
-      meta: { title: '短信模版' }
-    },
-    {
-      path: 'attachment',
-      name: 'AdminAttachment',
-      component: () => import('@/views/admin/system/AttachmentManagement.vue'),
-      meta: { title: '附件管理' }
     },
     {
       path: 'dict',
@@ -61,13 +37,25 @@ const adminRoutes: RouteRecordRaw = {
       meta: { title: '字典数据' }
     },
     {
+      path: 'attachment',
+      name: 'AdminAttachment',
+      component: () => import('@/views/admin/system/AttachmentManagement.vue'),
+      meta: { title: '附件管理' }
+    },
+    {
+      path: 'msg/template',
+      name: 'AdminMessageTemplate',
+      component: () => import('@/views/admin/system/MessageTemplateManagement.vue'),
+      meta: { title: '短信模版' }
+    },
+    {
       path: 'area',
       name: 'AdminArea',
       component: () => import('@/views/admin/system/AreaManagement.vue'),
       meta: { title: '区域管理' }
     },
 
-    // 组织架构管理
+    // 组织架构
     {
       path: 'organization',
       name: 'AdminOrg',
@@ -97,6 +85,20 @@ const adminRoutes: RouteRecordRaw = {
       name: 'AdminMember',
       component: () => import('@/views/admin/org/MemberManagement.vue'),
       meta: { title: '成员管理' }
+    },
+
+    // 套餐管理
+    {
+      path: 'subsystem',
+      name: 'AdminSubsystem',
+      component: () => import('@/views/admin/meal/SubsystemManagement.vue'),
+      meta: { title: '子系统管理' }
+    },
+    {
+      path: 'meal',
+      name: 'AdminMeal',
+      component: () => import('@/views/admin/meal/MealManagement.vue'),
+      meta: { title: '套餐列表' }
     },
 
     // 应用管理

@@ -7,7 +7,7 @@ import type { RouteRecordRaw } from 'vue-router'
  */
 const adminRoutes: RouteRecordRaw = {
   path: '/admin',
-  component: () => import('@/views/admin/layout/AdminLayout.vue'),
+  component: () => import('@/views/admin/AdminLayout.vue'),
   redirect: '/admin/dashboard',
   meta: { title: '后台管理', subsystem: 'SYSTEM' },
   children: [

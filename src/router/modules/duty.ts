@@ -7,14 +7,14 @@ import type { RouteRecordRaw } from 'vue-router'
  */
 const dutyRoutes: RouteRecordRaw = {
   path: '/duty',
-  component: () => import('@/views/duty/layout/DutyLayout.vue'),
+  component: () => import('@/views/duty/DutyLayout.vue'),
   meta: { title: '应急值守管理', subsystem: 'EMERGENCY_WATCH' },
   redirect: '/duty/dashboard',
   children: [
     {
       path: 'dashboard',
       name: 'DutyDashboard',
-      component: () => import('@/views/duty/DutyDashboard.vue'),
+      component: () => import('@/views/duty/dashboard/DutyDashboard.vue'),
       meta: { title: '工作台' }
     },
     {

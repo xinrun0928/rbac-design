@@ -150,6 +150,23 @@ export const adminMenus: MenuItem[] = [
   ...adminLogMenu,
 ]
 
+/**
+ * 根据当前路径查找所属分组标题
+ * @param path 当前路由路径
+ * @param menus 菜单列表
+ * @returns 分组标题，未找到返回空字符串
+ */
+export function findGroupTitle(path: string, menus: MenuItem[]): string {
+  for (const item of menus) {
+    if (item.isGroup && item.children) {
+      if (item.children.some(child => path.startsWith(child.path))) {
+        return item.groupTitle || item.title
+      }
+    }
+  }
+  return ''
+}
+
 // 企业视角菜单（预留）
 export const enterpriseMenus: MenuItem[] = [
   // 后续添加企业视角菜单

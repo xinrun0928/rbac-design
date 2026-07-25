@@ -1,25 +1,26 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item :to="{ path: homePath }">{{ homeTitle }}</el-breadcrumb-item>
-    <el-breadcrumb-item v-if="showSecond">
-      {{ currentTitle }}
-    </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: homePath }">{{ homeTitle }}</el-breadcrumb-item><!--
+    --><el-breadcrumb-item v-if="groupTitle">{{ groupTitle }}</el-breadcrumb-item><!--
+    --><el-breadcrumb-item v-if="!isHome && currentTitle && currentTitle !== groupTitle">{{ currentTitle }}</el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { findGroupTitle, adminMenus } from '@/config/menu'
 
 const props = withDefaults(defineProps<{
   homePath?: string
   homeTitle?: string
-  /** 首页路由名称，匹配时不显示第二级 */
   homeName?: string
+  menus?: typeof adminMenus
 }>(), {
   homePath: '/admin/dashboard',
   homeTitle: '首页',
-  homeName: 'AdminDashboard'
+  homeName: 'AdminDashboard',
+  menus: () => adminMenus
 })
 
 const route = useRoute()
@@ -28,8 +29,10 @@ const currentTitle = computed(() => {
   return (route.meta?.title as string) || ''
 })
 
-const showSecond = computed(() => {
-  // 当前是首页则不显示第二级
-  return route.name !== props.homeName && currentTitle.value !== ''
+const isHome = computed(() => route.name === props.homeName)
+
+const groupTitle = computed(() => {
+  if (route.name === props.homeName) return ''
+  return findGroupTitle(route.path, props.menus)
 })
 </script>

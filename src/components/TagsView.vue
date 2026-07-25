@@ -196,13 +196,17 @@ const toLastView = (tags: TagView[]) => {
 // 打开右键菜单
 const openMenu = (tag: TagView, e: MouseEvent) => {
   const menuMinWidth = 105
-  const offsetLeft = (scrollContainer.value?.getBoundingClientRect().left || 0)
-  const offsetWidth = (scrollContainer.value?.offsetWidth || 0)
+  const tagsViewEl = scrollContainer.value?.closest('.tags-view-container') as HTMLElement
+  if (!tagsViewEl) return
+  const containerRect = tagsViewEl.getBoundingClientRect()
+  const offsetWidth = tagsViewEl.offsetWidth
   const maxLeft = offsetWidth - menuMinWidth
-  const leftValue = e.clientX - offsetLeft + 15
+
+  const leftValue = e.clientX - containerRect.left + 15
+  const topValue = e.clientY - containerRect.top
 
   left.value = leftValue > maxLeft ? maxLeft : leftValue
-  top.value = e.clientY
+  top.value = topValue
   visible.value = true
   selectedTag.value = tag
 }
@@ -237,6 +241,7 @@ onMounted(() => {
 .tags-view-container {
   display: flex;
   align-items: center;
+  position: relative;
   height: 34px;
   width: 100%;
   background: #fff;

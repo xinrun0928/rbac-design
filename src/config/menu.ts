@@ -20,7 +20,8 @@ import {
   Setting,
   DataLine,
   Coin,
-  List
+  List,
+  HomeFilled
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -32,6 +33,11 @@ export interface MenuItem {
   isGroup?: boolean
   groupTitle?: string
 }
+
+// 超级管理员 - 首页
+export const adminDashboardMenu: MenuItem[] = [
+  { path: '/admin/dashboard', title: '首页', icon: HomeFilled },
+]
 
 // 超级管理员 - 系统管理菜单
 export const adminSystemMenu: MenuItem[] = [
@@ -135,6 +141,7 @@ export const adminLogMenu: MenuItem[] = [
 
 // 超级管理员 - 所有菜单
 export const adminMenus: MenuItem[] = [
+  ...adminDashboardMenu,
   ...adminSystemMenu,
   ...adminOrgMenu,
   ...adminMealMenu,

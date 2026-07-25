@@ -14,13 +14,6 @@
           />
         </div>
         <div v-if="!treeCollapsed" class="tree-body">
-          <el-input
-            v-model="treeFilter"
-            placeholder="搜索组织名称"
-            clearable
-            :prefix-icon="Search"
-            class="tree-search"
-          />
           <el-tree
             ref="treeRef"
             :data="orgTreeData"
@@ -29,7 +22,6 @@
             highlight-current
             default-expand-all
             :expand-on-click-node="false"
-            :filter-node-method="filterTreeNode"
             @node-click="handleNodeClick"
             class="org-tree"
           >
@@ -47,38 +39,24 @@
 
       <!-- 右侧：部门列表 -->
       <div class="list-panel">
-        <!-- 当前选中提示 -->
-        <div v-if="currentNode" class="current-node-bar">
-          <el-icon><Location /></el-icon>
-          <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
+        <div class="panel-header">
+          <span class="panel-title">部门列表 - {{ currentNode ? currentNode.name : '请选择组织' }}</span>
+          <div class="panel-actions">
+            <el-input
+              v-model="searchForm.deptName"
+              placeholder="搜索部门名称"
+              clearable
+              :prefix-icon="Search"
+              style="width: 180px; margin-right: 12px"
+              @keyup.enter="handleSearch"
+              @clear="handleSearch"
+            />
+            <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
+          </div>
         </div>
 
         <!-- 部门树表格 -->
         <el-card class="table-card" shadow="never">
-          <!-- 搜索栏 -->
-          <div class="search-bar">
-            <el-form :model="searchForm" inline class="search-form">
-              <el-form-item label="部门名称">
-                <el-input
-                  v-model="searchForm.deptName"
-                  placeholder="输入部门名称"
-                  clearable
-                  :prefix-icon="Search"
-                  style="width: 180px"
-                  @keyup.enter="handleSearch"
-                />
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="searchForm.status" placeholder="请选择" clearable style="width: 180px">
-                  <el-option label="正常" :value="1" />
-                  <el-option label="停用" :value="0" />
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div class="search-actions">
-              <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
-            </div>
-          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
@@ -324,7 +302,6 @@ const submitLoading = ref(false)
 const deptDataList = ref<DeptItem[]>([])
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const treeCollapsed = ref(false)
-const treeFilter = ref('')
 const currentNode = ref<OrgTreeNode | null>(null)
 const drawerVisible = ref(false)
 const isEdit = ref(false)
@@ -355,11 +332,6 @@ const formRules: FormRules = {
   sort: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
   status: [{ required: true, message: '请选择状态', trigger: 'change' }]
 }
-
-// ── 树节点筛选 ──
-watch(treeFilter, (val) => {
-  treeRef.value?.filter(val)
-})
 
 // ── 计算属性：部门树形数据 ──
 const deptTreeData = computed(() => {
@@ -408,11 +380,6 @@ function handleReset() {
 
 function handleRefresh() {
   fetchDeptData()
-}
-
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.includes(value)
 }
 
 function getNodeTypeIcon(nodeType: string) {
@@ -566,10 +533,6 @@ onMounted(() => {
       flex-direction: column;
     }
 
-    .tree-search {
-      margin-bottom: 12px;
-    }
-
     .org-tree {
       flex: 1;
       overflow-y: auto;
@@ -605,46 +568,34 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
   }
 
-  .current-node-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: #ECF5FF;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #409EFF;
-
-    strong { color: #303133; }
-  }
-
-  .search-bar {
+  .panel-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #ebeef5;
+    align-items: center;
+    padding: 12px 20px;
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border-bottom: 1px solid #EBEEF5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .panel-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .panel-actions {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-shrink: 0;
   }
 
   .table-card {
-    border-radius: 12px;
+    border-radius: 0 0 12px 12px;
     border: none;
     flex: 1;
     display: flex;
@@ -652,7 +603,7 @@ onMounted(() => {
     overflow: hidden;
 
     :deep(.el-card__body) {
-      padding: 20px;
+      padding: 0;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -661,14 +612,30 @@ onMounted(() => {
 
     .table-wrapper {
       flex: 1;
-      overflow: auto;
+      padding: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      // 隐藏滚动条
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
     }
 
     :deep(.el-table) {
       border-radius: 8px;
+      flex: 1;
 
       .el-table__body-wrapper {
         overflow-y: auto;
+
+        // 隐藏滚动条
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
       }
 
       .el-table__row .cell {

@@ -8,7 +8,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const dutyRoutes: RouteRecordRaw = {
   path: '/duty',
   component: () => import('@/views/duty/DutyLayout.vue'),
-  meta: { title: '应急值守管理', subsystem: 'EMERGENCY_WATCH' },
+  meta: { title: '值守管理', subsystem: 'EMERGENCY_WATCH' },
   redirect: '/duty/dashboard',
   children: [
     {
@@ -18,40 +18,94 @@ const dutyRoutes: RouteRecordRaw = {
       meta: { title: '工作台' }
     },
     {
-      path: 'schedule',
-      name: 'DutySchedule',
-      component: () => import('@/views/duty/schedule/ScheduleManagement.vue'),
-      meta: { title: '排班计划' }
+      path: 'statistics',
+      name: 'DutyStatistics',
+      component: () => import('@/views/duty/statistics/Statistics.vue'),
+      meta: { title: '我的统计' }
     },
     {
-      path: 'shift',
-      name: 'DutyShift',
-      component: () => import('@/views/duty/schedule/ShiftManagement.vue'),
-      meta: { title: '班次管理' }
-    },
-    {
-      path: 'handover',
-      name: 'DutyHandover',
-      component: () => import('@/views/duty/handover/HandoverManagement.vue'),
-      meta: { title: '交接班记录' }
-    },
-    {
-      path: 'handover/pending',
-      name: 'DutyHandoverPending',
-      component: () => import('@/views/duty/handover/PendingHandover.vue'),
-      meta: { title: '待交接' }
-    },
-    {
-      path: 'on-duty',
-      name: 'DutyOnDuty',
-      component: () => import('@/views/duty/onduty/OnDutyManagement.vue'),
+      path: 'duty-record/list',
+      name: 'DutyRecordList',
+      component: () => import('@/views/duty/duty-record/DutyRecordList.vue'),
       meta: { title: '值班记录' }
     },
     {
-      path: 'on-duty/leader',
-      name: 'DutyLeaderOnDuty',
-      component: () => import('@/views/duty/onduty/LeaderOnDuty.vue'),
-      meta: { title: '领导带班' }
+      path: 'duty-record/feedback',
+      name: 'DutyFeedback',
+      component: () => import('@/views/duty/duty-record/DutyFeedback.vue'),
+      meta: { title: '值班反馈' }
+    },
+    {
+      path: 'daily-report/fill',
+      name: 'DailyReportFill',
+      component: () => import('@/views/duty/daily-report/DailyReportFill.vue'),
+      meta: { title: '日报填报' }
+    },
+    {
+      path: 'daily-report/audit',
+      name: 'DailyReportAudit',
+      component: () => import('@/views/duty/daily-report/DailyReportAudit.vue'),
+      meta: { title: '日报审核' }
+    },
+    {
+      path: 'daily-report/template',
+      name: 'DailyReportTemplate',
+      component: () => import('@/views/duty/daily-report/DailyReportTemplate.vue'),
+      meta: { title: '日报模板' }
+    },
+    {
+      path: 'check',
+      name: 'DutyCheck',
+      component: () => import('@/views/duty/check/CheckManagement.vue'),
+      meta: { title: '值班查岗' }
+    },
+    {
+      path: 'notice',
+      name: 'DutyNotice',
+      component: () => import('@/views/duty/notice/NoticeManagement.vue'),
+      meta: { title: '公告管理' }
+    },
+    {
+      path: 'schedule/table',
+      name: 'ScheduleTable',
+      component: () => import('@/views/duty/schedule/ScheduleTable.vue'),
+      meta: { title: '值班表' }
+    },
+    {
+      path: 'schedule/rule',
+      name: 'ScheduleRule',
+      component: () => import('@/views/duty/schedule/ScheduleRule.vue'),
+      meta: { title: '排班规则' }
+    },
+    {
+      path: 'regulation/query',
+      name: 'RegulationQuery',
+      component: () => import('@/views/duty/regulation/RegulationQuery.vue'),
+      meta: { title: '综合查询' }
+    },
+    {
+      path: 'regulation/maintain',
+      name: 'RegulationMaintain',
+      component: () => import('@/views/duty/regulation/RegulationMaintain.vue'),
+      meta: { title: '内容维护' }
+    },
+    {
+      path: 'base-info/post',
+      name: 'PostManagement',
+      component: () => import('@/views/duty/base-info/PostManagement.vue'),
+      meta: { title: '岗位管理' }
+    },
+    {
+      path: 'base-info/personnel',
+      name: 'PersonnelManagement',
+      component: () => import('@/views/duty/base-info/PersonnelManagement.vue'),
+      meta: { title: '值班人员管理' }
+    },
+    {
+      path: 'base-info/holiday',
+      name: 'HolidayManagement',
+      component: () => import('@/views/duty/base-info/HolidayManagement.vue'),
+      meta: { title: '节假日维护' }
     },
   ]
 }

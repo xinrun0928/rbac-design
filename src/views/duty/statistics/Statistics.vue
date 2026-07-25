@@ -1,7 +1,7 @@
 <template>
-  <div class="on-duty-management">
+  <div class="statistics-page">
     <el-card shadow="never">
-      <el-empty description="值班记录 - 开发中" />
+      <el-empty description="我的统计 - 开发中" />
     </el-card>
   </div>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.on-duty-management {
+.statistics-page {
   :deep(.el-card) {
     border-radius: 12px;
     border: none;

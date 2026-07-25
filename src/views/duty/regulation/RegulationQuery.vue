@@ -1,7 +1,7 @@
 <template>
-  <div class="pending-handover">
+  <div class="regulation-query-page">
     <el-card shadow="never">
-      <el-empty description="待交接 - 开发中" />
+      <el-empty description="综合查询 - 开发中" />
     </el-card>
   </div>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.pending-handover {
+.regulation-query-page {
   :deep(.el-card) {
     border-radius: 12px;
     border: none;

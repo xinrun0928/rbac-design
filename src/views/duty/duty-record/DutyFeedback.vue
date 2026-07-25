@@ -1,7 +1,7 @@
 <template>
-  <div class="shift-management">
+  <div class="duty-feedback-page">
     <el-card shadow="never">
-      <el-empty description="班次管理 - 开发中" />
+      <el-empty description="值班反馈 - 开发中" />
     </el-card>
   </div>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.shift-management {
+.duty-feedback-page {
   :deep(.el-card) {
     border-radius: 12px;
     border: none;

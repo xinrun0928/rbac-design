@@ -1,7 +1,7 @@
 <template>
-  <div class="handover-management">
+  <div class="personnel-management-page">
     <el-card shadow="never">
-      <el-empty description="交接班记录 - 开发中" />
+      <el-empty description="值班人员管理 - 开发中" />
     </el-card>
   </div>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.handover-management {
+.personnel-management-page {
   :deep(.el-card) {
     border-radius: 12px;
     border: none;

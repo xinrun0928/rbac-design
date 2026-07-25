@@ -25,7 +25,13 @@ import {
   Calendar,
   Clock,
   Switch,
-  Warning
+  Warning,
+  Reading,
+  Search,
+  Check,
+  Files,
+  Edit,
+  Bell
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -157,6 +163,32 @@ export const adminMenus: MenuItem[] = [
 // 应急值守管理菜单
 export const dutyMenus: MenuItem[] = [
   { path: '/duty/dashboard', title: '工作台', icon: HomeFilled },
+  { path: '/duty/statistics', title: '我的统计', icon: DataLine },
+  {
+    path: '/duty/duty-record-group',
+    title: '值班记录',
+    icon: Document,
+    isGroup: true,
+    groupTitle: '值班记录',
+    children: [
+      { path: '/duty/duty-record/list', title: '值班记录', icon: Document },
+      { path: '/duty/duty-record/feedback', title: '值班反馈', icon: ChatDotSquare },
+    ]
+  },
+  {
+    path: '/duty/daily-report-group',
+    title: '值班日报',
+    icon: Notebook,
+    isGroup: true,
+    groupTitle: '值班日报',
+    children: [
+      { path: '/duty/daily-report/fill', title: '日报填报', icon: Edit },
+      { path: '/duty/daily-report/audit', title: '日报审核', icon: Check },
+      { path: '/duty/daily-report/template', title: '日报模板', icon: Files },
+    ]
+  },
+  { path: '/duty/check', title: '值班查岗', icon: Search },
+  { path: '/duty/notice', title: '公告管理', icon: Bell },
   {
     path: '/duty/schedule-group',
     title: '排班管理',
@@ -164,30 +196,31 @@ export const dutyMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '排班管理',
     children: [
-      { path: '/duty/schedule', title: '排班计划', icon: Calendar },
-      { path: '/duty/shift', title: '班次管理', icon: Clock },
+      { path: '/duty/schedule/table', title: '值班表', icon: List },
+      { path: '/duty/schedule/rule', title: '排班规则', icon: Setting },
     ]
   },
   {
-    path: '/duty/handover-group',
-    title: '交接班管理',
-    icon: Switch,
+    path: '/duty/regulation-group',
+    title: '工作制度及要求',
+    icon: Reading,
     isGroup: true,
-    groupTitle: '交接班管理',
+    groupTitle: '工作制度及要求',
     children: [
-      { path: '/duty/handover', title: '交接班记录', icon: Document },
-      { path: '/duty/handover/pending', title: '待交接', icon: Warning },
+      { path: '/duty/regulation/query', title: '综合查询', icon: Search },
+      { path: '/duty/regulation/maintain', title: '内容维护', icon: Tools },
     ]
   },
   {
-    path: '/duty/on-duty-group',
-    title: '值班管理',
-    icon: User,
+    path: '/duty/base-info-group',
+    title: '基础信息',
+    icon: Setting,
     isGroup: true,
-    groupTitle: '值班管理',
+    groupTitle: '基础信息',
     children: [
-      { path: '/duty/on-duty', title: '值班记录', icon: Notebook },
-      { path: '/duty/on-duty/leader', title: '领导带班', icon: UserFilled },
+      { path: '/duty/base-info/post', title: '岗位管理', icon: Briefcase },
+      { path: '/duty/base-info/personnel', title: '值班人员管理', icon: User },
+      { path: '/duty/base-info/holiday', title: '节假日维护', icon: Calendar },
     ]
   },
 ]

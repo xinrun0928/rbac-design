@@ -1,7 +1,7 @@
 <template>
-  <div class="leader-on-duty">
+  <div class="schedule-table-page">
     <el-card shadow="never">
-      <el-empty description="领导带班 - 开发中" />
+      <el-empty description="值班表 - 开发中" />
     </el-card>
   </div>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.leader-on-duty {
+.schedule-table-page {
   :deep(.el-card) {
     border-radius: 12px;
     border: none;

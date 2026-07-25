@@ -20,14 +20,25 @@
             :class="{ active: selectedSubsystem === sub.subsysId }"
             @click="selectSubsystem(sub.subsysId)"
           >
-            <div
-              class="subsystem-icon"
-              :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }"
+            <el-tooltip
+              :content="sub.subsysName"
+              placement="right"
+              :disabled="!leftPanelCollapsed"
             >
-              <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
-                <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
-              </el-icon>
-            </div>
+              <div class="subsystem-icon-wrapper">
+                <div
+                  class="subsystem-icon"
+                  :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }"
+                >
+                  <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
+                    <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+                  </el-icon>
+                </div>
+                <span v-if="leftPanelCollapsed" class="subsystem-abbr">
+                  {{ sub.subsysShortName?.slice(0, 2) || '未' }}
+                </span>
+              </div>
+            </el-tooltip>
             <div v-if="!leftPanelCollapsed" class="subsystem-info">
               <div class="subsystem-name">{{ sub.subsysShortName }}</div>
               <div class="subsystem-full-name">{{ sub.subsysName }}</div>
@@ -568,7 +579,7 @@ const selectedSubsystem = ref<number>(1)
 const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
-const leftPanelCollapsed = ref(false)
+const leftPanelCollapsed = ref(true)
 
 // 子系统列表（排除隐藏的）
 const subsystems = mockSubsystemData.filter(
@@ -987,7 +998,7 @@ onMounted(() => {
     transition: width 0.3s ease;
 
     &.collapsed {
-      width: 64px;
+      width: 72px;
 
       .panel-header {
         padding: 16px 8px;
@@ -999,13 +1010,46 @@ onMounted(() => {
       }
 
       .subsystem-item {
-        padding: 8px;
-        justify-content: center;
+        flex-direction: column;
+        padding: 10px 4px;
+        align-items: center;
         margin-bottom: 4px;
+        gap: 4px;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #f0f2f5;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.active {
+          background: #ecf5ff;
+          border-color: #b3d8ff;
+        }
+      }
+
+      .subsystem-icon-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
       }
 
       .subsystem-icon {
         margin: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      .subsystem-abbr {
+        font-size: 11px;
+        color: #606266;
+        line-height: 1.2;
+        text-align: center;
+        max-width: 56px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -1039,6 +1083,12 @@ onMounted(() => {
       flex: 1;
       overflow-y: auto;
       padding: 12px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     .subsystem-item {
@@ -1049,7 +1099,12 @@ onMounted(() => {
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #f0f2f5;
+
+      &:last-child {
+        border-bottom: none;
+      }
 
       &:hover {
         background: #f5f7fa;
@@ -1058,6 +1113,7 @@ onMounted(() => {
       &.active {
         background: linear-gradient(135deg, #ecf5ff 0%, #d9ecff 100%);
         border: 1px solid #b3d8ff;
+        border-bottom: 1px solid #b3d8ff;
 
         .subsystem-icon {
           background: #409eff;
@@ -1068,6 +1124,15 @@ onMounted(() => {
           color: #409eff;
           font-weight: 600;
         }
+
+        .subsystem-abbr {
+          color: #409eff;
+          font-weight: 600;
+        }
+      }
+
+      &:not(.active):hover {
+        background: #f5f7fa;
       }
 
       .subsystem-icon {
@@ -1085,6 +1150,13 @@ onMounted(() => {
           font-size: 20px;
           color: #606266;
         }
+      }
+
+      .subsystem-icon-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
       }
 
       .subsystem-info {

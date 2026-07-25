@@ -49,7 +49,17 @@ src/
 │   ├── orgTreeData.ts
 │   └── subsystemData.ts
 ├── router/                    # 路由配置
-│   └── index.ts
+│   ├── index.ts              # 路由入口（公共路由 + 业务路由）
+│   └── modules/              # 各子系统路由模块
+│       ├── admin.ts          # 后台管理子系统
+│       ├── duty.ts           # 应急值守管理子系统
+│       ├── plan.ts           # 应急预案管理子系统
+│       ├── event.ts          # 应急事件管理子系统
+│       ├── dispatch.ts       # 应急指挥智能调度子系统
+│       ├── resource.ts       # 厅级应急物资管理子系统
+│       ├── dss.ts            # 辅助决策子系统
+│       ├── fusion.ts         # 数据融合子系统
+│       └── display.ts        # 综合展示子系统
 ├── types/                     # TypeScript 类型定义
 │   ├── index.ts              # 统一导出
 │   └── admin/                # 后台管理相关类型
@@ -110,6 +120,62 @@ src/
     ├── enterprise/            # 企业视角（预留）
     └── common/                # 公共页面（预留）
 ```
+
+---
+
+## 子系统列表
+
+本平台包含以下 9 个子系统（参考 `src/mock/subsystemData.ts`）：
+
+| ID | 编码 | 名称 | 简称 | 路径前缀 | 说明 |
+|---|---|---|---|---|---|
+| 1 | EMERGENCY_WATCH | 应急值守管理子系统 | 值班 | /duty | 值班、排班、交接班等 |
+| 2 | EMERGENCY_PLAN | 应急预案管理子系统 | 预案 | /plan | 预案编制、演练、复盘 |
+| 3 | EMERGENCY_EVENT | 应急事件管理子系统 | 事件 | /event | 事件接报、响应、处置、评估 |
+| 4 | EMERGENCY_DISPATCH | 应急指挥智能调度子系统 | 调度 | /dispatch | 资源调度、任务下达、指令分发 |
+| 5 | EMERGENCY_MATERIAL | 厅级应急物资管理子系统 | 物资 | /resource | 物资库存、调度、盘点 |
+| 6 | ASSIST_DECISION | 辅助决策子系统 | 决策 | /dss | 态势分析、辅助决策、预案推荐 |
+| 7 | DATA_FUSION | 数据融合子系统 | 融合 | /fusion | 多源数据接入、清洗、融合 |
+| 8 | COMPREHENSIVE_DISPLAY | 综合展示子系统 | 展示 | /display | 大屏展示、数据可视化 |
+| 99 | SYSTEM | 后台管理子系统 | 系统 | /admin | 用户管理、菜单管理、角色管理等 |
+
+---
+
+## 路由配置规范
+
+### 路由模块化
+- 每个子系统对应一个路由文件：`src/router/modules/{subsystem}.ts`
+- `src/router/index.ts` 负责导入所有路由模块并合并
+
+### 路由文件结构
+```typescript
+import type { RouteRecordRaw } from 'vue-router'
+
+/**
+ * 子系统名称 (SUBSYSTEM_CODE)
+ * 路径前缀: /xxx
+ * 包含: 功能描述
+ */
+const xxxRoutes: RouteRecordRaw = {
+  path: '/xxx',
+  meta: { title: '子系统名称', subsystem: 'SUBSYSTEM_CODE' },
+  children: [
+    {
+      path: 'list',
+      name: 'XxxList',
+      component: () => import('@/views/xxx/ListPage.vue'),
+      meta: { title: '列表页面' }
+    },
+  ]
+}
+
+export default xxxRoutes
+```
+
+### 路由命名规范
+- 文件名：小写，如 `admin.ts`、`duty.ts`
+- 路由 name：大驼峰，如 `AdminSubsystem`、`DutySchedule`
+- 路径：小写单词，单词间用连字符，如 `/duty/schedule`
 
 ---
 

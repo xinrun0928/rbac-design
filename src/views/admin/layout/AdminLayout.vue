@@ -37,14 +37,6 @@
           </el-menu-item>
         </template>
       </el-menu>
-
-      <!-- 收缩按钮 -->
-      <div class="collapse-btn" @click="toggleCollapse">
-        <el-icon :size="18">
-          <Fold v-if="!isCollapsed" />
-          <Expand v-else />
-        </el-icon>
-      </div>
     </aside>
 
     <!-- 右侧内容区 -->
@@ -52,6 +44,12 @@
       <!-- 顶部栏 -->
       <header class="admin-header">
         <div class="header-left">
+          <div class="collapse-btn" @click="toggleCollapse">
+            <el-icon :size="18">
+              <Fold v-if="!isCollapsed" />
+              <Expand v-else />
+            </el-icon>
+          </div>
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item v-if="currentRoute.meta?.title">
@@ -155,7 +153,7 @@ const handleLogout = () => {
 }
 
 .admin-sidebar {
-  width: 220px;
+  width: 200px;
   height: 100vh;
   background: #001529;
   display: flex;
@@ -191,6 +189,7 @@ const handleLogout = () => {
   border-right: none;
   overflow-y: auto;
   overflow-x: hidden;
+  background: #001529 !important;
 }
 
 .sidebar-menu::-webkit-scrollbar {
@@ -206,21 +205,64 @@ const handleLogout = () => {
   width: 100%;
 }
 
+.sidebar-menu :deep(.el-menu-item),
+.sidebar-menu :deep(.el-sub-menu__title) {
+  background: #001529 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.sidebar-menu :deep(.el-menu-item:hover),
+.sidebar-menu :deep(.el-sub-menu__title:hover) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.sidebar-menu :deep(.el-menu-item.is-active) {
+  background: #409EFF !important;
+  color: #fff !important;
+}
+
+.sidebar-menu :deep(.el-menu-item .el-icon),
+.sidebar-menu :deep(.el-sub-menu__title .el-icon) {
+  color: inherit !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu.is-opened > .el-sub-menu__title) {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item) {
+  background: #001529 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  min-width: 0 !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item:hover) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active) {
+  background: #409EFF !important;
+  color: #fff !important;
+}
+
 .collapse-btn {
-  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-  background: #001529;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.65);
+  border-radius: 4px;
+  color: #606266;
   transition: all 0.3s;
+  margin-right: 12px;
 }
 
 .collapse-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: #409EFF;
+  background: #f5f7fa;
 }
 
 .admin-main {

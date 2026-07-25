@@ -115,6 +115,32 @@ const adminRoutes: RouteRecordRaw = {
       meta: { title: 'App发布日志' }
     },
 
+    // 系统监控
+    {
+      path: 'monitor/online',
+      name: 'AdminOnlineUser',
+      component: () => import('@/views/admin/monitor/OnlineUser.vue'),
+      meta: { title: '在线用户' }
+    },
+    {
+      path: 'monitor/server',
+      name: 'AdminServerMonitor',
+      component: () => import('@/views/admin/monitor/ServerMonitor.vue'),
+      meta: { title: '服务监控' }
+    },
+    {
+      path: 'monitor/cache',
+      name: 'AdminCacheMonitor',
+      component: () => import('@/views/admin/monitor/CacheMonitor.vue'),
+      meta: { title: '缓存监控' }
+    },
+    {
+      path: 'monitor/cache/list',
+      name: 'AdminCacheList',
+      component: () => import('@/views/admin/monitor/CacheList.vue'),
+      meta: { title: '缓存列表' }
+    },
+
     // 日志管理
     {
       path: 'logs/access',

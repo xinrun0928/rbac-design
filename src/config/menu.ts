@@ -17,7 +17,10 @@ import {
   ChatDotRound,
   Connection,
   Promotion,
-  Setting
+  Setting,
+  DataLine,
+  Coin,
+  List
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -95,6 +98,23 @@ export const adminAppMenu: MenuItem[] = [
   },
 ]
 
+// 超级管理员 - 系统监控菜单
+export const adminMonitorMenu: MenuItem[] = [
+  {
+    path: '/admin/monitor-group',
+    title: '系统监控',
+    icon: DataLine,
+    isGroup: true,
+    groupTitle: '系统监控',
+    children: [
+      { path: '/admin/monitor/online', title: '在线用户', icon: User },
+      { path: '/admin/monitor/server', title: '服务监控', icon: Monitor },
+      { path: '/admin/monitor/cache', title: '缓存监控', icon: Coin },
+      { path: '/admin/monitor/cache/list', title: '缓存列表', icon: List },
+    ]
+  },
+]
+
 // 超级管理员 - 日志管理菜单
 export const adminLogMenu: MenuItem[] = [
   {
@@ -119,6 +139,7 @@ export const adminMenus: MenuItem[] = [
   ...adminOrgMenu,
   ...adminMealMenu,
   ...adminAppMenu,
+  ...adminMonitorMenu,
   ...adminLogMenu,
 ]
 

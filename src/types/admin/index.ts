@@ -23,3 +23,6 @@ export * from './menu'
 // 日志管理
 export * from './logs'
 export * from './mqConsumeLog'
+
+// 系统监控
+export * from './monitor'

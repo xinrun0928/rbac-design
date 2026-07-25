@@ -48,9 +48,15 @@ import { adminMenus } from '@/config/menu'
 const router = useRouter()
 const route = useRoute()
 
-// 判断是否是登录相关页面或管理后台页面
+// 判断是否是登录相关页面或需要隐藏顶部导航的页面
 const isLoginPage = computed(() => {
-  return route.path === '/login' || route.path === '/forgot-password' || route.path === '/org-select' || route.path === '/subsystem-select' || route.path.startsWith('/admin')
+  // 登录相关页面
+  const authPages = ['/login', '/forgot-password', '/org-select', '/subsystem-select']
+  if (authPages.includes(route.path)) return true
+
+  // 各子系统页面（有自己的布局，不需要顶部导航）
+  const subsystemPrefixes = ['/admin', '/duty', '/plan', '/event', '/dispatch', '/resource', '/dss', '/fusion', '/display']
+  return subsystemPrefixes.some(prefix => route.path.startsWith(prefix))
 })
 
 function handleLogout() {

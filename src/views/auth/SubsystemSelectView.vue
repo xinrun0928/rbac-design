@@ -44,7 +44,7 @@
             </el-icon>
           </div>
           <div class="subsystem-info">
-            <h4>{{ subsystem.subsysName.replace('子系统', '') }}</h4>
+            <h4>{{ subsystem.subsysName }}</h4>
             <p>{{ subsystem.remark }}</p>
           </div>
         </div>
@@ -124,6 +124,9 @@ const handleSelectSubsystem = (subsystem: any) => {
   if (subsystem.subsysId === 99) {
     // 后台管理系统
     router.push('/admin')
+  } else if (subsystem.subsysId === 1) {
+    // 应急值守管理子系统
+    router.push('/duty')
   } else {
     // 其他子系统（暂未开发，提示后跳转到对应路径）
     ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)

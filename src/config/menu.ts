@@ -21,7 +21,11 @@ import {
   DataLine,
   Coin,
   List,
-  HomeFilled
+  HomeFilled,
+  Calendar,
+  Clock,
+  Switch,
+  Warning
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -148,6 +152,44 @@ export const adminMenus: MenuItem[] = [
   ...adminAppMenu,
   ...adminMonitorMenu,
   ...adminLogMenu,
+]
+
+// 应急值守管理菜单
+export const dutyMenus: MenuItem[] = [
+  { path: '/duty/dashboard', title: '工作台', icon: HomeFilled },
+  {
+    path: '/duty/schedule-group',
+    title: '排班管理',
+    icon: Calendar,
+    isGroup: true,
+    groupTitle: '排班管理',
+    children: [
+      { path: '/duty/schedule', title: '排班计划', icon: Calendar },
+      { path: '/duty/shift', title: '班次管理', icon: Clock },
+    ]
+  },
+  {
+    path: '/duty/handover-group',
+    title: '交接班管理',
+    icon: Switch,
+    isGroup: true,
+    groupTitle: '交接班管理',
+    children: [
+      { path: '/duty/handover', title: '交接班记录', icon: Document },
+      { path: '/duty/handover/pending', title: '待交接', icon: Warning },
+    ]
+  },
+  {
+    path: '/duty/on-duty-group',
+    title: '值班管理',
+    icon: User,
+    isGroup: true,
+    groupTitle: '值班管理',
+    children: [
+      { path: '/duty/on-duty', title: '值班记录', icon: Notebook },
+      { path: '/duty/on-duty/leader', title: '领导带班', icon: UserFilled },
+    ]
+  },
 ]
 
 /**

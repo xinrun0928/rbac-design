@@ -4,7 +4,7 @@
     <aside class="admin-sidebar">
       <div class="sidebar-header">
         <el-icon :size="22" color="#409EFF"><DataBoard /></el-icon>
-        <span v-show="!isCollapsed" class="sidebar-title">应急指挥调度平台</span>
+        <span v-show="!isCollapsed" class="sidebar-title">后台管理子系统</span>
       </div>
 
       <el-menu
@@ -67,24 +67,7 @@
         <div class="header-right">
           <FullscreenToggle />
           <NotificationBell />
-          <el-dropdown trigger="click">
-            <div class="user-info">
-              <el-avatar :size="32" class="user-avatar">
-                <el-icon><User /></el-icon>
-              </el-avatar>
-              <span class="user-name">管理员</span>
-              <el-icon class="el-icon--right"><ArrowDown /></el-icon>
-            </div>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item :icon="User">个人中心</el-dropdown-item>
-                <el-dropdown-item :icon="Setting">系统设置</el-dropdown-item>
-                <el-dropdown-item divided :icon="Switch" @click="handleSwitchOrg">切换组织</el-dropdown-item>
-                <el-dropdown-item :icon="Grid" @click="handleSwitchSubsystem">切换子系统</el-dropdown-item>
-                <el-dropdown-item divided :icon="SwitchButton" @click="handleLogout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+          <UserDropdown />
         </div>
       </header>
 
@@ -101,16 +84,9 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessageBox, ElMessage } from 'element-plus'
+import { useRoute } from 'vue-router'
 import {
   DataBoard,
-  User,
-  ArrowDown,
-  Setting,
-  SwitchButton,
-  Grid,
-  Switch,
   Fold,
   Expand
 } from '@element-plus/icons-vue'
@@ -119,8 +95,8 @@ import TagsView from '@/components/TagsView.vue'
 import FullscreenToggle from '@/components/FullscreenToggle.vue'
 import NotificationBell from '@/components/NotificationBell.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import UserDropdown from '@/components/UserDropdown.vue'
 
-const router = useRouter()
 const route = useRoute()
 
 // 侧边栏收缩状态
@@ -131,27 +107,6 @@ const toggleCollapse = () => {
 }
 
 const activeMenu = computed(() => route.path)
-
-const handleSwitchOrg = () => {
-  router.push('/org-select')
-}
-
-const handleSwitchSubsystem = () => {
-  router.push('/subsystem-select')
-}
-
-const handleLogout = () => {
-  ElMessageBox.confirm('确定要退出登录吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    localStorage.removeItem('currentOrg')
-    localStorage.removeItem('currentSubsystem')
-    ElMessage.success('已退出登录')
-    router.push('/login')
-  }).catch(() => {})
-}
 </script>
 
 <style scoped>
@@ -335,32 +290,7 @@ const handleLogout = () => {
 .header-right {
   display: flex;
   align-items: center;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-}
-
-.user-info:hover {
-  background: #f5f7fa;
-}
-
-.user-avatar {
-  background: linear-gradient(135deg, #409EFF 0%, #66B1FF 100%);
-  color: #fff;
-  font-size: 16px;
-}
-
-.user-name {
-  font-size: 14px;
-  color: #303133;
-  font-weight: 500;
+  gap: 16px;
 }
 
 .admin-content {

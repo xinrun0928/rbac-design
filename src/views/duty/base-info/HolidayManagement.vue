@@ -234,20 +234,35 @@
       </template>
     </el-drawer>
 
-    <!-- 导入弹窗 -->
+    <!-- 导入弹窗 - 四步向导 -->
     <el-dialog
       v-model="importDialogVisible"
-      title="导入节假日"
-      width="500px"
+      title="批量导入节假日"
+      width="700px"
       destroy-on-close
+      :close-on-click-modal="false"
+      @closed="resetImportWizard"
     >
-      <div class="import-content">
+      <!-- 步骤条 -->
+      <el-steps :active="importStep" finish-status="success" align-center class="import-steps">
+        <el-step title="上传文件" />
+        <el-step title="数据预览" />
+        <el-step title="导入数据" />
+        <el-step title="导入完成" />
+      </el-steps>
+
+      <!-- 第一步：上传文件 -->
+      <div v-if="importStep === 0" class="import-step-content">
         <el-upload
+          ref="uploadRef"
           class="upload-area"
           drag
           action="#"
           :auto-upload="false"
           accept=".xlsx,.xls,.csv"
+          :limit="1"
+          :on-change="handleFileChange"
+          :on-exceed="handleExceed"
         >
           <el-icon class="el-icon--upload"><Upload /></el-icon>
           <div class="el-upload__text">
@@ -255,14 +270,118 @@
           </div>
           <template #tip>
             <div class="el-upload__tip">
-              支持 .xlsx、.xls、.csv 格式文件
+              支持 .xlsx、.xls、.csv 格式文件，单次最多导入500条
             </div>
           </template>
         </el-upload>
+        <div class="template-download">
+          <el-button type="primary" link :icon="Download" @click="handleDownloadTemplate">
+            下载导入模板
+          </el-button>
+        </div>
       </div>
+
+      <!-- 第二步：数据预览 -->
+      <div v-if="importStep === 1" class="import-step-content">
+        <div class="preview-summary">
+          <el-tag type="success" effect="plain">正常：{{ importValidCount }} 条</el-tag>
+          <el-tag type="danger" effect="plain">异常：{{ importInvalidCount }} 条</el-tag>
+          <el-tag type="info" effect="plain">总计：{{ importPreviewData.length }} 条</el-tag>
+        </div>
+        <!-- 异常明细 -->
+        <div v-if="importInvalidCount > 0" class="error-section">
+          <div class="error-title">
+            <el-icon color="#F56C6C"><WarningFilled /></el-icon>
+            <span>异常明细</span>
+          </div>
+          <el-table
+            :data="importErrorData"
+            border
+            size="small"
+            max-height="200"
+            :header-cell-style="{ background: '#FEF0F0', color: '#F56C6C', fontWeight: '600', textAlign: 'center' }"
+            class="error-table"
+          >
+            <el-table-column prop="rowIndex" label="行号" width="70" align="center" />
+            <el-table-column prop="holidayName" label="节日名称" min-width="120" align="center" />
+            <el-table-column prop="startDate" label="开始日期" width="120" align="center" />
+            <el-table-column prop="endDate" label="结束日期" width="120" align="center" />
+            <el-table-column prop="errors" label="异常原因" min-width="200" align="left" show-overflow-tooltip>
+              <template #default="{ row }">
+                <span class="error-text">{{ row.errors.join('；') }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <!-- 正常数据预览 -->
+        <div v-if="importValidCount > 0" class="valid-section">
+          <div class="valid-title">
+            <el-icon color="#67C23A"><CircleCheckFilled /></el-icon>
+            <span>正常数据预览（前10条）</span>
+          </div>
+          <el-table
+            :data="importValidData.slice(0, 10)"
+            border
+            size="small"
+            max-height="200"
+            :header-cell-style="{ background: '#F0F9EB', color: '#67C23A', fontWeight: '600', textAlign: 'center' }"
+            class="valid-table"
+          >
+            <el-table-column prop="holidayName" label="节日名称" min-width="120" align="center" />
+            <el-table-column prop="startDate" label="开始日期" width="120" align="center" />
+            <el-table-column prop="endDate" label="结束日期" width="120" align="center" />
+            <el-table-column prop="remark" label="备注" min-width="150" align="center" show-overflow-tooltip />
+          </el-table>
+        </div>
+      </div>
+
+      <!-- 第三步：导入数据 -->
+      <div v-if="importStep === 2" class="import-step-content import-progress">
+        <el-progress
+          type="dashboard"
+          :percentage="importProgress"
+          :width="120"
+          :stroke-width="8"
+          :color="progressColors"
+        />
+        <div class="progress-text">正在导入数据，请稍候...</div>
+      </div>
+
+      <!-- 第四步：导入完成 -->
+      <div v-if="importStep === 3" class="import-step-content import-complete">
+        <el-result
+          icon="success"
+          title="导入完成"
+          :sub-title="`成功导入 ${importSuccessCount} 条节假日数据`"
+        >
+          <template #extra>
+            <el-button type="primary" @click="importDialogVisible = false">完成</el-button>
+          </template>
+        </el-result>
+      </div>
+
+      <!-- 底部操作栏 -->
       <template #footer>
-        <el-button @click="importDialogVisible = false">取消</el-button>
-        <el-button type="primary">确认导入</el-button>
+        <div class="import-footer">
+          <el-button v-if="importStep === 1" @click="importStep = 0">上一步</el-button>
+          <el-button
+            v-if="importStep === 0"
+            type="primary"
+            :disabled="!importFile"
+            @click="handleImportPreview"
+          >
+            下一步
+          </el-button>
+          <el-button
+            v-if="importStep === 1"
+            type="primary"
+            :disabled="importValidCount === 0"
+            @click="handleImportExecute"
+          >
+            开始导入
+          </el-button>
+          <el-button v-if="importStep === 0" @click="importDialogVisible = false">取消</el-button>
+        </div>
       </template>
     </el-dialog>
   </div>
@@ -273,7 +392,7 @@ import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import {
-  Plus, Delete, Edit, Upload, Calendar
+  Plus, Delete, Edit, Upload, Calendar, Download, WarningFilled, CircleCheckFilled
 } from '@element-plus/icons-vue'
 import { holidayData } from '@/mock/duty/holidayData'
 import type { Holiday, HolidayForm, HolidaySearchForm } from '@/types/duty/holiday'
@@ -318,6 +437,39 @@ const dateListPagination = reactive({
   page: 1,
   pageSize: 10
 })
+
+// ── 导入向导状态 ──
+const importStep = ref(0)
+const importFile = ref<File | null>(null)
+const importPreviewData = ref<any[]>([])
+const importProgress = ref(0)
+const importSuccessCount = ref(0)
+const uploadRef = ref<any>(null)
+
+const progressColors = [
+  { color: '#409EFF', percentage: 50 },
+  { color: '#67C23A', percentage: 100 }
+]
+
+/** 导入数据预览项 */
+interface ImportPreviewItem {
+  rowIndex: number
+  holidayName: string
+  startDate: string
+  endDate: string
+  remark: string
+  isValid: boolean
+  errors: string[]
+}
+
+/** 正常数据 */
+const importValidData = computed(() => importPreviewData.value.filter(item => item.isValid))
+/** 异常数据 */
+const importInvalidData = computed(() => importPreviewData.value.filter(item => !item.isValid))
+/** 正常条数 */
+const importValidCount = computed(() => importValidData.value.length)
+/** 异常条数 */
+const importInvalidCount = computed(() => importInvalidData.value.length)
 
 const formData = reactive<HolidayForm>({
   holidayName: '',
@@ -409,6 +561,146 @@ function generateDateRange(startStr: string, endStr: string): DateDetail[] {
     current.setDate(current.getDate() + 1)
   }
   return result
+}
+
+// ── 导入向导方法 ──
+
+/** 文件变化 */
+function handleFileChange(file: any) {
+  importFile.value = file.raw
+}
+
+/** 超出限制 */
+function handleExceed() {
+  ElMessage.warning('只能上传一个文件，请先移除已选文件')
+}
+
+/** 下载模板 */
+function handleDownloadTemplate() {
+  const header = '节日名称,开始日期,结束日期,备注'
+  const example = '元旦,2026-01-01,2026-01-03,法定节假日，共3天'
+  const csvContent = `${header}\n${example}`
+  const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = '节假日导入模板.csv'
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
+/** 解析CSV文件 */
+function parseCSV(text: string): any[] {
+  const lines = text.split('\n').filter(line => line.trim())
+  if (lines.length < 2) return []
+  const headers = lines[0].split(',').map(h => h.trim())
+  const data = []
+  for (let i = 1; i < lines.length; i++) {
+    const values = lines[i].split(',').map(v => v.trim())
+    const row: any = {}
+    headers.forEach((h, idx) => {
+      row[h] = values[idx] || ''
+    })
+    data.push(row)
+  }
+  return data
+}
+
+/** 校验单条数据 */
+function validateImportRow(row: any, index: number): ImportPreviewItem {
+  const errors: string[] = []
+  const holidayName = row['节日名称'] || ''
+  const startDate = row['开始日期'] || ''
+  const endDate = row['结束日期'] || ''
+  const remark = row['备注'] || ''
+
+  if (!holidayName) errors.push('节日名称不能为空')
+  if (!startDate) errors.push('开始日期不能为空')
+  if (!endDate) errors.push('结束日期不能为空')
+  if (startDate && !/^\d{4}-\d{2}-\d{2}$/.test(startDate)) errors.push('开始日期格式应为YYYY-MM-DD')
+  if (endDate && !/^\d{4}-\d{2}-\d{2}$/.test(endDate)) errors.push('结束日期格式应为YYYY-MM-DD')
+  if (startDate && endDate && new Date(startDate) > new Date(endDate)) errors.push('开始日期不能晚于结束日期')
+
+  return {
+    rowIndex: index + 2, // +2 因为跳过表头，且从1开始
+    holidayName,
+    startDate,
+    endDate,
+    remark,
+    isValid: errors.length === 0,
+    errors
+  }
+}
+
+/** 数据预览 */
+function handleImportPreview() {
+  if (!importFile.value) return
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const text = e.target?.result as string
+    const rows = parseCSV(text)
+
+    if (rows.length === 0) {
+      ElMessage.warning('文件中无有效数据')
+      return
+    }
+
+    if (rows.length > 500) {
+      ElMessage.warning('单次最多导入500条数据')
+      return
+    }
+
+    importPreviewData.value = rows.map((row, idx) => validateImportRow(row, idx))
+    importStep.value = 1
+  }
+  reader.readAsText(importFile.value)
+}
+
+/** 执行导入 */
+function handleImportExecute() {
+  importStep.value = 2
+  importProgress.value = 0
+
+  const validData = importValidData.value
+  const total = validData.length
+  let processed = 0
+
+  const timer = setInterval(() => {
+    processed++
+    importProgress.value = Math.round((processed / total) * 100)
+
+    if (processed >= total) {
+      clearInterval(timer)
+      // 添加到表格数据
+      const newId = Math.max(...tableData.value.map(item => item.id), 0)
+      validData.forEach((item, idx) => {
+        tableData.value.push({
+          id: newId + idx + 1,
+          holidayName: item.holidayName,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          remark: item.remark,
+          createTime: new Date().toISOString().replace('T', ' ').slice(0, 19),
+          deleted: 0
+        })
+      })
+      importSuccessCount.value = total
+      importStep.value = 3
+    }
+  }, 50)
+}
+
+/** 重置导入向导 */
+function resetImportWizard() {
+  importStep.value = 0
+  importFile.value = null
+  importPreviewData.value = []
+  importProgress.value = 0
+  importSuccessCount.value = 0
+  if (uploadRef.value) {
+    uploadRef.value.clearFiles()
+  }
 }
 
 function handleViewDates(row: Holiday) {
@@ -640,10 +932,70 @@ async function handleSubmit() {
     }
   }
 
-  .import-content {
-    .upload-area {
-      width: 100%;
+  // 导入向导样式
+  .import-steps {
+    margin-bottom: 24px;
+  }
+
+  .import-step-content {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload-area {
+    width: 100%;
+  }
+
+  .template-download {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .preview-summary {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .error-section, .valid-section {
+    margin-bottom: 16px;
+
+    .error-title, .valid-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
     }
+  }
+
+  .error-text {
+    color: #F56C6C;
+    font-size: 12px;
+  }
+
+  .import-progress {
+    justify-content: center;
+    align-items: center;
+
+    .progress-text {
+      margin-top: 16px;
+      color: #909399;
+      font-size: 14px;
+    }
+  }
+
+  .import-complete {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .import-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
   }
 }
 

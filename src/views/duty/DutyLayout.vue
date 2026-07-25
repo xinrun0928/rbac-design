@@ -1,55 +1,12 @@
 <template>
   <div class="duty-layout" :class="{ collapsed: isCollapsed }">
     <!-- 左侧导航栏 -->
-    <aside class="duty-sidebar">
-      <div class="sidebar-header">
-        <el-icon :size="22" color="#409EFF"><DataBoard /></el-icon>
-        <span v-show="!isCollapsed" class="sidebar-title">值守管理子系统</span>
-      </div>
-
-      <el-menu
-        :default-active="activeMenu"
-        :collapse="isCollapsed"
-        :collapse-transition="false"
-        class="sidebar-menu"
-        router
-      >
-        <template v-for="item in dutyMenus" :key="item.path">
-          <!-- 分组菜单 -->
-          <template v-if="item.isGroup && item.children">
-            <div class="menu-group-title" v-show="!isCollapsed">{{ item.groupTitle }}</div>
-            <el-menu-item
-              v-for="child in item.children"
-              :key="child.path"
-              :index="child.path"
-            >
-              <el-icon><component :is="child.icon" /></el-icon>
-              <template #title>{{ child.title }}</template>
-            </el-menu-item>
-          </template>
-          <!-- 子菜单 -->
-          <el-sub-menu v-else-if="item.children" :index="item.path">
-            <template #title>
-              <el-icon><component :is="item.icon" /></el-icon>
-              <span>{{ item.title }}</span>
-            </template>
-            <el-menu-item
-              v-for="child in item.children"
-              :key="child.path"
-              :index="child.path"
-            >
-              <el-icon><component :is="child.icon" /></el-icon>
-              <template #title>{{ child.title }}</template>
-            </el-menu-item>
-          </el-sub-menu>
-          <!-- 普通菜单项 -->
-          <el-menu-item v-else :index="item.path">
-            <el-icon><component :is="item.icon" /></el-icon>
-            <template #title>{{ item.title }}</template>
-          </el-menu-item>
-        </template>
-      </el-menu>
-    </aside>
+    <AppSidebar
+      title="值守管理子系统"
+      :icon="DataBoard"
+      :menus="dutyMenus"
+      :collapsed="isCollapsed"
+    />
 
     <!-- 右侧内容区 -->
     <div class="duty-main">
@@ -92,21 +49,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 import {
   DataBoard,
   Fold,
   Expand
 } from '@element-plus/icons-vue'
 import { dutyMenus } from '@/config/menu'
+import AppSidebar from '@/components/AppSidebar.vue'
 import TagsView from '@/components/TagsView.vue'
 import FullscreenToggle from '@/components/FullscreenToggle.vue'
 import NotificationBell from '@/components/NotificationBell.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
 import UserDropdown from '@/components/UserDropdown.vue'
-
-const route = useRoute()
 
 // 侧边栏收缩状态
 const isCollapsed = ref(false)
@@ -114,8 +69,6 @@ const isCollapsed = ref(false)
 const toggleCollapse = () => {
   isCollapsed.value = !isCollapsed.value
 }
-
-const activeMenu = computed(() => route.path)
 </script>
 
 <style lang="scss" scoped>
@@ -123,53 +76,6 @@ const activeMenu = computed(() => route.path)
   display: flex;
   height: 100vh;
   overflow: hidden;
-
-  .duty-sidebar {
-    width: 220px;
-    background: #1a1f2e;
-    transition: width 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    &.collapsed {
-      width: 64px;
-    }
-
-    .sidebar-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    .sidebar-menu {
-      border-right: none;
-      flex: 1;
-      overflow-y: auto;
-
-      &::-webkit-scrollbar {
-        width: 0;
-        height: 0;
-      }
-    }
-
-    .menu-group-title {
-      padding: 16px 16px 8px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  }
 
   .duty-main {
     flex: 1;
@@ -221,38 +127,6 @@ const activeMenu = computed(() => route.path)
     flex: 1;
     overflow: auto;
     padding: 16px;
-  }
-}
-
-// 菜单样式覆盖
-:deep(.sidebar-menu) {
-  background: transparent;
-
-  .el-menu-item {
-    color: #bfcbd9;
-    height: 50px;
-    line-height: 50px;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    &.is-active {
-      background: #263445;
-      color: #409EFF;
-    }
-  }
-
-  .el-sub-menu {
-    .el-sub-menu__title {
-      color: #bfcbd9;
-      height: 50px;
-      line-height: 50px;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.05);
-      }
-    }
   }
 }
 </style>

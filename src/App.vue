@@ -5,7 +5,7 @@
   </div>
 
   <!-- 其他页面 -->
-  <div v-else class="app-container">
+  <div v-else-if="appReady" class="app-container">
     <!-- 顶部导航 -->
     <TopNavBar :menus="adminMenus">
       <template #right>
@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { User, ArrowDown, Setting, SwitchButton, Share, Grid } from '@element-plus/icons-vue'
@@ -47,6 +47,12 @@ import { adminMenus } from '@/config/menu'
 
 const router = useRouter()
 const route = useRoute()
+
+// 延迟渲染，避免刷新时顶部导航短暂闪烁
+const appReady = ref(false)
+onMounted(() => {
+  appReady.value = true
+})
 
 // 判断是否是登录相关页面或需要隐藏顶部导航的页面
 const isLoginPage = computed(() => {
@@ -125,7 +131,7 @@ body {
 
 <style scoped>
 .login-wrapper {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .app-container {

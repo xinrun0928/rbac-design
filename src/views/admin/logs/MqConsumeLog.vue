@@ -208,7 +208,7 @@ import { ElMessage } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, View, CopyDocument
 } from '@element-plus/icons-vue'
-import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '@/mock/mqConsumeLogData'
+import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '@/mock/admin/mqConsumeLogData'
 import type { MqConsumeLog, MqConsumeLogSearchForm } from '@/types/admin/mqConsumeLog'
 
 // ── 状态 ──

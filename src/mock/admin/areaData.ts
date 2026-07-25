@@ -6,10 +6,8 @@ export const areaData: Area[] = [
     code: '440000',
     name: '广东省',
     level: 'province',
-    parentCode: null,
     displayOrder: 1,
     deleted: 0,
-    signature: null,
     signatureVersion: 0,
     children: [
       {
@@ -20,7 +18,6 @@ export const areaData: Area[] = [
         parentCode: '440000',
         displayOrder: 1,
         deleted: 0,
-        signature: null,
         signatureVersion: 0,
         children: [
           { id: 3, code: '440103', name: '荔湾区', level: 'district', parentCode: '440100', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
@@ -44,7 +41,6 @@ export const areaData: Area[] = [
         parentCode: '440000',
         displayOrder: 2,
         deleted: 0,
-        signature: null,
         signatureVersion: 0,
         children: [
           { id: 15, code: '440303', name: '罗湖区', level: 'district', parentCode: '440300', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
@@ -66,7 +62,6 @@ export const areaData: Area[] = [
         parentCode: '440000',
         displayOrder: 3,
         deleted: 0,
-        signature: null,
         signatureVersion: 0,
         children: [
           { id: 25, code: '440402', name: '香洲区', level: 'district', parentCode: '440400', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
@@ -82,7 +77,6 @@ export const areaData: Area[] = [
         parentCode: '440000',
         displayOrder: 4,
         deleted: 0,
-        signature: null,
         signatureVersion: 0,
         children: [
           { id: 29, code: '440604', name: '禅城区', level: 'district', parentCode: '440600', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },

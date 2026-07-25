@@ -164,7 +164,7 @@ import {
   Refresh, Search, RefreshLeft, View, Delete, CopyDocument,
   Document, Picture, VideoPlay, Headset, Folder
 } from '@element-plus/icons-vue'
-import { attachmentData, storageTypeOptions, fileExtOptions } from '@/mock/attachmentData'
+import { attachmentData, storageTypeOptions, fileExtOptions } from '@/mock/admin/attachmentData'
 import type { Attachment, AttachmentSearchForm } from '@/types/admin/attachment'
 
 // ── 状态 ──

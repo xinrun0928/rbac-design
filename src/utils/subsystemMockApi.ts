@@ -1,4 +1,4 @@
-import { mockSubsystemData } from '@/mock/subsystemData'
+import { mockSubsystemData } from '@/mock/admin/subsystemData'
 import type { Subsystem, SubsystemSearchForm } from '@/types/admin/subsystem'
 
 /** 模拟网络延迟 */

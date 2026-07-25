@@ -179,7 +179,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, View, Delete, CopyDocument
 } from '@element-plus/icons-vue'
-import { messageTemplateData } from '@/mock/messageTemplateData'
+import { messageTemplateData } from '@/mock/admin/messageTemplateData'
 import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '@/types/admin/messageTemplate'
 
 // ── 状态 ──

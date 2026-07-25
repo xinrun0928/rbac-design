@@ -210,9 +210,9 @@ import {
   OfficeBuilding
 } from '@element-plus/icons-vue'
 import type { OrgTreeNode } from '@/types/admin/orgTree'
-import { orgTreeData as rawOrgTreeData } from '@/mock/orgTreeData'
-import { mealTypeOptions, mealNameOptions } from '@/mock/mealData'
-import { areaData } from '@/mock/areaData'
+import { orgTreeData as rawOrgTreeData } from '@/mock/admin/orgTreeData'
+import { mealTypeOptions, mealNameOptions } from '@/mock/admin/mealData'
+import { areaData } from '@/mock/admin/areaData'
 
 // ── 状态 ──
 const loading = ref(false)

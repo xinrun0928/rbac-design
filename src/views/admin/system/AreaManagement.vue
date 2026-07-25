@@ -140,7 +140,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, Location
 } from '@element-plus/icons-vue'
-import { areaData, areaLevelOptions } from '@/mock/areaData'
+import { areaData, areaLevelOptions } from '@/mock/admin/areaData'
 import type { Area, AreaSearchForm } from '@/types/admin/area'
 
 // ── 状态 ──

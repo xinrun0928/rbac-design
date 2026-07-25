@@ -11,16 +11,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/06/29/a13a8da4b6f34ab3bf42c50e7c765707.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
     creater: '测试用户1',
     createTime: '2026-06-29 21:42:45',
-    updater: null,
     updateTime: '2026-06-29 21:42:45',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -33,16 +30,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/06/29/1f68a9c3bcf94ee39cdd9b50c48d0b46.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
     creater: '测试用户1',
     createTime: '2026-06-29 21:55:14',
-    updater: null,
     updateTime: '2026-06-29 21:55:14',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -55,16 +49,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/06/30/47bc5ad44ea24d01a62467e2c4fae63a.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
     creater: '测试用户1',
     createTime: '2026-06-30 09:26:59',
-    updater: null,
     updateTime: '2026-06-30 09:26:59',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -77,16 +68,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/dd77866ab12640fb8ac9660980e5eb8e.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
     creater: '巡检员X01',
     createTime: '2026-07-01 14:37:44',
-    updater: null,
     updateTime: '2026-07-01 14:37:44',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -99,16 +87,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/e1aaa0d313c24ddea126ee4ec986fb9d.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
     creater: '巡检员X01',
     createTime: '2026-07-01 15:14:31',
-    updater: null,
     updateTime: '2026-07-01 15:14:31',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -121,16 +106,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/c19091ce466942849ce1441d57dea714.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
     creater: '巡检员X01',
     createTime: '2026-07-01 16:08:29',
-    updater: null,
     updateTime: '2026-07-01 16:08:29',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -143,16 +125,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.png',
     storagePath: '2026/07/01/874f66d650754bc496af0d80c1e99558.png',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
     creater: '总值班室',
     createTime: '2026-07-01 16:35:54',
-    updater: null,
     updateTime: '2026-07-01 16:35:54',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -165,16 +144,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/1b11d5925a38451eaf83a06fc05a156a.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
     creater: '巡检员X01',
     createTime: '2026-07-01 16:58:51',
-    updater: null,
     updateTime: '2026-07-01 16:58:51',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -187,16 +163,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/feefef5badaa40c68798ea4e21a3ad34.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
     creater: '总值班室',
     createTime: '2026-07-01 17:12:50',
-    updater: null,
     updateTime: '2026-07-01 17:12:50',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -209,16 +182,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/0f6d27f6d165482ca9d6de8224f01f2d.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
     creater: '总值班室',
     createTime: '2026-07-01 17:20:30',
-    updater: null,
     updateTime: '2026-07-01 17:20:30',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -231,16 +201,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/01/8f47e6f326db44a5a7194f15dd7cfb4b.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
     creater: '总值班室',
     createTime: '2026-07-01 17:31:06',
-    updater: null,
     updateTime: '2026-07-01 17:31:06',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -253,16 +220,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/02/c16582f4ea2d4755adcba78e7320b8d5.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2072207099198312448,
     orgId: 2071600733559590912,
     creater: '张鑫润',
     createTime: '2026-07-02 09:55:27',
-    updater: null,
     updateTime: '2026-07-02 09:55:27',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -275,16 +239,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.png',
     storagePath: '2026/07/09/b439415883eb48ac99a4e743ae9b6e31.png',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2072926542022971392,
     orgId: 2071856455010619392,
     creater: '何亦奇',
     createTime: '2026-07-09 13:24:57',
-    updater: null,
     updateTime: '2026-07-09 13:24:57',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -297,16 +258,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.png',
     storagePath: '2026/07/09/0dddbfd1adf94db19e464a7c52341bd1.png',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2072926542022971392,
     orgId: 2071856455010619392,
     creater: '何亦奇',
     createTime: '2026-07-09 13:27:52',
-    updater: null,
     updateTime: '2026-07-09 13:27:52',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -319,16 +277,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/09/3e0ea64faa334f1baeeee06e04c56d8a.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071886281092239360,
     orgId: 2071791810707066880,
     creater: '颜华耀',
     createTime: '2026-07-09 14:40:17',
-    updater: null,
     updateTime: '2026-07-09 14:40:17',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   },
   {
@@ -341,16 +296,13 @@ export const attachmentData: Attachment[] = [
     fileExt: '.jpg',
     storagePath: '2026/07/09/ef99246d449c4767afd74e36b5d2e0df.jpg',
     storageType: 'minio',
-    fileDesc: null,
-    metadata: null,
+
     userId: 2071886281092239360,
     orgId: 2071791810707066880,
     creater: '颜华耀',
     createTime: '2026-07-09 15:22:35',
-    updater: null,
     updateTime: '2026-07-09 15:22:35',
     deleted: 0,
-    signature: null,
     signatureVersion: 0
   }
 ]

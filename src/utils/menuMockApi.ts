@@ -1,4 +1,4 @@
-import { mockMenuData } from '@/mock/menuData'
+import { mockMenuData } from '@/mock/admin/menuData'
 import type { Menu, MenuSearchForm } from '@/types/admin/menu'
 
 /** 模拟网络延迟 */

@@ -175,7 +175,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit, ArrowLeft
 } from '@element-plus/icons-vue'
-import { dictDataList } from '@/mock/dictData'
+import { dictDataList } from '@/mock/admin/dictData'
 import type { DictData, DictDataSearchForm } from '@/types/admin/dictData'
 
 const router = useRouter()

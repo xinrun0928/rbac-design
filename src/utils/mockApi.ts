@@ -1,4 +1,4 @@
-import { mockMealData } from '@/mock/mealData'
+import { mockMealData } from '@/mock/admin/mealData'
 import type { Meal, SearchForm } from '@/types/admin/meal'
 
 /** 模拟网络延迟 */

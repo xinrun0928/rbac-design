@@ -3,7 +3,7 @@ import {
   mockMessageLogData,
   mockHttpLogData,
   mockLoginLogData
-} from '@/mock/logsData'
+} from '@/mock/admin/logsData'
 import type { SysAccessLog, SysMessageLog, SysHttpLog, SysLoginLog } from '@/types/admin/logs'
 
 /** 模拟网络延迟 */

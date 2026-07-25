@@ -70,7 +70,7 @@ import {
   Odometer,
   Setting
 } from '@element-plus/icons-vue'
-import { mockSubsystemData } from '@/mock/subsystemData'
+import { mockSubsystemData } from '@/mock/admin/subsystemData'
 import type { Subsystem } from '@/types/admin/subsystem'
 
 const router = useRouter()

@@ -551,7 +551,7 @@ import {
 } from "@element-plus/icons-vue"
 import type { Menu, MenuForm, MenuSearchForm } from "@/types/admin/menu"
 import { MENU_TYPE_MAP, CONTENT_TYPE_MAP } from "@/types/admin/menu"
-import { mockSubsystemData } from "@/mock/subsystemData"
+import { mockSubsystemData } from "@/mock/admin/subsystemData"
 import {
   getMenuTreeBySubsystem,
   addMenu,

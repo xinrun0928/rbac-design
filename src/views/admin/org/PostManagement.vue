@@ -242,7 +242,7 @@ import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '@/mock/orgTreeData'
+import { orgTreeData } from '@/mock/admin/orgTreeData'
 import type { OrgTreeNode } from '@/types/admin/orgTree'
 
 // 岗位接口

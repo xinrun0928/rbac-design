@@ -408,8 +408,8 @@ import {
   DataAnalysis, Share, Monitor, Setting
 } from '@element-plus/icons-vue'
 import type { Meal, SearchForm, MealForm } from '@/types/admin/meal'
-import { mealTypeOptions } from '@/mock/mealData'
-import { mockSubsystemData } from '@/mock/subsystemData'
+import { mealTypeOptions } from '@/mock/admin/mealData'
+import { mockSubsystemData } from '@/mock/admin/subsystemData'
 import type { Menu } from '@/types/admin/menu'
 import {
   getMeals,

@@ -354,9 +354,9 @@ import {
   SuccessFilled, CircleCloseFilled,
   OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock
 } from '@element-plus/icons-vue'
-import { orgTreeData } from '@/mock/orgTreeData'
-import { mockMenuData } from '@/mock/menuData'
-import { mockSubsystemData } from '@/mock/subsystemData'
+import { orgTreeData } from '@/mock/admin/orgTreeData'
+import { mockMenuData } from '@/mock/admin/menuData'
+import { mockSubsystemData } from '@/mock/admin/subsystemData'
 import type { OrgTreeNode } from '@/types/admin/orgTree'
 import type { Menu } from '@/types/admin/menu'
 import { buildMenuTree } from '@/utils/menuMockApi'

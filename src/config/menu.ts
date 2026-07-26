@@ -52,7 +52,8 @@ import {
   Position,
   Microphone,
   CircleClose,
-  Cpu
+  Cpu,
+  DataBoard
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -625,6 +626,110 @@ export const decisionMenus: MenuItem[] = [
     groupTitle: '基础管理',
     children: [
       { path: '/decision/basic/management', title: '基础管理', icon: Setting },
+    ]
+  },
+]
+
+// 数据融合菜单
+export const fusionMenus: MenuItem[] = [
+  {
+    path: '/fusion/map-group',
+    title: '地图引擎封装服务',
+    icon: MapLocation,
+    isGroup: true,
+    groupTitle: '地图引擎封装服务',
+    children: [
+      { path: '/fusion/map', title: '地图引擎封装服务', icon: MapLocation },
+    ]
+  },
+  {
+    path: '/fusion/hd-map-group',
+    title: '高精地图引擎服务',
+    icon: Position,
+    isGroup: true,
+    groupTitle: '高精地图引擎服务',
+    children: [
+      { path: '/fusion/hd-map', title: '高精地图引擎服务', icon: Position },
+    ]
+  },
+  {
+    path: '/fusion/portal-group',
+    title: '个人门户',
+    icon: User,
+    isGroup: true,
+    groupTitle: '个人门户',
+    children: [
+      { path: '/fusion/portal', title: '个人门户', icon: User },
+    ]
+  },
+  {
+    path: '/fusion/simulation-group',
+    title: '交通仿真引擎服务',
+    icon: Cpu,
+    isGroup: true,
+    groupTitle: '交通仿真引擎服务',
+    children: [
+      { path: '/fusion/simulation', title: '交通仿真引擎服务', icon: Cpu },
+    ]
+  },
+  {
+    path: '/fusion/service-group',
+    title: '融合服务',
+    icon: Connection,
+    isGroup: true,
+    groupTitle: '融合服务',
+    children: [
+      { path: '/fusion/service', title: '融合服务', icon: Connection },
+    ]
+  },
+  {
+    path: '/fusion/video-conference-group',
+    title: '视频会议应用',
+    icon: VideoCamera,
+    isGroup: true,
+    groupTitle: '视频会议应用',
+    children: [
+      { path: '/fusion/video-conference', title: '视频会议应用', icon: VideoCamera },
+    ]
+  },
+  {
+    path: '/fusion/video-capability-group',
+    title: '视频能力应用',
+    icon: VideoPlay,
+    isGroup: true,
+    groupTitle: '视频能力应用',
+    children: [
+      { path: '/fusion/video-capability', title: '视频能力应用', icon: VideoPlay },
+    ]
+  },
+  {
+    path: '/fusion/dashboard-group',
+    title: '数据看板',
+    icon: DataBoard,
+    isGroup: true,
+    groupTitle: '数据看板',
+    children: [
+      { path: '/fusion/dashboard', title: '数据看板', icon: DataBoard },
+    ]
+  },
+  {
+    path: '/fusion/external-group',
+    title: '外部系统接口对接',
+    icon: Link,
+    isGroup: true,
+    groupTitle: '外部系统接口对接',
+    children: [
+      { path: '/fusion/external', title: '外部系统接口对接', icon: Link },
+    ]
+  },
+  {
+    path: '/fusion/integration-group',
+    title: '子系统集成',
+    icon: Grid,
+    isGroup: true,
+    groupTitle: '子系统集成',
+    children: [
+      { path: '/fusion/integration', title: '子系统集成', icon: Grid },
     ]
   },
 ]

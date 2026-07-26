@@ -142,6 +142,9 @@ const handleSelectSubsystem = (subsystem: any) => {
   } else if (subsystem.subsysId === 6) {
     // 辅助决策子系统
     router.push('/decision')
+  } else if (subsystem.subsysId === 7) {
+    // 数据融合子系统
+    router.push('/fusion')
   } else {
     // 其他子系统（暂未开发，提示后跳转到对应路径）
     ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)

@@ -424,6 +424,100 @@ export function findGroupTitle(path: string, menus: MenuItem[]): string {
   return ''
 }
 
+// 预案管理菜单
+export const planMenus: MenuItem[] = [
+  {
+    path: '/plan/library-group',
+    title: '应急预案库',
+    icon: Folder,
+    isGroup: true,
+    groupTitle: '应急预案库',
+    children: [
+      { path: '/plan/library/category', title: '分类层级管理', icon: Folder },
+      { path: '/plan/library/audit', title: '预案审核', icon: Check },
+      { path: '/plan/library/template', title: '模板管理', icon: Files },
+      { path: '/plan/library/scenario', title: '场景管理', icon: MapLocation },
+    ]
+  },
+  {
+    path: '/plan/generate-group',
+    title: '应急预案生成',
+    icon: Document,
+    isGroup: true,
+    groupTitle: '应急预案生成',
+    children: [
+      { path: '/plan/generate/module', title: '预案模块生成与调整', icon: Edit },
+      { path: '/plan/generate/sample', title: '情景样本库', icon: Collection },
+      { path: '/plan/generate/storage', title: '规范存储与管理', icon: Box },
+      { path: '/plan/generate/indicator', title: '评估指标提示词', icon: DataLine },
+      { path: '/plan/generate/chapter', title: '内容章节提示词', icon: Document },
+    ]
+  },
+  {
+    path: '/plan/drill-group',
+    title: '应急模拟演练',
+    icon: Monitor,
+    isGroup: true,
+    groupTitle: '应急模拟演练',
+    children: [
+      { path: '/plan/drill/design', title: '演练设计管理', icon: Edit },
+      { path: '/plan/drill/control', title: '演练过程控制', icon: Promotion },
+      { path: '/plan/drill/task', title: '演练响应任务', icon: List },
+      { path: '/plan/drill/group', title: '小组管理', icon: User },
+    ]
+  },
+  {
+    path: '/plan/model-group',
+    title: '模型微调',
+    icon: Setting,
+    isGroup: true,
+    groupTitle: '模型微调',
+    children: [
+      { path: '/plan/model/tune', title: '模型微调', icon: Setting },
+    ]
+  },
+  {
+    path: '/plan/response-group',
+    title: '应急响应启动',
+    icon: VideoPlay,
+    isGroup: true,
+    groupTitle: '应急响应启动',
+    children: [
+      { path: '/plan/response/start', title: '应急响应启动', icon: VideoPlay },
+    ]
+  },
+  {
+    path: '/plan/dimension-group',
+    title: '维度定义',
+    icon: Grid,
+    isGroup: true,
+    groupTitle: '维度定义',
+    children: [
+      { path: '/plan/dimension', title: '维度定义', icon: Grid },
+    ]
+  },
+  {
+    path: '/plan/interface-group',
+    title: '规范接口接入',
+    icon: Connection,
+    isGroup: true,
+    groupTitle: '规范接口接入',
+    children: [
+      { path: '/plan/interface', title: '规范接口接入', icon: Connection },
+    ]
+  },
+  {
+    path: '/plan/log-group',
+    title: '操作日志',
+    icon: Notebook,
+    isGroup: true,
+    groupTitle: '操作日志',
+    children: [
+      { path: '/plan/log', title: '操作日志', icon: Notebook },
+    ]
+  },
+]
+
 // 企业视角菜单（预留）
 export const enterpriseMenus: MenuItem[] = [
   // 后续添加企业视角菜单

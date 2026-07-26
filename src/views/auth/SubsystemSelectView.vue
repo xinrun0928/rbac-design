@@ -127,6 +127,9 @@ const handleSelectSubsystem = (subsystem: any) => {
   } else if (subsystem.subsysId === 1) {
     // 应急值守管理子系统
     router.push('/duty')
+  } else if (subsystem.subsysId === 2) {
+    // 预案管理子系统
+    router.push('/plan')
   } else if (subsystem.subsysId === 3) {
     // 应急事件管理子系统
     router.push('/event')

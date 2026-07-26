@@ -377,7 +377,7 @@
         <el-icon :size="18"><ArrowLeft /></el-icon>
         <span>返回</span>
       </div>
-      <div class="page-title">实时路况监控与数据分析</div>
+      <div class="page-title">总览</div>
       <div class="top-time">
         <div class="time-value">{{ currentTime }}</div>
         <div class="date-value">{{ currentDate }}</div>
@@ -886,16 +886,18 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 5px;
   overflow: hidden;
+  min-height: 0;
   padding-right: 2px;
 
   .panel {
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 
-    &:nth-child(1) { flex: 0 0 35%; }
-    &:nth-child(2) { flex: 0 0 30%; }
-    &:nth-child(3) { flex: 0 0 35%; }
+    &:nth-child(1) { flex: 35; }
+    &:nth-child(2) { flex: 30; }
+    &:nth-child(3) { flex: 35; }
   }
 }
 
@@ -996,9 +998,11 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 5px;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 
   .map-panel {
-    flex: 0 0 40%;
+    flex: 4;
 
     .map-legend {
       display: flex;
@@ -1138,16 +1142,18 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 5px;
   overflow: hidden;
+  min-height: 0;
   padding-left: 2px;
 
   .panel {
-    flex: 0 0 20%;
+    flex: 20;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 
-    &:nth-child(3) { flex: 0 0 15%; }
-    &:nth-child(5) { flex: 0 0 25%; }
+    &:nth-child(3) { flex: 15; }
+    &:nth-child(5) { flex: 25; }
   }
 }
 

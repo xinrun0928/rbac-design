@@ -1,63 +1,404 @@
 <template>
-  <div class="screen-page">
-    <!-- 顶部标题栏 -->
-    <div class="screen-header">
-      <div class="header-left">
-        <div class="back-btn" @click="goBack">
-          <el-icon :size="20"><ArrowLeft /></el-icon>
+  <div class="dashboard-page">
+    <!-- 左侧面板 -->
+    <aside class="left-panel">
+      <!-- 实时路况概览 -->
+      <div class="panel overview-panel">
+        <div class="panel-header">
+          <h3>实时路况概览</h3>
+          <span class="live-tag">LIVE</span>
         </div>
-        <h1>总览</h1>
+        <div class="overview-grid">
+          <div class="overview-item">
+            <div class="item-icon primary"><el-icon :size="20"><DataLine /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">56<small>段</small></div>
+              <div class="item-label">重点路段总数</div>
+            </div>
+          </div>
+          <div class="overview-item">
+            <div class="item-icon warning"><el-icon :size="20"><TrendCharts /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">18<small>段</small></div>
+              <div class="item-label">拥堵路段数</div>
+            </div>
+          </div>
+          <div class="overview-item">
+            <div class="item-icon success"><el-icon :size="20"><Van /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">48<small>km/h</small></div>
+              <div class="item-label">平均车速</div>
+            </div>
+          </div>
+          <div class="overview-item">
+            <div class="item-icon primary"><el-icon :size="20"><Position /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">12.8<small>万辆</small></div>
+              <div class="item-label">总车流量</div>
+            </div>
+          </div>
+          <div class="overview-item">
+            <div class="item-icon danger"><el-icon :size="20"><Warning /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">12<small>起</small></div>
+              <div class="item-label">事故事件</div>
+            </div>
+          </div>
+          <div class="overview-item">
+            <div class="item-icon control"><el-icon :size="20"><OfficeBuilding /></el-icon></div>
+            <div class="item-info">
+              <div class="item-value">8<small>段</small></div>
+              <div class="item-label">管控路段</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="header-right">
-        <span class="current-time">{{ currentTime }}</span>
-      </div>
-    </div>
 
-    <!-- 内容区域 -->
-    <div class="screen-content">
-      <div class="overview-grid">
-        <div class="stat-card">
-          <div class="stat-value">128</div>
-          <div class="stat-label">重点路段总数</div>
+      <!-- 拥堵程度分布 -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>拥堵程度分布</h3>
         </div>
-        <div class="stat-card warning">
-          <div class="stat-value">23</div>
-          <div class="stat-label">当前拥堵路段</div>
-        </div>
-        <div class="stat-card danger">
-          <div class="stat-value">5</div>
-          <div class="stat-label">严重拥堵</div>
-        </div>
-        <div class="stat-card success">
-          <div class="stat-value">89%</div>
-          <div class="stat-label">路段畅通率</div>
+        <div class="distribution-content">
+          <div class="chart-area">
+            <div ref="congestionChartRef" class="chart-dom"></div>
+          </div>
+          <div class="legend-area">
+            <div class="legend-item">
+              <span class="legend-dot" style="background:#E74C3C"></span>
+              <span class="legend-name">严重拥堵</span>
+              <span class="legend-value">21.4%</span>
+              <span class="legend-count">(12)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background:#F39C12"></span>
+              <span class="legend-name">拥堵</span>
+              <span class="legend-value">28.6%</span>
+              <span class="legend-count">(16)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background:#F1C40F"></span>
+              <span class="legend-name">缓行</span>
+              <span class="legend-value">32.1%</span>
+              <span class="legend-count">(18)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot" style="background:#2ECC71"></span>
+              <span class="legend-name">畅通</span>
+              <span class="legend-value">17.9%</span>
+              <span class="legend-count">(10)</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="overview-charts">
-        <div class="chart-card">
-          <div class="chart-title">拥堵趋势</div>
-          <div class="chart-placeholder">图表区域</div>
+
+      <!-- 数据源接入状态 -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>数据源接入状态</h3>
         </div>
-        <div class="chart-card">
-          <div class="chart-title">车流量分布</div>
-          <div class="chart-placeholder">图表区域</div>
+        <div class="source-status-list">
+          <div class="source-row">
+            <span class="source-name">路面监控摄像头</span>
+            <div class="source-bar">
+              <div class="bar-fill" style="width:92.5%"></div>
+            </div>
+            <span class="source-info">1,256/1,358 在线</span>
+            <span class="source-rate">92.5%</span>
+          </div>
+          <div class="source-row">
+            <span class="source-name">车流量传感器</span>
+            <div class="source-bar">
+              <div class="bar-fill" style="width:92.9%"></div>
+            </div>
+            <span class="source-info">2,189/2,357 在线</span>
+            <span class="source-rate">92.9%</span>
+          </div>
+          <div class="source-row">
+            <span class="source-name">导航软件数据</span>
+            <span class="status-dot online"></span>
+            <span class="status-text">正常</span>
+          </div>
+          <div class="source-row">
+            <span class="source-name">移动终端数据</span>
+            <span class="status-dot online"></span>
+            <span class="status-text">正常</span>
+          </div>
+          <div class="source-row">
+            <span class="source-name">气象数据</span>
+            <span class="status-dot online"></span>
+            <span class="status-text">正常</span>
+          </div>
         </div>
+      </div>
+    </aside>
+
+    <!-- 中间区域 -->
+    <main class="center-panel">
+      <!-- 路况热力图（地图） -->
+      <div class="panel map-panel">
+        <div class="panel-header">
+          <h3>路况热力图</h3>
+          <div class="map-legend">
+            <span class="legend-item"><span class="legend-color" style="background:#2ECC71"></span>畅通</span>
+            <span class="legend-item"><span class="legend-color" style="background:#F1C40F"></span>缓行</span>
+            <span class="legend-item"><span class="legend-color" style="background:#F39C12"></span>拥堵</span>
+            <span class="legend-item"><span class="legend-color" style="background:#E74C3C"></span>严重拥堵</span>
+          </div>
+        </div>
+        <div class="map-container">
+          <div class="map-placeholder">
+            <!-- 模拟地图网格 -->
+            <div class="map-grid">
+              <div v-for="i in 120" :key="i" class="map-cell" :style="{ opacity: Math.random() * 0.5 + 0.3, background: getMapColor() }"></div>
+            </div>
+            <!-- 模拟道路线条 -->
+            <div class="map-overlay">
+              <div class="road-line highway-1"></div>
+              <div class="road-line highway-2"></div>
+              <div class="road-line highway-3"></div>
+              <div class="road-line highway-4"></div>
+              <div class="road-line highway-5"></div>
+              <div class="road-label label-1">G4 京港澳高速</div>
+              <div class="road-label label-2">S81 环城高速</div>
+              <div class="road-label label-3">G15 沈海高速</div>
+              <div class="road-label label-4">华南快速</div>
+            </div>
+            <!-- 地图中心标记 -->
+            <div class="map-center-mark">
+              <div class="center-dot"></div>
+              <div class="center-ring"></div>
+            </div>
+            <div class="map-bottom-info">
+              <span>广州市全域路况</span>
+              <span class="update-time">更新于 {{ currentTime }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下方区域：实时事件 + 避堵路线 -->
+      <div class="bottom-row">
+        <!-- 实时事件列表 -->
+        <div class="panel events-panel">
+          <div class="panel-header">
+            <h3>实时事件列表</h3>
+            <span class="refresh-tag">● 自动刷新</span>
+          </div>
+          <div class="event-list-wrapper">
+            <div class="event-list">
+              <div v-for="event in realtimeEvents" :key="event.id" class="event-item">
+                <div class="event-type-badge" :class="event.typeClass">{{ event.type }}</div>
+                <div class="event-info">
+                  <div class="event-location">{{ event.location }}</div>
+                  <div class="event-meta">
+                    <span>{{ event.direction }}</span>
+                    <span>{{ event.time }}</span>
+                  </div>
+                </div>
+                <div class="event-status" :class="event.statusClass">{{ event.status }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 避堵路线推荐 -->
+        <div class="panel route-panel">
+          <div class="panel-header">
+            <h3>避堵路线推荐</h3>
+          </div>
+          <div class="route-content">
+            <div class="route-endpoints">
+              <div class="endpoint">
+                <span class="endpoint-label">起点</span>
+                <span class="endpoint-name">天河区</span>
+              </div>
+              <div class="route-arrow">→</div>
+              <div class="endpoint">
+                <span class="endpoint-label">终点</span>
+                <span class="endpoint-name">宝安区</span>
+              </div>
+            </div>
+            <div class="route-options">
+              <div v-for="(route, index) in routeOptions" :key="index"
+                :class="['route-option', { recommended: index === 0 }]">
+                <div class="route-badge" v-if="index === 0">推荐</div>
+                <div class="route-main">
+                  <span class="route-time">{{ route.time }}</span>
+                  <span class="route-distance">{{ route.distance }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 右侧面板 -->
+    <aside class="right-panel">
+      <!-- 拥堵分析TOP10 -->
+      <div class="panel top10-panel">
+        <div class="panel-header">
+          <h3>拥堵分析 TOP10</h3>
+          <div class="tab-group">
+            <button v-for="tab in congestionTabs" :key="tab.key"
+              :class="['tab-btn', { active: activeCongestionTab === tab.key }]"
+              @click="activeCongestionTab = tab.key">
+              {{ tab.label }}
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th width="40">排名</th>
+                <th>路段名称</th>
+                <th width="70">拥堵指数</th>
+                <th width="70">拥堵时长</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in congestionTop10" :key="item.name"
+                :class="['table-row', `rank-${index + 1}`]">
+                <td>
+                  <span class="rank-badge" :class="`rank-${index + 1}`">{{ index + 1 }}</span>
+                </td>
+                <td class="road-name">{{ item.name }}</td>
+                <td :style="{ color: getIndexColor(item.index) }">{{ item.index }}</td>
+                <td>{{ item.duration }}h</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 车流量分析TOP10 -->
+      <div class="panel top10-panel">
+        <div class="panel-header">
+          <h3>车流量分析 TOP10</h3>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th width="40">排名</th>
+                <th>路段名称</th>
+                <th width="80">车流量</th>
+                <th width="70">平均车速</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in trafficFlowTop10" :key="item.name"
+                :class="['table-row', `rank-${index + 1}`]">
+                <td>
+                  <span class="rank-badge" :class="`rank-${index + 1}`">{{ index + 1 }}</span>
+                </td>
+                <td class="road-name">{{ item.name }}</td>
+                <td>{{ item.flow.toLocaleString() }}</td>
+                <td :style="{ color: getSpeedColor(item.speed) }">{{ item.speed }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 事件概览 -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>事件概览（今日）</h3>
+        </div>
+        <div class="event-overview">
+          <div class="event-stat accident">
+            <div class="event-icon">🚗</div>
+            <div class="event-num">8</div>
+            <div class="event-label">交通事故</div>
+          </div>
+          <div class="event-stat construction">
+            <div class="event-icon">🚧</div>
+            <div class="event-num">3</div>
+            <div class="event-label">道路施工</div>
+          </div>
+          <div class="event-stat control">
+            <div class="event-icon">⚠️</div>
+            <div class="event-num">1</div>
+            <div class="event-label">交通管制</div>
+          </div>
+          <div class="event-total">
+            <span class="total-label">事件总计</span>
+            <span class="total-value">12起</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 近七天拥堵统计 -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>近七天拥堵统计</h3>
+        </div>
+        <div class="chart-container">
+          <div ref="weeklyChartRef" class="chart-dom"></div>
+        </div>
+      </div>
+
+      <!-- 管控路段/数据源 -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>管控路段 / 数据源</h3>
+        </div>
+        <div class="source-status">
+          <div class="controlled-roads">
+            <div class="controlled-num">8</div>
+            <div class="controlled-label">管控路段</div>
+          </div>
+          <div class="source-bars">
+            <div class="source-bar-item">
+              <span class="bar-label">摄像头</span>
+              <div class="bar-track"><div class="bar-fill" style="width:92.5%"></div></div>
+              <span class="bar-value">92.5%</span>
+            </div>
+            <div class="source-bar-item">
+              <span class="bar-label">传感器</span>
+              <div class="bar-track"><div class="bar-fill" style="width:92.9%"></div></div>
+              <span class="bar-value">92.9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 顶部返回按钮 -->
+    <div class="top-bar">
+      <div class="back-btn" @click="goBack">
+        <el-icon :size="18"><ArrowLeft /></el-icon>
+        <span>返回</span>
+      </div>
+      <div class="page-title">实时路况监控与数据分析</div>
+      <div class="top-time">
+        <div class="time-value">{{ currentTime }}</div>
+        <div class="date-value">{{ currentDate }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { ArrowLeft } from '@element-plus/icons-vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ArrowLeft, DataLine, TrendCharts, Timer, Van, Position, Warning, OfficeBuilding } from '@element-plus/icons-vue'
+import * as echarts from 'echarts'
 
 const currentTime = ref('')
+const currentDate = ref('')
+const activeCongestionTab = ref('index')
+const congestionChartRef = ref<HTMLElement>()
+const weeklyChartRef = ref<HTMLElement>()
 
-const goBack = () => {
-  window.close()
-}
+let congestionChart: echarts.ECharts | null = null
+let weeklyChart: echarts.ECharts | null = null
 
-// 更新时间
+const goBack = () => window.close()
+
+// 时间更新
 let timer: ReturnType<typeof setInterval>
 const updateTime = () => {
   const now = new Date()
@@ -67,161 +408,1062 @@ const updateTime = () => {
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
-  currentTime.value = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  currentDate.value = `${year}年${month}月${day}日 ${weekDays[now.getDay()]}`
+  currentTime.value = `${hours}:${minutes}:${seconds}`
+}
+
+// 拥堵TOP10 Tab
+const congestionTabs = [
+  { key: 'index', label: '按拥堵指数' },
+  { key: 'duration', label: '按拥堵时长' },
+  { key: 'length', label: '按拥堵长度' }
+]
+
+// 拥堵TOP10数据
+const congestionTop10 = ref([
+  { name: 'S1站高速', index: 9.6, duration: 12.6 },
+  { name: '华南快速干线', index: 8.7, duration: 2.6 },
+  { name: '广深高速', index: 8.2, duration: 3.1 },
+  { name: '广清高速', index: 7.8, duration: 2.8 },
+  { name: '广佛高速', index: 7.5, duration: 2.4 },
+  { name: '南沙大桥', index: 7.2, duration: 1.8 },
+  { name: '内环路', index: 6.8, duration: 1.5 },
+  { name: '黄埔大道', index: 6.5, duration: 1.2 },
+  { name: '广园快速路', index: 6.2, duration: 1.0 },
+  { name: '东风路', index: 5.8, duration: 0.8 }
+])
+
+// 车流量TOP10数据
+const trafficFlowTop10 = ref([
+  { name: '华南快速干线', flow: 18562, speed: 32 },
+  { name: '广深高速', flow: 16845, speed: 45 },
+  { name: 'S1站高速', flow: 15623, speed: 28 },
+  { name: '广清高速', flow: 14256, speed: 52 },
+  { name: '广佛高速', flow: 13892, speed: 48 },
+  { name: '南沙大桥', flow: 12568, speed: 65 },
+  { name: '内环路', flow: 11845, speed: 35 },
+  { name: '黄埔大道', flow: 10923, speed: 42 },
+  { name: '广园快速路', flow: 10256, speed: 55 },
+  { name: '东风路', flow: 9856, speed: 38 }
+])
+
+// 实时事件数据
+const realtimeEvents = ref([
+  { id: 1, type: '交通事故', typeClass: 'accident', location: '广深高速K28+500', direction: '双向', time: '15:20', status: '处理中', statusClass: 'processing' },
+  { id: 2, type: '道路施工', typeClass: 'construction', location: '广清高速K20+300', direction: '西向东', time: '14:50', status: '进行中', statusClass: 'ongoing' },
+  { id: 3, type: '交通管制', typeClass: 'control', location: '广佛肇高速K15+000', direction: '双向', time: '14:10', status: '管制中', statusClass: 'control' },
+  { id: 4, type: '道路施工', typeClass: 'construction', location: '沈海高速K50+000', direction: '北向南', time: '13:55', status: '进行中', statusClass: 'ongoing' },
+  { id: 5, type: '交通事故', typeClass: 'accident', location: '华南快速K12+200', direction: '南向北', time: '13:30', status: '已处理', statusClass: 'resolved' }
+])
+
+// 路线推荐
+const routeOptions = ref([
+  { time: '1小时32分', distance: '65.2km' },
+  { time: '1小时45分', distance: '72.8km' },
+  { time: '1小时50分', distance: '68.4km' }
+])
+
+// 辅助函数
+const getMapColor = () => {
+  const colors = ['#2ECC71', '#2ECC71', '#2ECC71', '#F1C40F', '#F1C40F', '#F39C12', '#E74C3C']
+  return colors[Math.floor(Math.random() * colors.length)]
+}
+
+const getIndexColor = (index: number) => {
+  if (index >= 8) return '#E74C3C'
+  if (index >= 6) return '#F39C12'
+  return '#F1C40F'
+}
+
+const getSpeedColor = (speed: number) => {
+  if (speed < 30) return '#E74C3C'
+  if (speed < 50) return '#F39C12'
+  return '#2ECC71'
+}
+
+// 格式化数字（千分位分隔符）
+const formatNumber = (num: number) => {
+  return num.toLocaleString('zh-CN')
+}
+
+// 初始化拥堵分布图表
+const initCongestionChart = () => {
+  if (!congestionChartRef.value) return
+  congestionChart = echarts.init(congestionChartRef.value)
+  const option = {
+    tooltip: { trigger: 'item', formatter: '{b}: {c}段 ({d}%)' },
+    graphic: [
+      {
+        type: 'text',
+        left: 'center',
+        top: '42%',
+        style: {
+          text: '56',
+          textAlign: 'center',
+          fill: '#FFFFFF',
+          fontSize: 22,
+          fontWeight: 'bold',
+          fontFamily: 'DIN Pro, monospace'
+        }
+      },
+      {
+        type: 'text',
+        left: 'center',
+        top: '58%',
+        style: {
+          text: '总数',
+          textAlign: 'center',
+          fill: '#8892A8',
+          fontSize: 11
+        }
+      }
+    ],
+    series: [{
+      type: 'pie',
+      radius: ['45%', '72%'],
+      center: ['50%', '50%'],
+      label: { show: false },
+      labelLine: { show: false },
+      data: [
+        { value: 12, name: '严重拥堵', itemStyle: { color: '#E74C3C' } },
+        { value: 16, name: '拥堵', itemStyle: { color: '#F39C12' } },
+        { value: 18, name: '缓行', itemStyle: { color: '#F1C40F' } },
+        { value: 10, name: '畅通', itemStyle: { color: '#2ECC71' } }
+      ]
+    }]
+  }
+  congestionChart.setOption(option)
+}
+
+// 初始化近七天统计图表
+const initWeeklyChart = () => {
+  if (!weeklyChartRef.value) return
+  weeklyChart = echarts.init(weeklyChartRef.value)
+  const option = {
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['7/20', '7/21', '7/22', '7/23', '7/24', '7/25', '7/26'],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisLabel: { color: '#8892A8', fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#8892A8', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '50%',
+      itemStyle: {
+        borderRadius: [4, 4, 0, 0],
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: '#00D4FF' },
+          { offset: 1, color: 'rgba(0,212,255,0.2)' }
+        ])
+      },
+      data: [180, 160, 145, 121, 155, 172, 168]
+    }]
+  }
+  weeklyChart.setOption(option)
+}
+
+const handleResize = () => {
+  congestionChart?.resize()
+  weeklyChart?.resize()
 }
 
 onMounted(() => {
   updateTime()
   timer = setInterval(updateTime, 1000)
+  nextTick(() => {
+    initCongestionChart()
+    initWeeklyChart()
+  })
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
-  if (timer) {
-    clearInterval(timer)
-  }
+  if (timer) clearInterval(timer)
+  window.removeEventListener('resize', handleResize)
+  congestionChart?.dispose()
+  weeklyChart?.dispose()
 })
 </script>
 
 <style lang="scss" scoped>
-.screen-page {
+.dashboard-page {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #0c1426 0%, #1a2742 50%, #0d1b2a 100%);
+  background: #0B0E1A;
   color: #fff;
-  display: flex;
-  flex-direction: column;
   z-index: 9999;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  grid-template-rows: 44px 1fr;
+  grid-template-areas:
+    "top top top"
+    "left center right";
+  gap: 5px;
+  padding: 5px;
 }
 
-.screen-header {
-  height: 60px;
-  background: rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(64, 158, 255, 0.3);
+// 顶部栏
+.top-bar {
+  grid-area: top;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  flex-shrink: 0;
+  padding: 0 12px;
+  background: rgba(0,40,80,0.5);
+  border-radius: 6px;
+  border: 1px solid rgba(0,212,255,0.2);
 
-  .header-left {
+  .back-btn {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
 
-    .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &:hover {
-        background: rgba(64, 158, 255, 0.3);
-      }
-    }
-
-    h1 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0;
+    &:hover {
+      background: rgba(0,212,255,0.3);
     }
   }
 
-  .header-right {
-    .current-time {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
+  .page-title {
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(180deg, #FFFFFF 0%, #00D4FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .top-time {
+    text-align: right;
+
+    .time-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #00D4FF;
+      font-family: 'DIN Pro', monospace;
+    }
+
+    .date-value {
+      font-size: 10px;
+      color: #8892A8;
     }
   }
 }
 
-.screen-content {
-  flex: 1;
-  overflow: auto;
+// 面板通用
+.panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+
+  .panel-header {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+
+    h3 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      &::before {
+        content: '';
+        width: 3px;
+        height: 10px;
+        background: #00D4FF;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+// 左侧面板
+.left-panel {
+  grid-area: left;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+  padding-right: 2px;
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    &:nth-child(1) { flex: 0 0 35%; }
+    &:nth-child(2) { flex: 0 0 30%; }
+    &:nth-child(3) { flex: 0 0 35%; }
+  }
+}
+
+// 实时路况概览
+.overview-panel {
+  background: linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(0,100,200,0.08) 100%);
+  border-color: rgba(0,212,255,0.25);
+
+  .panel-header {
+    padding: 6px 10px;
+
+    h3 {
+      font-size: 12px;
+    }
+  }
+
+  .live-tag {
+    font-size: 9px;
+    color: #2ECC71;
+    padding: 1px 5px;
+    background: rgba(46,204,113,0.15);
+    border-radius: 3px;
+    animation: blink 1.5s infinite;
+  }
 }
 
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 20px;
-  padding: 20px;
-}
-
-.stat-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-
-  &.warning {
-    border-color: #E6A23C;
-    background: rgba(230, 162, 60, 0.1);
-  }
-
-  &.danger {
-    border-color: #F56C6C;
-    background: rgba(245, 108, 108, 0.1);
-  }
-
-  &.success {
-    border-color: #67C23A;
-    background: rgba(103, 194, 58, 0.1);
-  }
-
-  .stat-value {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: #409EFF;
-  }
-
-  .stat-label {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-}
-
-.overview-charts {
-  display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 0 20px 20px 20px;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  padding: 6px;
+  flex: 1;
+  min-height: 0;
 }
 
-.chart-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.overview-item {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  transition: all 0.3s;
+  min-height: 0;
 
-  .chart-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: rgba(255, 255, 255, 0.9);
+  &:hover {
+    background: rgba(0,0,0,0.3);
   }
 
-  .chart-placeholder {
-    flex: 1;
+  .item-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
-    min-height: 200px;
+    flex-shrink: 0;
+
+    &.primary { background: rgba(0,212,255,0.15); color: #00D4FF; }
+    &.warning { background: rgba(243,156,18,0.15); color: #F39C12; }
+    &.success { background: rgba(103,194,58,0.15); color: #67C23A; }
+    &.info { background: rgba(155,89,182,0.15); color: #9B59B6; }
+    &.danger { background: rgba(245,108,108,0.15); color: #F56C6C; }
+    &.control { background: rgba(230,162,60,0.15); color: #E6A23C; }
+  }
+
+  .item-info {
+    min-width: 0;
+
+    .item-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      font-family: 'DIN Pro', monospace;
+      line-height: 1.2;
+
+      small {
+        font-size: 11px;
+        font-weight: 400;
+        color: #8892A8;
+        margin-left: 2px;
+      }
+    }
+
+    .item-label {
+      font-size: 11px;
+      color: #8892A8;
+      margin-top: 2px;
+    }
   }
 }
+
+// 中间面板
+.center-panel {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+
+  .map-panel {
+    flex: 1;
+
+    .map-legend {
+      display: flex;
+      gap: 8px;
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        color: #8892A8;
+
+        .legend-color {
+          width: 7px;
+          height: 7px;
+          border-radius: 2px;
+        }
+      }
+    }
+
+    .map-container {
+      flex: 1;
+      padding: 8px;
+    }
+
+    .map-placeholder {
+      height: 100%;
+      min-height: 350px;
+      background: linear-gradient(180deg, rgba(0,40,80,0.6) 0%, rgba(0,60,100,0.3) 100%);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      gap: 2px;
+      padding: 6px;
+      height: 100%;
+      opacity: 0.5;
+    }
+
+    .map-cell {
+      border-radius: 2px;
+    }
+
+    .map-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+
+      .road-line {
+        position: absolute;
+        background: rgba(0,212,255,0.5);
+        border-radius: 2px;
+
+        &.highway-1 { top: 25%; left: 5%; width: 90%; height: 3px; transform: rotate(-3deg); }
+        &.highway-2 { top: 45%; left: 10%; width: 80%; height: 3px; transform: rotate(5deg); }
+        &.highway-3 { top: 65%; left: 15%; width: 70%; height: 3px; transform: rotate(-2deg); }
+        &.highway-4 { top: 15%; left: 35%; width: 3px; height: 70%; transform: rotate(8deg); }
+        &.highway-5 { top: 20%; left: 60%; width: 3px; height: 60%; transform: rotate(-5deg); }
+      }
+
+      .road-label {
+        position: absolute;
+        font-size: 9px;
+        color: rgba(0,212,255,0.8);
+        background: rgba(0,0,0,0.5);
+        padding: 2px 5px;
+        border-radius: 3px;
+        white-space: nowrap;
+
+        &.label-1 { top: 22%; left: 20%; }
+        &.label-2 { top: 42%; left: 30%; }
+        &.label-3 { top: 62%; left: 25%; }
+        &.label-4 { top: 30%; left: 55%; }
+      }
+    }
+
+    .map-center-mark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      .center-dot {
+        width: 10px;
+        height: 10px;
+        background: #00D4FF;
+        border-radius: 50%;
+        position: relative;
+        z-index: 2;
+      }
+
+      .center-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 36px;
+        height: 36px;
+        border: 2px solid rgba(0,212,255,0.5);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+    }
+
+    .map-bottom-info {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      font-size: 10px;
+      color: #8892A8;
+      background: rgba(0,0,0,0.5);
+      padding: 4px 10px;
+      border-radius: 3px;
+
+      .update-time {
+        color: #00D4FF;
+      }
+    }
+  }
+
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    height: 260px;
+  }
+}
+
+// 右侧面板
+.right-panel {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: auto;
+  padding-left: 2px;
+}
+
+// Tab按钮
+.tab-group {
+  display: flex;
+  gap: 2px;
+  background: rgba(0,0,0,0.3);
+  padding: 2px;
+  border-radius: 4px;
+
+  .tab-btn {
+    padding: 3px 6px;
+    border: none;
+    background: transparent;
+    color: #8892A8;
+    font-size: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover { color: #FFFFFF; }
+    &.active { background: rgba(0,212,255,0.2); color: #00D4FF; }
+  }
+}
+
+// 表格
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 180px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 11px;
+  }
+
+  th {
+    background: rgba(0,0,0,0.2);
+    color: #8892A8;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+  }
+
+  .table-row {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s;
+
+    &:hover { background: rgba(0,212,255,0.05); }
+    &.rank-1 { background: rgba(255,215,0,0.08); }
+    &.rank-2 { background: rgba(192,192,192,0.06); }
+    &.rank-3 { background: rgba(205,127,50,0.06); }
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.1);
+    color: #8892A8;
+
+    &.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
+    &.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #000; }
+    &.rank-3 { background: linear-gradient(135deg, #CD7F32, #B87333); color: #000; }
+  }
+
+  .road-name {
+    color: #FFFFFF;
+    font-weight: 500;
+  }
+}
+
+// 图表容器
+.chart-container {
+  padding: 5px;
+  height: 150px;
+
+  .chart-dom {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// 拥堵分布
+.distribution-content {
+  display: flex;
+  padding: 8px;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+
+  .chart-area {
+    flex: 0 0 50%;
+    min-width: 0;
+
+    .chart-dom {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .legend-area {
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .legend-name {
+        color: #8892A8;
+        width: 45px;
+      }
+
+      .legend-value {
+        color: #FFFFFF;
+        font-weight: 600;
+        font-family: 'DIN Pro', monospace;
+      }
+
+      .legend-count {
+        color: #8892A8;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+// 数据源接入状态
+.source-status-list {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+
+  .source-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 4px;
+    font-size: 11px;
+
+    .source-name {
+      color: #8892A8;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .source-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+
+      .bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #2ECC71, #27AE60);
+        border-radius: 2px;
+      }
+    }
+
+    .source-info {
+      color: #8892A8;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .source-rate {
+      color: #2ECC71;
+      font-family: 'DIN Pro', monospace;
+      font-weight: 600;
+      width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+
+      &.online {
+        background: #2ECC71;
+        box-shadow: 0 0 6px #2ECC71;
+      }
+    }
+
+    .status-text {
+      color: #2ECC71;
+      font-weight: 500;
+    }
+  }
+}
+
+// 事件概览
+.event-overview {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .event-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+    &.accident { border-left: 3px solid #F56C6C; }
+    &.construction { border-left: 3px solid #F39C12; }
+    &.control { border-left: 3px solid #E6A23C; }
+
+    .event-icon { font-size: 18px; }
+    .event-num {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      font-family: 'DIN Pro', monospace;
+    }
+    .event-label { font-size: 11px; color: #8892A8; }
+  }
+
+  .event-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: rgba(0,212,255,0.1);
+    border-radius: 5px;
+    font-size: 12px;
+
+    .total-label { color: #8892A8; }
+    .total-value { color: #00D4FF; font-weight: 600; }
+  }
+}
+
+// 管控路段/数据源
+.source-status {
+  padding: 8px;
+
+  .controlled-roads {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0,212,255,0.1);
+    border-radius: 5px;
+    margin-bottom: 8px;
+
+    .controlled-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: #00D4FF;
+      font-family: 'DIN Pro', monospace;
+    }
+    .controlled-label { font-size: 10px; color: #8892A8; }
+  }
+
+  .source-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .source-bar-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+
+      .bar-label { color: #8892A8; width: 36px; }
+      .bar-track {
+        flex: 1;
+        height: 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 2px;
+        overflow: hidden;
+
+        .bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #2ECC71, #27AE60);
+          border-radius: 2px;
+        }
+      }
+      .bar-value { color: #2ECC71; font-family: 'DIN Pro', monospace; width: 36px; text-align: right; }
+    }
+  }
+}
+
+// 实时事件列表
+.events-panel {
+  display: flex;
+  flex-direction: column;
+
+  .refresh-tag {
+    font-size: 9px;
+    color: #2ECC71;
+  }
+
+  .event-list-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .event-list {
+    padding: 5px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: scrollEvents 20s linear infinite;
+
+    &:hover { animation-play-state: paused; }
+  }
+
+  .event-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+
+    &:hover { background: rgba(0,0,0,0.3); }
+  }
+
+  .event-type-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    flex-shrink: 0;
+
+    &.accident { background: rgba(245,108,108,0.2); color: #F56C6C; }
+    &.construction { background: rgba(243,156,18,0.2); color: #F39C12; }
+    &.control { background: rgba(230,162,60,0.2); color: #E6A23C; }
+  }
+
+  .event-info {
+    flex: 1;
+    min-width: 0;
+
+    .event-location {
+      font-size: 11px;
+      color: #FFFFFF;
+      margin-bottom: 1px;
+    }
+
+    .event-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 9px;
+      color: #8892A8;
+    }
+  }
+
+  .event-status {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    flex-shrink: 0;
+
+    &.processing { background: rgba(0,212,255,0.2); color: #00D4FF; }
+    &.ongoing { background: rgba(243,156,18,0.2); color: #F39C12; }
+    &.control { background: rgba(230,162,60,0.2); color: #E6A23C; }
+    &.resolved { background: rgba(103,194,58,0.2); color: #67C23A; }
+  }
+}
+
+// 避堵路线
+.route-panel {
+  display: flex;
+  flex-direction: column;
+
+  .route-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .route-endpoints {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+    .endpoint {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+
+      .endpoint-label { font-size: 9px; color: #8892A8; }
+      .endpoint-name { font-size: 14px; font-weight: 600; color: #FFFFFF; }
+    }
+
+    .route-arrow { color: #00D4FF; font-size: 16px; }
+  }
+
+  .route-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+
+    .route-option {
+      padding: 8px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+
+      &.recommended {
+        border-color: rgba(0,212,255,0.3);
+        background: rgba(0,212,255,0.05);
+      }
+
+      .route-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        padding: 2px 5px;
+        background: linear-gradient(135deg, #00D4FF, #0099CC);
+        color: #FFF;
+        font-size: 9px;
+        border-radius: 3px;
+      }
+
+      .route-main {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+
+        .route-time {
+          font-size: 16px;
+          font-weight: 600;
+          color: #FFFFFF;
+          font-family: 'DIN Pro', monospace;
+        }
+
+        .route-distance { font-size: 11px; color: #8892A8; }
+      }
+    }
+  }
+}
+
+// 滚动事件动画
+@keyframes scrollEvents {
+  0%, 15% { transform: translateY(0); }
+  20%, 35% { transform: translateY(-40px); }
+  40%, 55% { transform: translateY(-80px); }
+  60%, 75% { transform: translateY(-120px); }
+  80%, 95% { transform: translateY(-160px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// 滚动条样式
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 </style>

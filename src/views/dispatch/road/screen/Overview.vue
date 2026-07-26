@@ -677,8 +677,10 @@ const formatNumber = (num: number) => {
 const initMapChart = () => {
   if (!mapChartRef.value) return
   const { width, height } = mapChartRef.value.getBoundingClientRect()
+  console.log('Map container size:', width, height)
   if (width === 0 || height === 0) return
   mapChart = echarts.init(mapChartRef.value)
+  console.log('Map chart initialized')
 
   // 模拟道路数据
   const roads = [
@@ -733,7 +735,7 @@ const initMapChart = () => {
   ]
 
   const option = {
-    backgroundColor: 'transparent',
+    backgroundColor: '#0B0E1A',
     tooltip: {
       trigger: 'item',
       formatter: (params: any) => {
@@ -816,6 +818,7 @@ const initMapChart = () => {
   }
 
   mapChart.setOption(option)
+  console.log('Map option set')
 }
 
 // 获取状态颜色对应的文字
@@ -1357,6 +1360,10 @@ onUnmounted(() => {
 
   .map-panel {
     flex: 4;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
 
     .map-legend {
       display: flex;
@@ -1381,13 +1388,16 @@ onUnmounted(() => {
       flex: 1;
       padding: 8px;
       position: relative;
+      min-height: 0;
     }
 
     .map-chart {
       width: 100%;
       height: 100%;
-      background: linear-gradient(180deg, rgba(0,40,80,0.6) 0%, rgba(0,60,100,0.3) 100%);
+      min-height: 200px;
       border-radius: 6px;
+      position: relative;
+      z-index: 1;
     }
   }
 

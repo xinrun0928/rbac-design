@@ -246,4 +246,44 @@ const dispatchRoutes: RouteRecordRaw = {
   ]
 }
 
+// 独立全屏页面路由（不使用DispatchLayout）
+export const dispatchStandaloneRoutes: RouteRecordRaw[] = [
+  {
+    path: '/dispatch/road/screen/overview',
+    name: 'DispatchScreenOverview',
+    component: () => import('@/views/dispatch/road/screen/Overview.vue'),
+    meta: { title: '总览', hideLayout: true }
+  },
+  {
+    path: '/dispatch/road/screen/congestion',
+    name: 'DispatchScreenCongestion',
+    component: () => import('@/views/dispatch/road/screen/CongestionAnalysis.vue'),
+    meta: { title: '重点路段拥堵分析', hideLayout: true }
+  },
+  {
+    path: '/dispatch/road/screen/traffic',
+    name: 'DispatchScreenTraffic',
+    component: () => import('@/views/dispatch/road/screen/TrafficFlow.vue'),
+    meta: { title: '重点路段车流量分析', hideLayout: true }
+  },
+  {
+    path: '/dispatch/road/screen/frequency',
+    name: 'DispatchScreenFrequency',
+    component: () => import('@/views/dispatch/road/screen/CongestionFrequency.vue'),
+    meta: { title: '重点路段拥堵发生次数统计', hideLayout: true }
+  },
+  {
+    path: '/dispatch/road/screen/duration',
+    name: 'DispatchScreenDuration',
+    component: () => import('@/views/dispatch/road/screen/CongestionDuration.vue'),
+    meta: { title: '重点路段拥堵时长分析', hideLayout: true }
+  },
+  {
+    path: '/dispatch/road/screen/traffic-analysis',
+    name: 'DispatchScreenTrafficAnalysis',
+    component: () => import('@/views/dispatch/road/screen/TrafficFlowAnalysis.vue'),
+    meta: { title: '重点路段车流量分析', hideLayout: true }
+  }
+]
+
 export default dispatchRoutes

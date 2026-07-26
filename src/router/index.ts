@@ -6,7 +6,7 @@ import adminRoutes from './modules/admin'
 import dutyRoutes from './modules/duty'
 import planRoutes from './modules/plan'
 import eventRoutes from './modules/event'
-import dispatchRoutes from './modules/dispatch'
+import dispatchRoutes, { dispatchStandaloneRoutes } from './modules/dispatch'
 import resourceRoutes from './modules/resource'
 import dssRoutes from './modules/dss'
 import fusionRoutes from './modules/fusion'
@@ -52,6 +52,7 @@ const businessRoutes: RouteRecordRaw[] = [
   planRoutes,       // 应急预案管理子系统
   eventRoutes,      // 应急事件管理子系统
   dispatchRoutes,   // 应急指挥智能调度子系统
+  ...dispatchStandaloneRoutes, // 指挥调度独立页面
   resourceRoutes,   // 厅级应急物资管理子系统
   dssRoutes,        // 辅助决策子系统
   fusionRoutes,     // 数据融合子系统

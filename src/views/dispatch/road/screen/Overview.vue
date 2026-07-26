@@ -248,28 +248,33 @@
             </button>
           </div>
         </div>
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th width="40">排名</th>
-                <th>路段名称</th>
-                <th width="70">拥堵指数</th>
-                <th width="70">拥堵时长</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in congestionTop10" :key="item.name"
-                :class="['table-row', `rank-${index + 1}`]">
-                <td>
-                  <span class="rank-badge" :class="`rank-${index + 1}`">{{ index + 1 }}</span>
-                </td>
-                <td class="road-name">{{ item.name }}</td>
-                <td :style="{ color: getIndexColor(item.index) }">{{ item.index }}</td>
-                <td>{{ item.duration }}h</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="scroll-table-wrapper">
+          <div class="scroll-table-header">
+            <span class="col rank-col">排名</span>
+            <span class="col name-col">路段名称</span>
+            <span class="col parent-col">所属道路</span>
+            <span class="col index-col">拥堵指数</span>
+            <span class="col length-col">拥堵长度</span>
+            <span class="col duration-col">拥堵时长</span>
+          </div>
+          <div class="scroll-table-body" ref="scrollTableBodyRef"
+            @mouseenter="onMouseEnter"
+            @mouseleave="onMouseLeave"
+            @wheel.prevent="onWheel">
+            <div class="scroll-table-content" :style="{ transform: `translateY(${scrollOffset}px)` }">
+              <div v-for="(item, index) in [...congestionTop10, ...congestionTop10]" :key="`${item.name}-${index}`"
+                class="scroll-table-row">
+                <span class="col rank-col">
+                  <span :class="['rank-badge', `rank-${(index % 30) + 1}`]">{{ (index % 30) + 1 }}</span>
+                </span>
+                <span class="col name-col" :title="item.name">{{ item.name }}</span>
+                <span class="col parent-col" :title="item.parent">{{ item.parent }}</span>
+                <span class="col index-col" :style="{ color: getIndexColor(item.index) }">{{ item.index }}</span>
+                <span class="col length-col">{{ item.length }}</span>
+                <span class="col duration-col">{{ item.duration }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -278,28 +283,29 @@
         <div class="panel-header">
           <h3>车流量分析 TOP10</h3>
         </div>
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th width="40">排名</th>
-                <th>路段名称</th>
-                <th width="80">车流量</th>
-                <th width="70">平均车速</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in trafficFlowTop10" :key="item.name"
-                :class="['table-row', `rank-${index + 1}`]">
-                <td>
-                  <span class="rank-badge" :class="`rank-${index + 1}`">{{ index + 1 }}</span>
-                </td>
-                <td class="road-name">{{ item.name }}</td>
-                <td>{{ item.flow.toLocaleString() }}</td>
-                <td :style="{ color: getSpeedColor(item.speed) }">{{ item.speed }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="scroll-table-wrapper">
+          <div class="scroll-table-header">
+            <span class="col rank-col">排名</span>
+            <span class="col name-col">路段名称</span>
+            <span class="col flow-col">车流量</span>
+            <span class="col speed-col">平均车速</span>
+          </div>
+          <div class="scroll-table-body" ref="flowScrollTableBodyRef"
+            @mouseenter="onFlowMouseEnter"
+            @mouseleave="onFlowMouseLeave"
+            @wheel.prevent="onFlowWheel">
+            <div class="scroll-table-content" :style="{ transform: `translateY(${flowScrollOffset}px)` }">
+              <div v-for="(item, index) in [...trafficFlowTop10, ...trafficFlowTop10]" :key="`${item.name}-${index}`"
+                class="scroll-table-row">
+                <span class="col rank-col">
+                  <span :class="['rank-badge', `rank-${(index % 30) + 1}`]">{{ (index % 30) + 1 }}</span>
+                </span>
+                <span class="col name-col" :title="item.name">{{ item.name }}</span>
+                <span class="col flow-col">{{ item.flow.toLocaleString() }}</span>
+                <span class="col speed-col" :style="{ color: getSpeedColor(item.speed) }">{{ item.speed }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -392,6 +398,79 @@ const currentDate = ref('')
 const activeCongestionTab = ref('index')
 const congestionChartRef = ref<HTMLElement>()
 const weeklyChartRef = ref<HTMLElement>()
+const scrollTableBodyRef = ref<HTMLElement>()
+const flowScrollTableBodyRef = ref<HTMLElement>()
+
+// 拥堵表格滚动相关
+const scrollOffset = ref(0)
+const rowHeight = 32
+let scrollTimer: ReturnType<typeof setInterval> | null = null
+let isScrollPaused = false
+
+const startScroll = () => {
+  if (scrollTimer) return
+  scrollTimer = setInterval(() => {
+    if (isScrollPaused) return
+    const totalRows = congestionTop10.value.length
+    const maxOffset = -(totalRows * rowHeight)
+    scrollOffset.value -= 1
+    if (scrollOffset.value <= maxOffset) {
+      scrollOffset.value = 0
+    }
+  }, 50)
+}
+
+const stopScroll = () => {
+  if (scrollTimer) {
+    clearInterval(scrollTimer)
+    scrollTimer = null
+  }
+}
+
+const onMouseEnter = () => { isScrollPaused = true }
+const onMouseLeave = () => { isScrollPaused = false }
+
+const onWheel = (e: WheelEvent) => {
+  const totalRows = congestionTop10.value.length
+  const maxOffset = 0
+  const minOffset = -(totalRows * rowHeight)
+  scrollOffset.value = Math.max(minOffset, Math.min(maxOffset, scrollOffset.value - e.deltaY))
+}
+
+// 车流量表格滚动相关
+const flowScrollOffset = ref(0)
+let flowScrollTimer: ReturnType<typeof setInterval> | null = null
+let isFlowScrollPaused = false
+
+const startFlowScroll = () => {
+  if (flowScrollTimer) return
+  flowScrollTimer = setInterval(() => {
+    if (isFlowScrollPaused) return
+    const totalRows = trafficFlowTop10.value.length
+    const maxOffset = -(totalRows * rowHeight)
+    flowScrollOffset.value -= 1
+    if (flowScrollOffset.value <= maxOffset) {
+      flowScrollOffset.value = 0
+    }
+  }, 50)
+}
+
+const stopFlowScroll = () => {
+  if (flowScrollTimer) {
+    clearInterval(flowScrollTimer)
+    flowScrollTimer = null
+  }
+}
+
+const onFlowMouseEnter = () => { isFlowScrollPaused = true }
+const onFlowMouseLeave = () => { isFlowScrollPaused = false }
+
+const onFlowWheel = (e: WheelEvent) => {
+  const totalRows = trafficFlowTop10.value.length
+  const maxOffset = 0
+  const minOffset = -(totalRows * rowHeight)
+  flowScrollOffset.value = Math.max(minOffset, Math.min(maxOffset, flowScrollOffset.value - e.deltaY))
+}
 
 let congestionChart: echarts.ECharts | null = null
 let weeklyChart: echarts.ECharts | null = null
@@ -420,32 +499,72 @@ const congestionTabs = [
   { key: 'length', label: '按拥堵长度' }
 ]
 
-// 拥堵TOP10数据
+// 拥堵TOP10数据（30条）
 const congestionTop10 = ref([
-  { name: 'S1站高速', index: 9.6, duration: 12.6 },
-  { name: '华南快速干线', index: 8.7, duration: 2.6 },
-  { name: '广深高速', index: 8.2, duration: 3.1 },
-  { name: '广清高速', index: 7.8, duration: 2.8 },
-  { name: '广佛高速', index: 7.5, duration: 2.4 },
-  { name: '南沙大桥', index: 7.2, duration: 1.8 },
-  { name: '内环路', index: 6.8, duration: 1.5 },
-  { name: '黄埔大道', index: 6.5, duration: 1.2 },
-  { name: '广园快速路', index: 6.2, duration: 1.0 },
-  { name: '东风路', index: 5.8, duration: 0.8 }
+  { name: '广深高速K20+000-K35+000', parent: 'G4W广深高速', index: 9.6, length: 15.8, duration: 3.2 },
+  { name: '华南快速干线(北行)', parent: 'S81广州环城高速', index: 9.1, length: 12.6, duration: 2.8 },
+  { name: '广清高速K15+000-K28+000', parent: 'G107广清高速', index: 8.7, length: 13.2, duration: 2.6 },
+  { name: '广深沿江高速K10+500-K22+000', parent: 'S3广深沿江高速', index: 8.2, length: 11.4, duration: 2.4 },
+  { name: '莞佛高速K8+000-K18+000', parent: 'S6莞佛高速', index: 7.8, length: 9.6, duration: 2.2 },
+  { name: '广佛肇高速K12+000-K20+000', parent: 'S8广佛肇高速', index: 7.6, length: 10.3, duration: 2.1 },
+  { name: '沈海高速K45+000-K58+000', parent: 'G15沈海高速', index: 7.3, length: 8.6, duration: 1.9 },
+  { name: '汕湛高速K30+000-K42+000', parent: 'S17汕湛高速', index: 7.1, length: 7.8, duration: 1.7 },
+  { name: '乐广高速K62+000-K72+000', parent: 'G4京港澳高速', index: 6.8, length: 7.2, duration: 1.6 },
+  { name: '南沙港快速(进城方向)', parent: 'S105南沙港快速', index: 6.5, length: 6.4, duration: 1.4 },
+  { name: '内环路A线K5+000-K12+000', parent: '广州市内环路', index: 6.3, length: 7.0, duration: 1.3 },
+  { name: '黄埔大道西K2+000-K8+000', parent: '广州市快速路', index: 6.1, length: 6.0, duration: 1.2 },
+  { name: '广园快速路K8+000-K18+000', parent: '广州市快速路', index: 5.9, length: 10.0, duration: 1.1 },
+  { name: '东风路K3+000-K10+000', parent: '广州市主干道', index: 5.7, length: 7.0, duration: 1.0 },
+  { name: '广州大道中K5+000-K12+000', parent: '广州市主干道', index: 5.5, length: 7.0, duration: 0.9 },
+  { name: '华南快速干线(南行)', parent: 'S81广州环城高速', index: 5.3, length: 8.5, duration: 0.9 },
+  { name: '广佛高速K10+000-K18+000', parent: 'G15沈海高速', index: 5.1, length: 8.0, duration: 0.8 },
+  { name: '南沙大桥K2+000-K8+000', parent: 'G9411莞佛高速', index: 4.9, length: 6.0, duration: 0.8 },
+  { name: '广深高速K35+000-K48+000', parent: 'G4W广深高速', index: 4.7, length: 13.0, duration: 0.7 },
+  { name: '环城高速东段K0+000-K15+000', parent: 'S81广州环城高速', index: 4.5, length: 15.0, duration: 0.7 },
+  { name: '科韵路K2+000-K8+000', parent: '广州市快速路', index: 4.3, length: 6.0, duration: 0.6 },
+  { name: '新光快速K3+000-K10+000', parent: '广州市快速路', index: 4.1, length: 7.0, duration: 0.6 },
+  { name: '华南快速干线K15+000-K25+000', parent: 'S81广州环城高速', index: 3.9, length: 10.0, duration: 0.5 },
+  { name: '广清高速K28+000-K38+000', parent: 'G107广清高速', index: 3.7, length: 10.0, duration: 0.5 },
+  { name: '沈海高速K58+000-K68+000', parent: 'G15沈海高速', index: 3.5, length: 10.0, duration: 0.4 },
+  { name: '广深沿江高速K22+000-K32+000', parent: 'S3广深沿江高速', index: 3.3, length: 10.0, duration: 0.4 },
+  { name: '黄埔东路K5+000-K15+000', parent: '广州市主干道', index: 3.1, length: 10.0, duration: 0.4 },
+  { name: '中山大道K3+000-K12+000', parent: '广州市主干道', index: 2.9, length: 9.0, duration: 0.3 },
+  { name: '环城高速西段K0+000-K12+000', parent: 'S81广州环城高速', index: 2.7, length: 12.0, duration: 0.3 },
+  { name: '广州大桥K1+000-K3+000', parent: '广州市桥梁', index: 2.5, length: 2.0, duration: 0.2 }
 ])
 
-// 车流量TOP10数据
+// 车流量TOP10数据（30条）
 const trafficFlowTop10 = ref([
-  { name: '华南快速干线', flow: 18562, speed: 32 },
-  { name: '广深高速', flow: 16845, speed: 45 },
-  { name: 'S1站高速', flow: 15623, speed: 28 },
-  { name: '广清高速', flow: 14256, speed: 52 },
-  { name: '广佛高速', flow: 13892, speed: 48 },
-  { name: '南沙大桥', flow: 12568, speed: 65 },
-  { name: '内环路', flow: 11845, speed: 35 },
-  { name: '黄埔大道', flow: 10923, speed: 42 },
-  { name: '广园快速路', flow: 10256, speed: 55 },
-  { name: '东风路', flow: 9856, speed: 38 }
+  { name: '华南快速干线(北行)', flow: 18562, speed: 32 },
+  { name: '广深高速K20+000-K35+000', flow: 16845, speed: 45 },
+  { name: '广清高速K15+000-K28+000', flow: 15623, speed: 28 },
+  { name: '广深沿江高速K10+500-K22+000', flow: 14256, speed: 52 },
+  { name: '莞佛高速K8+000-K18+000', flow: 13892, speed: 48 },
+  { name: '广佛肇高速K12+000-K20+000', flow: 12568, speed: 65 },
+  { name: '沈海高速K45+000-K58+000', flow: 11845, speed: 35 },
+  { name: '汕湛高速K30+000-K42+000', flow: 10923, speed: 42 },
+  { name: '乐广高速K62+000-K72+000', flow: 10256, speed: 55 },
+  { name: '南沙港快速(进城方向)', flow: 9856, speed: 38 },
+  { name: '内环路A线K5+000-K12+000', flow: 9523, speed: 40 },
+  { name: '黄埔大道西K2+000-K8+000', flow: 9187, speed: 36 },
+  { name: '广园快速路K8+000-K18+000', flow: 8845, speed: 48 },
+  { name: '东风路K3+000-K10+000', flow: 8523, speed: 32 },
+  { name: '广州大道中K5+000-K12+000', flow: 8234, speed: 35 },
+  { name: '华南快速干线(南行)', flow: 7956, speed: 42 },
+  { name: '广佛高速K10+000-K18+000', flow: 7623, speed: 45 },
+  { name: '南沙大桥K2+000-K8+000', flow: 7345, speed: 58 },
+  { name: '广深高速K35+000-K48+000', flow: 7023, speed: 50 },
+  { name: '环城高速东段K0+000-K15+000', flow: 6756, speed: 48 },
+  { name: '科韵路K2+000-K8+000', flow: 6423, speed: 35 },
+  { name: '新光快速K3+000-K10+000', flow: 6156, speed: 40 },
+  { name: '华南快速干线K15+000-K25+000', flow: 5892, speed: 45 },
+  { name: '广清高速K28+000-K38+000', flow: 5623, speed: 52 },
+  { name: '沈海高速K58+000-K68+000', flow: 5345, speed: 48 },
+  { name: '广深沿江高速K22+000-K32+000', flow: 5089, speed: 55 },
+  { name: '黄埔东路K5+000-K15+000', flow: 4823, speed: 38 },
+  { name: '中山大道K3+000-K12+000', flow: 4567, speed: 32 },
+  { name: '环城高速西段K0+000-K12+000', flow: 4289, speed: 45 },
+  { name: '广州大桥K1+000-K3+000', flow: 4023, speed: 28 }
 ])
 
 // 实时事件数据
@@ -582,12 +701,16 @@ onMounted(() => {
   nextTick(() => {
     initCongestionChart()
     initWeeklyChart()
+    startScroll()
+    startFlowScroll()
   })
   window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
   if (timer) clearInterval(timer)
+  stopScroll()
+  stopFlowScroll()
   window.removeEventListener('resize', handleResize)
   congestionChart?.dispose()
   weeklyChart?.dispose()
@@ -606,7 +729,7 @@ onUnmounted(() => {
   z-index: 9999;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
   display: grid;
-  grid-template-columns: 300px 1fr 300px;
+  grid-template-columns: 300px 1fr 450px;
   grid-template-rows: 44px 1fr;
   grid-template-areas:
     "top top top"
@@ -994,40 +1117,65 @@ onUnmounted(() => {
   }
 }
 
-// 表格
-.table-wrapper {
+
+// 自定义滚动表格
+.scroll-table-wrapper {
   flex: 1;
-  overflow-y: auto;
-  max-height: 180px;
-}
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-
-  th, td {
+  .scroll-table-header {
+    display: flex;
     padding: 6px 8px;
-    text-align: left;
-    font-size: 11px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+
+    .col {
+      font-size: 11px;
+      color: #8892A8;
+      font-weight: 500;
+    }
   }
 
-  th {
-    background: rgba(0,0,0,0.2);
-    color: #8892A8;
-    font-weight: 500;
-    position: sticky;
-    top: 0;
+  .scroll-table-body {
+    height: 224px;
+    overflow: hidden;
+    position: relative;
+
+    .scroll-table-content {
+      transition: transform 0.05s linear;
+    }
+
+    .scroll-table-row {
+      display: flex;
+      padding: 6px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      height: 32px;
+      box-sizing: border-box;
+      align-items: center;
+
+      &:hover {
+        background: rgba(0,212,255,0.05);
+      }
+
+      .col {
+        font-size: 11px;
+        color: #FFFFFF;
+      }
+    }
   }
 
-  .table-row {
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    transition: background 0.2s;
-
-    &:hover { background: rgba(0,212,255,0.05); }
-    &.rank-1 { background: rgba(255,215,0,0.08); }
-    &.rank-2 { background: rgba(192,192,192,0.06); }
-    &.rank-3 { background: rgba(205,127,50,0.06); }
-  }
+  .rank-col { width: 36px; text-align: center; }
+  .name-col { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .parent-col { width: 95px; color: #8892A8; font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .index-col { width: 55px; text-align: center; font-weight: 600; font-family: 'DIN Pro', monospace; }
+  .length-col { width: 60px; text-align: center; }
+  .duration-col { width: 55px; text-align: center; }
+  .flow-col { width: 65px; text-align: right; font-family: 'DIN Pro', monospace; }
+  .speed-col { width: 55px; text-align: center; font-family: 'DIN Pro', monospace; }
 
   .rank-badge {
     display: inline-flex;
@@ -1044,11 +1192,6 @@ onUnmounted(() => {
     &.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
     &.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #000; }
     &.rank-3 { background: linear-gradient(135deg, #CD7F32, #B87333); color: #000; }
-  }
-
-  .road-name {
-    color: #FFFFFF;
-    font-weight: 500;
   }
 }
 

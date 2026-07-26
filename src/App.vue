@@ -6,30 +6,6 @@
 
   <!-- 其他页面 -->
   <div v-else-if="appReady" class="app-container">
-    <!-- 顶部导航 -->
-    <TopNavBar :menus="adminMenus">
-      <template #right>
-        <el-dropdown trigger="click">
-          <div class="user-info">
-            <el-avatar :size="32" class="user-avatar">
-              <el-icon><User /></el-icon>
-            </el-avatar>
-            <span class="user-name">管理员</span>
-            <el-icon class="el-icon--right"><ArrowDown /></el-icon>
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item :icon="User">个人中心</el-dropdown-item>
-              <el-dropdown-item :icon="Setting">系统设置</el-dropdown-item>
-              <el-dropdown-item divided :icon="Share" @click="handleSwitchOrg">切换组织</el-dropdown-item>
-              <el-dropdown-item :icon="Grid" @click="handleSwitchSubsystem">切换子系统</el-dropdown-item>
-              <el-dropdown-item divided :icon="SwitchButton" @click="handleLogout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </template>
-    </TopNavBar>
-
     <!-- 页面内容 -->
     <main class="app-main">
       <router-view />

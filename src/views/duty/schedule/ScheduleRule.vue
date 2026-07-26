@@ -29,6 +29,44 @@
             <span class="detail-title">{{ selectedRule.ruleName }}</span>
             <el-tag type="info" effect="plain" size="small">排序: {{ selectedRule.sortOrder }}</el-tag>
           </div>
+
+          <!-- 班次配置 -->
+          <div class="shift-section">
+            <div class="shift-header">
+              <span class="shift-label">班次配置</span>
+              <el-button type="primary" :icon="Plus" size="small" @click="addShift">新增班次</el-button>
+            </div>
+            <div class="shift-list">
+              <div v-for="(shift, index) in shiftList" :key="index" class="shift-row">
+                <el-input
+                  v-model="shift.name"
+                  placeholder="如：白班、晚班"
+                  style="width: 160px"
+                />
+                <el-time-picker
+                  v-model="shift.startTime"
+                  placeholder="开始时间"
+                  format="HH:mm"
+                  style="width: 140px"
+                />
+                <el-time-picker
+                  v-model="shift.endTime"
+                  placeholder="结束时间"
+                  format="HH:mm"
+                  style="width: 140px"
+                />
+                <el-button
+                  type="danger"
+                  :icon="Delete"
+                  circle
+                  size="small"
+                  :disabled="shiftList.length <= 1"
+                  @click="removeShift(index)"
+                />
+              </div>
+            </div>
+          </div>
+
           <div class="detail-content">
             <el-empty description="规则详细内容开发中" />
           </div>
@@ -84,7 +122,7 @@
 import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Plus, Edit } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 import type { ScheduleRule, ScheduleRuleForm } from '@/types/duty/schedule'
 import { mockScheduleRuleData } from '@/mock/duty/scheduleData'
 
@@ -106,6 +144,26 @@ const formRules: FormRules = {
   sortOrder: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
 }
 
+// ── 班次配置 ──
+interface ShiftItem {
+  name: string
+  startTime: Date | null
+  endTime: Date | null
+}
+
+const shiftList = ref<ShiftItem[]>([
+  { name: '', startTime: null, endTime: null },
+])
+
+function addShift() {
+  shiftList.value.push({ name: '', startTime: null, endTime: null })
+}
+
+function removeShift(index: number) {
+  if (shiftList.value.length <= 1) return
+  shiftList.value.splice(index, 1)
+}
+
 // ── 方法 ──
 function fetchData() {
   ruleList.value = JSON.parse(JSON.stringify(mockScheduleRuleData))
@@ -113,6 +171,8 @@ function fetchData() {
 
 function selectRule(rule: ScheduleRule) {
   selectedRule.value = rule
+  // 重置班次为默认一条
+  shiftList.value = [{ name: '', startTime: null, endTime: null }]
 }
 
 function handleAdd() {
@@ -311,6 +371,37 @@ fetchData()
         font-size: 16px;
         font-weight: 600;
         color: #303133;
+      }
+    }
+
+    // 班次配置
+    .shift-section {
+      padding: 16px 24px;
+      border-bottom: 1px solid #ebeef5;
+
+      .shift-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .shift-label {
+          font-size: 14px;
+          font-weight: 600;
+          color: #303133;
+        }
+      }
+
+      .shift-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .shift-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
     }
 

@@ -31,7 +31,10 @@ import {
   Check,
   Files,
   Edit,
-  Bell
+  Bell,
+  EditPen,
+  DataAnalysis,
+  Folder
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -241,6 +244,21 @@ export const dutyMenus: MenuItem[] = [
       { path: '/duty/base-info/holiday', title: '节假日维护', icon: Calendar },
     ]
   },
+]
+
+// 应急事件管理菜单
+export const eventMenus: MenuItem[] = [
+  { path: '/event/report', title: '事故上报', icon: EditPen },
+  { path: '/event/receive', title: '事故信息接收', icon: ChatDotRound },
+  { path: '/event/warning', title: '预警处置', icon: Warning },
+  { path: '/event/warning/rule', title: '事故预警规则', icon: Document },
+  { path: '/event/receive/rule', title: '事故接报规则', icon: List },
+  { path: '/event/task', title: '任务分配及跟踪', icon: DataAnalysis },
+  { path: '/event/todo', title: '我的待办', icon: Clock },
+  { path: '/event/document', title: '文档库', icon: Folder },
+  { path: '/event/archive', title: '归档事故库', icon: Box },
+  { path: '/event/dict', title: '字典管理', icon: Collection },
+  { path: '/event/log', title: '系统日志', icon: Notebook },
 ]
 
 /**

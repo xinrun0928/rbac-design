@@ -314,36 +314,71 @@
         <div class="panel-header">
           <h3>事件概览（今日）</h3>
         </div>
-        <div class="event-overview">
-          <div class="event-stat accident">
-            <div class="event-icon">🚗</div>
-            <div class="event-num">8</div>
-            <div class="event-label">交通事故</div>
+        <div class="event-grid">
+          <div class="event-item">
+            <div class="event-icon accident">🚗</div>
+            <div class="event-info">
+              <div class="event-value">8<small>起</small></div>
+              <div class="event-label">交通事故</div>
+            </div>
           </div>
-          <div class="event-stat construction">
-            <div class="event-icon">🚧</div>
-            <div class="event-num">3</div>
-            <div class="event-label">道路施工</div>
+          <div class="event-item">
+            <div class="event-icon construction">🚧</div>
+            <div class="event-info">
+              <div class="event-value">3<small>段</small></div>
+              <div class="event-label">道路施工</div>
+            </div>
           </div>
-          <div class="event-stat control">
-            <div class="event-icon">⚠️</div>
-            <div class="event-num">1</div>
-            <div class="event-label">交通管制</div>
+          <div class="event-item">
+            <div class="event-icon emergency">⚡</div>
+            <div class="event-info">
+              <div class="event-value">1<small>起</small></div>
+              <div class="event-label">突发事件</div>
+            </div>
           </div>
-          <div class="event-total">
-            <span class="total-label">事件总计</span>
-            <span class="total-value">12起</span>
+          <div class="event-item">
+            <div class="event-icon control">⚠️</div>
+            <div class="event-info">
+              <div class="event-value">2<small>段</small></div>
+              <div class="event-label">交通管制</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 近七天拥堵统计 -->
-      <div class="panel">
+      <!-- 实时事件列表 -->
+      <div class="panel events-panel">
         <div class="panel-header">
-          <h3>近七天拥堵统计</h3>
+          <h3>实时事件列表</h3>
+          <span class="refresh-tag">● 自动刷新</span>
         </div>
-        <div class="chart-container">
-          <div ref="weeklyChartRef" class="chart-dom"></div>
+        <div class="scroll-table-wrapper">
+          <div class="scroll-table-header">
+            <span class="col event-type-col">事件类型</span>
+            <span class="col event-road-col">路段名称</span>
+            <span class="col event-dir-col">影响方向</span>
+            <span class="col event-time-col">发生时间</span>
+            <span class="col event-status-col">状态</span>
+          </div>
+          <div class="scroll-table-body" ref="eventScrollTableBodyRef"
+            @mouseenter="onEventMouseEnter"
+            @mouseleave="onEventMouseLeave"
+            @wheel.prevent="onEventWheel">
+            <div class="scroll-table-content" :style="{ transform: `translateY(${eventScrollOffset}px)` }">
+              <div v-for="(item, index) in [...realtimeEvents, ...realtimeEvents]" :key="`${item.id}-${index}`"
+                class="scroll-table-row">
+                <span class="col event-type-col">
+                  <span :class="['event-type-badge', item.typeClass]">{{ item.type }}</span>
+                </span>
+                <span class="col event-road-col" :title="item.location">{{ item.location }}</span>
+                <span class="col event-dir-col">{{ item.direction }}</span>
+                <span class="col event-time-col">{{ item.time }}</span>
+                <span class="col event-status-col">
+                  <span :class="['status-badge', item.statusClass]">{{ item.status }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -400,6 +435,7 @@ const congestionChartRef = ref<HTMLElement>()
 const weeklyChartRef = ref<HTMLElement>()
 const scrollTableBodyRef = ref<HTMLElement>()
 const flowScrollTableBodyRef = ref<HTMLElement>()
+const eventScrollTableBodyRef = ref<HTMLElement>()
 
 // 拥堵表格滚动相关
 const scrollOffset = ref(0)
@@ -470,6 +506,41 @@ const onFlowWheel = (e: WheelEvent) => {
   const maxOffset = 0
   const minOffset = -(totalRows * rowHeight)
   flowScrollOffset.value = Math.max(minOffset, Math.min(maxOffset, flowScrollOffset.value - e.deltaY))
+}
+
+// 实时事件列表滚动相关
+const eventScrollOffset = ref(0)
+let eventScrollTimer: ReturnType<typeof setInterval> | null = null
+let isEventScrollPaused = false
+
+const startEventScroll = () => {
+  if (eventScrollTimer) return
+  eventScrollTimer = setInterval(() => {
+    if (isEventScrollPaused) return
+    const totalRows = realtimeEvents.value.length
+    const maxOffset = -(totalRows * rowHeight)
+    eventScrollOffset.value -= 1
+    if (eventScrollOffset.value <= maxOffset) {
+      eventScrollOffset.value = 0
+    }
+  }, 50)
+}
+
+const stopEventScroll = () => {
+  if (eventScrollTimer) {
+    clearInterval(eventScrollTimer)
+    eventScrollTimer = null
+  }
+}
+
+const onEventMouseEnter = () => { isEventScrollPaused = true }
+const onEventMouseLeave = () => { isEventScrollPaused = false }
+
+const onEventWheel = (e: WheelEvent) => {
+  const totalRows = realtimeEvents.value.length
+  const maxOffset = 0
+  const minOffset = -(totalRows * rowHeight)
+  eventScrollOffset.value = Math.max(minOffset, Math.min(maxOffset, eventScrollOffset.value - e.deltaY))
 }
 
 let congestionChart: echarts.ECharts | null = null
@@ -573,7 +644,12 @@ const realtimeEvents = ref([
   { id: 2, type: '道路施工', typeClass: 'construction', location: '广清高速K20+300', direction: '西向东', time: '14:50', status: '进行中', statusClass: 'ongoing' },
   { id: 3, type: '交通管制', typeClass: 'control', location: '广佛肇高速K15+000', direction: '双向', time: '14:10', status: '管制中', statusClass: 'control' },
   { id: 4, type: '道路施工', typeClass: 'construction', location: '沈海高速K50+000', direction: '北向南', time: '13:55', status: '进行中', statusClass: 'ongoing' },
-  { id: 5, type: '交通事故', typeClass: 'accident', location: '华南快速K12+200', direction: '南向北', time: '13:30', status: '已处理', statusClass: 'resolved' }
+  { id: 5, type: '交通事故', typeClass: 'accident', location: '华南快速K12+200', direction: '南向北', time: '13:30', status: '已处理', statusClass: 'resolved' },
+  { id: 6, type: '突发事件', typeClass: 'emergency', location: '内环路A线K8+500', direction: '顺时针', time: '13:15', status: '处理中', statusClass: 'processing' },
+  { id: 7, type: '交通事故', typeClass: 'accident', location: '南沙大桥K5+100', direction: '东向西', time: '12:50', status: '已处理', statusClass: 'resolved' },
+  { id: 8, type: '交通管制', typeClass: 'control', location: '黄埔大道K3+200', direction: '西向东', time: '12:30', status: '已解除', statusClass: 'resolved' },
+  { id: 9, type: '道路施工', typeClass: 'construction', location: '广园快速K15+800', direction: '东向西', time: '12:10', status: '进行中', statusClass: 'ongoing' },
+  { id: 10, type: '交通事故', typeClass: 'accident', location: '东风路K5+300', direction: '双向', time: '11:45', status: '已处理', statusClass: 'resolved' }
 ])
 
 // 路线推荐
@@ -703,6 +779,7 @@ onMounted(() => {
     initWeeklyChart()
     startScroll()
     startFlowScroll()
+    startEventScroll()
   })
   window.addEventListener('resize', handleResize)
 })
@@ -711,6 +788,7 @@ onUnmounted(() => {
   if (timer) clearInterval(timer)
   stopScroll()
   stopFlowScroll()
+  stopEventScroll()
   window.removeEventListener('resize', handleResize)
   congestionChart?.dispose()
   weeklyChart?.dispose()
@@ -1126,6 +1204,12 @@ onUnmounted(() => {
   flex-direction: column;
   overflow: hidden;
 
+  .refresh-tag {
+    font-size: 9px;
+    color: #2ECC71;
+    animation: blink 1.5s infinite;
+  }
+
   .scroll-table-header {
     display: flex;
     padding: 6px 8px;
@@ -1176,6 +1260,37 @@ onUnmounted(() => {
   .duration-col { width: 55px; text-align: center; }
   .flow-col { width: 65px; text-align: right; font-family: 'DIN Pro', monospace; }
   .speed-col { width: 55px; text-align: center; font-family: 'DIN Pro', monospace; }
+
+  // 事件列表列
+  .event-type-col { width: 65px; text-align: center; }
+  .event-road-col { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .event-dir-col { width: 60px; text-align: center; color: #8892A8; }
+  .event-time-col { width: 50px; text-align: center; font-family: 'DIN Pro', monospace; }
+  .event-status-col { width: 60px; text-align: center; }
+
+  .event-type-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    display: inline-block;
+
+    &.accident { background: rgba(245,108,108,0.2); color: #F56C6C; }
+    &.construction { background: rgba(243,156,18,0.2); color: #F39C12; }
+    &.emergency { background: rgba(0,212,255,0.2); color: #00D4FF; }
+    &.control { background: rgba(230,162,60,0.2); color: #E6A23C; }
+  }
+
+  .status-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    display: inline-block;
+
+    &.processing { background: rgba(0,212,255,0.2); color: #00D4FF; }
+    &.ongoing { background: rgba(243,156,18,0.2); color: #F39C12; }
+    &.control { background: rgba(230,162,60,0.2); color: #E6A23C; }
+    &.resolved { background: rgba(103,194,58,0.2); color: #67C23A; }
+  }
 
   .rank-badge {
     display: inline-flex;
@@ -1336,44 +1451,62 @@ onUnmounted(() => {
 }
 
 // 事件概览
-.event-overview {
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 5px;
+  padding: 6px;
+  flex: 1;
+}
 
-  .event-stat {
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  min-height: 50px;
+
+  .event-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 5px;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
 
-    &.accident { border-left: 3px solid #F56C6C; }
-    &.construction { border-left: 3px solid #F39C12; }
-    &.control { border-left: 3px solid #E6A23C; }
+    &.accident { background: rgba(245,108,108,0.15); }
+    &.construction { background: rgba(243,156,18,0.15); }
+    &.emergency { background: rgba(0,212,255,0.15); }
+    &.control { background: rgba(230,162,60,0.15); }
+  }
 
-    .event-icon { font-size: 18px; }
-    .event-num {
-      font-size: 20px;
+  .event-info {
+    min-width: 0;
+
+    .event-value {
+      font-size: 16px;
       font-weight: 700;
       color: #FFFFFF;
       font-family: 'DIN Pro', monospace;
+      line-height: 1.1;
+
+      small {
+        font-size: 9px;
+        font-weight: 400;
+        color: #8892A8;
+        margin-left: 1px;
+      }
     }
-    .event-label { font-size: 11px; color: #8892A8; }
-  }
 
-  .event-total {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    background: rgba(0,212,255,0.1);
-    border-radius: 5px;
-    font-size: 12px;
-
-    .total-label { color: #8892A8; }
-    .total-value { color: #00D4FF; font-weight: 600; }
+    .event-label {
+      font-size: 9px;
+      color: #8892A8;
+      margin-top: 1px;
+    }
   }
 }
 

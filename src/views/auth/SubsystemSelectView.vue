@@ -136,6 +136,9 @@ const handleSelectSubsystem = (subsystem: any) => {
   } else if (subsystem.subsysId === 4) {
     // 指挥智能调度子系统
     router.push('/dispatch')
+  } else if (subsystem.subsysId === 5) {
+    // 物资管理子系统
+    router.push('/resource')
   } else {
     // 其他子系统（暂未开发，提示后跳转到对应路径）
     ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)

@@ -50,7 +50,8 @@ import {
   VideoPlay,
   MapLocation,
   Position,
-  Microphone
+  Microphone,
+  CircleClose
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -514,6 +515,64 @@ export const planMenus: MenuItem[] = [
     groupTitle: '操作日志',
     children: [
       { path: '/plan/log', title: '操作日志', icon: Notebook },
+    ]
+  },
+]
+
+// 物资管理菜单
+export const materialMenus: MenuItem[] = [
+  { path: '/resource/home', title: '首页', icon: HomeFilled },
+  {
+    path: '/resource/warehouse-group',
+    title: '设备物资仓库管理',
+    icon: Box,
+    isGroup: true,
+    groupTitle: '设备物资仓库管理',
+    children: [
+      { path: '/resource/warehouse/query', title: '库存查询', icon: Search },
+      { path: '/resource/warehouse/apply', title: '调用申请', icon: Document },
+      { path: '/resource/warehouse/check', title: '库存盘点', icon: Check },
+      { path: '/resource/warehouse/audit', title: '调用审核', icon: EditPen },
+      { path: '/resource/warehouse/warehouse', title: '仓库查询', icon: OfficeBuilding },
+      { path: '/resource/warehouse/warning', title: '安全库存预警', icon: Warning },
+      { path: '/resource/warehouse/fault-warning', title: '故障/报废预警', icon: Warning },
+    ]
+  },
+  {
+    path: '/resource/maintenance-group',
+    title: '装备维保管理',
+    icon: Tools,
+    isGroup: true,
+    groupTitle: '装备维保管理',
+    children: [
+      { path: '/resource/maintenance/plan', title: '装备维保计划', icon: Document },
+      { path: '/resource/maintenance/record', title: '维保记录', icon: Notebook },
+      { path: '/resource/maintenance/fault', title: '故障设备', icon: Warning },
+      { path: '/resource/maintenance/retire', title: '退役/报废审核', icon: CircleClose },
+    ]
+  },
+  {
+    path: '/resource/training-group',
+    title: '装备培训与考核',
+    icon: Reading,
+    isGroup: true,
+    groupTitle: '装备培训与考核',
+    children: [
+      { path: '/resource/training/use', title: '装备使用培训', icon: Reading },
+      { path: '/resource/training/template', title: '装备操作考核模板', icon: Files },
+      { path: '/resource/training/record', title: '装备操作考核记录', icon: Notebook },
+    ]
+  },
+  {
+    path: '/resource/basic-group',
+    title: '基础管理',
+    icon: Setting,
+    isGroup: true,
+    groupTitle: '基础管理',
+    children: [
+      { path: '/resource/basic/warehouse', title: '仓库管理', icon: OfficeBuilding },
+      { path: '/resource/basic/category', title: '物资装备种类管理', icon: Collection },
+      { path: '/resource/basic/set', title: '装备套组管理', icon: Box },
     ]
   },
 ]

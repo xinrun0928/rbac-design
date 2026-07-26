@@ -133,6 +133,81 @@ src/
 - **删除**：必须二次确认 `ElMessageBox.confirm`
 - **表格滚动**：包裹 `.table-wrapper { flex: 1; overflow: auto; }`
 
+### 分页组件规范
+
+**基本用法：**
+```vue
+<el-pagination
+  v-model:current-page="currentPage"
+  v-model:page-size="pageSize"
+  :total="total"
+  :page-sizes="[10, 20, 50, 100]"
+  layout="total, sizes, prev, pager, next, jumper"
+  background
+  @size-change="handleSizeChange"
+  @current-change="handleCurrentChange"
+/>
+```
+
+**属性说明：**
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| v-model:current-page | number | 1 | 当前页码 |
+| v-model:page-size | number | 10 | 每页显示条数 |
+| total | number | - | 总条数 |
+| page-sizes | number[] | [10, 20, 50, 100] | 每页显示条数选项 |
+| layout | string | - | 布局组件，逗号分隔 |
+| background | boolean | false | 是否显示背景色 |
+
+**layout 组件说明：**
+- `total`：总条数
+- `sizes`：每页条数选择器
+- `prev`：上一页按钮
+- `pager`：页码按钮
+- `next`：下一页按钮
+- `jumper`：跳页器
+
+**样式规范：**
+```scss
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  flex-shrink: 0;
+}
+```
+
+**数据处理示例：**
+```typescript
+// 计算总条数
+const total = computed(() => filteredData.value.length)
+
+// 过滤数据
+const filteredData = computed(() => {
+  if (!searchName.value) return allData.value
+  return allData.value.filter(item =>
+    item.name.includes(searchName.value)
+  )
+})
+
+// 分页数据
+const tableData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return filteredData.value.slice(start, end)
+})
+
+// 搜索时重置页码
+const handleSearch = () => {
+  currentPage.value = 1
+}
+
+// 每页条数变化时重置页码
+const handleSizeChange = () => {
+  currentPage.value = 1
+}
+```
+
 ### 样式规范
 - 侧边栏背景色：`#1a1f2e`
 - 菜单项高度：`50px`

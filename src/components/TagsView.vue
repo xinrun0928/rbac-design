@@ -289,10 +289,12 @@ onUnmounted(() => {
   padding: 0 8px;
   overflow-x: auto;
   overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .tags-view-wrapper::-webkit-scrollbar {
-  height: 0;
+  display: none; /* Chrome/Safari/Opera */
 }
 
 .tags-view-item {

@@ -176,62 +176,6 @@
           </div>
         </div>
       </div>
-
-      <!-- 下方区域：实时事件 + 避堵路线 -->
-      <div class="bottom-row">
-        <!-- 实时事件列表 -->
-        <div class="panel events-panel">
-          <div class="panel-header">
-            <h3>实时事件列表</h3>
-            <span class="refresh-tag">● 自动刷新</span>
-          </div>
-          <div class="event-list-wrapper">
-            <div class="event-list">
-              <div v-for="event in realtimeEvents" :key="event.id" class="event-item">
-                <div class="event-type-badge" :class="event.typeClass">{{ event.type }}</div>
-                <div class="event-info">
-                  <div class="event-location">{{ event.location }}</div>
-                  <div class="event-meta">
-                    <span>{{ event.direction }}</span>
-                    <span>{{ event.time }}</span>
-                  </div>
-                </div>
-                <div class="event-status" :class="event.statusClass">{{ event.status }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 避堵路线推荐 -->
-        <div class="panel route-panel">
-          <div class="panel-header">
-            <h3>避堵路线推荐</h3>
-          </div>
-          <div class="route-content">
-            <div class="route-endpoints">
-              <div class="endpoint">
-                <span class="endpoint-label">起点</span>
-                <span class="endpoint-name">天河区</span>
-              </div>
-              <div class="route-arrow">→</div>
-              <div class="endpoint">
-                <span class="endpoint-label">终点</span>
-                <span class="endpoint-name">宝安区</span>
-              </div>
-            </div>
-            <div class="route-options">
-              <div v-for="(route, index) in routeOptions" :key="index"
-                :class="['route-option', { recommended: index === 0 }]">
-                <div class="route-badge" v-if="index === 0">推荐</div>
-                <div class="route-main">
-                  <span class="route-time">{{ route.time }}</span>
-                  <span class="route-distance">{{ route.distance }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </main>
 
     <!-- 右侧面板 -->
@@ -382,26 +326,45 @@
         </div>
       </div>
 
-      <!-- 管控路段/数据源 -->
-      <div class="panel">
+      <!-- 避堵路线推荐 -->
+      <div class="panel route-panel">
         <div class="panel-header">
-          <h3>管控路段 / 数据源</h3>
+          <h3>避堵路线推荐</h3>
         </div>
-        <div class="source-status">
-          <div class="controlled-roads">
-            <div class="controlled-num">8</div>
-            <div class="controlled-label">管控路段</div>
-          </div>
-          <div class="source-bars">
-            <div class="source-bar-item">
-              <span class="bar-label">摄像头</span>
-              <div class="bar-track"><div class="bar-fill" style="width:92.5%"></div></div>
-              <span class="bar-value">92.5%</span>
+        <div class="route-content">
+          <div class="route-form">
+            <div class="form-item">
+              <label>起点</label>
+              <input v-model="routeStart" type="text" placeholder="请输入起点" class="form-input" />
             </div>
-            <div class="source-bar-item">
-              <span class="bar-label">传感器</span>
-              <div class="bar-track"><div class="bar-fill" style="width:92.9%"></div></div>
-              <span class="bar-value">92.9%</span>
+            <div class="form-item">
+              <label>终点</label>
+              <input v-model="routeEnd" type="text" placeholder="请输入终点" class="form-input" />
+            </div>
+            <div class="form-item">
+              <label>出发时间</label>
+              <select v-model="departTime" class="form-select">
+                <option value="now">现在</option>
+                <option value="1h">1小时后</option>
+              </select>
+            </div>
+          </div>
+          <div class="route-options">
+            <div v-for="(route, index) in routeOptions" :key="index"
+              :class="['route-option', { recommended: index === 0 }]">
+              <div class="route-info">
+                <div class="route-name">
+                  <span v-if="index === 0" class="recommend-tag">推荐</span>
+                  {{ route.name }}
+                </div>
+                <div class="route-progress-row">
+                  <span class="route-time">{{ route.time }}</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill" :style="{ width: route.progress + '%', background: index === 0 ? '#2ECC71' : getProgressColor(route.congestion) }"></div>
+                  </div>
+                  <span class="route-distance">{{ route.distance }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -653,11 +616,24 @@ const realtimeEvents = ref([
 ])
 
 // 路线推荐
+const routeStart = ref('天河区')
+const routeEnd = ref('宝安区')
+const departTime = ref('now')
 const routeOptions = ref([
-  { time: '1小时32分', distance: '65.2km' },
-  { time: '1小时45分', distance: '72.8km' },
-  { time: '1小时50分', distance: '68.4km' }
+  { name: '路线1', time: '1h32m', distance: '65.2km', congestion: 'low', congestionText: '畅通', progress: 25 },
+  { name: '路线2', time: '1h45m', distance: '72.8km', congestion: 'medium', congestionText: '部分缓行', progress: 55 },
+  { name: '路线3', time: '1h50m', distance: '68.4km', congestion: 'low', congestionText: '畅通', progress: 30 },
+  { name: '路线4', time: '2h05m', distance: '78.5km', congestion: 'medium', congestionText: '部分缓行', progress: 60 }
 ])
+
+const getProgressColor = (level: string) => {
+  const colors: Record<string, string> = { low: '#2ECC71', medium: '#F39C12', high: '#E74C3C' }
+  return colors[level] || '#2ECC71'
+}
+
+const toggleRouteDetail = (index: number) => {
+  // 可以展开详情的逻辑
+}
 
 // 辅助函数
 const getMapColor = () => {
@@ -1022,7 +998,7 @@ onUnmounted(() => {
   min-width: 0;
 
   .map-panel {
-    flex: 1;
+    flex: 0 0 40%;
 
     .map-legend {
       display: flex;
@@ -1153,13 +1129,6 @@ onUnmounted(() => {
       }
     }
   }
-
-  .bottom-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    height: 260px;
-  }
 }
 
 // 右侧面板
@@ -1168,8 +1137,18 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  overflow-y: auto;
+  overflow: hidden;
   padding-left: 2px;
+
+  .panel {
+    flex: 0 0 20%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    &:nth-child(3) { flex: 0 0 15%; }
+    &:nth-child(5) { flex: 0 0 25%; }
+  }
 }
 
 // Tab按钮
@@ -1510,56 +1489,6 @@ onUnmounted(() => {
   }
 }
 
-// 管控路段/数据源
-.source-status {
-  padding: 8px;
-
-  .controlled-roads {
-    text-align: center;
-    padding: 10px;
-    background: rgba(0,212,255,0.1);
-    border-radius: 5px;
-    margin-bottom: 8px;
-
-    .controlled-num {
-      font-size: 24px;
-      font-weight: 700;
-      color: #00D4FF;
-      font-family: 'DIN Pro', monospace;
-    }
-    .controlled-label { font-size: 10px; color: #8892A8; }
-  }
-
-  .source-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    .source-bar-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-
-      .bar-label { color: #8892A8; width: 36px; }
-      .bar-track {
-        flex: 1;
-        height: 4px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 2px;
-        overflow: hidden;
-
-        .bar-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #2ECC71, #27AE60);
-          border-radius: 2px;
-        }
-      }
-      .bar-value { color: #2ECC71; font-family: 'DIN Pro', monospace; width: 36px; text-align: right; }
-    }
-  }
-}
-
 // 实时事件列表
 .events-panel {
   display: flex;
@@ -1642,6 +1571,7 @@ onUnmounted(() => {
 .route-panel {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .route-content {
     padding: 8px;
@@ -1649,70 +1579,134 @@ onUnmounted(() => {
     flex-direction: column;
     gap: 8px;
     flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 
-  .route-endpoints {
+  .route-form {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 5px;
+    align-items: flex-end;
+    gap: 8px;
 
-    .endpoint {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
+    .form-item {
+      flex: 1;
 
-      .endpoint-label { font-size: 9px; color: #8892A8; }
-      .endpoint-name { font-size: 14px; font-weight: 600; color: #FFFFFF; }
+      label {
+        display: block;
+        font-size: 9px;
+        color: #8892A8;
+        margin-bottom: 2px;
+      }
+
+      .form-input, .form-select {
+        width: 100%;
+        padding: 5px 8px;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 4px;
+        color: #FFFFFF;
+        font-size: 11px;
+        outline: none;
+
+        &:focus {
+          border-color: rgba(0,212,255,0.5);
+        }
+
+        &::placeholder {
+          color: #8892A8;
+        }
+      }
+
+      .form-select {
+        cursor: pointer;
+
+        option {
+          background: #0B0E1A;
+          color: #FFFFFF;
+        }
+      }
     }
-
-    .route-arrow { color: #00D4FF; font-size: 16px; }
   }
 
   .route-options {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     .route-option {
-      padding: 8px;
+      padding: 8px 10px;
       background: rgba(0,0,0,0.2);
       border-radius: 5px;
       border: 1px solid rgba(255,255,255,0.06);
-      position: relative;
 
       &.recommended {
-        border-color: rgba(0,212,255,0.3);
-        background: rgba(0,212,255,0.05);
+        border-color: rgba(46,204,113,0.3);
+        background: rgba(46,204,113,0.05);
       }
 
-      .route-badge {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        padding: 2px 5px;
-        background: linear-gradient(135deg, #00D4FF, #0099CC);
-        color: #FFF;
-        font-size: 9px;
-        border-radius: 3px;
-      }
+      .route-info {
+        .route-name {
+          font-size: 11px;
+          color: #8892A8;
+          margin-bottom: 6px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
 
-      .route-main {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-
-        .route-time {
-          font-size: 16px;
-          font-weight: 600;
-          color: #FFFFFF;
-          font-family: 'DIN Pro', monospace;
+          .recommend-tag {
+            padding: 1px 5px;
+            background: #2ECC71;
+            color: #FFF;
+            font-size: 9px;
+            border-radius: 3px;
+          }
         }
 
-        .route-distance { font-size: 11px; color: #8892A8; }
+        .route-progress-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .route-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            font-family: 'DIN Pro', monospace;
+            flex-shrink: 0;
+            width: 50px;
+          }
+
+          .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+
+            .progress-fill {
+              height: 100%;
+              border-radius: 3px;
+              transition: width 0.3s;
+            }
+          }
+
+          .route-distance {
+            font-size: 11px;
+            color: #8892A8;
+            flex-shrink: 0;
+            width: 50px;
+            text-align: right;
+          }
+        }
       }
     }
   }

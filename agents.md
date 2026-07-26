@@ -157,3 +157,177 @@ pnpm build      # 构建生产版本
 1. 本项目仅用于演示，所有数据使用 Mock 模拟
 2. 使用 `@/` 路径别名代替相对路径
 3. 公共组件放置在 `src/components/` 目录
+4. **禁止运行 `pnpm dev`**：只需修改源码，由用户自行启动开发服务器查看效果，不要在代码中执行启动开发服务器的命令
+
+---
+
+## 详细开发流程
+
+### 一、初始化子系统导航与侧边栏
+
+#### 步骤1：查看 mock 数据
+- 文件：`src/mock/admin/menuData.ts`
+- 找到对应子系统的菜单数据（如 subsysId: 3 为事件管理）
+- 记录菜单项的 menuId、parentId、menuName、icon、path、component
+- 注意：严格按照 mock 数据的顺序，不新增不删除不修改
+
+#### 步骤2：添加菜单配置
+- 文件：`src/config/menu.ts`
+- 导入所需图标：`import { IconName } from '@element-plus/icons-vue'`
+- 导出菜单常量：`export const xxxMenus: MenuItem[] = [...]`
+- 菜单项格式：`{ path: '/xxx/yyy', title: '名称', icon: IconName }`
+- 扁平菜单直接平铺，分组菜单使用 `isGroup: true` 和 `children`
+
+#### 步骤3：创建布局组件
+- 文件：`src/views/xxx/XxxLayout.vue`
+- 参考：`src/views/duty/DutyLayout.vue`
+- 结构：AppSidebar + Header(Breadcrumb, TagsView, UserDropdown) + router-view
+- 导入菜单配置并传给 AppSidebar
+
+#### 步骤4：更新路由配置
+- 文件：`src/router/modules/xxx.ts`
+- 添加 component 指向布局组件
+- 添加 redirect 默认跳转路径
+- 添加 children 子路由，component 使用懒加载
+- 路由路径与 mock 数据中的 path 字段对应
+
+#### 步骤5：创建页面组件
+- 目录：`src/views/xxx/子模块/`
+- 每个路由对应一个 .vue 文件
+- 初始为占位组件，后续逐步实现
+
+#### 步骤6：注册子系统跳转（可选）
+- 文件：`src/views/auth/SubsystemSelectView.vue`
+- 在 handleSelectSubsystem 中添加 subsysId 判断和跳转
+
+---
+
+### 二、开发一个列表页面
+
+#### 步骤1：创建类型定义
+- 文件：`src/types/xxx/xxx.ts`
+- 定义接口 `interface XxxData { ... }`
+
+#### 步骤2：创建 Mock 数据
+- 文件：`src/mock/xxx/xxxData.ts`
+- 导出 mock 数据：`export const mockXxxData: XxxData[] = [...]`
+
+#### 步骤3：实现页面组件
+- 文件：`src/views/xxx/xxx/XxxPage.vue`
+- 参考：`src/views/admin/monitor/OnlineUser.vue`
+
+**模板结构：**
+```
+<el-card class="table-card">
+  ├── 搜索栏 (.search-bar)
+  │   ├── el-form + el-input/select
+  │   └── 操作按钮
+  ├── el-table (v-loading)
+  │   ├── 序号列 (type="index")
+  │   ├── 数据列
+  │   └── 操作列 (fixed="right")
+  └── 分页 (.pagination-wrapper)
+      └── el-pagination
+```
+
+**脚本结构：**
+- ref/reactive 定义状态
+- computed 实现过滤+分页
+- 导入 mock 数据
+- 搜索/新增/编辑/删除/分页方法
+
+**样式结构：**
+- .xxx-page: flex布局，height: 100%
+- .table-card: flex: 1，圆角卡片
+- .data-table: flex: 1
+- .pagination-wrapper: flex-end
+
+#### 步骤4：常用功能实现
+
+**搜索过滤：**
+```typescript
+const filteredData = computed(() => {
+  let data = allData.value
+  if (searchForm.keyword) {
+    data = data.filter(item => item.name.includes(searchForm.keyword))
+  }
+  pagination.total = data.length
+  const start = (pagination.page - 1) * pagination.pageSize
+  return data.slice(start, start + pagination.pageSize)
+})
+```
+
+**分页：**
+```vue
+<el-pagination
+  v-model:current-page="pagination.page"
+  v-model:page-size="pagination.pageSize"
+  :total="pagination.total"
+  :page-sizes="[10, 20, 50, 100]"
+  layout="total, sizes, prev, pager, next, jumper"
+/>
+```
+
+**删除确认：**
+```typescript
+ElMessageBox.confirm('确定删除吗？', '确认', {
+  type: 'warning'
+}).then(() => { ... })
+```
+
+**新增/编辑抽屉：**
+```vue
+<el-drawer v-model="drawerVisible" title="xxx" size="500px">
+  <el-form :model="formData" :rules="formRules">
+    ...
+  </el-form>
+</el-drawer>
+```
+
+---
+
+### 三、开发表单页面（抽屉）
+
+#### 步骤1：表单数据
+```typescript
+const formData = reactive({
+  field1: '',
+  field2: ''
+})
+```
+
+#### 步骤2：表单校验
+```typescript
+const formRules: FormRules = {
+  field1: [{ required: true, message: '请输入xxx', trigger: 'blur' }]
+}
+```
+
+#### 步骤3：提交方法
+```typescript
+function handleSubmit() {
+  formRef.value?.validate(valid => {
+    if (valid) {
+      ElMessage.success('操作成功')
+      drawerVisible.value = false
+    }
+  })
+}
+```
+
+---
+
+### 四、文件结构速查
+
+```
+子系统初始化：
+  src/config/menu.ts              ← 添加菜单
+  src/router/modules/xxx.ts       ← 添加路由
+  src/views/xxx/XxxLayout.vue     ← 创建布局
+  src/views/xxx/xxx/XxxPage.vue   ← 创建页面
+  src/types/xxx/xxx.ts            ← 类型定义
+  src/mock/xxx/xxxData.ts         ← Mock数据
+
+页面开发：
+  搜索栏 + 表格 + 分页 + 抽屉表单
+```

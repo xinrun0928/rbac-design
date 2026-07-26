@@ -11,6 +11,9 @@ importers:
       '@element-plus/icons-vue':
         specifier: ^2.3.1
         version: 2.3.2(vue@3.5.40(typescript@5.3.2))
+      datav-vue3:
+        specifier: ^1.0.0
+        version: 1.0.0(vue@3.5.40(typescript@5.3.2))
       echarts:
         specifier: ^6.1.0
         version: 6.1.0
@@ -217,6 +220,9 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@jiaminghi/color@1.1.3':
+    resolution: {integrity: sha512-ZY3hdorgODk4OSTbxyXBPxAxHPIVf9rPlKJyK1C1db46a50J0reFKpAvfZG8zMG3lvM60IR7Qawgcu4ZDO3+Hg==}
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
@@ -542,11 +548,19 @@ packages:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   computeds@0.0.1:
     resolution: {integrity: sha512-7CEBgcMjVmitjYo5q8JTJVra6X5mQ20uTThdK+0kR7UEaDrAWEQcRiBtWJzga4eRpP6afNwwLsX2SET2JhVB1Q==}
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  datav-vue3@1.0.0:
+    resolution: {integrity: sha512-ehQgoAxyZHZwLtZBJ8mlEe41bOjGH816bPH0XhtjR6saVYUgt/HUslcE2M18lm0FfmTlLOcvPtvoDBlitIyehg==}
+    peerDependencies:
+      vue: '>=3.2.0'
 
   dayjs@1.11.21:
     resolution: {integrity: sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==}
@@ -844,6 +858,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
+  '@jiaminghi/color@1.1.3': {}
+
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
   '@parcel/watcher-android-arm64@2.5.6':
@@ -1105,9 +1121,18 @@ snapshots:
     dependencies:
       readdirp: 5.0.0
 
+  classnames@2.5.1: {}
+
   computeds@0.0.1: {}
 
   csstype@3.2.3: {}
+
+  datav-vue3@1.0.0(vue@3.5.40(typescript@5.3.2)):
+    dependencies:
+      '@jiaminghi/color': 1.1.3
+      classnames: 2.5.1
+      lodash-es: 4.18.1
+      vue: 3.5.40(typescript@5.3.2)
 
   dayjs@1.11.21: {}
 

@@ -11,18 +11,17 @@
         v-for="entry in entries"
         :key="entry.key"
         class="entry-card"
-        :style="{ borderColor: entry.color }"
         @click="openPage(entry.path)"
       >
         <div class="entry-icon" :style="{ background: entry.color }">
-          <el-icon :size="32"><component :is="entry.icon" /></el-icon>
+          <el-icon :size="36"><component :is="entry.icon" /></el-icon>
         </div>
         <div class="entry-info">
           <h3>{{ entry.title }}</h3>
           <p>{{ entry.description }}</p>
         </div>
         <div class="entry-arrow">
-          <el-icon :size="20"><ArrowRight /></el-icon>
+          <el-icon :size="24"><ArrowRight /></el-icon>
         </div>
       </div>
     </div>
@@ -40,7 +39,7 @@ const entries = [
     description: '重点路段整体数据概览',
     path: '/dispatch/road/screen/overview',
     icon: DataLine,
-    color: '#409EFF'
+    color: '#00b4d8'
   },
   {
     key: 'congestion',
@@ -48,7 +47,7 @@ const entries = [
     description: '分析各路段拥堵情况',
     path: '/dispatch/road/screen/congestion',
     icon: TrendCharts,
-    color: '#E6A23C'
+    color: '#e6a23c'
   },
   {
     key: 'traffic',
@@ -56,7 +55,7 @@ const entries = [
     description: '分析各路段车流量数据',
     path: '/dispatch/road/screen/traffic',
     icon: DataAnalysis,
-    color: '#67C23A'
+    color: '#67c23a'
   },
   {
     key: 'frequency',
@@ -64,7 +63,7 @@ const entries = [
     description: '统计拥堵发生频次',
     path: '/dispatch/road/screen/frequency',
     icon: Histogram,
-    color: '#F56C6C'
+    color: '#f56c6c'
   },
   {
     key: 'duration',
@@ -80,7 +79,7 @@ const entries = [
     description: '车流量趋势分析',
     path: '/dispatch/road/screen/traffic-analysis',
     icon: PieChart,
-    color: '#9B59B6'
+    color: '#9b59b6'
   }
 ]
 
@@ -92,33 +91,43 @@ const openPage = (path: string) => {
 
 <style lang="scss" scoped>
 .road-statistics-page {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
+  background: linear-gradient(135deg, #0c1426 0%, #1a2742 50%, #0d1b2a 100%);
+  border-radius: 0;
+  padding: 0;
+  margin: -16px;
+  min-height: calc(100vh - 112px);
+  display: flex;
+  flex-direction: column;
 }
 
 .page-header {
-  margin-bottom: 24px;
+  padding: 40px 40px 32px;
+  text-align: center;
 
   h2 {
     margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #303133;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    text-shadow: 0 2px 12px rgba(64, 158, 255, 0.3);
   }
 }
 
 .entry-grid {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 24px;
+  padding: 0 40px 40px;
 }
 
 .entry-card {
-  background: #f8f9fb;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(64, 158, 255, 0.3);
   border-radius: 12px;
-  padding: 28px;
-  border: 2px solid transparent;
+  padding: 32px 28px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -127,19 +136,21 @@ const openPage = (path: string) => {
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    background: #fff;
+    background: rgba(64, 158, 255, 0.15);
+    border-color: #409eff;
+    box-shadow: 0 8px 24px rgba(64, 158, 255, 0.2);
   }
 
   .entry-icon {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     flex-shrink: 0;
+    opacity: 0.9;
   }
 
   .entry-info {
@@ -148,24 +159,33 @@ const openPage = (path: string) => {
     h3 {
       font-size: 16px;
       font-weight: 600;
-      margin: 0 0 6px 0;
-      color: #303133;
+      margin: 0 0 8px 0;
+      color: rgba(255, 255, 255, 0.95);
     }
 
     p {
       font-size: 13px;
-      color: #909399;
+      color: rgba(255, 255, 255, 0.5);
       margin: 0;
+      line-height: 1.5;
     }
   }
 
   .entry-arrow {
-    color: #c0c4cc;
+    color: rgba(255, 255, 255, 0.3);
     transition: all 0.3s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   &:hover .entry-arrow {
-    color: #409EFF;
+    color: #fff;
+    background: #409eff;
     transform: translateX(4px);
   }
 }

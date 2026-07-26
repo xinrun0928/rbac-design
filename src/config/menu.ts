@@ -51,7 +51,8 @@ import {
   MapLocation,
   Position,
   Microphone,
-  CircleClose
+  CircleClose,
+  Cpu
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -573,6 +574,57 @@ export const materialMenus: MenuItem[] = [
       { path: '/resource/basic/warehouse', title: '仓库管理', icon: OfficeBuilding },
       { path: '/resource/basic/category', title: '物资装备种类管理', icon: Collection },
       { path: '/resource/basic/set', title: '装备套组管理', icon: Box },
+    ]
+  },
+]
+
+// 辅助决策菜单
+export const decisionMenus: MenuItem[] = [
+  { path: '/decision/home', title: '首页', icon: HomeFilled },
+  {
+    path: '/decision/knowledge-group',
+    title: '知识管理',
+    icon: Document,
+    isGroup: true,
+    groupTitle: '知识管理',
+    children: [
+      { path: '/decision/knowledge/input', title: '知识录入', icon: Edit },
+      { path: '/decision/knowledge/audit', title: '审核审批', icon: Check },
+      { path: '/decision/knowledge/category', title: '知识分类', icon: Folder },
+      { path: '/decision/knowledge/maintain', title: '知识维护与更新', icon: Tools },
+      { path: '/decision/knowledge/record', title: '维护更新记录', icon: Notebook },
+      { path: '/decision/knowledge/expire', title: '过期知识处理', icon: Clock },
+    ]
+  },
+  {
+    path: '/decision/tool-group',
+    title: '辅助决策工具',
+    icon: DataAnalysis,
+    isGroup: true,
+    groupTitle: '辅助决策工具',
+    children: [
+      { path: '/decision/tool/policy', title: '政策法规查询', icon: Search },
+      { path: '/decision/tool/ai', title: '交通智慧大模型', icon: Cpu },
+    ]
+  },
+  {
+    path: '/decision/feedback-group',
+    title: '用户反馈管理',
+    icon: ChatDotRound,
+    isGroup: true,
+    groupTitle: '用户反馈管理',
+    children: [
+      { path: '/decision/feedback/list', title: '用户反馈', icon: ChatDotSquare },
+    ]
+  },
+  {
+    path: '/decision/basic-group',
+    title: '基础管理',
+    icon: Setting,
+    isGroup: true,
+    groupTitle: '基础管理',
+    children: [
+      { path: '/decision/basic/management', title: '基础管理', icon: Setting },
     ]
   },
 ]

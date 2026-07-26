@@ -147,33 +147,7 @@
           </div>
         </div>
         <div class="map-container">
-          <div class="map-placeholder">
-            <!-- 模拟地图网格 -->
-            <div class="map-grid">
-              <div v-for="i in 120" :key="i" class="map-cell" :style="{ opacity: Math.random() * 0.5 + 0.3, background: getMapColor() }"></div>
-            </div>
-            <!-- 模拟道路线条 -->
-            <div class="map-overlay">
-              <div class="road-line highway-1"></div>
-              <div class="road-line highway-2"></div>
-              <div class="road-line highway-3"></div>
-              <div class="road-line highway-4"></div>
-              <div class="road-line highway-5"></div>
-              <div class="road-label label-1">G4 京港澳高速</div>
-              <div class="road-label label-2">S81 环城高速</div>
-              <div class="road-label label-3">G15 沈海高速</div>
-              <div class="road-label label-4">华南快速</div>
-            </div>
-            <!-- 地图中心标记 -->
-            <div class="map-center-mark">
-              <div class="center-dot"></div>
-              <div class="center-ring"></div>
-            </div>
-            <div class="map-bottom-info">
-              <span>广州市全域路况</span>
-              <span class="update-time">更新于 {{ currentTime }}</span>
-            </div>
-          </div>
+          <div ref="mapChartRef" class="map-chart"></div>
         </div>
       </div>
 
@@ -423,7 +397,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 import { ArrowLeft, DataLine, TrendCharts, Timer, Van, Position, Warning, OfficeBuilding } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 
@@ -439,6 +413,7 @@ const weeklyFlowChartRef = ref<HTMLElement>()
 const scrollTableBodyRef = ref<HTMLElement>()
 const flowScrollTableBodyRef = ref<HTMLElement>()
 const eventScrollTableBodyRef = ref<HTMLElement>()
+const mapChartRef = ref<HTMLElement>()
 
 // 拥堵表格滚动相关
 const scrollOffset = ref(0)
@@ -548,6 +523,7 @@ const onEventWheel = (e: WheelEvent) => {
 
 let congestionChart: echarts.ECharts | null = null
 let weeklyChart: echarts.ECharts | null = null
+let mapChart: echarts.ECharts | null = null
 let congestionFreqChart: echarts.ECharts | null = null
 let congestionDurationChart: echarts.ECharts | null = null
 let todayFlowChart: echarts.ECharts | null = null
@@ -680,11 +656,6 @@ const toggleRouteDetail = (index: number) => {
 }
 
 // 辅助函数
-const getMapColor = () => {
-  const colors = ['#2ECC71', '#2ECC71', '#2ECC71', '#F1C40F', '#F1C40F', '#F39C12', '#E74C3C']
-  return colors[Math.floor(Math.random() * colors.length)]
-}
-
 const getIndexColor = (index: number) => {
   if (index >= 8) return '#E74C3C'
   if (index >= 6) return '#F39C12'
@@ -702,9 +673,168 @@ const formatNumber = (num: number) => {
   return num.toLocaleString('zh-CN')
 }
 
+// 初始化地图图表（散点图模拟）
+const initMapChart = () => {
+  if (!mapChartRef.value) return
+  const { width, height } = mapChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
+  mapChart = echarts.init(mapChartRef.value)
+
+  // 模拟道路数据
+  const roads = [
+    // 主要道路
+    { coords: [[10, 50], [90, 50]], name: 'G4 京港澳高速' },
+    { coords: [[20, 30], [80, 30]], name: 'S81 环城高速' },
+    { coords: [[30, 70], [70, 70]], name: 'G15 沈海高速' },
+    { coords: [[50, 10], [50, 90]], name: '华南快速' },
+    { coords: [[15, 20], [85, 80]], name: '广园快速路' },
+    // 次要道路
+    { coords: [[25, 45], [75, 45]], name: '中山大道' },
+    { coords: [[35, 25], [65, 75]], name: '黄埔大道' },
+    { coords: [[20, 60], [80, 40]], name: '天河路' },
+  ]
+
+  // 模拟交通流量数据点
+  const trafficPoints = [
+    // 严重拥堵点
+    { value: [45, 48], symbolSize: 15, itemStyle: { color: '#E74C3C' } },
+    { value: [52, 52], symbolSize: 12, itemStyle: { color: '#E74C3C' } },
+    { value: [48, 45], symbolSize: 10, itemStyle: { color: '#E74C3C' } },
+    // 拥堵点
+    { value: [35, 42], symbolSize: 12, itemStyle: { color: '#F39C12' } },
+    { value: [62, 38], symbolSize: 10, itemStyle: { color: '#F39C12' } },
+    { value: [40, 55], symbolSize: 8, itemStyle: { color: '#F39C12' } },
+    { value: [55, 60], symbolSize: 9, itemStyle: { color: '#F39C12' } },
+    // 缓行点
+    { value: [28, 35], symbolSize: 8, itemStyle: { color: '#F1C40F' } },
+    { value: [72, 45], symbolSize: 7, itemStyle: { color: '#F1C40F' } },
+    { value: [45, 68], symbolSize: 6, itemStyle: { color: '#F1C40F' } },
+    { value: [58, 32], symbolSize: 7, itemStyle: { color: '#F1C40F' } },
+    { value: [38, 28], symbolSize: 6, itemStyle: { color: '#F1C40F' } },
+    // 畅通点
+    { value: [15, 25], symbolSize: 5, itemStyle: { color: '#2ECC71' } },
+    { value: [82, 55], symbolSize: 5, itemStyle: { color: '#2ECC71' } },
+    { value: [25, 72], symbolSize: 4, itemStyle: { color: '#2ECC71' } },
+    { value: [75, 25], symbolSize: 4, itemStyle: { color: '#2ECC71' } },
+    { value: [60, 78], symbolSize: 5, itemStyle: { color: '#2ECC71' } },
+    { value: [30, 15], symbolSize: 4, itemStyle: { color: '#2ECC71' } },
+  ]
+
+  // 区域标记点
+  const areaMarkers = [
+    { value: [48, 35], name: '天河区' },
+    { value: [35, 42], name: '越秀区' },
+    { value: [52, 58], name: '海珠区' },
+    { value: [28, 45], name: '荔湾区' },
+    { value: [42, 22], name: '白云区' },
+    { value: [58, 68], name: '番禺区' },
+    { value: [65, 35], name: '黄埔区' },
+    { value: [72, 78], name: '南沙区' },
+  ]
+
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'item',
+      formatter: (params: any) => {
+        if (params.seriesType === 'scatter') {
+          return `${params.name || '交通点'}<br/>状态: ${getStatusFromColor(params.color)}`
+        }
+        return params.name || ''
+      }
+    },
+    xAxis: {
+      type: 'value',
+      min: 0,
+      max: 100,
+      show: false
+    },
+    yAxis: {
+      type: 'value',
+      min: 0,
+      max: 100,
+      show: false
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '5%',
+      bottom: '5%'
+    },
+    series: [
+      // 道路线条
+      ...roads.map((road, index) => ({
+        type: 'lines' as const,
+        coordinateSystem: 'cartesian2d',
+        polyline: true,
+        data: [{ coords: road.coords }],
+        lineStyle: {
+          color: '#00D4FF',
+          width: 2,
+          opacity: 0.6,
+          curveness: 0.2
+        },
+        effect: {
+          show: true,
+          period: 4 + index * 0.5,
+          trailLength: 0.4,
+          symbol: 'arrow',
+          symbolSize: 6,
+          color: '#00D4FF'
+        },
+        zlevel: 1
+      })),
+      // 交通流量点
+      {
+        type: 'scatter',
+        coordinateSystem: 'cartesian2d',
+        data: trafficPoints,
+        zlevel: 2
+      },
+      // 区域标记
+      {
+        type: 'scatter',
+        coordinateSystem: 'cartesian2d',
+        data: areaMarkers.map(m => ({
+          ...m,
+          symbolSize: 0,
+          label: {
+            show: true,
+            formatter: m.name,
+            color: '#8892A8',
+            fontSize: 10,
+            textBorderColor: 'rgba(0,0,0,0.8)',
+            textBorderWidth: 2
+          }
+        })),
+        zlevel: 3
+      }
+    ],
+    animation: true,
+    animationDuration: 2000,
+    animationEasing: 'cubicOut'
+  }
+
+  mapChart.setOption(option)
+}
+
+// 获取状态颜色对应的文字
+const getStatusFromColor = (color: string) => {
+  const statusMap: Record<string, string> = {
+    '#E74C3C': '严重拥堵',
+    '#F39C12': '拥堵',
+    '#F1C40F': '缓行',
+    '#2ECC71': '畅通'
+  }
+  return statusMap[color] || '未知'
+}
+
 // 初始化拥堵分布图表
 const initCongestionChart = () => {
   if (!congestionChartRef.value) return
+  // 检查容器是否有尺寸
+  const { width, height } = congestionChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   congestionChart = echarts.init(congestionChartRef.value)
   const option = {
     tooltip: { trigger: 'item', formatter: '{b}: {c}段 ({d}%)' },
@@ -754,6 +884,8 @@ const initCongestionChart = () => {
 // 初始化近七天统计图表
 const initWeeklyChart = () => {
   if (!weeklyChartRef.value) return
+  const { width, height } = weeklyChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   weeklyChart = echarts.init(weeklyChartRef.value)
   const option = {
     tooltip: { trigger: 'axis' },
@@ -789,6 +921,8 @@ const initWeeklyChart = () => {
 // 初始化近七天拥堵发生次数统计
 const initCongestionFreqChart = () => {
   if (!congestionFreqChartRef.value) return
+  const { width, height } = congestionFreqChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   congestionFreqChart = echarts.init(congestionFreqChartRef.value)
   const option = {
     tooltip: { trigger: 'axis' },
@@ -827,6 +961,8 @@ const initCongestionFreqChart = () => {
 // 初始化近七天拥堵时长统计
 const initCongestionDurationChart = () => {
   if (!congestionDurationChartRef.value) return
+  const { width, height } = congestionDurationChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   congestionDurationChart = echarts.init(congestionDurationChartRef.value)
   const option = {
     tooltip: { trigger: 'axis' },
@@ -865,6 +1001,8 @@ const initCongestionDurationChart = () => {
 // 初始化今日车流量统计
 const initTodayFlowChart = () => {
   if (!todayFlowChartRef.value) return
+  const { width, height } = todayFlowChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   todayFlowChart = echarts.init(todayFlowChartRef.value)
   const option = {
     tooltip: { trigger: 'axis' },
@@ -903,6 +1041,8 @@ const initTodayFlowChart = () => {
 // 初始化近七天车流量统计
 const initWeeklyFlowChart = () => {
   if (!weeklyFlowChartRef.value) return
+  const { width, height } = weeklyFlowChartRef.value.getBoundingClientRect()
+  if (width === 0 || height === 0) return
   weeklyFlowChart = echarts.init(weeklyFlowChartRef.value)
   const option = {
     tooltip: { trigger: 'axis' },
@@ -941,6 +1081,7 @@ const initWeeklyFlowChart = () => {
 const handleResize = () => {
   congestionChart?.resize()
   weeklyChart?.resize()
+  mapChart?.resize()
   congestionFreqChart?.resize()
   congestionDurationChart?.resize()
   todayFlowChart?.resize()
@@ -951,12 +1092,16 @@ onMounted(() => {
   updateTime()
   timer = setInterval(updateTime, 1000)
   nextTick(() => {
-    initCongestionChart()
-    initWeeklyChart()
-    initCongestionFreqChart()
-    initCongestionDurationChart()
-    initTodayFlowChart()
-    initWeeklyFlowChart()
+    // 延迟初始化图表，确保DOM已渲染且有正确尺寸
+    setTimeout(() => {
+      initMapChart()
+      initCongestionChart()
+      initWeeklyChart()
+      initCongestionFreqChart()
+      initCongestionDurationChart()
+      initTodayFlowChart()
+      initWeeklyFlowChart()
+    }, 100)
     startScroll()
     startFlowScroll()
     startEventScroll()
@@ -970,6 +1115,7 @@ onUnmounted(() => {
   stopFlowScroll()
   stopEventScroll()
   window.removeEventListener('resize', handleResize)
+  mapChart?.dispose()
   congestionChart?.dispose()
   weeklyChart?.dispose()
   congestionFreqChart?.dispose()
@@ -1206,7 +1352,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 5px;
   min-width: 0;
-  min-height: 0;
+  min-height: 400px;
   overflow: hidden;
 
   .map-panel {
@@ -1234,111 +1380,14 @@ onUnmounted(() => {
     .map-container {
       flex: 1;
       padding: 8px;
+      position: relative;
     }
 
-    .map-placeholder {
+    .map-chart {
+      width: 100%;
       height: 100%;
-      min-height: 350px;
       background: linear-gradient(180deg, rgba(0,40,80,0.6) 0%, rgba(0,60,100,0.3) 100%);
       border-radius: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .map-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: repeat(10, 1fr);
-      gap: 2px;
-      padding: 6px;
-      height: 100%;
-      opacity: 0.5;
-    }
-
-    .map-cell {
-      border-radius: 2px;
-    }
-
-    .map-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-
-      .road-line {
-        position: absolute;
-        background: rgba(0,212,255,0.5);
-        border-radius: 2px;
-
-        &.highway-1 { top: 25%; left: 5%; width: 90%; height: 3px; transform: rotate(-3deg); }
-        &.highway-2 { top: 45%; left: 10%; width: 80%; height: 3px; transform: rotate(5deg); }
-        &.highway-3 { top: 65%; left: 15%; width: 70%; height: 3px; transform: rotate(-2deg); }
-        &.highway-4 { top: 15%; left: 35%; width: 3px; height: 70%; transform: rotate(8deg); }
-        &.highway-5 { top: 20%; left: 60%; width: 3px; height: 60%; transform: rotate(-5deg); }
-      }
-
-      .road-label {
-        position: absolute;
-        font-size: 9px;
-        color: rgba(0,212,255,0.8);
-        background: rgba(0,0,0,0.5);
-        padding: 2px 5px;
-        border-radius: 3px;
-        white-space: nowrap;
-
-        &.label-1 { top: 22%; left: 20%; }
-        &.label-2 { top: 42%; left: 30%; }
-        &.label-3 { top: 62%; left: 25%; }
-        &.label-4 { top: 30%; left: 55%; }
-      }
-    }
-
-    .map-center-mark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      .center-dot {
-        width: 10px;
-        height: 10px;
-        background: #00D4FF;
-        border-radius: 50%;
-        position: relative;
-        z-index: 2;
-      }
-
-      .center-ring {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 36px;
-        height: 36px;
-        border: 2px solid rgba(0,212,255,0.5);
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-      }
-    }
-
-    .map-bottom-info {
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 12px;
-      font-size: 10px;
-      color: #8892A8;
-      background: rgba(0,0,0,0.5);
-      padding: 4px 10px;
-      border-radius: 3px;
-
-      .update-time {
-        color: #00D4FF;
-      }
     }
   }
 
@@ -1348,14 +1397,14 @@ onUnmounted(() => {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 5px;
-    min-height: 0;
+    min-height: 250px;
     overflow: hidden;
   }
 
   .chart-panel {
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    min-height: 120px;
     overflow: hidden;
   }
 }
@@ -1523,12 +1572,15 @@ onUnmounted(() => {
 // 图表容器
 .chart-container {
   flex: 1;
-  min-height: 0;
+  min-height: 100px;
   padding: 5px;
+  display: flex;
+  flex-direction: column;
 
   .chart-dom {
     width: 100%;
     height: 100%;
+    min-height: 80px;
   }
 }
 

@@ -176,6 +176,42 @@
           </div>
         </div>
       </div>
+
+      <!-- 统计图表区域 -->
+      <div class="charts-grid">
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <h3>近七天拥堵发生次数统计（次）</h3>
+          </div>
+          <div class="chart-container">
+            <div ref="congestionFreqChartRef" class="chart-dom"></div>
+          </div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <h3>近七天拥堵时长统计（小时）</h3>
+          </div>
+          <div class="chart-container">
+            <div ref="congestionDurationChartRef" class="chart-dom"></div>
+          </div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <h3>今日车流量统计（辆/小时）</h3>
+          </div>
+          <div class="chart-container">
+            <div ref="todayFlowChartRef" class="chart-dom"></div>
+          </div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <h3>近七天车流量统计（辆/小时）</h3>
+          </div>
+          <div class="chart-container">
+            <div ref="weeklyFlowChartRef" class="chart-dom"></div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- 右侧面板 -->
@@ -396,6 +432,10 @@ const currentDate = ref('')
 const activeCongestionTab = ref('index')
 const congestionChartRef = ref<HTMLElement>()
 const weeklyChartRef = ref<HTMLElement>()
+const congestionFreqChartRef = ref<HTMLElement>()
+const congestionDurationChartRef = ref<HTMLElement>()
+const todayFlowChartRef = ref<HTMLElement>()
+const weeklyFlowChartRef = ref<HTMLElement>()
 const scrollTableBodyRef = ref<HTMLElement>()
 const flowScrollTableBodyRef = ref<HTMLElement>()
 const eventScrollTableBodyRef = ref<HTMLElement>()
@@ -508,6 +548,10 @@ const onEventWheel = (e: WheelEvent) => {
 
 let congestionChart: echarts.ECharts | null = null
 let weeklyChart: echarts.ECharts | null = null
+let congestionFreqChart: echarts.ECharts | null = null
+let congestionDurationChart: echarts.ECharts | null = null
+let todayFlowChart: echarts.ECharts | null = null
+let weeklyFlowChart: echarts.ECharts | null = null
 
 const goBack = () => window.close()
 
@@ -742,9 +786,165 @@ const initWeeklyChart = () => {
   weeklyChart.setOption(option)
 }
 
+// 初始化近七天拥堵发生次数统计
+const initCongestionFreqChart = () => {
+  if (!congestionFreqChartRef.value) return
+  congestionFreqChart = echarts.init(congestionFreqChartRef.value)
+  const option = {
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['7/20', '7/21', '7/22', '7/23', '7/24', '7/25', '7/26'],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisLabel: { color: '#8892A8', fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#8892A8', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    series: [{
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { color: '#00D4FF', width: 2 },
+      itemStyle: { color: '#00D4FF' },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(0,212,255,0.3)' },
+          { offset: 1, color: 'rgba(0,212,255,0.05)' }
+        ])
+      },
+      data: [23, 18, 25, 21, 28, 19, 22]
+    }]
+  }
+  congestionFreqChart.setOption(option)
+}
+
+// 初始化近七天拥堵时长统计
+const initCongestionDurationChart = () => {
+  if (!congestionDurationChartRef.value) return
+  congestionDurationChart = echarts.init(congestionDurationChartRef.value)
+  const option = {
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['7/20', '7/21', '7/22', '7/23', '7/24', '7/25', '7/26'],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisLabel: { color: '#8892A8', fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#8892A8', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    series: [{
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { color: '#F39C12', width: 2 },
+      itemStyle: { color: '#F39C12' },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(243,156,18,0.3)' },
+          { offset: 1, color: 'rgba(243,156,18,0.05)' }
+        ])
+      },
+      data: [4.5, 3.2, 5.1, 4.8, 6.2, 3.8, 4.1]
+    }]
+  }
+  congestionDurationChart.setOption(option)
+}
+
+// 初始化今日车流量统计
+const initTodayFlowChart = () => {
+  if (!todayFlowChartRef.value) return
+  todayFlowChart = echarts.init(todayFlowChartRef.value)
+  const option = {
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisLabel: { color: '#8892A8', fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#8892A8', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    series: [{
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { color: '#2ECC71', width: 2 },
+      itemStyle: { color: '#2ECC71' },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(46,204,113,0.3)' },
+          { offset: 1, color: 'rgba(46,204,113,0.05)' }
+        ])
+      },
+      data: [1250, 2860, 2340, 1890, 2120, 2680, 3150, 2450]
+    }]
+  }
+  todayFlowChart.setOption(option)
+}
+
+// 初始化近七天车流量统计
+const initWeeklyFlowChart = () => {
+  if (!weeklyFlowChartRef.value) return
+  weeklyFlowChart = echarts.init(weeklyFlowChartRef.value)
+  const option = {
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+    xAxis: {
+      type: 'category',
+      data: ['7/20', '7/21', '7/22', '7/23', '7/24', '7/25', '7/26'],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+      axisLabel: { color: '#8892A8', fontSize: 10 }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisLabel: { color: '#8892A8', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    series: [{
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      lineStyle: { color: '#E74C3C', width: 2 },
+      itemStyle: { color: '#E74C3C' },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(231,76,60,0.3)' },
+          { offset: 1, color: 'rgba(231,76,60,0.05)' }
+        ])
+      },
+      data: [45200, 48600, 42300, 46800, 51200, 49500, 47800]
+    }]
+  }
+  weeklyFlowChart.setOption(option)
+}
+
 const handleResize = () => {
   congestionChart?.resize()
   weeklyChart?.resize()
+  congestionFreqChart?.resize()
+  congestionDurationChart?.resize()
+  todayFlowChart?.resize()
+  weeklyFlowChart?.resize()
 }
 
 onMounted(() => {
@@ -753,6 +953,10 @@ onMounted(() => {
   nextTick(() => {
     initCongestionChart()
     initWeeklyChart()
+    initCongestionFreqChart()
+    initCongestionDurationChart()
+    initTodayFlowChart()
+    initWeeklyFlowChart()
     startScroll()
     startFlowScroll()
     startEventScroll()
@@ -768,6 +972,10 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   congestionChart?.dispose()
   weeklyChart?.dispose()
+  congestionFreqChart?.dispose()
+  congestionDurationChart?.dispose()
+  todayFlowChart?.dispose()
+  weeklyFlowChart?.dispose()
 })
 </script>
 
@@ -1133,6 +1341,23 @@ onUnmounted(() => {
       }
     }
   }
+
+  .charts-grid {
+    flex: 6;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .chart-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
 }
 
 // 右侧面板
@@ -1297,8 +1522,9 @@ onUnmounted(() => {
 
 // 图表容器
 .chart-container {
+  flex: 1;
+  min-height: 0;
   padding: 5px;
-  height: 150px;
 
   .chart-dom {
     width: 100%;

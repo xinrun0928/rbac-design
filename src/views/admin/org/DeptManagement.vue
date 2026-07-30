@@ -67,7 +67,7 @@
             stripe
             default-expand-all
             :indent="24"
-            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
             empty-text=" "
           >
             <el-table-column prop="deptName" label="部门名称" min-width="220" fixed>
@@ -81,7 +81,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="deptCode" label="部门编号" width="140" align="center">
+            <el-table-column prop="deptCode" label="部门编号" min-width="140" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="code-text">{{ row.deptCode }}</span>
               </template>
@@ -638,10 +638,16 @@ onMounted(() => {
         }
       }
 
+
       .el-table__row .cell {
         display: flex;
         align-items: center;
       }
+
+      .el-table__row .el-table__cell:not(:first-child) .cell {
+        justify-content: center;
+      }
+
 
       .el-table__indent {
         padding-left: 24px !important;
@@ -687,11 +693,12 @@ onMounted(() => {
 
     .code-text {
       font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      color: #409EFF;
       font-size: 12px;
-      background: #ECF5FF;
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: #606266;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
     }
 
     .leader-text { font-weight: 500; color: #303133; }

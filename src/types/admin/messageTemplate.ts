@@ -10,6 +10,10 @@ export interface MessageTemplate {
   name: string
   /** 排序号 */
   displayOrder: number
+  /** 子系统ID */
+  subsystemId: number
+  /** 子系统名称 */
+  subsystemName: string
   /** 备注 */
   remark: string
   /** 模板内容 */
@@ -100,12 +104,24 @@ export interface ApprovalJsonInfo {
   timestamp: number
 }
 
+/** 短信模板申请表单 */
+export interface MessageTemplateApplyForm {
+  /** 子系统ID */
+  subsystemId: number | ''
+  /** 模板内容 */
+  template: string
+}
+
 /** 短信模板搜索表单类型 */
 export interface MessageTemplateSearchForm {
   /** 模板编号 */
   templateId: string
+  /** 模板名称 */
+  name: string
   /** 消息ID */
   msgId: string
   /** 状态筛选 */
   status: number | ''
+  /** 子系统ID */
+  subsystemId: number | ''
 }

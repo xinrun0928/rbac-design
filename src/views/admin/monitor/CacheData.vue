@@ -26,7 +26,7 @@
         stripe
         highlight-current-row
         row-key="key"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -125,7 +125,7 @@
               border
               stripe
               size="small"
-              :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+              :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
             >
               <el-table-column prop="field" label="字段" width="180" />
               <el-table-column prop="value" label="值" min-width="200" show-overflow-tooltip />

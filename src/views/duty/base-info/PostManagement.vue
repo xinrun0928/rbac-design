@@ -29,6 +29,7 @@
               background: '#F5F7FA',
               color: '#606266',
               fontWeight: '600',
+              textAlign: 'center',
             }"
             border
             stripe
@@ -499,6 +500,11 @@ fetchData()
           overflow-y: auto;
         }
 
+        // 表头居中
+        .el-table__header-wrapper th .cell {
+          justify-content: center;
+        }
+
         .el-table__row {
           .cell {
             padding: 0 12px;
@@ -506,17 +512,11 @@ fetchData()
             align-items: center;
           }
 
-          // 需要居中的列
           .el-table__cell:not(:first-child) {
             .cell {
               justify-content: center;
             }
           }
-        }
-
-        // 表头居中
-        .el-table__header-wrapper th .cell {
-          justify-content: center;
         }
 
         // 树形缩进

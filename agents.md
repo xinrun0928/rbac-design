@@ -208,6 +208,30 @@ const handleSizeChange = () => {
 }
 ```
 
+### 表格列居中规范
+- **普通列表**：不需要额外样式，直接在 `el-table-column` 上设置 `align="center"` 即可居中
+- **树形列表**（使用 `tree-props` 的表格）：必须在 CSS 中添加以下样式，确保非首列内容居中，首列（树形列）保持左对齐：
+
+```scss
+.el-table__row .cell {
+  display: flex;
+  align-items: center;
+}
+
+.el-table__row .el-table__cell:not(:first-child) .cell {
+  justify-content: center;
+}
+```
+
+当前使用该样式的页面：
+- `src/views/admin/system/MenuManagement.vue`
+- `src/views/admin/org/DeptManagement.vue`
+- `src/views/admin/org/OrgTreeView.vue`
+- `src/views/admin/system/AreaManagement.vue`
+- `src/views/duty/base-info/PostManagement.vue`
+
+新开发树形列表页面时必须添加此样式。
+
 ### 样式规范
 - 侧边栏背景色：`#1a1f2e`
 - 菜单项高度：`50px`

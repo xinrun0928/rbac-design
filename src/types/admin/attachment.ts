@@ -34,10 +34,6 @@ export interface Attachment {
 export interface AttachmentSearchForm {
   /** 文件名 */
   fileName: string
-  /** 文件扩展名 */
-  fileExt: string
-  /** 存储类型 */
-  storageType: string
-  /** 子系统ID */
-  subsystemId: number | ''
+  /** MIME类型 */
+  mimeType: string
 }

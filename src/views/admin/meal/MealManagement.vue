@@ -44,7 +44,7 @@
         stripe
         highlight-current-row
         row-key="mealId"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         empty-text=" "
         class="data-table"
       >

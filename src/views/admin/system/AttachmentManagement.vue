@@ -5,21 +5,36 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="文件名称">
-            <el-input v-model="searchForm.fileName" placeholder="输入文件名称" clearable :prefix-icon="Search" style="width: 200px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="文件类型">
-            <el-select v-model="searchForm.fileExt" placeholder="请选择类型" clearable style="width: 120px">
-              <el-option v-for="item in fileExtOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="存储类型">
-            <el-select v-model="searchForm.storageType" placeholder="请选择存储" clearable style="width: 140px">
-              <el-option v-for="item in storageTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">附件管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.fileName"
+            placeholder="搜索文件名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.mimeType" placeholder="MIME类型" clearable style="width: 180px; margin-right: 12px" @change="handleSearch">
+            <el-option label="PDF (application/pdf)" value="application/pdf" />
+            <el-option label="Word (application/msword)" value="application/msword" />
+            <el-option label="Word (docx)" value="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+            <el-option label="Excel (application/vnd.ms-excel)" value="application/vnd.ms-excel" />
+            <el-option label="Excel (xlsx)" value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            <el-option label="PPT" value="application/vnd.ms-powerpoint" />
+            <el-option label="PPT (pptx)" value="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+            <el-option label="纯文本 (text/plain)" value="text/plain" />
+            <el-option label="JPEG (image/jpeg)" value="image/jpeg" />
+            <el-option label="PNG (image/png)" value="image/png" />
+            <el-option label="GIF (image/gif)" value="image/gif" />
+            <el-option label="MP4 (video/mp4)" value="video/mp4" />
+            <el-option label="MP3 (audio/mpeg)" value="audio/mpeg" />
+            <el-option label="ZIP (application/zip)" value="application/zip" />
+            <el-option label="JSON (application/json)" value="application/json" />
+          </el-select>
+          <el-button type="primary" :icon="Upload" @click="handleUploadOpen">上传附件</el-button>
+        </div>
       </div>
       <el-table
         v-loading="loading"
@@ -28,7 +43,7 @@
         stripe
         highlight-current-row
         row-key="attachmentId"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -91,9 +106,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="220" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">详情</el-button>
+            <el-button type="primary" link :icon="Download" @click="handleDownload(row)">下载</el-button>
             <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
@@ -147,6 +163,58 @@
         </el-descriptions>
       </template>
     </el-drawer>
+
+    <!-- 上传抽屉 -->
+    <el-drawer
+      v-model="uploadDrawerVisible"
+      title="上传附件"
+      size="500px"
+      direction="rtl"
+      class="upload-drawer"
+      @closed="resetUpload"
+    >
+      <div class="upload-area">
+        <el-upload
+          ref="uploadRef"
+          drag
+          :auto-upload="false"
+          :show-file-list="false"
+          :on-change="handleFileChange"
+          accept="*"
+        >
+          <el-icon class="el-icon--upload" :size="48"><UploadFilled /></el-icon>
+          <div class="upload-text">将文件拖到此处，或<em>点击选择</em></div>
+        </el-upload>
+      </div>
+
+      <div v-if="fileQueue.length" class="file-list-section">
+        <div class="file-list-title">文件列表（{{ fileQueue.length }}）</div>
+        <div class="file-list">
+          <div v-for="(item, index) in fileQueue" :key="item.uid" class="file-item">
+            <div class="file-item-info">
+              <div class="file-item-name">{{ item.fileName }}</div>
+              <div class="file-item-meta">
+                <el-tag size="small" effect="plain">{{ item.fileExt.toUpperCase() }}</el-tag>
+                <span class="file-item-size">{{ item.fileSize }}</span>
+              </div>
+            </div>
+            <el-button
+              type="danger"
+              link
+              :icon="Close"
+              @click="handleRemoveFile(index)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="drawer-footer">
+          <el-button @click="uploadDrawerVisible = false">取消</el-button>
+          <el-button type="primary" :disabled="!fileQueue.length" @click="handleUploadSubmit">确认上传</el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -154,10 +222,10 @@
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, View, Delete, CopyDocument,
+  Search, View, Delete, Download, CopyDocument, Upload, UploadFilled, Close,
   Document, Picture, VideoPlay, Headset, Folder
 } from '@element-plus/icons-vue'
-import { attachmentData, storageTypeOptions, fileExtOptions } from '@/mock/admin/attachmentData'
+import { attachmentData, storageTypeOptions } from '@/mock/admin/attachmentData'
 import type { Attachment, AttachmentSearchForm } from '@/types/admin/attachment'
 
 // ── 状态 ──
@@ -166,11 +234,23 @@ const tableData = ref<Attachment[]>(attachmentData)
 const detailDrawerVisible = ref(false)
 const currentAttachment = ref<Attachment | null>(null)
 
+// ── 上传状态 ──
+interface FileQueueItem {
+  uid: number
+  raw: File
+  fileName: string
+  fileExt: string
+  fileSize: string
+  mimeType: string
+}
+
+const uploadDrawerVisible = ref(false)
+const uploadRef = ref()
+const fileQueue = ref<FileQueueItem[]>([])
+
 const searchForm = reactive<AttachmentSearchForm>({
   fileName: '',
-  fileExt: '',
-  storageType: '',
-  subsystemId: ''
+  mimeType: ''
 })
 
 const pagination = reactive({
@@ -186,11 +266,8 @@ const filteredData = computed(() => {
   if (searchForm.fileName) {
     data = data.filter(item => item.fileName.toLowerCase().includes(searchForm.fileName.toLowerCase()))
   }
-  if (searchForm.fileExt) {
-    data = data.filter(item => item.fileExt === searchForm.fileExt)
-  }
-  if (searchForm.storageType) {
-    data = data.filter(item => item.storageType === searchForm.storageType)
+  if (searchForm.mimeType) {
+    data = data.filter(item => item.mimeType === searchForm.mimeType)
   }
 
   pagination.total = data.length
@@ -205,8 +282,7 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.fileName = ''
-  searchForm.fileExt = ''
-  searchForm.storageType = ''
+  searchForm.mimeType = ''
   pagination.page = 1
 }
 
@@ -230,6 +306,10 @@ function handlePageChange(page: number) {
 function handleViewDetail(row: Attachment) {
   currentAttachment.value = row
   detailDrawerVisible.value = true
+}
+
+function handleDownload(row: Attachment) {
+  ElMessage.success(`正在下载: ${row.fileName}`)
 }
 
 function handleDelete(row: Attachment) {
@@ -321,6 +401,58 @@ function handleCopyPath(path: string) {
   }
   document.body.removeChild(textArea)
 }
+
+// ── 上传方法 ──
+function handleUploadOpen() {
+  fileQueue.value = []
+  uploadDrawerVisible.value = true
+}
+
+function handleFileChange(file: any) {
+  const raw = file.raw as File
+  if (!raw) return
+  if (fileQueue.value.some(item => item.fileName === raw.name)) {
+    ElMessage.warning(`文件 "${raw.name}" 已在列表中`)
+    return
+  }
+  const ext = '.' + raw.name.split('.').pop()?.toLowerCase() || ''
+  fileQueue.value.push({
+    uid: Date.now() + Math.random(),
+    raw,
+    fileName: raw.name,
+    fileExt: ext,
+    fileSize: formatFileSize(raw.size),
+    mimeType: raw.type || 'application/octet-stream'
+  })
+}
+
+function handleRemoveFile(index: number) {
+  fileQueue.value.splice(index, 1)
+}
+
+function handleUploadSubmit() {
+  if (!fileQueue.value.length) return
+  const newAttachments: Attachment[] = fileQueue.value.map(item => ({
+    attachmentId: Date.now() + Math.floor(Math.random() * 10000),
+    subsystemId: 9,
+    fileName: item.fileName,
+    fileSize: item.raw.size,
+    fileMd5: Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+    mimeType: item.mimeType,
+    fileExt: item.fileExt,
+    storagePath: `${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${String(new Date().getDate()).padStart(2, '0')}/${Math.random().toString(16).slice(2, 18)}${item.fileExt}`,
+    storageType: 'minio',
+    createTime: new Date().toISOString().replace('T', ' ').slice(0, 19)
+  }))
+  tableData.value = [...newAttachments, ...tableData.value]
+  pagination.page = 1
+  ElMessage.success(`成功上传 ${newAttachments.length} 个文件`)
+  uploadDrawerVisible.value = false
+}
+
+function resetUpload() {
+  fileQueue.value = []
+}
 </script>
 
 <style lang="scss" scoped>
@@ -344,17 +476,23 @@ function handleCopyPath(path: string) {
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .table-card {
@@ -383,9 +521,16 @@ function handleCopyPath(path: string) {
       display: flex;
       align-items: center;
       gap: 8px;
+      overflow: hidden;
 
-      .file-icon { font-size: 18px; }
-      .file-name { font-weight: 500; color: #303133; }
+      .file-icon { font-size: 18px; flex-shrink: 0; }
+      .file-name {
+        font-weight: 500;
+        color: #303133;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     .size-text { font-size: 13px; color: #606266; }
@@ -468,6 +613,105 @@ function handleCopyPath(path: string) {
       font-size: 11px;
       color: #909399;
     }
+  }
+
+  // 存储路径列左对齐
+  :deep(.el-table__body-wrapper .el-table__row td:has(.storage-path-cell) .cell) {
+    justify-content: flex-start;
+  }
+
+  // 上传抽屉样式
+  :deep(.upload-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
+      padding: 20px 24px;
+      border-bottom: 1px solid #EBEEF5;
+      .el-drawer__title { font-weight: 600; font-size: 16px; }
+    }
+    .el-drawer__body { padding: 24px; overflow-y: auto; }
+  }
+
+  .upload-area {
+    margin-bottom: 24px;
+
+    :deep(.el-upload) {
+      width: 100%;
+    }
+
+    :deep(.el-upload-dragger) {
+      width: 100%;
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .el-icon--upload { margin-bottom: 0; }
+    .upload-text { font-size: 14px; color: #909399; }
+  }
+
+  .file-list-section {
+    .file-list-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #303133;
+      margin-bottom: 12px;
+    }
+
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #F5F7FA;
+      transition: background 0.2s;
+
+      &:hover { background: #ECF5FF; }
+
+      .file-item-info {
+        flex: 1;
+        min-width: 0;
+        margin-right: 8px;
+      }
+
+      .file-item-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #303133;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 4px;
+      }
+
+      .file-item-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .file-item-size {
+        font-size: 12px;
+        color: #909399;
+      }
+    }
+  }
+
+  .drawer-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #EBEEF5;
+    margin-top: 20px;
   }
 }
 

@@ -30,10 +30,4 @@ export interface Config {
 export interface ConfigSearchForm {
   /** 配置名称 */
   configLabel: string
-  /** 配置键 */
-  configKey: string
-  /** 配置类型 */
-  configType: string
-  /** 配置分组 */
-  configGroup: string
 }

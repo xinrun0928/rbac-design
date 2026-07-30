@@ -5,21 +5,17 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="字典标签">
-            <el-input v-model="searchForm.dictLabel" placeholder="输入字典标签" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="字典编码">
-            <el-input v-model="searchForm.dictCode" placeholder="输入字典编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
-              <el-option label="正常" :value="1101" />
-              <el-option label="停用" :value="1102" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">{{ dictTypeName }} - 字典数据</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.dictLabel"
+            placeholder="搜索字典标签"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增字典项</el-button>
         </div>
       </div>
@@ -30,7 +26,7 @@
         stripe
         highlight-current-row
         row-key="dictId"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -39,7 +35,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictLabel" label="字典标签" min-width="140">
+        <el-table-column prop="dictLabel" label="字典标签" min-width="140" align="center">
           <template #default="{ row }">
             <span class="label-text">{{ row.dictLabel }}</span>
           </template>
@@ -51,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictCode" label="字典编码" min-width="200">
+        <el-table-column prop="dictCode" label="字典编码" min-width="200" align="center">
           <template #default="{ row }">
             <span class="code-text">{{ row.dictCode }}</span>
           </template>
@@ -78,7 +74,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="remark" label="备注" min-width="150" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="remark-text">{{ row.remark || '-' }}</span>
           </template>
@@ -173,7 +169,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit, ArrowLeft
+  Search, Plus, Delete, Edit, ArrowLeft
 } from '@element-plus/icons-vue'
 import { dictDataList } from '@/mock/admin/dictData'
 import type { DictData, DictDataSearchForm } from '@/types/admin/dictData'
@@ -199,9 +195,7 @@ const pagination = reactive({
 })
 
 const searchForm = reactive<DictDataSearchForm>({
-  dictLabel: '',
-  dictCode: '',
-  status: ''
+  dictLabel: ''
 })
 
 const formData = reactive({
@@ -226,8 +220,6 @@ const formRules: FormRules = {
 const filteredData = computed(() => {
   let data = tableData.value.filter(item => {
     if (searchForm.dictLabel && !item.dictLabel.includes(searchForm.dictLabel)) return false
-    if (searchForm.dictCode && !item.dictCode.includes(searchForm.dictCode)) return false
-    if (searchForm.status !== '' && item.status !== searchForm.status) return false
     return true
   })
 
@@ -255,8 +247,6 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.dictLabel = ''
-  searchForm.dictCode = ''
-  searchForm.status = ''
   pagination.page = 1
 }
 
@@ -354,23 +344,22 @@ onMounted(() => {
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

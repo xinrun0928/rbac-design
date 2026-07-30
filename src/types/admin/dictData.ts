@@ -44,8 +44,4 @@ export interface DictType {
 export interface DictDataSearchForm {
   /** 字典标签 */
   dictLabel: string
-  /** 字典编码 */
-  dictCode: string
-  /** 状态筛选 */
-  status: number | ''
 }

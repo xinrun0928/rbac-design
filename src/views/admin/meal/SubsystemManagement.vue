@@ -45,7 +45,7 @@
         highlight-current-row
         row-key="subsystemId"
         @selection-change="handleSelectionChange"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         empty-text=" "
       >
         <el-table-column prop="subsystemId" label="ID" width="70" align="center">

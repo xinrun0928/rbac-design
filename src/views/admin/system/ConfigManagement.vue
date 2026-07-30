@@ -5,28 +5,17 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="参数名称">
-            <el-input v-model="searchForm.configLabel" placeholder="输入参数名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="参数键名">
-            <el-input v-model="searchForm.configKey" placeholder="输入参数键名" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="系统内置">
-            <el-select v-model="searchForm.configType" placeholder="请选择" clearable style="width: 180px">
-              <el-option label="是" value="Y" />
-              <el-option label="否" value="N" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="配置分组">
-            <el-select v-model="searchForm.configGroup" placeholder="请选择" clearable style="width: 180px">
-              <el-option label="系统" value="system" />
-              <el-option label="业务" value="business" />
-              <el-option label="安全" value="security" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">配置管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.configLabel"
+            placeholder="搜索参数名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增参数</el-button>
         </div>
       </div>
@@ -37,7 +26,7 @@
         stripe
         highlight-current-row
         row-key="configId"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -52,7 +41,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="configKey" label="参数键名" min-width="240">
+        <el-table-column prop="configKey" label="参数键名" min-width="240" align="center">
           <template #default="{ row }">
             <span class="key-text">{{ row.configKey }}</span>
           </template>
@@ -201,7 +190,7 @@ import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit
+  Search, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
 import { configData } from '@/mock/admin/configData'
 import type { Config, ConfigSearchForm } from '@/types/admin/config'
@@ -214,10 +203,7 @@ const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
 const searchForm = reactive<ConfigSearchForm>({
-  configLabel: '',
-  configKey: '',
-  configType: '',
-  configGroup: ''
+  configLabel: ''
 })
 
 const formData = reactive({
@@ -248,9 +234,6 @@ const pagination = reactive({
 const filteredData = computed(() => {
   let data = tableData.value.filter(item => {
     if (searchForm.configLabel && !item.configLabel.includes(searchForm.configLabel)) return false
-    if (searchForm.configKey && !item.configKey.includes(searchForm.configKey)) return false
-    if (searchForm.configType && item.configType !== searchForm.configType) return false
-    if (searchForm.configGroup && item.configGroup !== searchForm.configGroup) return false
     return true
   })
 
@@ -266,9 +249,6 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.configLabel = ''
-  searchForm.configKey = ''
-  searchForm.configType = ''
-  searchForm.configGroup = ''
   pagination.page = 1
 }
 
@@ -365,23 +345,22 @@ function resetForm() {
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

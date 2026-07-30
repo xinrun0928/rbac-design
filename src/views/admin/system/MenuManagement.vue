@@ -111,6 +111,7 @@
               background: '#F5F7FA',
               color: '#606266',
               fontWeight: '600',
+              textAlign: 'center',
             }"
             border
             stripe
@@ -209,14 +210,14 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="path" label="路由地址" min-width="180" align="center" show-overflow-tooltip>
+            <el-table-column prop="path" label="路由地址" min-width="230" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="overflow-text" v-if="row.path">{{ row.path }}</span>
                 <span class="empty-text" v-else>-</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="component" label="组件路径" min-width="180" align="center" show-overflow-tooltip>
+            <el-table-column prop="component" label="组件路径" min-width="230" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="overflow-text" v-if="row.component">{{ row.component }}</span>
                 <span class="empty-text" v-else>-</span>
@@ -1236,25 +1237,23 @@ onMounted(() => {
           overflow-y: auto;
         }
 
+        // 菜单名称表头居中
+        .el-table__header-wrapper th:first-child .cell {
+          justify-content: center;
+        }
+
         .el-table__row {
           .cell {
             padding: 0 12px;
-
             display: flex;
             align-items: center;
           }
 
-          // 需要居中的列
           .el-table__cell:not(:first-child) {
             .cell {
               justify-content: center;
             }
           }
-        }
-
-        // 菜单名称表头居中
-        .el-table__header-wrapper th:first-child .cell {
-          justify-content: center;
         }
 
         // 树形缩进

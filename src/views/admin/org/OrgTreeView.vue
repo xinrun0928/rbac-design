@@ -24,7 +24,7 @@
         :data="orgTreeData"
         row-key="id"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         border
         stripe
         default-expand-all
@@ -594,6 +594,10 @@ onMounted(() => {
         padding: 0 12px;
         display: flex;
         align-items: center;
+      }
+
+      .el-table__row .el-table__cell:not(:first-child) .cell {
+        justify-content: center;
       }
 
       .el-table__indent {

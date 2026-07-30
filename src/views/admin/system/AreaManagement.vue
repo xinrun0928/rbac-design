@@ -31,7 +31,7 @@
         stripe
         default-expand-all
         :indent="24"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
       >
         <el-table-column prop="name" label="区域名称" min-width="200">
           <template #default="{ row }">
@@ -350,6 +350,10 @@ function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | '
       .el-table__row .cell {
         display: flex;
         align-items: center;
+      }
+
+      .el-table__row .el-table__cell:not(:first-child) .cell {
+        justify-content: center;
       }
 
       .el-table__indent {

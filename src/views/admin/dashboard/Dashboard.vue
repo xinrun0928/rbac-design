@@ -75,7 +75,7 @@
         <el-table
           :data="recentLogins"
           size="small"
-          :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+          :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
           stripe
           max-height="320"
         >

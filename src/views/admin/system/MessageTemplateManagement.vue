@@ -5,21 +5,37 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="模板ID">
-            <el-input v-model="searchForm.templateId" placeholder="输入模板ID" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="消息ID">
-            <el-input v-model="searchForm.msgId" placeholder="输入消息ID" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="审核状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
-              <el-option label="已审核" :value="1" />
-              <el-option label="未审核" :value="0" />
-            </el-select>
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">短信模板管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.templateId"
+            placeholder="搜索模板ID"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-input
+            v-model="searchForm.name"
+            placeholder="搜索短信模板"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.status" placeholder="审核状态" clearable style="width: 180px; margin-right: 12px">
+            <el-option label="已审核" :value="1" />
+            <el-option label="未审核" :value="0" />
+          </el-select>
+          <el-select v-model="searchForm.subsystemId" placeholder="归属子系统" clearable style="width: 180px; margin-right: 12px">
+            <el-option v-for="sub in subsystems" :key="sub.subsystemId" :label="sub.subsystemName" :value="sub.subsystemId" />
+          </el-select>
+          <el-button type="primary" :icon="Plus" @click="applyDrawerVisible = true">申请模版</el-button>
+        </div>
       </div>
+
       <el-table
         v-loading="loading"
         :data="filteredData"
@@ -27,7 +43,7 @@
         stripe
         highlight-current-row
         row-key="id"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -42,9 +58,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="msgId" label="消息ID" min-width="240" show-overflow-tooltip>
+        <el-table-column prop="msgId" label="消息ID" min-width="240" align="center" show-overflow-tooltip>
           <template #default="{ row }">
-            <span class="msg-id-text">{{ row.msgId }}</span>
+            <span class="msg-id-text copyable" @click="copyMsgId(row.msgId)">{{ row.msgId }}</span>
           </template>
         </el-table-column>
 
@@ -66,14 +82,21 @@
           </template>
         </el-table-column>
 
+        <el-table-column prop="subsystemName" label="归属子系统" min-width="160" align="center">
+          <template #default="{ row }">
+            <span class="subsystem-text">{{ row.subsystemName }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="createTime" label="创建时间" width="170" align="center">
           <template #default="{ row }">
             <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="240" align="center" fixed="right">
           <template #default="{ row }">
+            <el-button v-if="!isApproved(row)" type="success" link :icon="Refresh" @click="handleGetStatus(row)">获取状态</el-button>
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">详情</el-button>
             <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
           </template>
@@ -95,14 +118,34 @@
       </div>
     </el-card>
 
+    <!-- 申请模版抽屉 -->
+    <el-drawer v-model="applyDrawerVisible" title="申请模版" size="500px" direction="rtl" class="apply-drawer">
+      <el-form :model="applyForm" label-width="90px">
+        <el-form-item label="归属子系统">
+          <el-select v-model="applyForm.subsystemId" placeholder="请选择子系统" style="width: 100%">
+            <el-option v-for="sub in subsystems" :key="sub.subsystemId" :label="sub.subsystemName" :value="sub.subsystemId" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="短信模版">
+          <template #label>
+            <span style="display: inline-flex; align-items: center;">
+              短信模版
+              <el-tooltip content="变量使用 ${2} 的形式，从2开始（如 ${2}、${3}、${4}）" placement="top">
+                <el-icon style="margin-left: 4px; color: #909399; cursor: pointer;"><WarningFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+          <el-input v-model="applyForm.template" type="textarea" :rows="6" placeholder="请输入短信模板内容，变量使用 ${2} 方式，从2开始" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="applyDrawerVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleApplySubmit">提交申请</el-button>
+      </template>
+    </el-drawer>
+
     <!-- 详情抽屉 -->
-    <el-drawer
-      v-model="detailDrawerVisible"
-      title="短信模版详情"
-      size="60%"
-      direction="rtl"
-      class="detail-drawer"
-    >
+    <el-drawer v-model="detailDrawerVisible" title="短信模版详情" size="60%" direction="rtl" class="detail-drawer">
       <template v-if="currentTemplate">
         <el-descriptions :column="2" border class="detail-descriptions">
           <el-descriptions-item label="ID">{{ currentTemplate.id }}</el-descriptions-item>
@@ -118,7 +161,6 @@
           </el-descriptions-item>
         </el-descriptions>
 
-        <!-- 审核信息 -->
         <div class="json-section" v-if="currentTemplate.approvalJson">
           <div class="section-header">
             <span class="section-title">审核信息（approval_json）</span>
@@ -148,7 +190,6 @@
           />
         </div>
 
-        <!-- 扩展信息 -->
         <div class="json-section" v-if="currentTemplate.extJson">
           <div class="section-header">
             <span class="section-title">注册信息（ext_json）</span>
@@ -174,24 +215,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, View, Delete, CopyDocument
+  Refresh, Search, RefreshLeft, View, Delete, CopyDocument, Plus, WarningFilled
 } from '@element-plus/icons-vue'
 import { messageTemplateData } from '@/mock/admin/messageTemplateData'
-import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo } from '@/types/admin/messageTemplate'
+import { mockSubsystemData } from '@/mock/admin/subsystemData'
+import type { MessageTemplate, MessageTemplateSearchForm, ApprovalJsonInfo, ExtJsonInfo, MessageTemplateApplyForm } from '@/types/admin/messageTemplate'
+import type { Subsystem } from '@/types/admin/subsystem'
 
 // ── 状态 ──
 const loading = ref(false)
 const tableData = ref<MessageTemplate[]>(messageTemplateData)
 const detailDrawerVisible = ref(false)
 const currentTemplate = ref<MessageTemplate | null>(null)
+const applyDrawerVisible = ref(false)
+const subsystems = ref<Subsystem[]>(mockSubsystemData)
+
+const applyForm = reactive<MessageTemplateApplyForm>({
+  subsystemId: '',
+  template: ''
+})
 
 const searchForm = reactive<MessageTemplateSearchForm>({
   templateId: '',
+  name: '',
   msgId: '',
-  status: ''
+  status: '',
+  subsystemId: ''
 })
 
 const pagination = reactive({
@@ -207,11 +259,17 @@ const filteredData = computed(() => {
   if (searchForm.templateId) {
     data = data.filter(item => item.templateId.includes(searchForm.templateId))
   }
+  if (searchForm.name) {
+    data = data.filter(item => item.name.includes(searchForm.name))
+  }
   if (searchForm.msgId) {
     data = data.filter(item => item.msgId.includes(searchForm.msgId))
   }
   if (searchForm.status !== '') {
     data = data.filter(item => item.status === searchForm.status)
+  }
+  if (searchForm.subsystemId !== '') {
+    data = data.filter(item => item.subsystemId === searchForm.subsystemId)
   }
 
   pagination.total = data.length
@@ -242,10 +300,57 @@ function handleSearch() {
   pagination.page = 1
 }
 
+function copyMsgId(msgId: string) {
+  navigator.clipboard.writeText(msgId)
+  ElMessage.success('消息ID已复制')
+}
+
+function isApproved(row: MessageTemplate): boolean {
+  const info = parseApprovalJson(row.approvalJson)
+  return info?.data?.respdata?.records?.[0]?.status === '2'
+}
+
+function handleGetStatus(row: MessageTemplate) {
+  ElMessage.success('获取成功')
+}
+
+function handleApplySubmit() {
+  if (!applyForm.subsystemId || !applyForm.template) {
+    ElMessage.warning('请选择子系统和输入模板内容')
+    return
+  }
+  const sub = subsystems.value.find(s => s.subsystemId === applyForm.subsystemId)
+  const newId = Math.max(...tableData.value.map(item => item.id)) + 1
+  const now = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const createTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
+  const newTemplate: MessageTemplate = {
+    id: newId,
+    templateId: String(10000000 + newId),
+    name: '新申请模板',
+    displayOrder: 1,
+    subsystemId: applyForm.subsystemId as number,
+    subsystemName: sub?.subsystemName || '',
+    remark: '',
+    msgId: '',
+    template: applyForm.template,
+    content: applyForm.template,
+    status: 0,
+    createTime
+  }
+  tableData.value.unshift(newTemplate)
+  applyForm.subsystemId = ''
+  applyForm.template = ''
+  applyDrawerVisible.value = false
+  ElMessage.success('申请成功')
+}
+
 function handleReset() {
   searchForm.templateId = ''
+  searchForm.name = ''
   searchForm.msgId = ''
   searchForm.status = ''
+  searchForm.subsystemId = ''
   pagination.page = 1
 }
 
@@ -360,17 +465,23 @@ function handleCopyJson(jsonStr: string | null) {
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .table-card {
@@ -410,6 +521,12 @@ function handleCopyJson(jsonStr: string | null) {
       color: #909399;
     }
 
+    .copyable {
+      cursor: pointer;
+      transition: color 0.2s;
+      &:hover { color: #409EFF; }
+    }
+
     .template-text {
       font-size: 13px;
       color: #303133;
@@ -417,6 +534,11 @@ function handleCopyJson(jsonStr: string | null) {
     }
 
     .time-text { font-size: 13px; color: #909399; }
+
+    .subsystem-text {
+      font-size: 13px;
+      color: #606266;
+    }
   }
 
   .pagination-wrapper {
@@ -434,6 +556,23 @@ function handleCopyJson(jsonStr: string | null) {
       .el-drawer__title { font-weight: 600; font-size: 16px; }
     }
     .el-drawer__body { padding: 24px; overflow-y: auto; }
+  }
+
+  :deep(.apply-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
+      padding: 20px 24px;
+      border-bottom: 1px solid #EBEEF5;
+      .el-drawer__title { font-weight: 600; font-size: 16px; }
+    }
+    .el-drawer__body { padding: 24px; }
+    .el-drawer__footer {
+      padding: 16px 24px;
+      border-top: 1px solid #EBEEF5;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
   }
 
   .json-section {

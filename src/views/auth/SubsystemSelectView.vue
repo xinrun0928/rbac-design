@@ -126,7 +126,7 @@ const handleSelectSubsystem = (subsystem: any) => {
     router.push('/admin')
   } else if (subsystem.subsystemId === 1) {
     // 应急值守管理子系统
-    router.push('/duty')
+    router.push('/duty/statistics')
   } else if (subsystem.subsystemId === 2) {
     // 预案管理子系统
     router.push('/plan')
@@ -135,7 +135,7 @@ const handleSelectSubsystem = (subsystem: any) => {
     router.push('/event')
   } else if (subsystem.subsystemId === 4) {
     // 指挥智能调度子系统
-    router.push('/dispatch')
+    router.push('/dispatch/road/statistics')
   } else if (subsystem.subsystemId === 5) {
     // 物资管理子系统
     router.push('/resource')

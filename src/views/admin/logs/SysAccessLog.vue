@@ -18,7 +18,7 @@
           </el-form-item>
           <el-form-item label="请求地址">
             <el-input
-              v-model="searchForm.req_url"
+              v-model="searchForm.reqUrl"
               placeholder="请输入请求地址"
               clearable
               :prefix-icon="Search"
@@ -49,7 +49,7 @@
           </el-form-item>
           <el-form-item label="访问时间">
             <el-date-picker
-              v-model="searchForm.create_time"
+              v-model="searchForm.createTime"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -79,24 +79,24 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="req_url" label="请求地址" min-width="240">
+        <el-table-column prop="reqUrl" label="请求地址" min-width="240">
           <template #default="{ row }">
             <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
-              <span class="url-text" @click="handleCopyText(row.req_url)">{{ row.req_url }}</span>
+              <span class="url-text" @click="handleCopyText(row.reqUrl)">{{ row.reqUrl }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
 
-        <el-table-column prop="op_method" label="方法" width="80" align="center">
+        <el-table-column prop="opMethod" label="方法" width="80" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="getMethodType(row.op_method)"
+              :type="getMethodType(row.opMethod)"
               effect="dark"
               style="border: none; color: #fff"
               round
               size="small"
             >
-              {{ row.op_method }}
+              {{ row.opMethod }}
             </el-tag>
           </template>
         </el-table-column>
@@ -114,9 +114,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="rep_time" label="耗时(ms)" width="90" align="center">
+        <el-table-column prop="repTime" label="耗时(ms)" width="90" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.rep_time }}</span>
+            <span class="time-text">{{ row.repTime }}</span>
           </template>
         </el-table-column>
 
@@ -138,9 +138,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" label="访问时间" width="170" align="center">
+        <el-table-column prop="createTime" label="访问时间" width="170" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.create_time }}</span>
+            <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -214,11 +214,11 @@
               </div>
               <div class="detail-item">
                 <span class="detail-label">响应耗时</span>
-                <span class="detail-value">{{ detailData.rep_time }} ms</span>
+                <span class="detail-value">{{ detailData.repTime }} ms</span>
               </div>
               <div class="detail-item full-width">
                 <span class="detail-label">请求地址</span>
-                <span class="detail-value mono">{{ detailData.req_url }}</span>
+                <span class="detail-value mono">{{ detailData.reqUrl }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">IP地址</span>
@@ -230,7 +230,7 @@
               </div>
               <div class="detail-item full-width">
                 <span class="detail-label">访问时间</span>
-                <span class="detail-value">{{ detailData.create_time }}</span>
+                <span class="detail-value">{{ detailData.createTime }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -240,21 +240,21 @@
             <div class="detail-grid">
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">请求参数 (req_params)</span>
-                  <el-button v-if="detailData.req_params" type="primary" link size="small" @click="handleCopyText(detailData.req_params)">
+                  <span class="detail-label">请求参数 (reqParams)</span>
+                  <el-button v-if="detailData.reqParams" type="primary" link size="small" @click="handleCopyText(detailData.reqParams)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.req_params || '-') }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.reqParams || '-') }}</pre>
               </div>
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">响应数据 (rep_data)</span>
-                  <el-button v-if="detailData.rep_data" type="primary" link size="small" @click="handleCopyText(detailData.rep_data)">
+                  <span class="detail-label">响应数据 (repData)</span>
+                  <el-button v-if="detailData.repData" type="primary" link size="small" @click="handleCopyText(detailData.repData)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.rep_data || '-') }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.repData || '-') }}</pre>
               </div>
             </div>
           </el-collapse-item>
@@ -264,7 +264,7 @@
             <div class="detail-grid">
               <div class="detail-item">
                 <span class="detail-label">类名</span>
-                <span class="detail-value mono text-small">{{ detailData.class_name }}</span>
+                <span class="detail-value mono text-small">{{ detailData.className }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">状态码</span>
@@ -272,11 +272,11 @@
               </div>
               <div class="detail-item">
                 <span class="detail-label">用户ID</span>
-                <span class="detail-value mono">{{ detailData.user_id || '-' }}</span>
+                <span class="detail-value mono">{{ detailData.userId || '-' }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">用户名</span>
-                <span class="detail-value">{{ detailData.user_name || '-' }}</span>
+                <span class="detail-value">{{ detailData.userName || '-' }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -315,10 +315,10 @@ import { getAccessLogs, getAccessLogDetail } from '@/utils/logMockApi'
 // ── 搜索表单类型 ──
 interface SearchForm {
   name: string
-  req_url: string
+  reqUrl: string
   ip: string
   result: string
-  create_time: string[] | null
+  createTime: string[] | null
 }
 
 // ── 状态 ──
@@ -328,30 +328,30 @@ const sqlDialogVisible = ref(false)
 const accessLogSql = `CREATE TABLE "public"."sys_access_log" (
   "id" int8 NOT NULL DEFAULT nextval('sys_access_log_id_seq'::regclass),
   "name" varchar(40) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "req_url" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "op_method" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "reqUrl" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "opMethod" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "ip" varchar(40) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "location" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "req_params" text COLLATE "pg_catalog"."default",
-  "rep_data" text COLLATE "pg_catalog"."default",
-  "rep_time" varchar(20) COLLATE "pg_catalog"."default",
-  "class_name" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "reqParams" text COLLATE "pg_catalog"."default",
+  "repData" text COLLATE "pg_catalog"."default",
+  "repTime" varchar(20) COLLATE "pg_catalog"."default",
+  "className" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "result" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "user_id" int8,
-  "user_name" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "org_id" int8 DEFAULT 0,
-  "org_name" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "userId" int8,
+  "userName" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "orgId" int8 DEFAULT 0,
+  "orgName" varchar(100) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "browser" varchar(512) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
   "os" varchar(512) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "op_type" int2 DEFAULT 0,
-  "func_type" int2 DEFAULT 0,
-  "module_type" int2 DEFAULT 0,
-  "display_order" int4 DEFAULT 0,
+  "opType" int2 DEFAULT 0,
+  "funcType" int2 DEFAULT 0,
+  "moduleType" int2 DEFAULT 0,
+  "displayOrder" int4 DEFAULT 0,
   "status" int2 NOT NULL DEFAULT 1101,
   "remark" text COLLATE "pg_catalog"."default",
-  "sign_result" varchar(1024) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "update_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+  "signResult" varchar(1024) COLLATE "pg_catalog"."default",
+  "createTime" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+  "updateTime" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
   CONSTRAINT "sys_access_log_pkey" PRIMARY KEY ("id")
 );
 
@@ -359,30 +359,30 @@ ALTER TABLE "public"."sys_access_log" OWNER TO "postgres";
 
 COMMENT ON COLUMN "public"."sys_access_log"."id" IS '唯一ID';
 COMMENT ON COLUMN "public"."sys_access_log"."name" IS '日志名称';
-COMMENT ON COLUMN "public"."sys_access_log"."req_url" IS '请求地址';
-COMMENT ON COLUMN "public"."sys_access_log"."op_method" IS '调用方法';
+COMMENT ON COLUMN "public"."sys_access_log"."reqUrl" IS '请求地址';
+COMMENT ON COLUMN "public"."sys_access_log"."opMethod" IS '调用方法';
 COMMENT ON COLUMN "public"."sys_access_log"."ip" IS '访问ip';
 COMMENT ON COLUMN "public"."sys_access_log"."location" IS '地址';
-COMMENT ON COLUMN "public"."sys_access_log"."req_params" IS '请求参数';
-COMMENT ON COLUMN "public"."sys_access_log"."rep_data" IS '响应数据';
-COMMENT ON COLUMN "public"."sys_access_log"."rep_time" IS '响应时间';
-COMMENT ON COLUMN "public"."sys_access_log"."class_name" IS '访问类名';
+COMMENT ON COLUMN "public"."sys_access_log"."reqParams" IS '请求参数';
+COMMENT ON COLUMN "public"."sys_access_log"."repData" IS '响应数据';
+COMMENT ON COLUMN "public"."sys_access_log"."repTime" IS '响应时间';
+COMMENT ON COLUMN "public"."sys_access_log"."className" IS '访问类名';
 COMMENT ON COLUMN "public"."sys_access_log"."result" IS '日志结果';
-COMMENT ON COLUMN "public"."sys_access_log"."user_id" IS '访问人ID';
-COMMENT ON COLUMN "public"."sys_access_log"."user_name" IS '用户名';
-COMMENT ON COLUMN "public"."sys_access_log"."org_id" IS '组织ID';
-COMMENT ON COLUMN "public"."sys_access_log"."org_name" IS '组织名称';
+COMMENT ON COLUMN "public"."sys_access_log"."userId" IS '访问人ID';
+COMMENT ON COLUMN "public"."sys_access_log"."userName" IS '用户名';
+COMMENT ON COLUMN "public"."sys_access_log"."orgId" IS '组织ID';
+COMMENT ON COLUMN "public"."sys_access_log"."orgName" IS '组织名称';
 COMMENT ON COLUMN "public"."sys_access_log"."browser" IS '请求终端';
 COMMENT ON COLUMN "public"."sys_access_log"."os" IS '终端系统';
-COMMENT ON COLUMN "public"."sys_access_log"."op_type" IS '日志类型';
-COMMENT ON COLUMN "public"."sys_access_log"."func_type" IS '功能类型';
-COMMENT ON COLUMN "public"."sys_access_log"."module_type" IS '模块分类';
-COMMENT ON COLUMN "public"."sys_access_log"."display_order" IS '排序字段';
+COMMENT ON COLUMN "public"."sys_access_log"."opType" IS '日志类型';
+COMMENT ON COLUMN "public"."sys_access_log"."funcType" IS '功能类型';
+COMMENT ON COLUMN "public"."sys_access_log"."moduleType" IS '模块分类';
+COMMENT ON COLUMN "public"."sys_access_log"."displayOrder" IS '排序字段';
 COMMENT ON COLUMN "public"."sys_access_log"."status" IS '状态（1101正常 1102停用）';
 COMMENT ON COLUMN "public"."sys_access_log"."remark" IS '备注信息';
-COMMENT ON COLUMN "public"."sys_access_log"."sign_result" IS '签名结果（由定时任务触发生成）';
-COMMENT ON COLUMN "public"."sys_access_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_access_log"."update_time" IS '更新时间';
+COMMENT ON COLUMN "public"."sys_access_log"."signResult" IS '签名结果（由定时任务触发生成）';
+COMMENT ON COLUMN "public"."sys_access_log"."createTime" IS '创建时间';
+COMMENT ON COLUMN "public"."sys_access_log"."updateTime" IS '更新时间';
 
 COMMENT ON TABLE "public"."sys_access_log" IS '系统访问日志表';`
 const tableData = ref<SysAccessLog[]>([])
@@ -392,10 +392,10 @@ const activeCollapse = ref(['basic', 'request', 'other'])
 
 const searchForm = reactive<SearchForm>({
   name: '',
-  req_url: '',
+  reqUrl: '',
   ip: '',
   result: '',
-  create_time: null
+  createTime: null
 })
 
 const pagination = reactive({
@@ -450,11 +450,11 @@ async function fetchData() {
   try {
     const searchParams: Record<string, any> = {}
     if (searchForm.name) searchParams.name = searchForm.name
-    if (searchForm.req_url) searchParams.req_url = searchForm.req_url
+    if (searchForm.reqUrl) searchParams.reqUrl = searchForm.reqUrl
     if (searchForm.ip) searchParams.ip = searchForm.ip
     if (searchForm.result) searchParams.result = searchForm.result
-    if (searchForm.create_time && searchForm.create_time.length === 2) {
-      searchParams.create_time = searchForm.create_time
+    if (searchForm.createTime && searchForm.createTime.length === 2) {
+      searchParams.createTime = searchForm.createTime
     }
 
     const res = await getAccessLogs({
@@ -478,10 +478,10 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.name = ''
-  searchForm.req_url = ''
+  searchForm.reqUrl = ''
   searchForm.ip = ''
   searchForm.result = ''
-  searchForm.create_time = null
+  searchForm.createTime = null
   pagination.page = 1
   fetchData()
 }

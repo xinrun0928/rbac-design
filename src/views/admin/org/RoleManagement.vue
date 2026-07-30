@@ -283,18 +283,18 @@
           <div class="bind-subsystem-list">
             <div
               v-for="sub in subsystems"
-              :key="sub.subsysId"
+              :key="sub.subsystemId"
               class="bind-subsystem-item"
-              :class="{ active: bindSelectedSubsystem === sub.subsysId }"
-              @click="loadBindMenuTree(sub.subsysId)"
+              :class="{ active: bindSelectedSubsystem === sub.subsystemId }"
+              @click="loadBindMenuTree(sub.subsystemId)"
             >
-              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
-                <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
-                  <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsystemId).bg }">
+                <el-icon :color="getSubsystemIconStyle(sub.subsystemId).color">
+                  <component :is="getSubsystemIconStyle(sub.subsystemId).icon" />
                 </el-icon>
               </div>
-              <span class="subsystem-name">{{ sub.subsysShortName }}</span>
-              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsysId] || 0 }}）</span>
+              <span class="subsystem-name">{{ sub.subsystemShortName }}</span>
+              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsystemId] || 0 }}）</span>
             </div>
           </div>
         </div>
@@ -744,29 +744,29 @@ function handleConfigMenu(row: RoleItem) {
   calculateSubsystemMenuCount()
   // 默认选中第一个子系统
   if (subsystems.length > 0) {
-    loadBindMenuTree(subsystems[0].subsysId)
+    loadBindMenuTree(subsystems[0].subsystemId)
   }
 }
 
 function calculateSubsystemMenuCount() {
   const counts: Record<number, number> = {}
   for (const sub of subsystems) {
-    counts[sub.subsysId] = mockMenuData.filter(m => m.subsysId === sub.subsysId && true).length
+    counts[sub.subsystemId] = mockMenuData.filter(m => m.subsystemId === sub.subsystemId && true).length
   }
   subsystemMenuCount.value = counts
 }
 
-function loadBindMenuTree(subsysId: number) {
-  bindSelectedSubsystem.value = subsysId
+function loadBindMenuTree(subsystemId: number) {
+  bindSelectedSubsystem.value = subsystemId
   // 获取该子系统的菜单并构建树
-  const subMenus = mockMenuData.filter(m => m.subsysId === subsysId && true)
+  const subMenus = mockMenuData.filter(m => m.subsystemId === subsystemId && true)
   bindMenuTree.value = buildMenuTree(subMenus)
 
   // 设置已选中的菜单
   if (currentRole.value) {
     const roleSubMenus = currentRole.value.menuIds.filter(id => {
       const menu = mockMenuData.find(m => m.menuId === id)
-      return menu && menu.subsysId === subsysId
+      return menu && menu.subsystemId === subsystemId
     })
     bindCheckedKeys.value = roleSubMenus
   } else {
@@ -823,7 +823,7 @@ function handleSubmitMenu() {
   // 合并其他子系统已选中的菜单
   const otherSubMenus = currentRole.value.menuIds.filter(id => {
     const menu = mockMenuData.find(m => m.menuId === id)
-    return menu && menu.subsysId !== bindSelectedSubsystem.value
+    return menu && menu.subsystemId !== bindSelectedSubsystem.value
   })
 
   const allMenuIds = [...new Set([...otherSubMenus, ...checkedKeys])]
@@ -846,8 +846,8 @@ const subsystemIconMap: Record<number, { icon: string; color: string; bg: string
   99: { icon: 'Setting', color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' }
 }
 
-function getSubsystemIconStyle(subsysId: number) {
-  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+function getSubsystemIconStyle(subsystemId: number) {
+  return subsystemIconMap[subsystemId] || subsystemIconMap[99]
 }
 
 // 菜单类型样式

@@ -111,9 +111,9 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="sort" label="排序" width="70" align="center">
+            <el-table-column prop="displayOrder" label="排序" width="70" align="center">
               <template #default="{ row }">
-                <span class="sort-text">{{ row.sort }}</span>
+                <span class="displayOrder-text">{{ row.displayOrder }}</span>
               </template>
             </el-table-column>
 
@@ -238,9 +238,9 @@
           />
         </el-form-item>
 
-        <el-form-item label="排序" prop="sort">
+        <el-form-item label="排序" prop="displayOrder">
           <el-input-number
-            v-model="formData.sort"
+            v-model="formData.displayOrder"
             :min="0"
             :max="9999"
             style="width: 180px"
@@ -292,7 +292,7 @@ interface DeptForm {
   phone: string
   email: string
   fax: string
-  sort: number
+  displayOrder: number
   status: number
 }
 
@@ -321,7 +321,7 @@ const formData = reactive<DeptForm>({
   phone: '',
   email: '',
   fax: '',
-  sort: 0,
+  displayOrder: 0,
   status: 1101
 })
 
@@ -329,7 +329,7 @@ const formData = reactive<DeptForm>({
 const formRules: FormRules = {
   deptName: [{ required: true, message: '请输入部门名称', trigger: 'blur' }],
   deptCode: [{ required: true, message: '请输入部门编号', trigger: 'blur' }],
-  sort: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
+  displayOrder: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
   status: [{ required: true, message: '请选择状态', trigger: 'change' }]
 }
 
@@ -414,7 +414,7 @@ function handleAdd(parentRow: DeptItem | null) {
   formData.phone = ''
   formData.email = ''
   formData.fax = ''
-  formData.sort = 0
+  formData.displayOrder = 0
   formData.status = 1101
   drawerVisible.value = true
 }
@@ -429,7 +429,7 @@ function handleEdit(row: DeptItem) {
   formData.phone = row.phone
   formData.email = row.email
   formData.fax = row.fax
-  formData.sort = row.sort
+  formData.displayOrder = row.displayOrder
   formData.status = row.status
   drawerVisible.value = true
 }
@@ -698,7 +698,7 @@ onMounted(() => {
     .phone-text { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-size: 13px; color: #606266; }
     .email-text { font-size: 13px; color: #606266; }
     .fax-text { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-size: 13px; color: #606266; }
-    .sort-text { font-weight: 600; color: #606266; }
+    .displayOrder-text { font-weight: 600; color: #606266; }
 
     .empty-state {
       padding: 48px 0;

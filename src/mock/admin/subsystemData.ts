@@ -2,10 +2,10 @@ import type { Subsystem } from '@/types/admin/subsystem'
 
 export const mockSubsystemData: Subsystem[] = [
   {
-    subsysId: 1,
-    subsysCode: 'EMERGENCY_WATCH',
-    subsysName: '值守管理子系统',
-    subsysShortName: '值守',
+    subsystemId: 1,
+    subsystemCode: 'EMERGENCY_WATCH',
+    subsystemName: '值守管理子系统',
+    subsystemShortName: '值守',
     pathPrefix: '/duty',
     tablePrefix: 'duty_',
     displayOrder: 1,
@@ -18,10 +18,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   },
   {
-    subsysId: 2,
-    subsysCode: 'EMERGENCY_PLAN',
-    subsysName: '预案管理子系统',
-    subsysShortName: '预案',
+    subsystemId: 2,
+    subsystemCode: 'EMERGENCY_PLAN',
+    subsystemName: '预案管理子系统',
+    subsystemShortName: '预案',
     pathPrefix: '/plan',
     tablePrefix: 'plan_',
     displayOrder: 2,
@@ -34,10 +34,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
   },
   {
-    subsysId: 3,
-    subsysCode: 'EMERGENCY_EVENT',
-    subsysName: '事件管理子系统',
-    subsysShortName: '事件',
+    subsystemId: 3,
+    subsystemCode: 'EMERGENCY_EVENT',
+    subsystemName: '事件管理子系统',
+    subsystemShortName: '事件',
     pathPrefix: '/event',
     tablePrefix: 'event_',
     displayOrder: 3,
@@ -50,10 +50,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
   },
   {
-    subsysId: 4,
-    subsysCode: 'EMERGENCY_DISPATCH',
-    subsysName: '指挥智能调度子系统',
-    subsysShortName: '调度',
+    subsystemId: 4,
+    subsystemCode: 'EMERGENCY_DISPATCH',
+    subsystemName: '指挥智能调度子系统',
+    subsystemShortName: '调度',
     pathPrefix: '/dispatch',
     tablePrefix: 'dispatch_',
     displayOrder: 4,
@@ -66,10 +66,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
   },
   {
-    subsysId: 5,
-    subsysCode: 'EMERGENCY_MATERIAL',
-    subsysName: '厅级物资管理子系统',
-    subsysShortName: '物资',
+    subsystemId: 5,
+    subsystemCode: 'EMERGENCY_MATERIAL',
+    subsystemName: '厅级物资管理子系统',
+    subsystemShortName: '物资',
     pathPrefix: '/resource',
     tablePrefix: 'resource_',
     displayOrder: 5,
@@ -82,10 +82,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
   },
   {
-    subsysId: 6,
-    subsysCode: 'ASSIST_DECISION',
-    subsysName: '辅助决策子系统',
-    subsysShortName: '决策',
+    subsystemId: 6,
+    subsystemCode: 'ASSIST_DECISION',
+    subsystemName: '辅助决策子系统',
+    subsystemShortName: '决策',
     pathPrefix: '/dss',
     tablePrefix: 'dss_',
     displayOrder: 6,
@@ -98,10 +98,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
   },
   {
-    subsysId: 7,
-    subsysCode: 'DATA_FUSION',
-    subsysName: '数据融合子系统',
-    subsysShortName: '融合',
+    subsystemId: 7,
+    subsystemCode: 'DATA_FUSION',
+    subsystemName: '数据融合子系统',
+    subsystemShortName: '融合',
     pathPrefix: '/fusion',
     tablePrefix: 'fusion_',
     displayOrder: 7,
@@ -114,10 +114,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
   },
   {
-    subsysId: 8,
-    subsysCode: 'COMPREHENSIVE_DISPLAY',
-    subsysName: '综合展示子系统',
-    subsysShortName: '展示',
+    subsystemId: 8,
+    subsystemCode: 'COMPREHENSIVE_DISPLAY',
+    subsystemName: '综合展示子系统',
+    subsystemShortName: '展示',
     pathPrefix: '/display',
     tablePrefix: '',
     displayOrder: 8,
@@ -130,10 +130,10 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
   },
   {
-    subsysId: 99,
-    subsysCode: 'SYSTEM',
-    subsysName: '后台管理子系统',
-    subsysShortName: '系统',
+    subsystemId: 99,
+    subsystemCode: 'SYSTEM',
+    subsystemName: '后台管理子系统',
+    subsystemShortName: '系统',
     pathPrefix: '/admin',
     tablePrefix: 'sys_,org_,app_,mq_',
     displayOrder: 10,

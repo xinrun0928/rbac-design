@@ -13,7 +13,7 @@ export interface Menu {
   /** 内容类型: 1-菜单页面, 2-大屏, 3-嵌入页面, 4-外部链接 */
   contentType: number
   /** 所属子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 图标名称 */
   icon: string
   /** 路由路径 */
@@ -51,7 +51,7 @@ export interface MenuForm {
   /** 内容类型: 1-菜单页面, 2-大屏, 3-嵌入页面, 4-外部链接 */
   contentType: number
   /** 所属子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 图标名称 */
   icon: string
   /** 路由路径 */

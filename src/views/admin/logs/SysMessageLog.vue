@@ -7,7 +7,7 @@
         <el-form :model="searchForm" inline>
           <el-form-item label="模板ID">
             <el-input
-              v-model="searchForm.template_id"
+              v-model="searchForm.templateId"
               placeholder="请输入模板ID"
               clearable
               :prefix-icon="Search"
@@ -37,7 +37,7 @@
           </el-form-item>
           <el-form-item label="发送时间">
             <el-date-picker
-              v-model="searchForm.create_time"
+              v-model="searchForm.createTime"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -55,21 +55,21 @@
         border
         stripe
         highlight-current-row
-        row-key="message_id"
+        row-key="messageId"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="message_id" label="消息ID" min-width="180">
+        <el-table-column prop="messageId" label="消息ID" min-width="180">
           <template #default="{ row }">
-            <span class="id-text">{{ row.message_id }}</span>
+            <span class="id-text">{{ row.messageId }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="template_id" label="模板ID" width="120">
+        <el-table-column prop="templateId" label="模板ID" width="120">
           <template #default="{ row }">
-            <span class="template-text">{{ row.template_id }}</span>
+            <span class="template-text">{{ row.templateId }}</span>
           </template>
         </el-table-column>
 
@@ -97,19 +97,19 @@
         <el-table-column prop="status" label="发送状态" min-width="120" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="parseSendStatus(row.reply_text).success ? 'success' : 'danger'"
+              :type="parseSendStatus(row.replyText).success ? 'success' : 'danger'"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ parseSendStatus(row.reply_text).message }}
+              {{ parseSendStatus(row.replyText).message }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" label="发送时间" width="180" align="center">
+        <el-table-column prop="createTime" label="发送时间" width="180" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.create_time }}</span>
+            <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -161,29 +161,29 @@
             <div class="detail-grid">
               <div class="detail-item">
                 <span class="detail-label">消息ID</span>
-                <span class="detail-value mono">{{ detailData.message_id }}</span>
+                <span class="detail-value mono">{{ detailData.messageId }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">模板ID</span>
-                <span class="detail-value mono">{{ detailData.template_id }}</span>
+                <span class="detail-value mono">{{ detailData.templateId }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">发送状态</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="parseSendStatus(detailData.reply_text).success ? 'success' : 'danger'"
+                    :type="parseSendStatus(detailData.replyText).success ? 'success' : 'danger'"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ parseSendStatus(detailData.reply_text).message }}
+                    {{ parseSendStatus(detailData.replyText).message }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">创建时间</span>
-                <span class="detail-value">{{ detailData.create_time }}</span>
+                <span class="detail-value">{{ detailData.createTime }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -207,21 +207,21 @@
             <div class="detail-grid">
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">请求头 (req_headers)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_headers)">
+                  <span class="detail-label">请求头 (reqHeaders)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.reqHeaders)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.req_headers) }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.reqHeaders) }}</pre>
               </div>
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">第三方回复 (reply_text)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.reply_text)">
+                  <span class="detail-label">第三方回复 (replyText)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.replyText)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.reply_text) }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.replyText) }}</pre>
               </div>
             </div>
           </el-collapse-item>
@@ -259,10 +259,10 @@ import { getMessageLogs, getMessageLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  template_id: string
+  templateId: string
   phone: string
   content: string
-  create_time: string[] | null
+  createTime: string[] | null
 }
 
 // ── 状态 ──
@@ -274,41 +274,41 @@ const activeCollapse = ref(['basic', 'content', 'request'])
 const sqlDialogVisible = ref(false)
 
 const messageLogSql = `CREATE TABLE "public"."sys_message_log" (
-  "message_id" int8 NOT NULL DEFAULT nextval('sys_message_log_message_id_seq'::regclass),
-  "template_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "messageId" int8 NOT NULL DEFAULT nextval('sys_message_log_messageId_seq'::regclass),
+  "templateId" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
   "phone" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
   "content" text COLLATE "pg_catalog"."default" NOT NULL,
-  "req_headers" text COLLATE "pg_catalog"."default",
-  "reply_text" text COLLATE "pg_catalog"."default",
-  "display_order" int4 DEFAULT 0,
+  "reqHeaders" text COLLATE "pg_catalog"."default",
+  "replyText" text COLLATE "pg_catalog"."default",
+  "displayOrder" int4 DEFAULT 0,
   "status" int2 NOT NULL DEFAULT 1101,
   "remark" varchar(500) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "update_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  CONSTRAINT "sys_message_log_pkey" PRIMARY KEY ("message_id")
+  "createTime" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+  "updateTime" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+  CONSTRAINT "sys_message_log_pkey" PRIMARY KEY ("messageId")
 );
 
 ALTER TABLE "public"."sys_message_log" OWNER TO "postgres";
 
-COMMENT ON COLUMN "public"."sys_message_log"."message_id" IS '消息ID';
-COMMENT ON COLUMN "public"."sys_message_log"."template_id" IS '模版ID';
+COMMENT ON COLUMN "public"."sys_message_log"."messageId" IS '消息ID';
+COMMENT ON COLUMN "public"."sys_message_log"."templateId" IS '模版ID';
 COMMENT ON COLUMN "public"."sys_message_log"."phone" IS '手机号码';
 COMMENT ON COLUMN "public"."sys_message_log"."content" IS '消息内容';
-COMMENT ON COLUMN "public"."sys_message_log"."req_headers" IS '请求头';
-COMMENT ON COLUMN "public"."sys_message_log"."reply_text" IS '消息回复';
-COMMENT ON COLUMN "public"."sys_message_log"."display_order" IS '排序字段';
+COMMENT ON COLUMN "public"."sys_message_log"."reqHeaders" IS '请求头';
+COMMENT ON COLUMN "public"."sys_message_log"."replyText" IS '消息回复';
+COMMENT ON COLUMN "public"."sys_message_log"."displayOrder" IS '排序字段';
 COMMENT ON COLUMN "public"."sys_message_log"."status" IS '状态（1101正常 1102停用）';
 COMMENT ON COLUMN "public"."sys_message_log"."remark" IS '备注信息';
-COMMENT ON COLUMN "public"."sys_message_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_message_log"."update_time" IS '更新时间';
+COMMENT ON COLUMN "public"."sys_message_log"."createTime" IS '创建时间';
+COMMENT ON COLUMN "public"."sys_message_log"."updateTime" IS '更新时间';
 
 COMMENT ON TABLE "public"."sys_message_log" IS '系统短信消息记录表';`
 
 const searchForm = reactive<SearchForm>({
-  template_id: '',
+  templateId: '',
   phone: '',
   content: '',
-  create_time: null
+  createTime: null
 })
 
 const pagination = reactive({
@@ -381,11 +381,11 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.template_id) searchParams.template_id = searchForm.template_id
+    if (searchForm.templateId) searchParams.templateId = searchForm.templateId
     if (searchForm.phone) searchParams.phone = searchForm.phone
     if (searchForm.content) searchParams.content = searchForm.content
-    if (searchForm.create_time && searchForm.create_time.length === 2) {
-      searchParams.create_time = searchForm.create_time
+    if (searchForm.createTime && searchForm.createTime.length === 2) {
+      searchParams.createTime = searchForm.createTime
     }
 
     const res = await getMessageLogs({
@@ -408,10 +408,10 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.template_id = ''
+  searchForm.templateId = ''
   searchForm.phone = ''
   searchForm.content = ''
-  searchForm.create_time = null
+  searchForm.createTime = null
   pagination.page = 1
   fetchData()
 }
@@ -433,7 +433,7 @@ function handlePageChange(page: number) {
 
 async function handleViewDetail(row: SysMessageLog) {
   try {
-    const detail = await getMessageLogDetail(row.message_id)
+    const detail = await getMessageLogDetail(row.messageId)
     if (detail) {
       detailData.value = detail
       detailDialogVisible.value = true

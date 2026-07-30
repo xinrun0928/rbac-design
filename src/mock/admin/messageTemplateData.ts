@@ -4,6 +4,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 1,
     templateId: '10054733',
+    name: '项目立项审批通知',
+    displayOrder: 1,
+    remark: '',
     msgId: '8ff450fe920444dc9367e0dfd6b1661f',
     template: '您好！为了您的项目${2}满足最终立项审定要求，已对您项目的部分信息进行修改，请登录广东省交通标准管理系统查看。',
     content: '您好！为了您的项目${[%s]}满足最终立项审定要求，已对您项目的部分信息进行修改，请登录广东省交通标准管理系统查看。',
@@ -15,6 +18,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 2,
     templateId: '10054734',
+    name: '项目立项审查通过通知',
+    displayOrder: 1,
+    remark: '',
     msgId: '96955ed731da4262ba037836fbd3869b',
     template: '您好！您的项目${2}已通过立项审查，现可登录广东省交通标准管理系统查看立项审查结果。',
     content: '您好！您的项目${[%s]}已通过立项审查，现可登录广东省交通标准管理系统查看立项审查结果。',
@@ -26,6 +32,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 3,
     templateId: '10054775',
+    name: '项目主审人确定通知',
+    displayOrder: 1,
+    remark: '',
     msgId: '09aeca2ff0ca4b58a743af39d0ba11cb',
     template: '您好！您的项目${2}已确定项目主审人，现可登录广东省交通标准管理系统查看。',
     content: '您好！您的项目${[%s]}已确定项目主审人，现可登录广东省交通标准管理系统查看。',
@@ -37,6 +46,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 4,
     templateId: '10063371',
+    name: '项目进度通知',
+    displayOrder: 1,
+    remark: '',
     msgId: 'cbf4ae7299294c2baa1d388ee3016483',
     template: '${2}您好，${3}已进入${4}，您可登录标准项目管理系统查看项目进展${5}',
     content: '${[%s]}您好，${[%s]}已进入${[%s]}，您可登录标准项目管理系统查看项目进展${[%s]}',
@@ -48,6 +60,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 5,
     templateId: '10532544',
+    name: '短信验证码',
+    displayOrder: 1,
+    remark: '',
     msgId: 'dc1467ff88744366a8062769d264bd79',
     template: '短信验证码是${2}，有效期5分钟，如果不是本人操作，不要理会。',
     content: '短信验证码是${[%s]}，有效期5分钟，如果不是本人操作，不要理会。',
@@ -59,6 +74,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 6,
     templateId: '10532545',
+    name: '修改密码验证码',
+    displayOrder: 1,
+    remark: '',
     msgId: '354f8b4da0d34207a32f6003e91a550e',
     template: '修改密码短信验证码是${2}，有效期5分钟，如果不是本人操作，不要理会。',
     content: '修改密码短信验证码是${[%s]}，有效期5分钟，如果不是本人操作，不要理会。',
@@ -70,6 +88,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 7,
     templateId: '10532546',
+    name: '登录验证码',
+    displayOrder: 1,
+    remark: '',
     msgId: '7d76ea7dc2394da29ccadf5bc4659d83',
     template: '您登录系统的验证码为${2}，有效期为5分钟，请注意保密。',
     content: '您登录系统的验证码为${[%s]}，有效期为5分钟，请注意保密。',
@@ -81,6 +102,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 8,
     templateId: '10532547',
+    name: '注册成功通知',
+    displayOrder: 1,
+    remark: '',
     msgId: '86d9038b9c88462e8f9e1d7c3eab10cc',
     template: '恭喜您，成功注册广东交通标准管理系统，账号：您的手机号码，初始密码：${2}。',
     content: '恭喜您，成功注册广东交通标准管理系统，账号：您的手机号码，初始密码：${[%s]}。',
@@ -92,6 +116,9 @@ export const messageTemplateData: MessageTemplate[] = [
   {
     id: 9,
     templateId: '10536402',
+    name: '标准项目进度通知',
+    displayOrder: 1,
+    remark: '',
     msgId: '826fe59d824d4d009666a591a20144aa',
     template: '您好！您单位负责的标准项目即将进入"${2}"，请尽快登录系统查看任务详情并按时完成相关工作。如有疑问，请联系系统管理员。感谢配合！',
     content: '您好！您单位负责的标准项目即将进入"${[%s]}"，请尽快登录系统查看任务详情并按时完成相关工作。如有疑问，请联系系统管理员。感谢配合！',

@@ -15,33 +15,33 @@
         <div class="subsystem-list">
           <div
             v-for="sub in subsystems"
-            :key="sub.subsysId"
+            :key="sub.subsystemId"
             class="subsystem-item"
-            :class="{ active: selectedSubsystem === sub.subsysId }"
-            @click="selectSubsystem(sub.subsysId)"
+            :class="{ active: selectedSubsystem === sub.subsystemId }"
+            @click="selectSubsystem(sub.subsystemId)"
           >
             <el-tooltip
-              :content="sub.subsysName"
+              :content="sub.subsystemName"
               placement="right"
               :disabled="!leftPanelCollapsed"
             >
               <div class="subsystem-icon-wrapper">
                 <div
                   class="subsystem-icon"
-                  :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }"
+                  :style="{ background: getSubsystemIconStyle(sub.subsystemId).bg }"
                 >
-                  <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
-                    <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+                  <el-icon :color="getSubsystemIconStyle(sub.subsystemId).color">
+                    <component :is="getSubsystemIconStyle(sub.subsystemId).icon" />
                   </el-icon>
                 </div>
                 <span v-if="leftPanelCollapsed" class="subsystem-abbr">
-                  {{ sub.subsysShortName?.slice(0, 2) || '未' }}
+                  {{ sub.subsystemShortName?.slice(0, 2) || '未' }}
                 </span>
               </div>
             </el-tooltip>
             <div v-if="!leftPanelCollapsed" class="subsystem-info">
-              <div class="subsystem-name">{{ sub.subsysShortName }}</div>
-              <div class="subsystem-full-name">{{ sub.subsysName }}</div>
+              <div class="subsystem-name">{{ sub.subsystemShortName }}</div>
+              <div class="subsystem-full-name">{{ sub.subsystemName }}</div>
             </div>
           </div>
         </div>
@@ -588,8 +588,8 @@ const subsystems = mockSubsystemData.filter(
 )
 
 const currentSubsystemName = computed(() => {
-  const sub = subsystems.find(s => s.subsysId === selectedSubsystem.value)
-  return sub ? sub.subsysName : ""
+  const sub = subsystems.find(s => s.subsystemId === selectedSubsystem.value)
+  return sub ? sub.subsystemName : ""
 })
 
 const searchForm = reactive<MenuSearchForm>({
@@ -604,7 +604,7 @@ const formData = reactive<MenuForm>({
   menuCode: "",
   menuType: 0,
   contentType: 1,
-  subsysId: 99,
+  subsystemId: 99,
   icon: "",
   path: "",
   component: "",
@@ -638,8 +638,8 @@ const parentMenuOptions = computed(() => {
 })
 
 // ── 方法 ──
-function selectSubsystem(subsysId: number) {
-  selectedSubsystem.value = subsysId
+function selectSubsystem(subsystemId: number) {
+  selectedSubsystem.value = subsystemId
 }
 
 async function fetchMenuTree() {
@@ -682,7 +682,7 @@ function handleAdd(parentRow: Menu | null) {
       : parentRow.menuType
     : 0
   formData.contentType = 1
-  formData.subsysId = selectedSubsystem.value
+  formData.subsystemId = selectedSubsystem.value
   formData.icon = ""
   formData.path = ""
   formData.component = ""
@@ -702,7 +702,7 @@ function handleEdit(row: Menu) {
   formData.menuCode = row.menuCode
   formData.menuType = row.menuType
   formData.contentType = row.contentType
-  formData.subsysId = row.subsysId
+  formData.subsystemId = row.subsystemId
   formData.icon = row.icon
   formData.path = row.path
   formData.component = row.component
@@ -732,7 +732,7 @@ async function handleSubmit() {
         menuCode: formData.menuCode,
         menuType: formData.menuType,
         contentType: formData.contentType,
-        subsysId: formData.subsysId,
+        subsystemId: formData.subsystemId,
         icon: formData.icon,
         path: formData.path,
         component: formData.component,
@@ -750,7 +750,7 @@ async function handleSubmit() {
         menuCode: formData.menuCode,
         menuType: formData.menuType,
         contentType: formData.contentType,
-        subsysId: formData.subsysId,
+        subsystemId: formData.subsystemId,
         icon: formData.icon,
         path: formData.path,
         component: formData.component,
@@ -916,8 +916,8 @@ const subsystemIconMap: Record<
   },
 }
 
-function getSubsystemIconStyle(subsysId: number) {
-  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+function getSubsystemIconStyle(subsystemId: number) {
+  return subsystemIconMap[subsystemId] || subsystemIconMap[99]
 }
 
 // 构建菜单路径映射

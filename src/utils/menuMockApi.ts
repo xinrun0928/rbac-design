@@ -27,21 +27,21 @@ export function buildMenuTree(menus: Menu[], parentId: number = 0): Menu[] {
 }
 
 /** 获取子系统下的菜单树 */
-export async function getMenuTreeBySubsystem(subsysId: number): Promise<Menu[]> {
+export async function getMenuTreeBySubsystem(subsystemId: number): Promise<Menu[]> {
   await delay(200 + Math.random() * 300)
 
-  const filteredData = mockMenuData.filter(item => item.subsysId === subsysId)
+  const filteredData = mockMenuData.filter(item => item.subsystemId === subsystemId)
   return buildMenuTree(filteredData, 0)
 }
 
 /** 获取所有菜单列表（平铺） */
 export async function getMenus(params: {
-  subsysId: number
+  subsystemId: number
   search?: MenuSearchForm
 }): Promise<Menu[]> {
   await delay(200 + Math.random() * 300)
 
-  let data = mockMenuData.filter(item => item.subsysId === params.subsysId)
+  let data = mockMenuData.filter(item => item.subsystemId === params.subsystemId)
 
   if (params.search?.menuName) {
     const keyword = params.search.menuName.trim().toLowerCase()
@@ -67,7 +67,7 @@ export async function addMenu(data: {
   menuCode: string
   menuType: number
   contentType: number
-  subsysId: number
+  subsystemId: number
   icon: string
   path: string
   component: string
@@ -88,7 +88,7 @@ export async function addMenu(data: {
     menuCode: data.menuCode.toUpperCase(),
     menuType: data.menuType,
     contentType: data.contentType,
-    subsysId: data.subsysId,
+    subsystemId: data.subsystemId,
     icon: data.icon,
     path: data.path,
     component: data.component,
@@ -113,7 +113,7 @@ export async function updateMenu(
     menuCode: string
     menuType: number
     contentType: number
-    subsysId: number
+    subsystemId: number
     icon: string
     path: string
     component: string

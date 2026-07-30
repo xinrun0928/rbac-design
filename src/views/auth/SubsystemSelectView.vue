@@ -34,7 +34,7 @@
       <div class="subsystem-grid">
         <div
           v-for="subsystem in subsystemList"
-          :key="subsystem.subsysId"
+          :key="subsystem.subsystemId"
           class="subsystem-card"
           @click="handleSelectSubsystem(subsystem)"
         >
@@ -44,7 +44,7 @@
             </el-icon>
           </div>
           <div class="subsystem-info">
-            <h4>{{ subsystem.subsysName }}</h4>
+            <h4>{{ subsystem.subsystemName }}</h4>
             <p>{{ subsystem.remark }}</p>
           </div>
         </div>
@@ -121,33 +121,33 @@ const handleSelectSubsystem = (subsystem: any) => {
   localStorage.setItem('currentSubsystem', JSON.stringify(subsystem))
 
   // 根据子系统类型跳转
-  if (subsystem.subsysId === 99) {
+  if (subsystem.subsystemId === 99) {
     // 后台管理系统
     router.push('/admin')
-  } else if (subsystem.subsysId === 1) {
+  } else if (subsystem.subsystemId === 1) {
     // 应急值守管理子系统
     router.push('/duty')
-  } else if (subsystem.subsysId === 2) {
+  } else if (subsystem.subsystemId === 2) {
     // 预案管理子系统
     router.push('/plan')
-  } else if (subsystem.subsysId === 3) {
+  } else if (subsystem.subsystemId === 3) {
     // 应急事件管理子系统
     router.push('/event')
-  } else if (subsystem.subsysId === 4) {
+  } else if (subsystem.subsystemId === 4) {
     // 指挥智能调度子系统
     router.push('/dispatch')
-  } else if (subsystem.subsysId === 5) {
+  } else if (subsystem.subsystemId === 5) {
     // 物资管理子系统
     router.push('/resource')
-  } else if (subsystem.subsysId === 6) {
+  } else if (subsystem.subsystemId === 6) {
     // 辅助决策子系统
     router.push('/decision')
-  } else if (subsystem.subsysId === 7) {
+  } else if (subsystem.subsystemId === 7) {
     // 数据融合子系统
     router.push('/fusion')
   } else {
     // 其他子系统（暂未开发，提示后跳转到对应路径）
-    ElMessage.info(`${subsystem.subsysName}模块开发中，正在跳转...`)
+    ElMessage.info(`${subsystem.subsystemName}模块开发中，正在跳转...`)
     setTimeout(() => {
       router.push(subsystem.pathPrefix)
     }, 1000)

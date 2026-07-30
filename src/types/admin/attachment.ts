@@ -3,7 +3,7 @@ export interface Attachment {
   /** 附件ID */
   attachmentId: number
   /** 所属子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 文件名 */
   fileName: string
   /** 文件大小（字节） */
@@ -39,5 +39,5 @@ export interface AttachmentSearchForm {
   /** 存储类型 */
   storageType: string
   /** 子系统ID */
-  subsysId: number | ''
+  subsystemId: number | ''
 }

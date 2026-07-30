@@ -3,7 +3,7 @@ import type { Attachment } from '@/types/admin/attachment'
 export const attachmentData: Attachment[] = [
   {
     attachmentId: 2071590195899273216,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782740551371.jpg',
     fileSize: 138096,
     fileMd5: 'eabc39edcca7638f739e50bee8f7b6bd',
@@ -18,7 +18,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2071593334744420352,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782741305598.jpg',
     fileSize: 65761,
     fileMd5: '5d75086b458a70821269b169e56020a4',
@@ -33,7 +33,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2071767423001956352,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782782806591.jpg',
     fileSize: 172500,
     fileMd5: 'ca92dcd6e2d992528c1ef552070b8a60',
@@ -48,7 +48,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072208012969381888,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782887859875_mmexport1782877670742.jpg',
     fileSize: 142636,
     fileMd5: 'ef31e14b56cd51626a1cfe5c575e710f',
@@ -63,7 +63,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072217270884634624,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782890070653_mmexport1782877670742.jpg',
     fileSize: 142636,
     fileMd5: 'ef31e14b56cd51626a1cfe5c575e710f',
@@ -78,7 +78,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072230850757529600,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782893307569_mmexport1782877670742.jpg',
     fileSize: 142636,
     fileMd5: 'ef31e14b56cd51626a1cfe5c575e710f',
@@ -93,7 +93,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072237748563087360,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'Snipaste_2026-06-11_23-00-22.png',
     fileSize: 131423,
     fileMd5: '2c261aca73fc831c4ba4f7bb1bd5805a',
@@ -108,7 +108,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072243523779956736,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782896329886_mmexport1782877670742.jpg',
     fileSize: 142636,
     fileMd5: 'ef31e14b56cd51626a1cfe5c575e710f',
@@ -123,7 +123,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072247042993950720,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'WechatIMG5259.jpg',
     fileSize: 20766838,
     fileMd5: '6dfcffbab94f51568e05fd27fd8a261a',
@@ -138,7 +138,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072248973627887616,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'WechatIMG5259.jpg',
     fileSize: 20766838,
     fileMd5: '6dfcffbab94f51568e05fd27fd8a261a',
@@ -153,7 +153,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072251639481372672,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'WechatIMG5259.jpg',
     fileSize: 20766838,
     fileMd5: '6dfcffbab94f51568e05fd27fd8a261a',
@@ -168,7 +168,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2072499361589366784,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1782957315904.jpg',
     fileSize: 139171,
     fileMd5: 'a40807bb0d74d4d552f04fdb53ff7f3f',
@@ -183,7 +183,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2075088798039019520,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'feed6dcd-d498-4a3e-98e5-32c9c88db354.png',
     fileSize: 205180,
     fileMd5: '284b4dc5b9d5eaf72abd568d4542b317',
@@ -198,7 +198,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2075089531475988480,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: 'feed6dcd-d498-4a3e-98e5-32c9c88db354.png',
     fileSize: 205180,
     fileMd5: '284b4dc5b9d5eaf72abd568d4542b317',
@@ -213,7 +213,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2075107757849186304,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1783579208087.jpg',
     fileSize: 163758,
     fileMd5: 'f3f0bbfe94d79db14e406a036815aa11',
@@ -228,7 +228,7 @@ export const attachmentData: Attachment[] = [
   },
   {
     attachmentId: 2075118400853643264,
-    subsysId: 9,
+    subsystemId: 9,
     fileName: '1783581748382.jpg',
     fileSize: 109193,
     fileMd5: 'b8451712c2fb4933dd38c3debe80e964',

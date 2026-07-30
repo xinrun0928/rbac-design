@@ -141,7 +141,7 @@
             <span class="md5-text">{{ currentAttachment.fileMd5 }}</span>
           </el-descriptions-item>
           <el-descriptions-item label="上传时间">{{ currentAttachment.createTime }}</el-descriptions-item>
-          <el-descriptions-item label="子系统ID">{{ currentAttachment.subsysId }}</el-descriptions-item>
+          <el-descriptions-item label="子系统ID">{{ currentAttachment.subsystemId }}</el-descriptions-item>
           <el-descriptions-item label="用户ID">{{ currentAttachment.userId || '-' }}</el-descriptions-item>
           <el-descriptions-item label="组织ID">{{ currentAttachment.orgId || '-' }}</el-descriptions-item>
         </el-descriptions>
@@ -170,7 +170,7 @@ const searchForm = reactive<AttachmentSearchForm>({
   fileName: '',
   fileExt: '',
   storageType: '',
-  subsysId: ''
+  subsystemId: ''
 })
 
 const pagination = reactive({

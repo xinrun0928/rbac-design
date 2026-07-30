@@ -7,7 +7,11 @@ export interface MessageTemplate {
   /** 消息ID */
   msgId: string
   /** 模板名称 */
-  name?: string | null
+  name: string
+  /** 排序号 */
+  displayOrder: number
+  /** 备注 */
+  remark: string
   /** 模板内容 */
   template: string
   /** 消息内容 */

@@ -17,7 +17,7 @@
             />
           </el-form-item>
           <el-form-item label="节点类型">
-            <el-select v-model="searchForm.type" placeholder="请选择类型" clearable style="width: 180px">
+            <el-select v-model="searchForm.mealType" placeholder="请选择类型" clearable style="width: 180px">
               <el-option
                 v-for="item in mealTypeOptions"
                 :key="item.value"
@@ -43,14 +43,14 @@
         border
         stripe
         highlight-current-row
-        row-key="id"
+        row-key="mealId"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
         empty-text=" "
         class="data-table"
       >
-        <el-table-column prop="id" label="ID" width="70" align="center">
+        <el-table-column prop="mealId" label="ID" width="70" align="center">
           <template #default="{ row }">
-            <span class="id-text">{{ row.id }}</span>
+            <span class="id-text">{{ row.mealId }}</span>
           </template>
         </el-table-column>
 
@@ -73,15 +73,15 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="type" label="节点类型" width="150" align="center">
+        <el-table-column prop="mealType" label="节点类型" width="150" align="center">
           <template #default="{ row }">
             <el-tag
-              :color="getTypeTagColor(row.type)"
+              :color="getTypeTagColor(row.mealType)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.typeName }}
+              {{ getMealTypeLabel(row.mealType) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -107,13 +107,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="creator" label="创建人" width="110" align="center">
+        <el-table-column prop="creater" label="创建人" width="110" align="center">
           <template #default="{ row }">
             <div class="creator-cell">
-              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creator) }">
-                {{ row.creator.charAt(0) }}
+              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creater) }">
+                {{ row.creater.charAt(0) }}
               </el-avatar>
-              <span>{{ row.creator }}</span>
+              <span>{{ row.creater }}</span>
             </div>
           </template>
         </el-table-column>
@@ -195,8 +195,8 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item label="节点类型" prop="type">
-          <el-select v-model="addFormData.type" placeholder="请选择节点类型" style="width: 100%">
+        <el-form-item label="节点类型" prop="mealType">
+          <el-select v-model="addFormData.mealType" placeholder="请选择节点类型" style="width: 100%">
             <el-option
               v-for="item in mealTypeOptions"
               :key="item.value"
@@ -268,8 +268,8 @@
           />
         </el-form-item>
 
-        <el-form-item label="节点类型" prop="type">
-          <el-select v-model="editFormData.type" placeholder="请选择节点类型" style="width: 100%">
+        <el-form-item label="节点类型" prop="mealType">
+          <el-select v-model="editFormData.mealType" placeholder="请选择节点类型" style="width: 100%">
             <el-option
               v-for="item in mealTypeOptions"
               :key="item.value"
@@ -333,18 +333,18 @@
           <div class="bind-subsystem-list">
             <div
               v-for="sub in subsystems"
-              :key="sub.subsysId"
+              :key="sub.subsystemId"
               class="bind-subsystem-item"
-              :class="{ active: bindSelectedSubsystem === sub.subsysId }"
-              @click="loadBindMenuTree(sub.subsysId)"
+              :class="{ active: bindSelectedSubsystem === sub.subsystemId }"
+              @click="loadBindMenuTree(sub.subsystemId)"
             >
-              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
-                <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
-                  <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsystemId).bg }">
+                <el-icon :color="getSubsystemIconStyle(sub.subsystemId).color">
+                  <component :is="getSubsystemIconStyle(sub.subsystemId).icon" />
                 </el-icon>
               </div>
-              <span class="subsystem-name">{{ sub.subsysShortName }}</span>
-              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsysId] || 0 }}）</span>
+              <span class="subsystem-name">{{ sub.subsystemShortName }}</span>
+              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsystemId] || 0 }}）</span>
             </div>
           </div>
         </div>
@@ -447,7 +447,7 @@ const subsystemMenuCount = ref<Record<number, number>>({})
 
 const searchForm = reactive<SearchForm>({
   name: '',
-  type: '',
+  mealType: '',
   status: ''
 })
 
@@ -460,7 +460,7 @@ const pagination = reactive({
 const addFormData = reactive<MealForm>({
   code: '',
   name: '',
-  type: '',
+  mealType: '',
   sort: 0,
   status: 1101
 })
@@ -468,7 +468,7 @@ const addFormData = reactive<MealForm>({
 const editFormData = reactive<MealForm>({
   code: '',
   name: '',
-  type: '',
+  mealType: '',
   sort: 0,
   status: 1101
 })
@@ -480,7 +480,7 @@ const formRules: FormRules = {
     { pattern: /^[A-Za-z_]+$/, message: '只能包含英文字母和下划线', trigger: 'blur' },
     { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
   ],
-  type: [
+  mealType: [
     { required: true, message: '请选择节点类型', trigger: 'change' }
   ],
   name: [
@@ -519,7 +519,7 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.name = ''
-  searchForm.type = ''
+  searchForm.mealType = ''
   searchForm.status = ''
   pagination.page = 1
   fetchData()
@@ -541,7 +541,7 @@ function handlePageChange(page: number) {
 }
 
 function handleSelectionChange(rows: Meal[]) {
-  selectedIds.value = rows.map(r => r.id)
+  selectedIds.value = rows.map(r => r.mealId)
 }
 
 function clearSelection() {
@@ -551,17 +551,17 @@ function clearSelection() {
 function handleAdd() {
   addFormData.code = ''
   addFormData.name = ''
-  addFormData.type = ''
+  addFormData.mealType = ''
   addFormData.sort = pagination.total + 1
   addFormData.status = 1101
   addDialogVisible.value = true
 }
 
 function handleEdit(row: Meal) {
-  editFormData.id = row.id
+  editFormData.mealId = row.mealId
   editFormData.code = row.code
   editFormData.name = row.name
-  editFormData.type = row.type
+  editFormData.mealType = row.mealType
   editFormData.sort = row.sort
   editFormData.status = row.status
   drawerVisible.value = true
@@ -581,7 +581,7 @@ async function handleAddSubmit() {
     await addMeal({
       code: addFormData.code,
       name: addFormData.name,
-      type: addFormData.type as number,
+      mealType: Number(addFormData.mealType) || 0,
       sort: addFormData.sort,
       status: addFormData.status
     })
@@ -606,11 +606,11 @@ async function handleEditSubmit() {
 
   submitLoading.value = true
   try {
-    if (editFormData.id) {
-      await updateMeal(editFormData.id, {
+    if (editFormData.mealId) {
+      await updateMeal(editFormData.mealId, {
         code: editFormData.code,
         name: editFormData.name,
-        type: editFormData.type as number,
+        mealType: Number(editFormData.mealType) || 0,
         sort: editFormData.sort,
         status: editFormData.status
       })
@@ -644,7 +644,7 @@ async function handleDelete(row: Meal) {
     )
 
     loading.value = true
-    await deleteMeal(row.id)
+    await deleteMeal(row.mealId)
     ElMessage.success('删除成功')
     fetchData()
   } catch (err) {
@@ -699,9 +699,8 @@ async function handleStatusChange(row: Meal, newStatus: number) {
       }
     )
 
-    await toggleMealStatus(row.id, newStatus)
+    await toggleMealStatus(row.mealId, newStatus)
     row.status = newStatus
-    row.statusName = to
     ElMessage.success(`状态已切换为 "${to}"`)
   } catch (err) {
     if (err !== 'cancel') {
@@ -723,22 +722,22 @@ async function handleBind(row: Meal) {
 async function loadSubsystemMenuCounts() {
   const counts: Record<number, number> = {}
   for (const sub of subsystems) {
-    const tree = await getMenuTreeBySubsystem(sub.subsysId)
-    counts[sub.subsysId] = getAllMenuIds(tree).length
+    const tree = await getMenuTreeBySubsystem(sub.subsystemId)
+    counts[sub.subsystemId] = getAllMenuIds(tree).length
   }
   subsystemMenuCount.value = counts
 }
 
-async function loadBindMenuTree(subsysId: number) {
-  bindSelectedSubsystem.value = subsysId
+async function loadBindMenuTree(subsystemId: number) {
+  bindSelectedSubsystem.value = subsystemId
   bindLoading.value = true
   try {
-    const tree = await getMenuTreeBySubsystem(subsysId)
+    const tree = await getMenuTreeBySubsystem(subsystemId)
     bindMenuTree.value = tree
 
     // 加载已绑定的菜单
     if (currentMeal.value) {
-      const checkedIds = await getMealMenuIds(currentMeal.value.id)
+      const checkedIds = await getMealMenuIds(currentMeal.value.mealId)
       // 过滤出当前子系统的菜单ID
       const currentSubsysMenuIds = getAllMenuIds(tree)
       bindCheckedKeys.value = checkedIds.filter(id => currentSubsysMenuIds.includes(id))
@@ -791,7 +790,7 @@ async function handleBindSave() {
     const halfCheckedKeys = bindTreeRef.value?.getHalfCheckedKeys() || []
     const allSelectedIds = [...checkedKeys, ...halfCheckedKeys]
 
-    await saveMealMenuBinding(currentMeal.value.id, allSelectedIds, bindSelectedSubsystem.value)
+    await saveMealMenuBinding(currentMeal.value.mealId, allSelectedIds, bindSelectedSubsystem.value)
     ElMessage.success('绑定保存成功')
     bindDrawerVisible.value = false
   } catch (err) {
@@ -814,8 +813,8 @@ const subsystemIconMap: Record<number, { icon: string; color: string; bg: string
   99: { icon: 'Setting', color: '#606266', bg: 'linear-gradient(135deg, #F5F7FA 0%, #E9ECEF 100%)' }
 }
 
-function getSubsystemIconStyle(subsysId: number) {
-  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+function getSubsystemIconStyle(subsystemId: number) {
+  return subsystemIconMap[subsystemId] || subsystemIconMap[99]
 }
 
 function getMenuTypeLabel(menuType: number): string {
@@ -855,6 +854,11 @@ async function handleCopy(code: string) {
   } catch {
     ElMessage.warning('复制失败，请手动复制')
   }
+}
+
+function getMealTypeLabel(type: number): string {
+  const option = mealTypeOptions.find(o => o.value === type)
+  return option?.label || '未知'
 }
 
 function getTypeTagColor(type: number): string {

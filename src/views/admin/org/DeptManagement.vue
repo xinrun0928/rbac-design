@@ -39,24 +39,23 @@
 
       <!-- 右侧：部门列表 -->
       <div class="list-panel">
-        <div class="panel-header">
-          <span class="panel-title">部门列表 - {{ currentNode ? currentNode.name : '请选择组织' }}</span>
-          <div class="panel-actions">
-            <el-input
-              v-model="searchForm.deptName"
-              placeholder="搜索部门名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px; margin-right: 12px"
-              @keyup.enter="handleSearch"
-              @clear="handleSearch"
-            />
-            <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
-          </div>
-        </div>
-
         <!-- 部门树表格 -->
         <el-card class="table-card" shadow="never">
+          <div class="search-bar">
+            <span class="search-bar-title">部门管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="searchForm.deptName"
+                placeholder="搜索部门名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleSearch"
+                @clear="handleSearch"
+              />
+              <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
+            </div>
+          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
@@ -180,7 +179,7 @@
           <el-tree-select
             v-model="formData.parentId"
             :data="parentDeptOptions"
-            :props="{ label: 'deptName', value: 'id', children: 'children' }"
+            :props="{ label: 'deptName', value: 'deptId', children: 'children' }"
             check-strictly
             :render-after-expand="false"
             placeholder="请选择上级部门（不选则为顶级）"
@@ -269,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import type ElTree from 'element-plus/es/components/tree'
@@ -465,6 +464,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      treeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -571,31 +573,35 @@ onMounted(() => {
     height: 100%;
   }
 
-  .panel-header {
+  .search-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    background: #fff;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    border-bottom: 1px solid #EBEEF5;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
   }
 
-  .panel-title {
-    font-size: 15px;
+  .search-bar-title {
+    font-size: 16px;
     font-weight: 600;
     color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
+    }
   }
 
-  .panel-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
     border: none;
     flex: 1;
     display: flex;
@@ -603,7 +609,7 @@ onMounted(() => {
     overflow: hidden;
 
     :deep(.el-card__body) {
-      padding: 0;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -612,7 +618,6 @@ onMounted(() => {
 
     .table-wrapper {
       flex: 1;
-      padding: 16px;
       overflow: hidden;
       display: flex;
       flex-direction: column;

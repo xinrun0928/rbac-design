@@ -47,43 +47,32 @@
 
       <!-- 右侧：列表区域 -->
       <div class="list-panel">
-        <!-- 当前选中提示 -->
-        <div v-if="currentNode" class="current-node-bar">
-          <el-icon><Location /></el-icon>
-          <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
-        </div>
-
-        <!-- 搜索栏 -->
-        <div class="search-bar">
-          <el-form :model="memberSearchForm" inline class="search-form">
-            <el-form-item label="成员姓名">
-              <el-input
-                v-model="memberSearchForm.name"
-                placeholder="输入成员姓名"
-                clearable
-                :prefix-icon="Search"
-                style="width: 180px"
-                @keyup.enter="handleMemberSearch"
-              />
-            </el-form-item>
-            <el-form-item label="手机号">
-              <el-input
-                v-model="memberSearchForm.phone"
-                placeholder="输入手机号"
-                clearable
-                :prefix-icon="Search"
-                style="width: 180px"
-                @keyup.enter="handleMemberSearch"
-              />
-            </el-form-item>
-          </el-form>
-          <div class="search-actions">
-            <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
-          </div>
-        </div>
-
         <!-- 数据表格 -->
         <el-card class="table-card" shadow="never">
+          <div class="search-bar">
+            <span class="search-bar-title">成员管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="memberSearchForm.name"
+                placeholder="搜索成员姓名"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleMemberSearch"
+                @clear="handleMemberSearch"
+              />
+              <el-input
+                v-model="memberSearchForm.phone"
+                placeholder="搜索手机号"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleMemberSearch"
+                @clear="handleMemberSearch"
+              />
+              <el-button type="primary" :icon="Plus" @click="handleAddMember" :disabled="!currentNode">新增成员</el-button>
+            </div>
+          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
@@ -120,7 +109,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="roles" label="角色" width="150">
+            <el-table-column prop="roles" label="角色" width="180">
               <template #default="{ row }">
                 <div class="tag-cell">
                   <el-tag
@@ -186,7 +175,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="responsibility" label="备注" min-width="120">
+            <el-table-column prop="responsibility" label="备注" min-width="170">
               <template #default="{ row }">
                 <span class="remark-text">{{ row.responsibility || '-' }}</span>
               </template>
@@ -314,7 +303,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import type ElTree from 'element-plus/es/components/tree'
@@ -651,6 +640,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      treeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -760,38 +752,30 @@ onMounted(() => {
     height: 100%;
   }
 
-  .current-node-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: #ECF5FF;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #409EFF;
-
-    strong { color: #303133; }
-  }
-
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
-    flex-shrink: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
+    }
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

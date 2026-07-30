@@ -47,33 +47,26 @@
 
       <!-- 右侧：角色列表区域 -->
       <div class="list-panel">
-        <!-- 当前选中提示 -->
-        <div v-if="currentNode" class="current-node-bar">
-          <div class="node-info">
-            <el-icon><Location /></el-icon>
-            <span>当前组织：<strong>{{ currentNode.name }}</strong></span>
-            <el-tag size="small" :type="getNodeTypeTagType(currentNode.nodeType)" effect="plain">
-              {{ getNodeTypeLabel(currentNode.nodeType) }}
-            </el-tag>
-          </div>
-          <div class="node-tags">
-            <span class="tags-label">关联套餐：</span>
-            <el-tag
-              v-if="currentNode.packageName"
-              :color="getPackageColor(currentNode.packageName)"
-              effect="dark"
-              style="border: none; color: #fff;"
-              size="small"
-            >
-              {{ currentNode.packageName }}
-            </el-tag>
-            <span v-else class="no-package">未关联套餐</span>
-          </div>
-          <el-button type="primary" :icon="Plus" @click="handleAddRole" class="add-btn">新增角色</el-button>
-        </div>
-
         <!-- 角色列表 -->
         <el-card class="table-card" shadow="never">
+          <div class="search-bar">
+            <span class="search-bar-title">角色管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="roleSearchForm.roleName"
+                placeholder="搜索角色名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleRoleSearch"
+                @clear="handleRoleSearch"
+              />
+              <el-select v-model="roleSearchForm.dataScope" placeholder="数据范围" clearable style="width: 180px; margin-right: 12px" @change="handleRoleSearch">
+                <el-option v-for="item in dataScopeOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <el-button type="primary" :icon="Plus" @click="handleAddRole">新增角色</el-button>
+            </div>
+          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
@@ -98,7 +91,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="roleName" label="角色名称" min-width="140">
+            <el-table-column prop="roleName" label="角色名称" min-width="190">
               <template #default="{ row }">
                 <div class="role-name-cell">
                   <el-icon :style="{ color: row.isSystem ? '#E6A23C' : '#67C23A' }">
@@ -110,7 +103,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="description" label="角色描述" min-width="150">
+            <el-table-column prop="description" label="角色描述" min-width="150" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="desc-text">{{ row.description || '-' }}</span>
               </template>
@@ -415,6 +408,11 @@ const currentRole = ref<RoleItem | null>(null)
 const allRoles = ref<RoleItem[]>([])
 const checkedMenuIds = ref<number[]>([])
 
+const roleSearchForm = reactive({
+  roleName: '',
+  dataScope: ''
+})
+
 // 菜单绑定相关状态
 const bindSelectedSubsystem = ref<number>(1)
 const bindMenuTree = ref<Menu[]>([])
@@ -450,9 +448,16 @@ const pagination = reactive({
 })
 
 const filteredRoleData = computed(() => {
-  pagination.total = roleList.value.length
+  let data = roleList.value
+  if (roleSearchForm.roleName) {
+    data = data.filter(item => item.roleName.includes(roleSearchForm.roleName))
+  }
+  if (roleSearchForm.dataScope) {
+    data = data.filter(item => item.dataScope === roleSearchForm.dataScope)
+  }
+  pagination.total = data.length
   const start = (pagination.page - 1) * pagination.pageSize
-  return roleList.value.slice(start, start + pagination.pageSize)
+  return data.slice(start, start + pagination.pageSize)
 })
 
 function handleSizeChange(size: number) {
@@ -613,113 +618,8 @@ function handleNodeClick(data: OrgTreeNode) {
   currentNode.value = data
 }
 
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.includes(value)
-}
-
-function handleRefresh() {
-  fetchRoleData()
-}
-
-function getNodeTypeIcon(nodeType: string) {
-  return OfficeBuilding
-}
-
-function getNodeTypeColor(nodeType: string): string {
-  const colors: Record<string, string> = {
-    root: '#409EFF',
-    dept: '#67C23A',
-    branch: '#E6A23C',
-    station: '#9B59B6',
-    company: '#F56C6C'
-  }
-  return colors[nodeType] || '#909399'
-}
-
-function getNodeTypeLabel(nodeType: string): string {
-  const labels: Record<string, string> = {
-    root: '根节点',
-    dept: '部门',
-    branch: '分支',
-    station: '站点',
-    company: '企业'
-  }
-  return labels[nodeType] || '未知'
-}
-
-function getNodeTypeTagType(nodeType: string): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const types: Record<string, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    root: '',
-    dept: 'success',
-    branch: 'warning',
-    station: 'info',
-    company: 'danger'
-  }
-  return types[nodeType] || 'info'
-}
-
-function getPackageColor(packageName: string): string {
-  const colors: Record<string, string> = {
-    '省交通本级': '#409EFF',
-    '交通': '#67C23A',
-    '市交通': '#E6A23C',
-    '县交通': '#F56C6C',
-    '省事务中心': '#9B59B6',
-    '事务中心': '#1ABC9C',
-    '市事务中心': '#3498DB',
-    '县事务中心': '#2ECC71',
-    '省交通公司': '#E74C3C',
-    '公司': '#F39C12',
-    '监控中心': '#8E44AD',
-    '高速公路': '#16A085',
-    '普通公路': '#27AE60'
-  }
-  return colors[packageName] || '#909399'
-}
-
-function getDataScopeColor(dataScope: string): string {
-  const option = dataScopeOptions.find(o => o.value === dataScope)
-  return option?.color || '#909399'
-}
-
-function getDataScopeLabel(dataScope: string): string {
-  const option = dataScopeOptions.find(o => o.value === dataScope)
-  return option?.label || '未知'
-}
-
-function getMenuTypeColor(menuType: number): string {
-  const colors: Record<number, string> = {
-    0: '#409EFF',
-    1: '#67C23A',
-    2: '#F56C6C',
-    99: '#E6A23C'
-  }
-  return colors[menuType] || '#909399'
-}
-
-function getMenuTypeIcon(menuType: number) {
-  return OfficeBuilding
-}
-
-function getMenuTypeLabel(menuType: number): string {
-  const labels: Record<number, string> = {
-    0: '目录',
-    1: '菜单',
-    2: '权限',
-    99: '导航'
-  }
-  return labels[menuType] || '未知'
-}
-
-function getMenuTypeTagType(menuType: number): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const types: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    0: '',
-    1: 'success',
-    2: 'danger',
-    99: 'warning'
-  }
-  return types[menuType] || 'info'
+function handleRoleSearch() {
+  pagination.page = 1
 }
 
 function handleAddRole() {
@@ -908,6 +808,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      treeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -1015,48 +918,31 @@ onMounted(() => {
     height: 100%;
   }
 
-  .current-node-bar {
+  .search-bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
-    background: #ECF5FF;
-    border-radius: 8px;
+    justify-content: space-between;
     margin-bottom: 16px;
-    font-size: 13px;
-    color: #409EFF;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    .node-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
     }
+  }
 
-    .node-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-left: 16px;
-      border-left: 1px solid #B3D8FF;
-      color: #D46B08;
-      background: #FFF7E6;
-      border-radius: 6px;
-      padding: 4px 12px;
-    }
-
-    .tags-label {
-      font-weight: 500;
-    }
-
-    .no-package {
-      color: #C0C4CC;
-    }
-
-    .add-btn {
-      margin-left: auto;
-    }
-
-    strong { color: #303133; }
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .package-tags-bar {
@@ -1112,7 +998,7 @@ onMounted(() => {
     .index-text { color: #909399; font-size: 13px; }
     .code-text { font-family: 'Monaco','Menlo','Consolas', monospace; color: #409EFF; font-size: 12px; }
     .name-text { font-weight: 500; color: #303133; }
-    .desc-text { font-size: 13px; color: #909399; }
+    .desc-text { font-size: 13px; color: #909399; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .level-text { font-weight: 600; color: #E6A23C; }
 
     .role-name-cell {

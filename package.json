@@ -8,6 +8,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
+  "packageManager": "pnpm@11.13.1",
   "engines": {
     "node": ">=18.0.0"
   },

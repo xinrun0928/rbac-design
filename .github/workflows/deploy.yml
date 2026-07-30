@@ -1,9 +1,6 @@
 name: Deploy site to Pages
 
 on:
-  # push:
-  #   branches: [main]
-
   workflow_dispatch:
 
 permissions:
@@ -16,43 +13,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Not needed if lastUpdated is not enabled
-      - uses: pnpm/action-setup@v3 # pnpm is optional but recommended, you can also use npm / yarn
-        with:
-          version: 8
+          fetch-depth: 0
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: pnpm
+          node-version: 22
+          cache: npm  # 改为 npm
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts
-      - name: Build with Node
-        run: |
-          pnpm run build
-      - name: Upload artifact
+      
+      - name: 安装依赖
+        run: npm ci  # CI 环境推荐使用 npm ci
+      
+      - name: 构建
+        run: npm run build
+      
+      - name: 上传构建产物
         uses: actions/upload-pages-artifact@v3
         with:
           path: doc_build
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
+    name: 部署
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

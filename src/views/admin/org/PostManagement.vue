@@ -4,44 +4,62 @@
     <div class="main-content animate-item">
       <!-- 左侧：组织树 -->
       <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <div class="tree-header">
-          <span v-if="!treeCollapsed" class="tree-title">组织结构</span>
+        <template v-if="!treeCollapsed">
+          <div class="tree-header">
+            <span class="tree-title">组织结构</span>
+            <el-button
+              :icon="DArrowLeft"
+              link
+              @click="treeCollapsed = true"
+              class="collapse-btn"
+            />
+          </div>
+          <div class="tree-body">
+            <el-input
+              v-model="treeFilter"
+              placeholder="搜索组织名称"
+              clearable
+              :prefix-icon="Search"
+              class="tree-search"
+            />
+            <el-tree
+              ref="treeRef"
+              :data="orgTreeData"
+              :props="{ label: 'name', children: 'children' }"
+              node-key="id"
+              highlight-current
+              default-expand-all
+              :expand-on-click-node="false"
+              :filter-node-method="filterTreeNode"
+              @node-click="handleNodeClick"
+              class="org-tree"
+            >
+              <template #default="{ data }">
+                <div class="tree-node">
+                  <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
+                    <component :is="getNodeTypeIcon(data.nodeType)" />
+                  </el-icon>
+                  <span class="node-label">{{ data.name }}</span>
+                </div>
+              </template>
+            </el-tree>
+          </div>
+        </template>
+        <div v-else class="collapsed-body">
+          <el-tooltip :content="currentNode?.name || '组织架构'" placement="right">
+            <div class="collapsed-icon" :style="{ background: getNodeTypeColor(currentNode?.nodeType || 'dept') }">
+              <el-icon color="#fff" class="collapsed-node-icon">
+                <component :is="getNodeTypeIcon(currentNode?.nodeType || 'dept')" />
+              </el-icon>
+              <span class="collapsed-char">{{ currentNode?.name?.charAt(0) || '组' }}</span>
+            </div>
+          </el-tooltip>
           <el-button
-            :icon="treeCollapsed ? DArrowRight : DArrowLeft"
+            :icon="DArrowRight"
             link
-            @click="treeCollapsed = !treeCollapsed"
-            class="collapse-btn"
+            @click="treeCollapsed = false"
+            class="collapse-btn expanded-btn"
           />
-        </div>
-        <div v-if="!treeCollapsed" class="tree-body">
-          <el-input
-            v-model="treeFilter"
-            placeholder="搜索组织名称"
-            clearable
-            :prefix-icon="Search"
-            class="tree-search"
-          />
-          <el-tree
-            ref="treeRef"
-            :data="orgTreeData"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterTreeNode"
-            @node-click="handleNodeClick"
-            class="org-tree"
-          >
-            <template #default="{ data }">
-              <div class="tree-node">
-                <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
-                  <component :is="getNodeTypeIcon(data.nodeType)" />
-                </el-icon>
-                <span class="node-label">{{ data.name }}</span>
-              </div>
-            </template>
-          </el-tree>
         </div>
       </div>
 
@@ -494,7 +512,45 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
 
-    &.collapsed { width: 48px; }
+    &.collapsed {
+      width: 72px;
+      align-items: center;
+
+      .collapsed-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 8px;
+        gap: 16px;
+        flex: 1;
+
+        .collapsed-icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+          color: #fff;
+          cursor: pointer;
+          transition: opacity 0.2s;
+
+          &:hover { opacity: 0.9; }
+
+          .collapsed-node-icon { font-size: 18px; }
+
+          .collapsed-char {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+          }
+        }
+
+        .expanded-btn { color: #909399; }
+      }
+    }
 
     .tree-header {
       display: flex;

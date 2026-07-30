@@ -15,6 +15,13 @@
             />
           </div>
           <div class="tree-body">
+            <el-input
+              v-model="treeFilter"
+              placeholder="搜索组织名称"
+              clearable
+              :prefix-icon="Search"
+              class="tree-search"
+            />
             <el-tree
               ref="treeRef"
               :data="orgTreeData"
@@ -23,6 +30,7 @@
               highlight-current
               default-expand-all
               :expand-on-click-node="false"
+              :filter-node-method="filterTreeNode"
               @node-click="handleNodeClick"
               class="org-tree"
             >
@@ -38,14 +46,14 @@
           </div>
         </template>
         <div v-else class="collapsed-body">
-          <el-tooltip :content="orgTreeData[0]?.name || '组织架构'" placement="right">
-            <div class="collapsed-icon" :style="{ background: getNodeTypeColor(orgTreeData[0]?.nodeType || 'root') }">
-              <el-icon color="#fff" class="collapsed-node-icon">
-                <component :is="getNodeTypeIcon(orgTreeData[0]?.nodeType || 'root')" />
-              </el-icon>
-              <span class="collapsed-char">{{ orgTreeData[0]?.name?.charAt(0) || '组' }}</span>
+          <div class="collapsed-list">
+            <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" :title="item.name">
+              <el-tag :type="getLevelTagType(item.level)" size="small" class="level-badge" effect="dark">{{ item.level }}</el-tag>
+              <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
+                <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
+              </div>
             </div>
-          </el-tooltip>
+          </div>
           <el-button
             :icon="DArrowRight"
             link
@@ -319,6 +327,7 @@ const submitLoading = ref(false)
 const deptDataList = ref<DeptItem[]>([])
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const treeCollapsed = ref(false)
+const treeFilter = ref('')
 const currentNode = ref<OrgTreeNode | null>(null)
 const drawerVisible = ref(false)
 const isEdit = ref(false)
@@ -371,6 +380,37 @@ const parentDeptOptions = computed(() => {
   return [{ deptId: 0, deptName: '顶级部门', children: mockDeptData }]
 })
 
+interface FlatTreeNode {
+  name: string
+  nodeType: string
+  level: number
+}
+
+const flatTreeData = computed(() => {
+  function flatten(nodes: OrgTreeNode[], level: number): FlatTreeNode[] {
+    const result: FlatTreeNode[] = []
+    for (const node of nodes) {
+      result.push({ name: node.name, nodeType: node.nodeType, level })
+      if (node.children && node.children.length > 0) {
+        result.push(...flatten(node.children, level + 1))
+      }
+    }
+    return result
+  }
+  return flatten(orgTreeData, 1)
+})
+
+function getLevelTagType(level: number): 'info' | 'success' | 'warning' | 'danger' | '' {
+  const types: Record<number, any> = {
+    1: 'danger',
+    2: 'warning',
+    3: '',
+    4: 'success',
+    5: 'info'
+  }
+  return types[level] || 'info'
+}
+
 // ── 方法 ──
 
 function fetchDeptData() {
@@ -385,6 +425,15 @@ function fetchDeptData() {
 function handleNodeClick(data: OrgTreeNode) {
   currentNode.value = data
 }
+
+function filterTreeNode(value: string, data: OrgTreeNode): boolean {
+  if (!value) return true
+  return data.name.includes(value)
+}
+
+watch(treeFilter, (val) => {
+  treeRef.value?.filter(val)
+})
 
 function handleSearch() {
   // 搜索通过 computed 属性自动处理
@@ -542,30 +591,59 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 16px 8px;
-        gap: 16px;
+        padding: 12px 4px;
+        gap: 8px;
         flex: 1;
+        overflow: hidden;
 
-        .collapsed-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 10px;
+        .collapsed-list {
+          flex: 1;
+          overflow-y: auto;
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
+          gap: 8px;
+
+          &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+          }
+        }
+
+        .collapsed-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           gap: 2px;
-          color: #fff;
+        }
+
+        .level-badge {
+          font-size: 9px;
+          padding: 0 4px;
+          height: 16px;
+          line-height: 16px;
+          min-width: 16px;
+          text-align: center;
+          border: none;
+        }
+
+        .collapsed-icon {
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           cursor: pointer;
           transition: opacity 0.2s;
 
-          &:hover { opacity: 0.9; }
-
-          .collapsed-node-icon { font-size: 18px; }
+          &:hover { opacity: 0.85; }
 
           .collapsed-char {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
+            color: #fff;
             line-height: 1;
           }
         }
@@ -586,6 +664,10 @@ onMounted(() => {
       font-size: 15px;
       font-weight: 600;
       color: #303133;
+    }
+
+    .tree-search {
+      margin-bottom: 12px;
     }
 
     .tree-body {

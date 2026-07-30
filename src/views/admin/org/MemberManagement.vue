@@ -64,14 +64,6 @@
             <el-button :icon="DArrowRight" link @click="treeCollapsed = false" class="expand-btn" />
           </el-tooltip>
         </div>
-          </el-tooltip>
-          <el-button
-            :icon="DArrowRight"
-            link
-            @click="treeCollapsed = false"
-            class="collapse-btn expanded-btn"
-          />
-        </div>
       </div>
 
       <!-- 右侧：列表区域 -->

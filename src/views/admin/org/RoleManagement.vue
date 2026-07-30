@@ -947,6 +947,7 @@ onMounted(() => {
   .tree-panel {
     width: 280px;
     flex-shrink: 0;
+    align-self: stretch;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);

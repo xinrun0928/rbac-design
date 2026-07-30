@@ -359,7 +359,8 @@ import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, Plus, Delete, Edit, Setting,
   SuccessFilled, CircleCloseFilled,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock
+  OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock,
+  HomeFilled, FolderOpened, Monitor, Briefcase, Folder
 } from '@element-plus/icons-vue'
 import { orgTreeData } from '@/mock/admin/orgTreeData'
 import { mockMenuData } from '@/mock/admin/menuData'
@@ -786,6 +787,46 @@ function getSubsystemIconStyle(subsystemId: number) {
   return subsystemIconMap[subsystemId] || subsystemIconMap[99]
 }
 
+// 树节点筛选
+function filterTreeNode(value: string, data: OrgTreeNode): boolean {
+  if (!value) return true
+  return data.name.toLowerCase().includes(value.toLowerCase())
+}
+
+// 节点图标
+function getNodeTypeIcon(nodeType: string) {
+  const icons: Record<string, any> = {
+    root: 'HomeFilled',
+    dept: 'OfficeBuilding',
+    branch: 'FolderOpened',
+    station: 'Monitor',
+    company: 'Briefcase'
+  }
+  return icons[nodeType] || 'Folder'
+}
+
+function getNodeTypeColor(nodeType: string): string {
+  const colors: Record<string, string> = {
+    root: '#409EFF',
+    dept: '#67C23A',
+    branch: '#E6A23C',
+    station: '#9B59B6',
+    company: '#F56C6C'
+  }
+  return colors[nodeType] || '#909399'
+}
+
+// 数据范围
+function getDataScopeColor(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.color || '#909399'
+}
+
+function getDataScopeLabel(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.label || dataScope
+}
+
 // 菜单类型样式
 function getMenuTypeClass(menuType: number): string {
   const classes: Record<number, string> = {
@@ -795,6 +836,16 @@ function getMenuTypeClass(menuType: number): string {
     99: 'type-navigation'
   }
   return classes[menuType] || ''
+}
+
+function getMenuTypeLabel(menuType: number): string {
+  const labels: Record<number, string> = {
+    0: '目录',
+    1: '菜单',
+    2: '按钮',
+    99: '外链'
+  }
+  return labels[menuType] || ''
 }
 
 function handleRoleDrawerClose(done: () => void) {

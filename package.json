@@ -8,6 +8,9 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@kjgl77/datav-vue3": "^1.7.4",

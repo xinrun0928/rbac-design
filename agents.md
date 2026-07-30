@@ -220,9 +220,9 @@ const handleSizeChange = () => {
 ## 构建运行
 
 ```bash
-pnpm install    # 安装依赖
-pnpm dev        # 启动开发服务器
-pnpm build      # 构建生产版本
+npm install    # 安装依赖
+npm run dev    # 启动开发服务器
+npm run build  # 构建生产版本
 ```
 
 ---
@@ -232,7 +232,7 @@ pnpm build      # 构建生产版本
 1. 本项目仅用于演示，所有数据使用 Mock 模拟
 2. 使用 `@/` 路径别名代替相对路径
 3. 公共组件放置在 `src/components/` 目录
-4. **禁止运行 `pnpm dev`**：只需修改源码，由用户自行启动开发服务器查看效果，不要在代码中执行启动开发服务器的命令
+4. **禁止运行 `npm run dev`**：只需修改源码，由用户自行启动开发服务器查看效果，不要在代码中执行启动开发服务器的命令
 
 ---
 

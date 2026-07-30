@@ -4,7 +4,6 @@ export interface ScheduleRule {
   ruleName: string
   sortOrder: number
   createTime: string
-  deleted: number
 }
 
 export interface ScheduleRuleForm {

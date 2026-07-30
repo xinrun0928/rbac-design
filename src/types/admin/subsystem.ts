@@ -19,21 +19,9 @@ export interface Subsystem {
   /** 状态: 1101-正常, 1001-停用 */
   status: number
   /** 备注 */
-  remark: string
-  /** 创建人 */
-  creater: string
+  remark?: string
   /** 创建时间 */
   createTime: string
-  /** 更新人 */
-  updater: string
-  /** 更新时间 */
-  updateTime: string
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
-  /** 签名 */
-  signature: string
-  /** 签名版本 */
-  signatureVersion: number
   /** 图标名称（前端扩展） */
   icon?: string
   /** 渐变背景色（前端扩展） */

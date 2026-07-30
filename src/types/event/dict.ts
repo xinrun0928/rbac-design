@@ -36,6 +36,4 @@ export interface EventDictData {
   remark: string
   /** 创建时间 */
   createTime: string
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
 }

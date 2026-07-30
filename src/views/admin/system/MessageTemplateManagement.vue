@@ -202,7 +202,7 @@ const pagination = reactive({
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  let data = tableData.value.filter(item => item.deleted === 0)
+  let data = tableData.value.filter(item => true)
 
   if (searchForm.templateId) {
     data = data.filter(item => item.templateId.includes(searchForm.templateId))

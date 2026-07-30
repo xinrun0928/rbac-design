@@ -11,7 +11,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"5fcd100051ce45d79117b18f1738eae1","desc":"","status":"2"}]}},"timestamp":1752130383607}',
     status: 1,
     createTime: '2023-03-24 16:37:00',
-    deleted: 0
   },
   {
     id: 2,
@@ -23,7 +22,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"7b4b314b40334b5694dcc27e8e436984","desc":"","status":"2"}]}},"timestamp":1752130431143}',
     status: 1,
     createTime: '2023-03-24 16:37:00',
-    deleted: 0
   },
   {
     id: 3,
@@ -35,7 +33,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"0e5c1d1a77c3405c86feaa29fbab16e7","desc":"","status":"2"}]}},"timestamp":1752130437669}',
     status: 1,
     createTime: '2023-03-24 16:37:00',
-    deleted: 0
   },
   {
     id: 4,
@@ -47,7 +44,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已审批","msgId":"4c647d01469d4960a06dac611433c794","desc":"","status":"2"}]}},"timestamp":1752132189698}',
     status: 1,
     createTime: '2023-03-24 16:37:00',
-    deleted: 0
   },
   {
     id: 5,
@@ -59,7 +55,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"33cc04c4821a4d53bc3bfb8e45847382","desc":"","status":"1"}]}},"timestamp":1752130346182}',
     status: 0,
     createTime: '2025-07-04 17:44:59',
-    deleted: 0
   },
   {
     id: 6,
@@ -71,7 +66,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"e196be6874bd41b5a76e7f34082a68ac","desc":"","status":"1"}]}},"timestamp":1752130365918}',
     status: 0,
     createTime: '2025-07-04 17:45:57',
-    deleted: 0
   },
   {
     id: 7,
@@ -83,7 +77,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"b7c4a8c0428e41e5bfbd2aa2bc94548d","desc":"","status":"1"}]}},"timestamp":1752130371576}',
     status: 0,
     createTime: '2025-07-04 17:46:24',
-    deleted: 0
   },
   {
     id: 8,
@@ -95,7 +88,6 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"待审批","msgId":"bd5d2afe27244452865da155d8027e15","desc":"","status":"1"}]}},"timestamp":1752130375589}',
     status: 0,
     createTime: '2025-07-04 17:46:40',
-    deleted: 0
   },
   {
     id: 9,
@@ -107,6 +99,5 @@ export const messageTemplateData: MessageTemplate[] = [
     approvalJson: '{"code":200,"message":"成功","success":true,"data":{"msg":"获取短信模板状态成功！","res":"200","success":true,"respdata":{"records":[{"codeDesc":"成功","code":"0000","statusDesc":"已驳回","msgId":"849dfcfd9508403585e5a3de94252764","desc":"该短信模板未存在于账号所申请发信模板中，如需新增短信模板，需提交短信变更流程。","status":"8"}]}},"timestamp":1765353725613}',
     status: 0,
     createTime: '2025-12-08 16:29:48',
-    deleted: 0
   }
 ]

@@ -584,7 +584,7 @@ const leftPanelCollapsed = ref(true)
 
 // 子系统列表（排除隐藏的）
 const subsystems = mockSubsystemData.filter(
-  sub => !sub.isHidden && sub.deleted === 0,
+  sub => !sub.isHidden && true,
 )
 
 const currentSubsystemName = computed(() => {

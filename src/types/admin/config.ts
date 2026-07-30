@@ -11,15 +11,13 @@ export interface Config {
   /** 配置类型: sys-系统内置, custom-用户自定义 */
   configType: string
   /** 创建人 */
-  createBy: string
+  createBy?: string
   /** 创建时间 */
   createTime: string
   /** 更新人 */
-  updateBy: string
-  /** 更新时间 */
-  updateTime: string
+  updateBy?: string
   /** 备注 */
-  remark: string | null
+  remark?: string | null
 }
 
 /** 配置搜索表单类型 */

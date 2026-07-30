@@ -442,7 +442,7 @@ const bindCheckedKeys = ref<number[]>([])
 const bindCheckAll = ref(false)
 const bindIndeterminate = ref(false)
 const bindTreeRef = ref<any>(null)
-const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
+const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && true)
 const subsystemMenuCount = ref<Record<number, number>>({})
 
 const searchForm = reactive<SearchForm>({

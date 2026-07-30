@@ -240,7 +240,7 @@ const filteredData = computed(() => {
 function fetchData() {
   loading.value = true
   setTimeout(() => {
-    tableData.value = dictDataList.filter(d => d.dictType === dictType.value && d.deleted === 0)
+    tableData.value = dictDataList.filter(d => d.dictType === dictType.value && true)
     loading.value = false
   }, 300)
 }

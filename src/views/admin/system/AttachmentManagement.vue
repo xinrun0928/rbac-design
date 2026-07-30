@@ -85,12 +85,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="creater" label="上传人" width="100" align="center">
-          <template #default="{ row }">
-            <span class="user-text">{{ row.creater || '-' }}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column prop="createTime" label="上传时间" width="170" align="center">
           <template #default="{ row }">
             <span class="time-text">{{ row.createTime }}</span>
@@ -146,7 +140,6 @@
           <el-descriptions-item label="文件MD5">
             <span class="md5-text">{{ currentAttachment.fileMd5 }}</span>
           </el-descriptions-item>
-          <el-descriptions-item label="上传人">{{ currentAttachment.creater || '-' }}</el-descriptions-item>
           <el-descriptions-item label="上传时间">{{ currentAttachment.createTime }}</el-descriptions-item>
           <el-descriptions-item label="子系统ID">{{ currentAttachment.subsysId }}</el-descriptions-item>
           <el-descriptions-item label="用户ID">{{ currentAttachment.userId || '-' }}</el-descriptions-item>
@@ -188,7 +181,7 @@ const pagination = reactive({
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  let data = tableData.value.filter(item => item.deleted === 0)
+  let data = tableData.value.filter(item => true)
 
   if (searchForm.fileName) {
     data = data.filter(item => item.fileName.toLowerCase().includes(searchForm.fileName.toLowerCase()))

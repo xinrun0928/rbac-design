@@ -19,13 +19,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:29:45',
-    updater: 'system',
-    updateTime: '2026-06-16 15:34:55',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 系统管理分组 ──
   {
@@ -44,13 +38,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:06:55',
-    updater: 'system',
-    updateTime: '2026-06-01 19:06:55',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000002,
@@ -68,13 +56,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:11',
-    updater: 'system',
-    updateTime: '2026-06-16 15:40:23',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000003,
@@ -92,13 +74,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:11',
-    updater: 'system',
-    updateTime: '2026-06-01 19:22:11',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000004,
@@ -116,13 +92,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:24:43',
-    updater: 'system',
-    updateTime: '2026-06-01 19:24:43',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000005,
@@ -140,13 +110,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:11',
-    updater: 'system',
-    updateTime: '2026-06-01 19:22:11',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000006,
@@ -164,13 +128,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:11',
-    updater: 'system',
-    updateTime: '2026-06-01 19:22:11',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 组织架构分组 ──
   {
@@ -189,13 +147,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:19:02',
-    updater: 'system',
-    updateTime: '2026-06-01 19:19:02',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000011,
@@ -213,13 +165,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:28:48',
-    updater: 'system',
-    updateTime: '2026-06-01 19:28:48',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000012,
@@ -237,13 +183,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:27:42',
-    updater: 'system',
-    updateTime: '2026-06-01 19:27:42',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000013,
@@ -261,13 +201,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:27:48',
-    updater: 'system',
-    updateTime: '2026-06-01 19:27:48',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000014,
@@ -285,13 +219,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:27:58',
-    updater: 'system',
-    updateTime: '2026-07-09 11:26:32',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000015,
@@ -309,13 +237,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:30:35',
-    updater: 'system',
-    updateTime: '2026-06-01 19:30:35',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 套餐管理分组 ──
   {
@@ -334,13 +256,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:34',
-    updater: 'system',
-    updateTime: '2026-06-01 19:22:34',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000021,
@@ -358,13 +274,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:27:20',
-    updater: 'system',
-    updateTime: '2026-06-01 19:27:20',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000022,
@@ -382,13 +292,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:22:34',
-    updater: 'system',
-    updateTime: '2026-06-01 19:22:34',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 应用管理分组 ──
   {
@@ -407,13 +311,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-01 15:20:51',
-    updater: 'system',
-    updateTime: '2026-07-01 15:25:03',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000031,
@@ -431,13 +329,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-01 15:26:15',
-    updater: 'system',
-    updateTime: '2026-07-01 15:26:15',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000032,
@@ -455,13 +347,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-01 15:26:15',
-    updater: 'system',
-    updateTime: '2026-07-01 15:26:15',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 系统监控分组 ──
   {
@@ -480,13 +366,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:23:58',
-    updater: 'system',
-    updateTime: '2026-06-01 19:23:58',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000041,
@@ -504,13 +384,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:40',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:40',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000042,
@@ -528,13 +402,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:45',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:45',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000043,
@@ -552,13 +420,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:26:22',
-    updater: 'system',
-    updateTime: '2026-06-01 19:26:22',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000044,
@@ -576,13 +438,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:52',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:52',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // ── 日志管理分组 ──
   {
@@ -601,13 +457,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:23:58',
-    updater: 'system',
-    updateTime: '2026-06-01 19:23:58',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000051,
@@ -625,13 +475,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:45',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:45',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000052,
@@ -649,13 +493,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:52',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:52',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000053,
@@ -673,13 +511,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:25:40',
-    updater: 'system',
-    updateTime: '2026-06-01 19:25:40',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000054,
@@ -697,13 +529,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:26:22',
-    updater: 'system',
-    updateTime: '2026-06-01 19:26:22',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 10000055,
@@ -721,13 +547,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-06-01 19:26:22',
-    updater: 'system',
-    updateTime: '2026-06-01 19:26:22',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 组织用户视角 ──
@@ -747,13 +567,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000010,
@@ -771,13 +585,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000011,
@@ -795,13 +603,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000012,
@@ -819,13 +621,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000020,
@@ -843,13 +639,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000021,
@@ -867,13 +657,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000022,
@@ -891,13 +675,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000030,
@@ -915,13 +693,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000031,
@@ -939,13 +711,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000032,
@@ -963,13 +729,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 20000040,
@@ -987,13 +747,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-25 10:00:00',
-    updater: 'system',
-    updateTime: '2026-07-25 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 汛期巡检子系统 (subsysId: 9) ──
@@ -1013,13 +767,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:22:09',
-    updater: '系统管理员2号',
-    updateTime: '2026-06-08 11:14:28',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2061408157632172032,
@@ -1037,13 +785,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:22:58',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-09 10:13:56',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2061409702432083968,
@@ -1061,13 +803,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:29:06',
-    updater: '系统管理员2号',
-    updateTime: '2026-06-08 14:54:46',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2061409863313002496,
@@ -1085,13 +821,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:29:45',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-09 10:14:11',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2061409986428407808,
@@ -1109,13 +839,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:30:14',
-    updater: '系统管理员2号',
-    updateTime: '2026-06-08 14:54:58',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2061410148727001088,
@@ -1133,13 +857,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-01 19:30:53',
-    updater: '系统管理员2号',
-    updateTime: '2026-06-08 14:55:05',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 2063812480735514624,
@@ -1157,13 +875,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: '系统管理员2号',
     createTime: '2026-06-08 10:36:53',
-    updater: '系统管理员2号',
-    updateTime: '2026-06-08 14:55:11',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 应急值守管理子系统 (subsysId: 1) ──
@@ -1184,13 +896,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000002,
@@ -1208,13 +914,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000003,
@@ -1232,13 +932,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000004,
@@ -1256,13 +950,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000005,
@@ -1280,13 +968,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000006,
@@ -1304,13 +986,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000007,
@@ -1328,13 +1004,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000008,
@@ -1352,13 +1022,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000009,
@@ -1376,13 +1040,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 第二层：菜单（值班记录目录下的子菜单）
   {
@@ -1401,13 +1059,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000011,
@@ -1425,13 +1077,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 值班日报目录下的子菜单
   {
@@ -1450,13 +1096,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000013,
@@ -1474,13 +1114,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000014,
@@ -1498,13 +1132,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 排班管理目录下的子菜单
   {
@@ -1523,13 +1151,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000016,
@@ -1547,13 +1169,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 工作制度及要求目录下的子菜单
   {
@@ -1572,13 +1188,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000018,
@@ -1596,13 +1206,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 基础信息目录下的子菜单
   {
@@ -1621,13 +1225,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000020,
@@ -1645,13 +1243,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 3000021,
@@ -1669,13 +1261,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 预案管理子系统 (subsysId: 2) ──
@@ -1696,13 +1282,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000002,
@@ -1720,13 +1300,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000003,
@@ -1744,13 +1318,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000004,
@@ -1768,13 +1336,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000005,
@@ -1792,13 +1354,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000006,
@@ -1816,13 +1372,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000007,
@@ -1840,13 +1390,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000008,
@@ -1864,13 +1408,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 第二层：菜单（应急预案库目录下的子菜单）
   {
@@ -1889,13 +1427,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000011,
@@ -1913,13 +1445,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000012,
@@ -1937,13 +1463,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000013,
@@ -1961,13 +1481,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 应急预案生成目录下的子菜单
   {
@@ -1986,13 +1500,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000021,
@@ -2010,13 +1518,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000022,
@@ -2034,13 +1536,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000023,
@@ -2058,13 +1554,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000024,
@@ -2082,13 +1572,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 应急模拟演练目录下的子菜单
   {
@@ -2107,13 +1591,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000031,
@@ -2131,13 +1609,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000032,
@@ -2155,13 +1627,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 4000033,
@@ -2179,13 +1645,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 事件管理子系统 (subsysId: 3) ──
@@ -2206,13 +1666,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000002,
@@ -2230,13 +1684,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000003,
@@ -2254,13 +1702,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000004,
@@ -2278,13 +1720,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000005,
@@ -2302,13 +1738,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000006,
@@ -2326,13 +1756,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000007,
@@ -2350,13 +1774,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000008,
@@ -2374,13 +1792,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000009,
@@ -2398,13 +1810,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000010,
@@ -2422,13 +1828,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 5000011,
@@ -2446,13 +1846,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 指挥调度子系统 (subsysId: 4) ──
@@ -2473,13 +1867,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000002,
@@ -2497,13 +1885,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000003,
@@ -2521,13 +1903,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000004,
@@ -2545,13 +1921,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000005,
@@ -2569,13 +1939,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000006,
@@ -2593,13 +1957,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000007,
@@ -2617,13 +1975,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000008,
@@ -2641,13 +1993,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000009,
@@ -2665,13 +2011,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000010,
@@ -2689,13 +2029,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000011,
@@ -2713,13 +2047,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000012,
@@ -2737,13 +2065,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 第二层：菜单（专题管理目录下的子菜单）
   {
@@ -2762,13 +2084,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000021,
@@ -2786,13 +2102,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000022,
@@ -2810,13 +2120,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 网络设备管理目录下的子菜单
   {
@@ -2835,13 +2139,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000031,
@@ -2859,13 +2157,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000032,
@@ -2883,13 +2175,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000033,
@@ -2907,13 +2193,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000034,
@@ -2931,13 +2211,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000035,
@@ -2955,13 +2229,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 终端设备管理目录下的子菜单
   {
@@ -2980,13 +2248,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000041,
@@ -3004,13 +2266,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000042,
@@ -3028,13 +2284,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000043,
@@ -3052,13 +2302,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 大客流大货流目录下的子菜单
   {
@@ -3077,13 +2321,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000051,
@@ -3101,13 +2339,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000052,
@@ -3125,13 +2357,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 数据接口目录下的子菜单
   {
@@ -3150,13 +2376,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000061,
@@ -3174,13 +2394,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000062,
@@ -3198,13 +2412,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000063,
@@ -3222,13 +2430,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000064,
@@ -3246,13 +2448,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000065,
@@ -3270,13 +2466,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 气象数据接入目录下的子菜单
   {
@@ -3295,13 +2485,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000071,
@@ -3319,13 +2503,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000072,
@@ -3343,13 +2521,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000073,
@@ -3367,13 +2539,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000074,
@@ -3391,13 +2557,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 基础能力目录下的子菜单
   {
@@ -3416,13 +2576,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000081,
@@ -3440,13 +2594,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000082,
@@ -3464,13 +2612,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 机构管理目录下的子菜单
   {
@@ -3489,13 +2631,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 6000091,
@@ -3513,13 +2649,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 物资管理子系统 (subsysId: 5) ──
@@ -3540,13 +2670,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000002,
@@ -3564,13 +2688,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000003,
@@ -3588,13 +2706,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000004,
@@ -3612,13 +2724,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000005,
@@ -3636,13 +2742,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 第二层：菜单（设备物资仓库管理目录下的子菜单）
   {
@@ -3661,13 +2761,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000011,
@@ -3685,13 +2779,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000012,
@@ -3709,13 +2797,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000013,
@@ -3733,13 +2815,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000014,
@@ -3757,13 +2833,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000015,
@@ -3781,13 +2851,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000016,
@@ -3805,13 +2869,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 装备维保管理目录下的子菜单
   {
@@ -3830,13 +2888,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000021,
@@ -3854,13 +2906,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000022,
@@ -3878,13 +2924,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000023,
@@ -3902,13 +2942,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 装备培训与考核目录下的子菜单
   {
@@ -3927,13 +2961,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000031,
@@ -3951,13 +2979,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000032,
@@ -3975,13 +2997,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 基础管理目录下的子菜单
   {
@@ -4000,13 +3016,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000041,
@@ -4024,13 +3034,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 7000042,
@@ -4048,13 +3052,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 决策支撑子系统 (subsysId: 6) ──
@@ -4075,13 +3073,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000002,
@@ -4099,13 +3091,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000003,
@@ -4123,13 +3109,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000004,
@@ -4147,13 +3127,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000005,
@@ -4171,13 +3145,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 第二层：菜单（知识管理目录下的子菜单）
   {
@@ -4196,13 +3164,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000011,
@@ -4220,13 +3182,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000012,
@@ -4244,13 +3200,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000013,
@@ -4268,13 +3218,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000014,
@@ -4292,13 +3236,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000015,
@@ -4316,13 +3254,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 辅助决策工具目录下的子菜单
   {
@@ -4341,13 +3273,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 8000021,
@@ -4365,13 +3291,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   // 用户反馈管理目录下的子菜单
   {
@@ -4390,13 +3310,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 信息融合子系统 (subsysId: 7) ──
@@ -4417,13 +3331,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000002,
@@ -4441,13 +3349,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000003,
@@ -4465,13 +3367,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000004,
@@ -4489,13 +3385,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000005,
@@ -4513,13 +3403,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000006,
@@ -4537,13 +3421,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000007,
@@ -4561,13 +3439,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000008,
@@ -4585,13 +3457,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000009,
@@ -4609,13 +3475,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
   {
     menuId: 9000010,
@@ -4633,13 +3493,7 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   },
 
   // ── 大屏展示子系统 (subsysId: 8) ──
@@ -4659,12 +3513,6 @@ export const mockMenuData: Menu[] = [
     remark: '',
     ext: '',
     hidden: 0,
-    creater: 'system',
     createTime: '2026-07-21 10:00:00',
-    updater: '',
-    updateTime: '2026-07-21 10:00:00',
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
   }
 ]

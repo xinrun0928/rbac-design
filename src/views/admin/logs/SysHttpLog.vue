@@ -304,9 +304,7 @@ const httpLogSql = `CREATE TABLE "public"."sys_http_log" (
   "user_id" int8,
   "org_id" int8 DEFAULT 0,
   "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "deleted" int2 DEFAULT 0,
-  "signature" varchar(512) COLLATE "pg_catalog"."default",
-  "signature_version" int2 DEFAULT 1,
+
   CONSTRAINT "sys_http_log_pkey" PRIMARY KEY ("id")
 );
 
@@ -323,9 +321,7 @@ COMMENT ON COLUMN "public"."sys_http_log"."rep_time" IS '响应时间（毫秒/�
 COMMENT ON COLUMN "public"."sys_http_log"."user_id" IS '用户ID';
 COMMENT ON COLUMN "public"."sys_http_log"."org_id" IS '组织ID';
 COMMENT ON COLUMN "public"."sys_http_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_http_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_http_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_http_log"."signature_version" IS '数据签名版本号';
+
 
 COMMENT ON TABLE "public"."sys_http_log" IS '系统接口请求日志';`
 

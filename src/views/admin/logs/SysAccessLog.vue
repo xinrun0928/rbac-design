@@ -350,13 +350,8 @@ const accessLogSql = `CREATE TABLE "public"."sys_access_log" (
   "status" int2 NOT NULL DEFAULT 1101,
   "remark" text COLLATE "pg_catalog"."default",
   "sign_result" varchar(1024) COLLATE "pg_catalog"."default",
-  "creater" varchar(64) COLLATE "pg_catalog"."default",
-  "updater" varchar(64) COLLATE "pg_catalog"."default",
   "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
   "update_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "deleted" int2 DEFAULT 0,
-  "signature" varchar(512) COLLATE "pg_catalog"."default",
-  "signature_version" int2 DEFAULT 1,
   CONSTRAINT "sys_access_log_pkey" PRIMARY KEY ("id")
 );
 
@@ -386,13 +381,8 @@ COMMENT ON COLUMN "public"."sys_access_log"."display_order" IS '排序字段';
 COMMENT ON COLUMN "public"."sys_access_log"."status" IS '状态（1101正常 1102停用）';
 COMMENT ON COLUMN "public"."sys_access_log"."remark" IS '备注信息';
 COMMENT ON COLUMN "public"."sys_access_log"."sign_result" IS '签名结果（由定时任务触发生成）';
-COMMENT ON COLUMN "public"."sys_access_log"."creater" IS '创建者';
-COMMENT ON COLUMN "public"."sys_access_log"."updater" IS '更新者';
 COMMENT ON COLUMN "public"."sys_access_log"."create_time" IS '创建时间';
 COMMENT ON COLUMN "public"."sys_access_log"."update_time" IS '更新时间';
-COMMENT ON COLUMN "public"."sys_access_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_access_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_access_log"."signature_version" IS '数据签名版本号';
 
 COMMENT ON TABLE "public"."sys_access_log" IS '系统访问日志表';`
 const tableData = ref<SysAccessLog[]>([])

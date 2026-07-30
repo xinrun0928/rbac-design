@@ -344,7 +344,6 @@ async function handleSubmit() {
             item.unitName = formData.unitName
             item.status = formData.status
             item.remark = formData.remark
-            item.updateTime = now
             return true
           }
           if (item.children && updateItem(item.children)) return true
@@ -361,8 +360,6 @@ async function handleSubmit() {
         unitName: formData.unitName,
         status: formData.status,
         remark: formData.remark,
-        updateTime: now,
-        deleted: 0,
         children: [],
       }
 

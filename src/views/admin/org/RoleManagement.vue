@@ -410,7 +410,7 @@ const bindIndeterminate = ref(false)
 const subsystemMenuCount = ref<Record<number, number>>({})
 
 // 子系统列表（排除隐藏的）
-const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
+const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && true)
 
 // 根据当前选中节点筛选角色
 const roleList = computed(() => {
@@ -751,7 +751,7 @@ function handleConfigMenu(row: RoleItem) {
 function calculateSubsystemMenuCount() {
   const counts: Record<number, number> = {}
   for (const sub of subsystems) {
-    counts[sub.subsysId] = mockMenuData.filter(m => m.subsysId === sub.subsysId && m.deleted === 0).length
+    counts[sub.subsysId] = mockMenuData.filter(m => m.subsysId === sub.subsysId && true).length
   }
   subsystemMenuCount.value = counts
 }
@@ -759,7 +759,7 @@ function calculateSubsystemMenuCount() {
 function loadBindMenuTree(subsysId: number) {
   bindSelectedSubsystem.value = subsysId
   // 获取该子系统的菜单并构建树
-  const subMenus = mockMenuData.filter(m => m.subsysId === subsysId && m.deleted === 0)
+  const subMenus = mockMenuData.filter(m => m.subsysId === subsysId && true)
   bindMenuTree.value = buildMenuTree(subMenus)
 
   // 设置已选中的菜单

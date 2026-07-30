@@ -24,9 +24,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:12:56',
-    update_time: '2026-06-29 23:12:56',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071613104369831936',
@@ -51,9 +48,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:13:47',
-    update_time: '2026-06-29 23:13:47',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071613271668035584',
@@ -78,9 +72,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:14:27',
-    update_time: '2026-06-29 23:14:27',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071613485292326912',
@@ -104,9 +95,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:15:18',
-    update_time: '2026-06-29 23:15:18',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071613492477169664',
@@ -130,9 +118,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:15:19',
-    update_time: '2026-06-29 23:15:19',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071614144888573952',
@@ -157,9 +142,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:17:55',
-    update_time: '2026-06-29 23:17:55',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071614168544448512',
@@ -184,9 +166,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:18:01',
-    update_time: '2026-06-29 23:18:01',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071615840633098240',
@@ -211,9 +190,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:24:39',
-    update_time: '2026-06-29 23:24:39',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071616014797377536',
@@ -237,9 +213,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:25:21',
-    update_time: '2026-06-29 23:25:21',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071616755171725312',
@@ -264,9 +237,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:28:17',
-    update_time: '2026-06-29 23:28:17',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071617164913283072',
@@ -290,9 +260,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:29:55',
-    update_time: '2026-06-29 23:29:55',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071618214714019840',
@@ -316,9 +283,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:34:05',
-    update_time: '2026-06-29 23:34:05',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071619984202797056',
@@ -343,9 +307,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:41:07',
-    update_time: '2026-06-29 23:41:07',
-    deleted: 0,
-    signature_version: '0'
   },
   {
     id: '2071620592414625792',
@@ -369,9 +330,6 @@ export const mockAccessLogData: SysAccessLog[] = [
 
 
     create_time: '2026-06-29 23:43:32',
-    update_time: '2026-06-29 23:43:32',
-    deleted: 0,
-    signature_version: '0'
   }
 ]
 
@@ -386,11 +344,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送短信失败！","res":"300","success":false,"respdata":{"records":[{"codeDesc":"模板不存在或模板未审批通过","code":"3002","msgId":"e65d047bd4e74d10a48c3645d5fc5ef2"}]}},"timestamp":"1782354727112"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 10:32:07'
   },
   {
@@ -402,11 +356,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送成功","res":"0","success":true,"respdata":{"records":[{"codeDesc":"发送成功","code":"0","msgId":"f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2"}]}},"timestamp":"1782354801"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 10:35:22'
   },
   {
@@ -418,11 +368,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送短信失败！","res":"300","success":false,"respdata":{"records":[{"codeDesc":"模板不存在或模板未审批通过","code":"3002","msgId":"g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3"}]}},"timestamp":"1782354901"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 11:00:15'
   },
   {
@@ -434,11 +380,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送成功","res":"0","success":true,"respdata":{"records":[{"codeDesc":"发送成功","code":"0","msgId":"h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4"}]}},"timestamp":"1782355001"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 11:15:30'
   },
   {
@@ -450,11 +392,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送短信失败！","res":"300","success":false,"respdata":{"records":[{"codeDesc":"手机号格式错误","code":"1001","msgId":"i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5"}]}},"timestamp":"1782355101"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 11:30:45'
   },
   {
@@ -466,11 +404,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送成功","res":"0","success":true,"respdata":{"records":[{"codeDesc":"发送成功","code":"0","msgId":"j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6"}]}},"timestamp":"1782355201"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 12:00:00'
   },
   {
@@ -482,11 +416,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送成功","res":"0","success":true,"respdata":{"records":[{"codeDesc":"发送成功","code":"0","msgId":"k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7"}]}},"timestamp":"1782355301"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 12:30:15'
   },
   {
@@ -498,11 +428,7 @@ export const mockMessageLogData: SysMessageLog[] = [
     reply_text: '{"code":200,"message":"成功","success":true,"data":{"msg":"发送短信失败！","res":"300","success":false,"respdata":{"records":[{"codeDesc":"模板不存在或模板未审批通过","code":"3002","msgId":"l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8"}]}},"timestamp":"1782355401"}',
     status: 1101,
     display_order: 0,
-    creater: '',
-    updater: '',
     remark: '',
-    signature: '',
-    signature_version: '0',
     create_time: '2026-06-25 13:00:30'
   }
 ]
@@ -518,8 +444,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '43',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:09:39'
   },
   {
@@ -531,8 +455,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '13',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:16:11'
   },
   {
@@ -545,8 +467,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"Success":true,"Data":"de433d2ed14e4dbbb5eca89cc3ec4f05"}',
     rep_time: '105',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-06 10:23:38'
   },
   {
@@ -559,8 +479,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"Success":true,"Data":"5ec0c0b79ab1429bad1a73c2047df74a"}',
     rep_time: '116',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-06 10:24:55'
   },
   {
@@ -573,8 +491,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"Success":true,"Data":"5ec0c0b79ab1429bad1a73c2047df74a"}',
     rep_time: '109',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-06 10:24:55'
   },
   {
@@ -587,8 +503,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"Success":true,"Data":"c984d26f8fb14ef8a49673a376c90b00"}',
     rep_time: '136',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-06 10:25:36'
   },
   {
@@ -601,8 +515,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"Success":true,"Data":"c984d26f8fb14ef8a49673a376c90b00"}',
     rep_time: '110',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-06 10:25:36'
   },
   {
@@ -614,8 +526,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '157',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-16 16:29:18'
   },
   {
@@ -627,8 +537,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '52',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 10:54:35'
   },
   {
@@ -640,8 +548,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '48',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 10:55:23'
   },
   {
@@ -653,8 +559,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '101',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 10:55:40'
   },
   {
@@ -666,8 +570,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '55',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 11:42:21'
   },
   {
@@ -679,8 +581,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '45',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:07:13'
   },
   {
@@ -692,8 +592,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '82',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:07:25'
   },
   {
@@ -705,8 +603,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'FAIL',
     rep_data: 'Failed to connect to /43.138.8.186:8092',
     rep_time: '52',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:08:03'
   },
   {
@@ -718,8 +614,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '37',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:08:19'
   },
   {
@@ -731,8 +625,6 @@ export const mockHttpLogData: SysHttpLog[] = [
     rep_state: 'SUCCESS',
     rep_data: '{"code":"0","message":"未匹配到里程桩","data":null}',
     rep_time: '35',
-    deleted: 0,
-    signature_version: '1',
     create_time: '2026-07-20 16:09:01'
   }
 ]
@@ -750,8 +642,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-17 09:11:19',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2077924082897240065',
@@ -764,8 +654,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-17 09:11:21',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2077924099603152897',
@@ -778,8 +666,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-17 09:11:25',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2078312027957346306',
@@ -792,8 +678,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-18 10:52:55',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079010899511853057',
@@ -806,8 +690,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 09:09:59',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079010908420554754',
@@ -820,8 +702,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 09:10:01',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079023972331143169',
@@ -834,8 +714,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 10:01:56',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079037089211596801',
@@ -848,8 +726,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 10:54:03',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079041108436959233',
@@ -862,8 +738,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 11:10:01',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079083698498682882',
@@ -876,8 +750,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 13:59:15',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079114258101157890',
@@ -890,8 +762,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 16:00:41',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079121758061969410',
@@ -904,8 +774,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 16:30:29',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079147721671950337',
@@ -918,8 +786,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-20 18:13:40',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079375298361655298',
@@ -932,8 +798,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 09:17:58',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079387544764645377',
@@ -946,8 +810,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:06:38',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079387561625747457',
@@ -960,8 +822,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:06:42',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079391162859356162',
@@ -974,8 +834,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:21:01',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079391193188368385',
@@ -988,8 +846,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:21:08',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079392317765156866',
@@ -1002,8 +858,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:25:36',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079393578317086722',
@@ -1016,8 +870,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:30:36',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079394131621281793',
@@ -1030,8 +882,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:32:48',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079394170892550145',
@@ -1044,8 +894,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:32:58',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079396263586004994',
@@ -1058,8 +906,6 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 10:41:17',
-    deleted: 0,
-    signature_version: '1'
   },
   {
     log_id: '2079404322400075777',
@@ -1071,9 +917,7 @@ export const mockLoginLogData: SysLoginLog[] = [
     browser: 'Robot/Spider',
     os: 'Unknown',
     operation_type: 1,
-    create_time: '2026-07-21 11:13:18',
-    deleted: 0,
-    signature_version: '1'
+    create_time: '2026-07-21 11:13:18'
   },
   {
     log_id: '2079409018451886082',
@@ -1085,9 +929,7 @@ export const mockLoginLogData: SysLoginLog[] = [
     browser: 'Robot/Spider',
     os: 'Unknown',
     operation_type: 1,
-    create_time: '2026-07-21 11:31:58',
-    deleted: 0,
-    signature_version: '1'
+    create_time: '2026-07-21 11:31:58'
   },
   {
     log_id: '2079409169702682626',
@@ -1100,7 +942,5 @@ export const mockLoginLogData: SysLoginLog[] = [
     os: 'Unknown',
     operation_type: 1,
     create_time: '2026-07-21 11:32:34',
-    deleted: 0,
-    signature_version: '1'
   }
 ]

@@ -19,7 +19,7 @@ export async function getSubsystems(params: {
 }): Promise<{ list: Subsystem[]; total: number }> {
   await delay(300 + Math.random() * 400)
 
-  let data = mockSubsystemData.filter(item => item.deleted === 0)
+  let data = [...mockSubsystemData]
 
   if (params.search?.subsysCode) {
     const keyword = params.search.subsysCode.trim().toLowerCase()
@@ -77,13 +77,7 @@ export async function addSubsystem(data: {
     remark: data.remark,
     icon: data.icon || '',
     color: data.color || '',
-    creater: '当前用户',
-    createTime: formatNow(),
-    updater: '',
-    updateTime: formatNow(),
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
+    createTime: formatNow()
   }
 
   mockSubsystemData.push(newSubsystem)
@@ -127,8 +121,7 @@ export async function updateSubsystem(
     remark: data.remark,
     icon: data.icon || mockSubsystemData[index].icon,
     color: data.color || mockSubsystemData[index].color,
-    updater: '当前用户',
-    updateTime: formatNow()
+    createTime: formatNow()
   }
 
   mockSubsystemData[index] = updated
@@ -144,7 +137,7 @@ export async function deleteSubsystem(id: number): Promise<void> {
     throw new Error('子系统不存在')
   }
 
-  mockSubsystemData[index].deleted = 1
+  mockSubsystemData.splice(index, 1)
 }
 
 /** 批量删除子系统 */
@@ -154,7 +147,7 @@ export async function batchDeleteSubsystems(ids: number[]): Promise<void> {
   ids.forEach(id => {
     const index = mockSubsystemData.findIndex(p => p.subsysId === id)
     if (index !== -1) {
-      mockSubsystemData[index].deleted = 1
+      mockSubsystemData.splice(index, 1)
     }
   })
 }
@@ -169,8 +162,6 @@ export async function toggleSubsystemStatus(id: number, status: number): Promise
   }
 
   mockSubsystemData[index].status = status
-  mockSubsystemData[index].updater = '当前用户'
-  mockSubsystemData[index].updateTime = formatNow()
 
   return mockSubsystemData[index]
 }

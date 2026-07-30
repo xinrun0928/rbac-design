@@ -11,10 +11,7 @@ export const appInfoData: AppInfo[] = [
     status: 1101,
     latestApkUrl: 'https://td.gd.gov.cn/sprhtx/down/gdglxc.apk',
     remark: '',
-    creater: '系统管理员',
     createTime: '2026-07-01 03:15:32',
-    updater: '系统管理员',
-    updateTime: '2026-07-01 03:15:32'
   }
 ]
 
@@ -36,10 +33,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '增加自主巡查，优化样式',
     publishStatus: 2,
     publishTime: '2026-07-08 11:47:19',
-    creater: '系统管理员2号',
     createTime: '2026-07-08 11:46:53',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-08 11:47:19'
   },
   {
     publishId: 2074833212609269760,
@@ -58,10 +52,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '1. 增加预计结束桩号',
     publishStatus: 2,
     publishTime: '2026-07-08 20:33:40',
-    creater: '系统管理员2号',
     createTime: '2026-07-08 20:29:21',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-08 20:33:40'
   },
   {
     publishId: 2075209978234408960,
@@ -80,10 +71,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '1. 修复统计页面、任务详情页的数据显示；',
     publishStatus: 2,
     publishTime: '2026-07-09 21:26:35',
-    creater: '系统管理员2号',
     createTime: '2026-07-09 21:26:29',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-09 21:26:36'
   },
   {
     publishId: 2075523100363067392,
@@ -102,10 +90,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '1. app 闪屏图标压扁；2. 删除高德sdk',
     publishStatus: 2,
     publishTime: '2026-07-10 18:10:50',
-    creater: '系统管理员2号',
     createTime: '2026-07-10 18:10:43',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-10 18:10:50'
   },
   {
     publishId: 2076525124026241024,
@@ -124,10 +109,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '1. app 闪屏图标压扁；2. 删除高德sdk',
     publishStatus: 2,
     publishTime: '2026-07-13 12:32:35',
-    creater: '系统管理员2号',
     createTime: '2026-07-13 12:32:24',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-13 12:32:35'
   },
   {
     publishId: 2076533291917381632,
@@ -146,10 +128,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: 'wgt版本获取方式不对导致apk重复升级',
     publishStatus: 2,
     publishTime: '2026-07-13 13:05:07',
-    creater: '系统管理员2号',
     createTime: '2026-07-13 13:04:51',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-13 13:05:07'
   },
   {
     publishId: 2076534474891464704,
@@ -168,10 +147,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '（上一个更新，下载地址指向错了）wgt版本获取方式不对导致apk重复升级',
     publishStatus: 2,
     publishTime: '2026-07-13 13:09:51',
-    creater: '系统管理员2号',
     createTime: '2026-07-13 13:09:33',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-13 13:09:51'
   },
   {
     publishId: 2076590370262749184,
@@ -190,10 +166,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '优化更新逻辑',
     publishStatus: 2,
     publishTime: '2026-07-13 16:52:56',
-    creater: '系统管理员2号',
     createTime: '2026-07-13 16:51:40',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-13 16:52:56'
   },
   {
     publishId: 2076969358659293184,
@@ -212,10 +185,7 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '增加请求头的app版本记录',
     publishStatus: 2,
     publishTime: '2026-07-14 18:15:56',
-    creater: '系统管理员2号',
     createTime: '2026-07-14 17:57:37',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-14 18:15:56'
   },
   {
     publishId: 2078316442335449088,
@@ -234,9 +204,6 @@ export const appPublishLogData: AppPublishLog[] = [
     publishReason: '修复巡查时表单填写问题',
     publishStatus: 2,
     publishTime: '2026-07-18 11:11:37',
-    creater: '系统管理员2号',
     createTime: '2026-07-18 11:10:27',
-    updater: '系统管理员2号',
-    updateTime: '2026-07-18 11:11:37'
   }
 ]

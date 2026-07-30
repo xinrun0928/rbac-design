@@ -14,11 +14,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
-    creater: '测试用户1',
     createTime: '2026-06-29 21:42:45',
-    updateTime: '2026-06-29 21:42:45',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2071593334744420352,
@@ -33,11 +29,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
-    creater: '测试用户1',
     createTime: '2026-06-29 21:55:14',
-    updateTime: '2026-06-29 21:55:14',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2071767423001956352,
@@ -52,11 +44,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071273943515402240,
     orgId: 2066055339131932672,
-    creater: '测试用户1',
     createTime: '2026-06-30 09:26:59',
-    updateTime: '2026-06-30 09:26:59',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072208012969381888,
@@ -71,11 +59,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
-    creater: '巡检员X01',
     createTime: '2026-07-01 14:37:44',
-    updateTime: '2026-07-01 14:37:44',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072217270884634624,
@@ -90,11 +74,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
-    creater: '巡检员X01',
     createTime: '2026-07-01 15:14:31',
-    updateTime: '2026-07-01 15:14:31',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072230850757529600,
@@ -109,11 +89,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
-    creater: '巡检员X01',
     createTime: '2026-07-01 16:08:29',
-    updateTime: '2026-07-01 16:08:29',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072237748563087360,
@@ -128,11 +104,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
-    creater: '总值班室',
     createTime: '2026-07-01 16:35:54',
-    updateTime: '2026-07-01 16:35:54',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072243523779956736,
@@ -147,11 +119,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2069755650430341120,
     orgId: 2066055337991081984,
-    creater: '巡检员X01',
     createTime: '2026-07-01 16:58:51',
-    updateTime: '2026-07-01 16:58:51',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072247042993950720,
@@ -166,11 +134,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
-    creater: '总值班室',
     createTime: '2026-07-01 17:12:50',
-    updateTime: '2026-07-01 17:12:50',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072248973627887616,
@@ -185,11 +149,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
-    creater: '总值班室',
     createTime: '2026-07-01 17:20:30',
-    updateTime: '2026-07-01 17:20:30',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072251639481372672,
@@ -204,11 +164,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071888378307153920,
     orgId: 2071600733559590912,
-    creater: '总值班室',
     createTime: '2026-07-01 17:31:06',
-    updateTime: '2026-07-01 17:31:06',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2072499361589366784,
@@ -223,11 +179,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2072207099198312448,
     orgId: 2071600733559590912,
-    creater: '张鑫润',
     createTime: '2026-07-02 09:55:27',
-    updateTime: '2026-07-02 09:55:27',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2075088798039019520,
@@ -242,11 +194,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2072926542022971392,
     orgId: 2071856455010619392,
-    creater: '何亦奇',
     createTime: '2026-07-09 13:24:57',
-    updateTime: '2026-07-09 13:24:57',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2075089531475988480,
@@ -261,11 +209,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2072926542022971392,
     orgId: 2071856455010619392,
-    creater: '何亦奇',
     createTime: '2026-07-09 13:27:52',
-    updateTime: '2026-07-09 13:27:52',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2075107757849186304,
@@ -280,11 +224,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071886281092239360,
     orgId: 2071791810707066880,
-    creater: '颜华耀',
     createTime: '2026-07-09 14:40:17',
-    updateTime: '2026-07-09 14:40:17',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     attachmentId: 2075118400853643264,
@@ -299,11 +239,7 @@ export const attachmentData: Attachment[] = [
 
     userId: 2071886281092239360,
     orgId: 2071791810707066880,
-    creater: '颜华耀',
     createTime: '2026-07-09 15:22:35',
-    updateTime: '2026-07-09 15:22:35',
-    deleted: 0,
-    signatureVersion: 0
   }
 ]
 

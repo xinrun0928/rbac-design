@@ -7,8 +7,6 @@ export const areaData: Area[] = [
     name: '广东省',
     level: 'province',
     displayOrder: 1,
-    deleted: 0,
-    signatureVersion: 0,
     children: [
       {
         id: 2,
@@ -17,20 +15,18 @@ export const areaData: Area[] = [
         level: 'city',
         parentCode: '440000',
         displayOrder: 1,
-        deleted: 0,
-        signatureVersion: 0,
         children: [
-          { id: 3, code: '440103', name: '荔湾区', level: 'district', parentCode: '440100', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 4, code: '440104', name: '越秀区', level: 'district', parentCode: '440100', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 5, code: '440105', name: '海珠区', level: 'district', parentCode: '440100', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 6, code: '440106', name: '天河区', level: 'district', parentCode: '440100', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 7, code: '440111', name: '白云区', level: 'district', parentCode: '440100', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 8, code: '440112', name: '黄埔区', level: 'district', parentCode: '440100', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 9, code: '440113', name: '番禺区', level: 'district', parentCode: '440100', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 10, code: '440114', name: '花都区', level: 'district', parentCode: '440100', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 11, code: '440115', name: '南沙区', level: 'district', parentCode: '440100', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 12, code: '440117', name: '从化区', level: 'district', parentCode: '440100', displayOrder: 10, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 13, code: '440118', name: '增城区', level: 'district', parentCode: '440100', displayOrder: 11, deleted: 0, signature: null, signatureVersion: 0, children: [] }
+          { id: 3, code: '440103', name: '荔湾区', level: 'district', parentCode: '440100', displayOrder: 1, children: [] },
+          { id: 4, code: '440104', name: '越秀区', level: 'district', parentCode: '440100', displayOrder: 2, children: [] },
+          { id: 5, code: '440105', name: '海珠区', level: 'district', parentCode: '440100', displayOrder: 3, children: [] },
+          { id: 6, code: '440106', name: '天河区', level: 'district', parentCode: '440100', displayOrder: 4, children: [] },
+          { id: 7, code: '440111', name: '白云区', level: 'district', parentCode: '440100', displayOrder: 5, children: [] },
+          { id: 8, code: '440112', name: '黄埔区', level: 'district', parentCode: '440100', displayOrder: 6, children: [] },
+          { id: 9, code: '440113', name: '番禺区', level: 'district', parentCode: '440100', displayOrder: 7, children: [] },
+          { id: 10, code: '440114', name: '花都区', level: 'district', parentCode: '440100', displayOrder: 8, children: [] },
+          { id: 11, code: '440115', name: '南沙区', level: 'district', parentCode: '440100', displayOrder: 9, children: [] },
+          { id: 12, code: '440117', name: '从化区', level: 'district', parentCode: '440100', displayOrder: 10, children: [] },
+          { id: 13, code: '440118', name: '增城区', level: 'district', parentCode: '440100', displayOrder: 11, children: [] }
         ]
       },
       {
@@ -40,18 +36,16 @@ export const areaData: Area[] = [
         level: 'city',
         parentCode: '440000',
         displayOrder: 2,
-        deleted: 0,
-        signatureVersion: 0,
         children: [
-          { id: 15, code: '440303', name: '罗湖区', level: 'district', parentCode: '440300', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 16, code: '440304', name: '福田区', level: 'district', parentCode: '440300', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 17, code: '440305', name: '南山区', level: 'district', parentCode: '440300', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 18, code: '440306', name: '宝安区', level: 'district', parentCode: '440300', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 19, code: '440307', name: '龙岗区', level: 'district', parentCode: '440300', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 20, code: '440308', name: '盐田区', level: 'district', parentCode: '440300', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 21, code: '440309', name: '龙华区', level: 'district', parentCode: '440300', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 22, code: '440310', name: '坪山区', level: 'district', parentCode: '440300', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 23, code: '440311', name: '光明区', level: 'district', parentCode: '440300', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] }
+          { id: 15, code: '440303', name: '罗湖区', level: 'district', parentCode: '440300', displayOrder: 1, children: [] },
+          { id: 16, code: '440304', name: '福田区', level: 'district', parentCode: '440300', displayOrder: 2, children: [] },
+          { id: 17, code: '440305', name: '南山区', level: 'district', parentCode: '440300', displayOrder: 3, children: [] },
+          { id: 18, code: '440306', name: '宝安区', level: 'district', parentCode: '440300', displayOrder: 4, children: [] },
+          { id: 19, code: '440307', name: '龙岗区', level: 'district', parentCode: '440300', displayOrder: 5, children: [] },
+          { id: 20, code: '440308', name: '盐田区', level: 'district', parentCode: '440300', displayOrder: 6, children: [] },
+          { id: 21, code: '440309', name: '龙华区', level: 'district', parentCode: '440300', displayOrder: 7, children: [] },
+          { id: 22, code: '440310', name: '坪山区', level: 'district', parentCode: '440300', displayOrder: 8, children: [] },
+          { id: 23, code: '440311', name: '光明区', level: 'district', parentCode: '440300', displayOrder: 9, children: [] }
         ]
       },
       {
@@ -61,12 +55,10 @@ export const areaData: Area[] = [
         level: 'city',
         parentCode: '440000',
         displayOrder: 3,
-        deleted: 0,
-        signatureVersion: 0,
         children: [
-          { id: 25, code: '440402', name: '香洲区', level: 'district', parentCode: '440400', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 26, code: '440403', name: '斗门区', level: 'district', parentCode: '440400', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 27, code: '440404', name: '金湾区', level: 'district', parentCode: '440400', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] }
+          { id: 25, code: '440402', name: '香洲区', level: 'district', parentCode: '440400', displayOrder: 1, children: [] },
+          { id: 26, code: '440403', name: '斗门区', level: 'district', parentCode: '440400', displayOrder: 2, children: [] },
+          { id: 27, code: '440404', name: '金湾区', level: 'district', parentCode: '440400', displayOrder: 3, children: [] }
         ]
       },
       {
@@ -76,32 +68,30 @@ export const areaData: Area[] = [
         level: 'city',
         parentCode: '440000',
         displayOrder: 4,
-        deleted: 0,
-        signatureVersion: 0,
         children: [
-          { id: 29, code: '440604', name: '禅城区', level: 'district', parentCode: '440600', displayOrder: 1, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 30, code: '440605', name: '南海区', level: 'district', parentCode: '440600', displayOrder: 2, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 31, code: '440606', name: '顺德区', level: 'district', parentCode: '440600', displayOrder: 3, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 32, code: '440607', name: '三水区', level: 'district', parentCode: '440600', displayOrder: 4, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-          { id: 33, code: '440608', name: '高明区', level: 'district', parentCode: '440600', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] }
+          { id: 29, code: '440604', name: '禅城区', level: 'district', parentCode: '440600', displayOrder: 1, children: [] },
+          { id: 30, code: '440605', name: '南海区', level: 'district', parentCode: '440600', displayOrder: 2, children: [] },
+          { id: 31, code: '440606', name: '顺德区', level: 'district', parentCode: '440600', displayOrder: 3, children: [] },
+          { id: 32, code: '440607', name: '三水区', level: 'district', parentCode: '440600', displayOrder: 4, children: [] },
+          { id: 33, code: '440608', name: '高明区', level: 'district', parentCode: '440600', displayOrder: 5, children: [] }
         ]
       },
-      { id: 34, code: '441300', name: '惠州市', level: 'city', parentCode: '440000', displayOrder: 5, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 35, code: '441400', name: '梅州市', level: 'city', parentCode: '440000', displayOrder: 6, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 36, code: '441500', name: '汕尾市', level: 'city', parentCode: '440000', displayOrder: 7, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 37, code: '441600', name: '河源市', level: 'city', parentCode: '440000', displayOrder: 8, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 38, code: '441700', name: '阳江市', level: 'city', parentCode: '440000', displayOrder: 9, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 39, code: '441800', name: '清远市', level: 'city', parentCode: '440000', displayOrder: 10, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 40, code: '441900', name: '东莞市', level: 'city', parentCode: '440000', displayOrder: 11, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 41, code: '442000', name: '中山市', level: 'city', parentCode: '440000', displayOrder: 12, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 42, code: '442100', name: '潮州市', level: 'city', parentCode: '440000', displayOrder: 13, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 43, code: '445100', name: '揭阳市', level: 'city', parentCode: '440000', displayOrder: 14, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 44, code: '445200', name: '云浮市', level: 'city', parentCode: '440000', displayOrder: 15, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 45, code: '440900', name: '茂名市', level: 'city', parentCode: '440000', displayOrder: 16, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 46, code: '441200', name: '肇庆市', level: 'city', parentCode: '440000', displayOrder: 17, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 47, code: '441100', name: '韶关市', level: 'city', parentCode: '440000', displayOrder: 18, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 48, code: '440800', name: '湛江市', level: 'city', parentCode: '440000', displayOrder: 19, deleted: 0, signature: null, signatureVersion: 0, children: [] },
-      { id: 49, code: '440500', name: '汕头市', level: 'city', parentCode: '440000', displayOrder: 20, deleted: 0, signature: null, signatureVersion: 0, children: [] }
+      { id: 34, code: '441300', name: '惠州市', level: 'city', parentCode: '440000', displayOrder: 5, children: [] },
+      { id: 35, code: '441400', name: '梅州市', level: 'city', parentCode: '440000', displayOrder: 6, children: [] },
+      { id: 36, code: '441500', name: '汕尾市', level: 'city', parentCode: '440000', displayOrder: 7, children: [] },
+      { id: 37, code: '441600', name: '河源市', level: 'city', parentCode: '440000', displayOrder: 8, children: [] },
+      { id: 38, code: '441700', name: '阳江市', level: 'city', parentCode: '440000', displayOrder: 9, children: [] },
+      { id: 39, code: '441800', name: '清远市', level: 'city', parentCode: '440000', displayOrder: 10, children: [] },
+      { id: 40, code: '441900', name: '东莞市', level: 'city', parentCode: '440000', displayOrder: 11, children: [] },
+      { id: 41, code: '442000', name: '中山市', level: 'city', parentCode: '440000', displayOrder: 12, children: [] },
+      { id: 42, code: '442100', name: '潮州市', level: 'city', parentCode: '440000', displayOrder: 13, children: [] },
+      { id: 43, code: '445100', name: '揭阳市', level: 'city', parentCode: '440000', displayOrder: 14, children: [] },
+      { id: 44, code: '445200', name: '云浮市', level: 'city', parentCode: '440000', displayOrder: 15, children: [] },
+      { id: 45, code: '440900', name: '茂名市', level: 'city', parentCode: '440000', displayOrder: 16, children: [] },
+      { id: 46, code: '441200', name: '肇庆市', level: 'city', parentCode: '440000', displayOrder: 17, children: [] },
+      { id: 47, code: '441100', name: '韶关市', level: 'city', parentCode: '440000', displayOrder: 18, children: [] },
+      { id: 48, code: '440800', name: '湛江市', level: 'city', parentCode: '440000', displayOrder: 19, children: [] },
+      { id: 49, code: '440500', name: '汕头市', level: 'city', parentCode: '440000', displayOrder: 20, children: [] }
     ]
   }
 ]

@@ -317,9 +317,7 @@ const loginLogSql = `CREATE TABLE "public"."sys_login_log" (
   "os" varchar(255) COLLATE "pg_catalog"."default",
   "operation_type" int4,
   "create_time" timestamp(6),
-  "deleted" int2 DEFAULT 0,
-  "signature" varchar(512) COLLATE "pg_catalog"."default",
-  "signature_version" int2 DEFAULT 1,
+
   CONSTRAINT "sys_login_log_pkey" PRIMARY KEY ("log_id")
 );
 
@@ -342,9 +340,7 @@ COMMENT ON COLUMN "public"."sys_login_log"."browser" IS '浏览器信息';
 COMMENT ON COLUMN "public"."sys_login_log"."os" IS '操作系统';
 COMMENT ON COLUMN "public"."sys_login_log"."operation_type" IS '操作类型（1-登录，2-登出）';
 COMMENT ON COLUMN "public"."sys_login_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_login_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_login_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_login_log"."signature_version" IS '数据签名版本号';
+
 
 COMMENT ON TABLE "public"."sys_login_log" IS '系统登录日志表';`
 

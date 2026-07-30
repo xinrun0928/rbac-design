@@ -155,17 +155,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="creater" label="创建人" width="110" align="center">
-          <template #default="{ row }">
-            <div class="creator-cell">
-              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creater) }">
-                {{ row.creater.charAt(0).toUpperCase() }}
-              </el-avatar>
-              <span>{{ row.creater }}</span>
-            </div>
-          </template>
-        </el-table-column>
-
         <el-table-column prop="createTime" label="创建时间" width="170" align="center">
           <template #default="{ row }">
             <el-tooltip :content="row.createTime" placement="top">

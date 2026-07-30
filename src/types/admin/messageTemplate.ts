@@ -7,21 +7,19 @@ export interface MessageTemplate {
   /** 消息ID */
   msgId: string
   /** 模板名称 */
-  name: string | null
+  name?: string | null
   /** 模板内容 */
   template: string
   /** 消息内容 */
   content: string
   /** 扩展信息（JSON） */
-  extJson: string | null
+  extJson?: string | null
   /** 审批信息（JSON） */
-  approvalJson: string | null
+  approvalJson?: string | null
   /** 状态: 1-正常, 0-停用 */
   status: number
   /** 创建时间 */
   createTime: string
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
 }
 
 /** 扩展信息解析后的数据结构 */

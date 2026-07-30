@@ -15,9 +15,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 27,
     createTime: '2026-07-19 14:57:29',
-    updateTime: '2026-07-19 14:57:29',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077674717019508736,
@@ -33,9 +30,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 14,
     createTime: '2026-07-16 16:40:28',
-    updateTime: '2026-07-16 16:40:28',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077674717673820160,
@@ -51,9 +45,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 13,
     createTime: '2026-07-16 16:40:28',
-    updateTime: '2026-07-16 16:40:28',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077678003340578816,
@@ -69,9 +60,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 43,
     createTime: '2026-07-16 16:53:32',
-    updateTime: '2026-07-16 16:53:32',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077678004246548480,
@@ -87,9 +75,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 16,
     createTime: '2026-07-16 16:53:32',
-    updateTime: '2026-07-16 16:53:32',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077863945825292288,
@@ -105,9 +90,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 55,
     createTime: '2026-07-17 05:12:24',
-    updateTime: '2026-07-17 05:12:24',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077863948606115840,
@@ -123,9 +105,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 11,
     createTime: '2026-07-17 05:12:24',
-    updateTime: '2026-07-17 05:12:24',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077864065803358208,
@@ -141,9 +120,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 15,
     createTime: '2026-07-17 05:12:52',
-    updateTime: '2026-07-17 05:12:52',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077864068491907072,
@@ -159,9 +135,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 12,
     createTime: '2026-07-17 05:12:53',
-    updateTime: '2026-07-17 05:12:53',
-    deleted: 0,
-    signatureVersion: 0
   },
   {
     id: 2077866174137372672,
@@ -177,9 +150,6 @@ export const mqConsumeLogData: MqConsumeLog[] = [
     businessResult: 'SUCCESS',
     processTime: 33,
     createTime: '2026-07-17 05:21:15',
-    updateTime: '2026-07-17 05:21:15',
-    deleted: 0,
-    signatureVersion: 0
   }
 ]
 

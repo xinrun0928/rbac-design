@@ -67,7 +67,7 @@ export const MEAL_TYPE_MAP: Record<number, { label: string; color: string }> = {
 }
 
 /** 状态映射 */
-export const STATUS_MAP: Record<number, { label: string; color: string }> = {
+export const MEAL_STATUS_MAP: Record<number, { label: string; color: string }> = {
   1101: { label: '正常', color: '#67C23A' },
   1001: { label: '停用', color: '#909399' }
 }

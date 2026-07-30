@@ -11,8 +11,6 @@ export interface Holiday {
   remark: string
   /** 创建时间 */
   createTime: string
-  /** 删除标记 0=未删除 1=已删除 */
-  deleted: number
 }
 
 /** 节假日表单 */

@@ -9,15 +9,9 @@ export interface Area {
   /** 区域级别: province-省, city-市, district-区/县 */
   level: string
   /** 父级区域编码（顶级区域为null） */
-  parentCode: string | null
+  parentCode?: string | null
   /** 显示排序 */
   displayOrder: number
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
-  /** 签名 */
-  signature: string | null
-  /** 签名版本 */
-  signatureVersion: number
   /** 子区域列表 */
   children?: Area[]
 }

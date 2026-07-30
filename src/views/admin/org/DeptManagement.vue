@@ -58,12 +58,11 @@
               </el-tooltip>
             </div>
           </div>
-          <el-button
-            :icon="DArrowRight"
-            link
-            @click="treeCollapsed = false"
-            class="collapse-btn expanded-btn"
-          />
+        </div>
+        <div v-if="treeCollapsed" class="collapsed-expand-bar">
+          <el-tooltip content="展开" placement="right">
+            <el-button :icon="DArrowRight" link @click="treeCollapsed = false" class="expand-btn" />
+          </el-tooltip>
         </div>
       </div>
 
@@ -660,7 +659,19 @@ onMounted(() => {
           }
         }
 
-        .expanded-btn { color: #909399; }
+      }
+    }
+
+    .collapsed-expand-bar {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 12px;
+      width: 100%;
+
+      .expand-btn {
+        color: #909399;
+        font-size: 18px;
       }
     }
 

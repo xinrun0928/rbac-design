@@ -77,7 +77,8 @@
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
-            :data="roleList"
+            :data="filteredRoleData"
+            height="100%"
             border
             stripe
             highlight-current-row
@@ -152,7 +153,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="250" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditRole(row)">编辑</el-button>
                 <el-button type="primary" link :icon="Setting" @click="handleConfigMenu(row)">配置菜单</el-button>
@@ -185,6 +186,19 @@
               </div>
             </template>
           </el-table>
+          </div>
+
+          <div class="pagination-wrapper">
+            <el-pagination
+              v-model:current-page="pagination.page"
+              v-model:page-size="pagination.pageSize"
+              :total="pagination.total"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
+              background
+              @size-change="handleSizeChange"
+              @current-change="handlePageChange"
+            />
           </div>
         </el-card>
       </div>
@@ -427,6 +441,28 @@ const roleFormData = reactive({
   roleLevel: 100,
   status: 1101
 })
+
+// 分页
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0
+})
+
+const filteredRoleData = computed(() => {
+  pagination.total = roleList.value.length
+  const start = (pagination.page - 1) * pagination.pageSize
+  return roleList.value.slice(start, start + pagination.pageSize)
+})
+
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
+
+function handlePageChange(page: number) {
+  pagination.page = page
+}
 
 // ── 树节点筛选 ──
 watch(treeFilter, (val) => {
@@ -976,6 +1012,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
   }
 
   .current-node-bar {
@@ -1050,6 +1087,7 @@ onMounted(() => {
     border-radius: 12px;
     border: none;
     flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1064,7 +1102,7 @@ onMounted(() => {
 
     .table-wrapper {
       flex: 1;
-      overflow: auto;
+      overflow: hidden;
     }
 
     :deep(.el-table) {
@@ -1091,6 +1129,15 @@ onMounted(() => {
       padding: 48px 0;
       .empty-title { font-size: 16px; color: #606266; margin: 16px 0 8px; }
       .empty-desc { font-size: 13px; color: #909399; }
+    }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #EBEEF5;
+      flex-shrink: 0;
     }
   }
 

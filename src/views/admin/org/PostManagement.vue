@@ -53,53 +53,56 @@
           <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
         </div>
 
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+          <el-form :model="postSearchForm" inline class="search-form">
+            <el-form-item label="岗位名称">
+              <el-input
+                v-model="postSearchForm.name"
+                placeholder="输入岗位名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px"
+                @keyup.enter="handlePostSearch"
+              />
+            </el-form-item>
+            <el-form-item label="岗位编号">
+              <el-input
+                v-model="postSearchForm.code"
+                placeholder="输入岗位编号"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px"
+                @keyup.enter="handlePostSearch"
+              />
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 180px">
+                <el-option label="启用" :value="1" />
+                <el-option label="禁用" :value="0" />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div class="search-actions">
+            <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
+          </div>
+        </div>
+
         <!-- 数据表格 -->
         <el-card class="table-card" shadow="never">
-          <!-- 搜索栏 -->
-          <div class="search-bar">
-            <el-form :model="postSearchForm" inline class="search-form">
-              <el-form-item label="岗位名称">
-                <el-input
-                  v-model="postSearchForm.name"
-                  placeholder="输入岗位名称"
-                  clearable
-                  :prefix-icon="Search"
-                  style="width: 180px"
-                  @keyup.enter="handlePostSearch"
-                />
-              </el-form-item>
-              <el-form-item label="岗位编号">
-                <el-input
-                  v-model="postSearchForm.code"
-                  placeholder="输入岗位编号"
-                  clearable
-                  :prefix-icon="Search"
-                  style="width: 180px"
-                  @keyup.enter="handlePostSearch"
-                />
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 180px">
-                  <el-option label="启用" :value="1" />
-                  <el-option label="禁用" :value="0" />
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div class="search-actions">
-              <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
-            </div>
-          </div>
+          <div class="table-wrapper">
           <el-table
             v-loading="loading"
             :data="filteredPostData"
+            height="100%"
             border
             stripe
             highlight-current-row
             row-key="id"
             :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
-            empty-text=" "
-          >
-            <el-table-column label="序号" width="60" align="center" type="index">
+          empty-text=" "
+        >
+          <el-table-column label="序号" width="60" align="center" type="index">
               <template #default="{ $index }">
                 <span class="index-text">{{ $index + 1 }}</span>
               </template>
@@ -137,7 +140,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="250" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditPost(row)">编辑</el-button>
                 <el-button type="danger" link :icon="Delete" @click="handleDeletePost(row)">删除</el-button>
@@ -161,15 +164,18 @@
               </div>
             </template>
           </el-table>
+          </div>
 
           <!-- 分页 -->
-          <div v-if="showPagination" class="pagination-wrapper">
+          <div class="pagination-wrapper">
             <el-pagination
               v-model:current-page="pagination.page"
-              :page-size="pagination.pageSize"
-              :total="allFilteredData.length"
-              layout="total, prev, pager, next"
+              v-model:page-size="pagination.pageSize"
+              :total="pagination.total"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
               background
+              @size-change="handleSizeChange"
               @current-change="handlePageChange"
             />
           </div>
@@ -287,7 +293,8 @@ const postFormData = reactive({
 // 分页
 const pagination = reactive({
   page: 1,
-  pageSize: 20
+  pageSize: 20,
+  total: 0
 })
 
 // ── 树节点筛选 ──
@@ -297,7 +304,7 @@ watch(treeFilter, (val) => {
 
 // ── 计算属性 ──
 const allFilteredData = computed(() => {
-  return postData.value.filter(p => {
+  const data = postData.value.filter(p => {
     // 按当前选中组织过滤
     if (currentNode.value && p.orgId !== currentNode.value.id) return false
     // 按搜索条件过滤
@@ -306,6 +313,8 @@ const allFilteredData = computed(() => {
     if (postSearchForm.status !== '' && p.status !== postSearchForm.status) return false
     return true
   })
+  pagination.total = data.length
+  return data
 })
 
 const filteredPostData = computed(() => {
@@ -313,7 +322,10 @@ const filteredPostData = computed(() => {
   return allFilteredData.value.slice(start, start + pagination.pageSize)
 })
 
-const showPagination = computed(() => allFilteredData.value.length > pagination.pageSize)
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
 
 function handlePageChange(page: number) {
   pagination.page = page
@@ -360,7 +372,7 @@ function handleNodeClick(data: OrgTreeNode) {
 }
 
 function handlePostSearch() {
-  // 搜索通过 computed 属性自动处理
+  pagination.page = 1
 }
 
 function handlePostReset() {
@@ -481,7 +493,6 @@ onMounted(() => {
   .main-content {
     display: flex;
     gap: 16px;
-    align-items: flex-start;
     flex: 1;
     overflow: hidden;
   }
@@ -495,6 +506,8 @@ onMounted(() => {
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     transition: width 0.3s ease;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     &.collapsed { width: 48px; }
 
@@ -514,6 +527,10 @@ onMounted(() => {
 
     .tree-body {
       padding: 12px;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .tree-search {
@@ -521,7 +538,7 @@ onMounted(() => {
     }
 
     .org-tree {
-      max-height: calc(100vh - 320px);
+      flex: 1;
       overflow-y: auto;
 
       :deep(.el-tree-node__content) {
@@ -555,6 +572,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
   }
 
   .current-node-bar {
@@ -577,8 +595,7 @@ onMounted(() => {
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #ebeef5;
+    flex-shrink: 0;
   }
 
   .search-form {
@@ -597,6 +614,7 @@ onMounted(() => {
     border-radius: 12px;
     border: none;
     flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -609,10 +627,13 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    :deep(.el-table) {
+    .table-wrapper {
       flex: 1;
-      border-radius: 8px;
       overflow: hidden;
+    }
+
+    :deep(.el-table) {
+      border-radius: 8px;
     }
 
     .index-text { color: #909399; font-size: 13px; }

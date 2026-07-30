@@ -47,11 +47,15 @@
         </template>
         <div v-else class="collapsed-body">
           <div class="collapsed-list">
-            <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" :title="item.name">
-              <el-tag :type="getLevelTagType(item.level)" size="small" class="level-badge" effect="dark">{{ item.level }}</el-tag>
-              <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
-                <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
-              </div>
+            <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item">
+              <el-tooltip :content="item.name" placement="right">
+                <div class="collapsed-icon-wrapper">
+                  <el-tag :type="getLevelTagType(item.level)" size="small" class="level-badge" effect="dark">{{ item.level }}</el-tag>
+                  <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
+                    <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
+                  </div>
+                </div>
+              </el-tooltip>
             </div>
           </div>
           <el-button
@@ -598,12 +602,13 @@ onMounted(() => {
 
         .collapsed-list {
           flex: 1;
+          min-height: 0;
           overflow-y: auto;
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
+          gap: 16px;
 
           &::-webkit-scrollbar {
             width: 0;
@@ -615,10 +620,17 @@ onMounted(() => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 2px;
+        }
+
+        .collapsed-icon-wrapper {
+          position: relative;
         }
 
         .level-badge {
+          position: absolute;
+          top: -7px;
+          right: -7px;
+          z-index: 1;
           font-size: 9px;
           padding: 0 4px;
           height: 16px;

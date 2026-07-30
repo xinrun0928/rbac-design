@@ -295,7 +295,7 @@
             <span>异常明细</span>
           </div>
           <el-table
-            :data="importErrorData"
+            :data="importInvalidData"
             border
             size="small"
             max-height="200"

@@ -814,7 +814,7 @@ const initMapChart = () => {
     ],
     animation: true,
     animationDuration: 2000,
-    animationEasing: 'cubicOut'
+    animationEasing: 'cubicOut' as const
   }
 
   mapChart.setOption(option)

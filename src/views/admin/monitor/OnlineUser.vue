@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Search, Delete } from '@element-plus/icons-vue'
 import { onlineUserData } from '@/mock/admin/monitorData'
 import type { OnlineUser, OnlineUserSearchForm } from '@/types/admin/monitor'
 

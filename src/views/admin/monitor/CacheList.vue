@@ -68,7 +68,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Search, Delete } from '@element-plus/icons-vue'
 import { cacheNameListData } from '@/mock/admin/monitorData'
 import type { CacheNameInfo } from '@/types/admin/monitor'
 

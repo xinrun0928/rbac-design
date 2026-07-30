@@ -335,7 +335,7 @@ function truncateContent(content: string): string {
 }
 
 // ── 解析发送状态 ──
-function parseSendStatus(replyText: string): { success: boolean; message: string } {
+function parseSendStatus(replyText: string | undefined): { success: boolean; message: string } {
   if (!replyText) return { success: false, message: '未知' }
   try {
     const reply = JSON.parse(replyText)
@@ -356,7 +356,7 @@ function parseSendStatus(replyText: string): { success: boolean; message: string
 }
 
 // ── JSON 格式化 ──
-function formatJson(str: string): string {
+function formatJson(str: string | undefined): string {
   if (!str) return '-'
   try {
     const obj = JSON.parse(str)
@@ -367,9 +367,9 @@ function formatJson(str: string): string {
 }
 
 // ── 复制JSON ──
-async function handleCopyJson(content: string) {
+async function handleCopyJson(content: string | undefined) {
   try {
-    await navigator.clipboard.writeText(content)
+    await navigator.clipboard.writeText(content ?? '')
     ElMessage.success('已复制到剪贴板')
   } catch {
     ElMessage.warning('复制失败，请手动复制')

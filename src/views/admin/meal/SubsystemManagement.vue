@@ -651,7 +651,7 @@ function handleEdit(row: Subsystem) {
   editFormData.displayOrder = row.displayOrder
   editFormData.isHidden = row.isHidden
   editFormData.status = row.status
-  editFormData.remark = row.remark
+  editFormData.remark = row.remark ?? ''
   editFormData.icon = row.icon || ''
   editFormData.color = row.color || ''
   drawerVisible.value = true

@@ -151,7 +151,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Search, Delete } from '@element-plus/icons-vue'
 import { cacheListData } from '@/mock/admin/monitorData'
 import type { CacheEntry, CacheMapDetail } from '@/types/admin/monitor'
 import { formatTtl } from '@/utils/format'

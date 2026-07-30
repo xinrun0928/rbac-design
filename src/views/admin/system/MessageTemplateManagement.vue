@@ -281,7 +281,7 @@ function handleDelete(row: MessageTemplate) {
   }).catch(() => {})
 }
 
-function parseApprovalJson(json: string | null): ApprovalJsonInfo | null {
+function parseApprovalJson(json: string | null | undefined): ApprovalJsonInfo | null {
   if (!json) return null
   try {
     return JSON.parse(json)

@@ -708,7 +708,7 @@ function handleEdit(row: Menu) {
   formData.component = row.component
   formData.displayOrder = row.displayOrder
   formData.status = row.status
-  formData.remark = row.remark
+  formData.remark = row.remark ?? ''
   formData.ext = row.ext
   formData.hidden = row.hidden
   drawerVisible.value = true

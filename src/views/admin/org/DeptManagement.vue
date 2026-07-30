@@ -38,12 +38,12 @@
           </div>
         </template>
         <div v-else class="collapsed-body">
-          <el-tooltip :content="currentNode?.name || '组织架构'" placement="right">
-            <div class="collapsed-icon" :style="{ background: getNodeTypeColor(currentNode?.nodeType || 'dept') }">
+          <el-tooltip :content="orgTreeData[0]?.name || '组织架构'" placement="right">
+            <div class="collapsed-icon" :style="{ background: getNodeTypeColor(orgTreeData[0]?.nodeType || 'root') }">
               <el-icon color="#fff" class="collapsed-node-icon">
-                <component :is="getNodeTypeIcon(currentNode?.nodeType || 'dept')" />
+                <component :is="getNodeTypeIcon(orgTreeData[0]?.nodeType || 'root')" />
               </el-icon>
-              <span class="collapsed-char">{{ currentNode?.name?.charAt(0) || '组' }}</span>
+              <span class="collapsed-char">{{ orgTreeData[0]?.name?.charAt(0) || '组' }}</span>
             </div>
           </el-tooltip>
           <el-button

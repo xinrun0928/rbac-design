@@ -187,7 +187,6 @@ defineExpose({
 
   &.collapsed {
     width: 72px;
-    align-items: center;
 
     .collapsed-body {
       display: flex;
@@ -196,12 +195,12 @@ defineExpose({
       padding: 12px 0;
       gap: 4px;
       flex: 1;
+      width: 100%;
 
       .collapsed-expand-bar {
         flex-shrink: 0;
         display: flex;
         justify-content: center;
-        width: 100%;
         padding-bottom: 8px;
         border-bottom: 1px solid #EBEEF5;
 
@@ -215,7 +214,7 @@ defineExpose({
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        width: 100%;
+        overflow-x: visible;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -238,8 +237,7 @@ defineExpose({
         }
 
         &.active .collapsed-icon-wrapper {
-          outline: 2px solid #409EFF;
-          outline-offset: 2px;
+          box-shadow: 0 0 0 2px #409EFF;
           border-radius: 10px;
         }
       }
@@ -270,8 +268,8 @@ defineExpose({
 
       .collapsed-level {
         position: absolute;
-        top: -5px;
-        right: -5px;
+        top: -4px;
+        right: -4px;
         font-size: 9px;
         color: #fff;
         font-weight: 600;
@@ -283,6 +281,7 @@ defineExpose({
         height: 16px;
         line-height: 16px;
         z-index: 1;
+        pointer-events: none;
       }
     }
   }

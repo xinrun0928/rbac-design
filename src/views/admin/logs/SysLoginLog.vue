@@ -4,51 +4,45 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline>
-          <el-form-item label="用户名">
-            <el-input
-              v-model="searchForm.userName"
-              placeholder="请输入用户名"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="客户端">
-            <el-select
-              v-model="searchForm.clientId"
-              placeholder="请选择"
-              clearable
-              style="width: 180px"
-            >
-              <el-option label="flood-inspection" value="flood-inspection" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="授权类型">
-            <el-select
-              v-model="searchForm.grantType"
-              placeholder="请选择"
-              clearable
-              style="width: 180px"
-            >
-              <el-option label="password" value="password" />
-              <el-option label="refresh_token" value="refresh_token" />
-              <el-option label="mobile" value="mobile" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="登录时间">
-            <el-date-picker
-              v-model="searchForm.createTime"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="YYYY-MM-DD"
-              style="width: 260px"
-            />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">登录日志</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.userName"
+            placeholder="搜索用户名"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select
+            v-model="searchForm.clientId"
+            placeholder="客户端"
+            clearable
+            style="width: 180px; margin-right: 12px"
+          >
+            <el-option label="flood-inspection" value="flood-inspection" />
+          </el-select>
+          <el-select
+            v-model="searchForm.grantType"
+            placeholder="授权类型"
+            clearable
+            style="width: 180px; margin-right: 12px"
+          >
+            <el-option label="password" value="password" />
+            <el-option label="refresh_token" value="refresh_token" />
+            <el-option label="mobile" value="mobile" />
+          </el-select>
+          <el-date-picker
+            v-model="searchForm.createTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+            style="width: 260px"
+          />
+        </div>
       </div>
 
       <el-table
@@ -63,19 +57,19 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="puserId" label="用户ID" width="160">
+        <el-table-column prop="puserId" label="用户ID" width="180" align="center">
           <template #default="{ row }">
             <span class="id-text">{{ row.puserId || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="orgId" label="组织ID" width="160">
+        <el-table-column prop="orgId" label="组织ID" width="180" align="center">
           <template #default="{ row }">
             <span class="id-text">{{ row.orgId || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="userName" label="用户名" min-width="200">
+        <el-table-column prop="userName" label="用户名" min-width="200" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <el-tooltip v-if="row.userName" :content="'点击复制'" placement="top" :show-after="300">
               <span class="user-text copyable" @click="handleCopyText(row.userName)">{{ row.userName }}</span>
@@ -84,7 +78,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="clientId" label="客户端" width="150">
+        <el-table-column prop="clientId" label="客户端" width="150" align="center">
           <template #default="{ row }">
             <el-tag type="info" effect="plain" round>{{ row.clientId }}</el-tag>
           </template>
@@ -116,13 +110,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="ip" label="IP地址" width="130">
+        <el-table-column prop="ip" label="IP地址" width="130" align="center">
           <template #default="{ row }">
             <span class="ip-text">{{ row.ip }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="browser" label="浏览器" width="120">
+        <el-table-column prop="browser" label="浏览器" width="120" align="center">
           <template #default="{ row }">
             <span class="browser-text">{{ row.browser }}</span>
           </template>
@@ -134,7 +128,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="90" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">
               详情
@@ -482,13 +476,25 @@ onMounted(() => {
 
   // 搜索栏
   .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
+  }
 
-    .el-form-item {
-      margin-bottom: 0;
-    }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   // 表格卡片

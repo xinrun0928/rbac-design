@@ -36,8 +36,6 @@ export interface MqConsumeLogSearchForm {
   queueName: string
   /** 路由键 */
   routingKey: string
-  /** 消费状态 */
-  status: number | ''
   /** 开始时间 */
   startTime: string
   /** 结束时间 */

@@ -4,32 +4,22 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="队列名称">
-            <el-select v-model="searchForm.queueName" placeholder="请选择队列" clearable style="width: 180px">
-              <el-option v-for="item in queueNameOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="路由键">
-            <el-input v-model="searchForm.routingKey" placeholder="输入路由键" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
-              <el-option v-for="item in mqStatusOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="时间范围">
-            <el-date-picker
-              v-model="dateRange"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="YYYY-MM-DD"
-              style="width: 260px"
-            />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">MQ消费日志</span>
+        <div class="search-bar-actions">
+          <el-select v-model="searchForm.queueName" placeholder="队列名称" clearable style="width: 180px; margin-right: 12px">
+            <el-option v-for="item in queueNameOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          <el-input v-model="searchForm.routingKey" placeholder="搜索路由键" clearable :prefix-icon="Search" style="width: 180px; margin-right: 12px" @keyup.enter="handleSearch" @clear="handleSearch" />
+          <el-date-picker
+            v-model="dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+            style="width: 260px"
+          />
+        </div>
       </div>
       <el-table
         v-loading="loading"
@@ -47,13 +37,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="queueName" label="队列名称" min-width="200" show-overflow-tooltip>
+        <el-table-column prop="queueName" label="队列名称" min-width="250" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="queue-text">{{ row.queueName }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="routingKey" label="路由键" min-width="160" show-overflow-tooltip>
+        <el-table-column prop="routingKey" label="路由键" min-width="200" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="routing-key-text">{{ row.routingKey }}</span>
           </template>
@@ -71,7 +61,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="operation" label="操作类型" width="120" align="center">
+        <el-table-column prop="operation" label="操作类型" width="140" align="center">
           <template #default="{ row }">
             <span class="operation-text">{{ row.operation }}</span>
           </template>
@@ -115,7 +105,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="100" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">详情</el-button>
           </template>
@@ -221,7 +211,6 @@ const dateRange = ref<string[] | null>(null)
 const searchForm = reactive<MqConsumeLogSearchForm>({
   queueName: '',
   routingKey: '',
-  status: '',
   startTime: '',
   endTime: ''
 })
@@ -241,9 +230,6 @@ const filteredData = computed(() => {
   }
   if (searchForm.routingKey) {
     data = data.filter(item => item.routingKey.includes(searchForm.routingKey))
-  }
-  if (searchForm.status !== '') {
-    data = data.filter(item => item.status === searchForm.status)
   }
   if (dateRange.value && dateRange.value.length === 2) {
     const [start, end] = dateRange.value
@@ -266,7 +252,6 @@ function handleSearch() {
 function handleReset() {
   searchForm.queueName = ''
   searchForm.routingKey = ''
-  searchForm.status = ''
   dateRange.value = null
   pagination.page = 1
 }
@@ -353,13 +338,25 @@ async function handleCopyPayload() {
     }
 
     .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebeef5;
     }
 
-    .search-form {
-      .el-form-item { margin-bottom: 0; margin-right: 12px; }
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .index-text { color: #909399; font-size: 13px; }

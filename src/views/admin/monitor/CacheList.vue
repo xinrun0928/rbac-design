@@ -3,11 +3,18 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="缓存名称">
-            <el-input v-model="searchForm.cacheName" placeholder="输入缓存名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">缓存列表管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.cacheName"
+            placeholder="搜索缓存名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+        </div>
       </div>
 
       <el-table
@@ -159,13 +166,25 @@ function handleDelete(row: CacheNameInfo) {
     }
 
     .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebeef5;
     }
 
-    .search-form {
-      .el-form-item { margin-bottom: 0; margin-right: 12px; }
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .index-text { color: #909399; font-size: 13px; }

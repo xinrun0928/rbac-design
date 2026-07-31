@@ -1,7 +1,7 @@
 <template>
   <div class="equipment-set-management">
     <el-card class="table-card animate-item" shadow="never">
-      <!-- 统计卡片 -->
+      <!-- 顶部筛选卡片 -->
       <div class="stats-row">
         <div
           v-for="item in statsCards"
@@ -22,20 +22,17 @@
 
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="套组名称">
-            <el-input
-              v-model="searchForm.setName"
-              placeholder="搜索套组名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 220px"
-              @keyup.enter="handleSearch"
-              @clear="handleSearch"
-            />
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">装备套组管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.setName"
+            placeholder="搜索套组名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
           <el-button type="primary" :icon="Plus" @click="handleCreate">新建套组</el-button>
           <el-button type="success" :icon="Download" @click="handleExport">导出</el-button>
         </div>
@@ -212,7 +209,7 @@ const pagination = reactive({
   total: 0
 })
 
-// ── 统计数据 ──
+// ── 顶部筛选统计卡片 ──
 const statsCards = computed(() => [
   { key: 'all', label: '全部套组', value: tableData.value.length, icon: Box, color: '#409EFF', bgColor: '#ecf5ff' },
   { key: 'enabled', label: '启用', value: tableData.value.filter(d => d.status === 1).length, icon: CircleCheck, color: '#67C23A', bgColor: '#f0f9eb' },
@@ -425,7 +422,7 @@ function handleExport() {
 
 <style lang="scss" scoped>
 .equipment-set-management {
-  padding: 0;
+  padding: 16px;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100%;
   display: flex;
@@ -454,7 +451,7 @@ function handleExport() {
       overflow: hidden;
     }
 
-    // ── 统计卡片 ──
+    // ── 顶部筛选卡片 ──
     .stats-row {
       display: flex;
       justify-content: center;
@@ -517,24 +514,20 @@ function handleExport() {
     // ── 搜索栏 ──
     .search-bar {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebeef5;
     }
 
-    .search-form {
-      flex: 1;
-
-      .el-form-item {
-        margin-bottom: 0;
-        margin-right: 12px;
-      }
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
     }
 
-    .search-actions {
+    .search-bar-actions {
       display: flex;
       align-items: center;
       flex-shrink: 0;

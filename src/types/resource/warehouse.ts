@@ -537,3 +537,84 @@ export interface FaultWarningRecord {
   handleRemark: string
   attachments: string[]
 }
+
+// ── 装备操作考核任务 ──
+
+/** 任务状态 */
+export type TaskStatus = '已完成' | '进行中' | '未开始'
+
+/** 是否合格 */
+export type QualifiedStatus = '合格' | '不合格'
+
+/** 考核任务记录 */
+export interface ExamTaskRecord {
+  id: string
+  taskName: string
+  taskStatus: TaskStatus
+  startDate: string
+  endDate: string
+  score: number
+  qualified: QualifiedStatus
+}
+
+// ── 维保记录 ──
+
+/** 维保状态 */
+export type MaintenanceTaskStatus = '待维保' | '已完成'
+
+/** 维保任务记录 */
+export interface MaintenanceTaskRecord {
+  id: string
+  status: MaintenanceTaskStatus
+  overdueDays?: number
+  taskName: string
+  executor: string
+  phone: string
+  cost: number | null
+  expectDate: string
+  actualDate: string
+}
+
+// ── 故障设备 ──
+
+/** 修复状态 */
+export type RepairStatus = '待处理' | '已修复' | '已报废' | '已退役'
+
+/** 故障设备记录 */
+export interface FaultDeviceRecord {
+  id: string
+  repairStatus: RepairStatus
+  deviceName: string
+  deviceCode: string
+  category: string
+  spec: string
+  attachment: string
+  faultDesc: string
+  reporter: string
+  phone: string
+  reportDate: string
+  repairDate: string
+}
+
+// ── 退役/报废审核 ──
+
+/** 退役报废类型 */
+export type RetireType = '退役' | '报废'
+
+/** 退役报废审核记录 */
+export interface RetireAuditRecord {
+  id: string
+  type: RetireType
+  auditStatus: AuditStatus
+  cost: number
+  deviceName: string
+  deviceCode: string
+  category: string
+  spec: string
+  attachment: string
+  desc: string
+  applicant: string
+  phone: string
+  applyDate: string
+  auditDate: string
+}

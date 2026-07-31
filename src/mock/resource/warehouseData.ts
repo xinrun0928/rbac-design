@@ -2,7 +2,8 @@ import type {
   InventorySummary, InventoryDetail, DeviceRecord, IoRecord,
   MaintenanceRecord, InsuranceRecord, MaterialDetailInfo, IoRecordSimple,
   ApplyRecord, CheckRecord, AuditRecord,
-  WarehouseRecord, SafetyWarningRecord, FaultWarningRecord
+  WarehouseRecord, SafetyWarningRecord, FaultWarningRecord,
+  ExamTaskRecord, MaintenanceTaskRecord, FaultDeviceRecord, RetireAuditRecord
 } from '@/types/resource/warehouse'
 
 /** 品类汇总 Mock 数据 */
@@ -399,4 +400,48 @@ export const faultWarningRecordData: FaultWarningRecord[] = [
   { id: 'FW001', materialName: '应急机械化桥', category: '应急处置装备/桥梁装备', warningType: '故障预警', faultCount: 12, deviceCode: 'YJQ-20240103832', useLife: '2023-09-11至2025-09-11', expireDuration: '3天', handleStatus: '待处理', warningDate: '2025-09-11', handleDate: '-', handler: '-', handleRemark: '-', attachments: [] },
   { id: 'FW002', materialName: '汽车起重机', category: '工程机械装备/起重装备', warningType: '报废预警', faultCount: 13, deviceCode: 'QZJ-20240102398', useLife: '2023-09-11至2025-09-11', expireDuration: '2个月', handleStatus: '报废出库', warningDate: '2025-09-11', handleDate: '2025-10-11', handler: '张三', handleRemark: '-', attachments: [] },
   { id: 'FW003', materialName: '固定翼无人机', category: '应急物资/人员防护物资', warningType: '故障预警', faultCount: 3, deviceCode: 'WRJ-20240103873', useLife: '2023-09-11至2025-09-11', expireDuration: '1年', handleStatus: '维保续期', warningDate: '2025-09-11', handleDate: '2025-10-11', handler: '张三', handleRemark: '维修后可继续使用', attachments: ['无人机维保单.pdf', '入库单.pdf'] }
+]
+
+// ── 装备操作考核任务 Mock 数据 ──
+
+export const examTaskRecordData: ExamTaskRecord[] = [
+  { id: 'ET001', taskName: '大疆 Mavic3 操作考核', taskStatus: '已完成', startDate: '2025-10-10', endDate: '2025-10-17', score: 100, qualified: '合格' },
+  { id: 'ET002', taskName: '对讲机操作考核', taskStatus: '进行中', startDate: '2025-10-12', endDate: '2025-10-19', score: 70, qualified: '合格' },
+  { id: 'ET003', taskName: '强光手电使用考核', taskStatus: '未开始', startDate: '2025-10-15', endDate: '2025-10-22', score: 0, qualified: '不合格' },
+  { id: 'ET004', taskName: '卫星电话操作考核', taskStatus: '进行中', startDate: '2025-10-18', endDate: '2025-10-25', score: 50, qualified: '不合格' },
+  { id: 'ET005', taskName: '旧款对讲机操作考核', taskStatus: '已完成', startDate: '2025-10-08', endDate: '2025-10-15', score: 100, qualified: '合格' },
+  { id: 'ET006', taskName: '应急装备综合考核', taskStatus: '未开始', startDate: '2025-10-20', endDate: '2025-10-27', score: 0, qualified: '不合格' }
+]
+
+// ── 维保记录 Mock 数据 ──
+
+export const maintenanceTaskRecordData: MaintenanceTaskRecord[] = [
+  { id: 'MT001', status: '待维保', overdueDays: 3, taskName: '搜救设备维保', executor: '张三', phone: '13598695485', cost: null, expectDate: '2025-09-11', actualDate: '-' },
+  { id: 'MT002', status: '待维保', taskName: '户外发电设备维保', executor: '李四', phone: '18856945265', cost: null, expectDate: '2025-09-11', actualDate: '-' },
+  { id: 'MT003', status: '已完成', taskName: '设备内存卡维保', executor: '王五', phone: '19065559238', cost: 100.00, expectDate: '2025-09-11', actualDate: '2025-10-11' },
+  { id: 'MT004', status: '已完成', taskName: '户外照明设备维保', executor: '张三', phone: '13598695485', cost: 160.00, expectDate: '2025-09-11', actualDate: '2025-10-11' },
+  { id: 'MT005', status: '已完成', taskName: '帐篷物资维保', executor: '张三', phone: '13598695485', cost: 0.00, expectDate: '2025-09-11', actualDate: '2025-10-11' },
+  { id: 'MT006', status: '已完成', taskName: '饮用水有效期维保', executor: '李四', phone: '18856945265', cost: 0.00, expectDate: '2025-09-11', actualDate: '2025-10-11' }
+]
+
+// ── 故障设备 Mock 数据 ──
+
+export const faultDeviceRecordData: FaultDeviceRecord[] = [
+  { id: 'FD001', repairStatus: '待处理', deviceName: '大疆mavic3pro', deviceCode: 'WRJ-20240103873', category: '应急处装备及配套物资/搜救设备', spec: '大疆mavic3pro套装', attachment: '', faultDesc: '云台异常，图传卡顿', reporter: '张三', phone: '13598695485', reportDate: '2025-09-11', repairDate: '2025-09-11' },
+  { id: 'FD002', repairStatus: '待处理', deviceName: '大疆户外电源', deviceCode: 'DY-20240103902', category: '应急处装备及配套物资/发电设备', spec: '220V3000瓦', attachment: '', faultDesc: '充电故障，输出异常', reporter: '李四', phone: '18856945265', reportDate: '2025-09-11', repairDate: '2025-09-11' },
+  { id: 'FD003', repairStatus: '已修复', deviceName: '大疆air3', deviceCode: 'WRJ-20220619128', category: '应急处装备及配套物资/搜救设备', spec: '大疆air3套装', attachment: '', faultDesc: '续航不足，机身异响', reporter: '王五', phone: '19065559238', reportDate: '2025-09-11', repairDate: '2025-09-11' },
+  { id: 'FD004', repairStatus: '已退役', deviceName: '探照灯', deviceCode: 'D-20220619293', category: '应急处装备及配套物资/照明设备', spec: '五档调节/流明500-1000lm/续航5-10h(含)', attachment: '', faultDesc: '亮度衰减，开关故障', reporter: '张三', phone: '13598695485', reportDate: '2025-09-11', repairDate: '2025-09-11' },
+  { id: 'FD005', repairStatus: '已报废', deviceName: '对讲机', deviceCode: 'PH-20220341', category: '应急处装备及配套物资/搜救设备', spec: '使用范围1-5公里/电池容量1000-2000mAh', attachment: '', faultDesc: '信号差，通话杂音', reporter: '张三', phone: '13598695485', reportDate: '2025-09-11', repairDate: '2025-09-11' },
+  { id: 'FD006', repairStatus: '已修复', deviceName: '对讲机', deviceCode: 'PH-202209851', category: '应急处装备及配套物资/搜救设备', spec: '使用范围1-5公里/电池容量1000-2000mAh', attachment: '', faultDesc: '按键故障，无法开机', reporter: '李四', phone: '18856945265', reportDate: '2025-09-11', repairDate: '2025-09-11' }
+]
+
+// ── 退役/报废审核 Mock 数据 ──
+
+export const retireAuditRecordData: RetireAuditRecord[] = [
+  { id: 'RA001', type: '退役', auditStatus: '待审核', cost: 1000, deviceName: '大疆mavic3pro', deviceCode: 'WRJ-20240103873', category: '应急处装备及配套物资/搜救设备', spec: '大疆mavic3pro套装', attachment: '', desc: '性能完好，设备更新退役', applicant: '张三', phone: '13598695485', applyDate: '2025-09-11', auditDate: '2025-09-11' },
+  { id: 'RA002', type: '报废', auditStatus: '待审核', cost: 200, deviceName: '大疆户外电源', deviceCode: 'DY-20240103902', category: '应急处装备及配套物资/发电设备', spec: '220V3000瓦', attachment: '', desc: '电池故障，无法修复报废', applicant: '李四', phone: '18856945265', applyDate: '2025-09-11', auditDate: '2025-09-11' },
+  { id: 'RA003', type: '退役', auditStatus: '已通过', cost: 923, deviceName: '大疆air3', deviceCode: 'WRJ-20220619128', category: '应急处装备及配套物资/搜救设备', spec: '大疆air3套装', attachment: '', desc: '功能正常，换型退役', applicant: '王五', phone: '19065559238', applyDate: '2025-09-11', auditDate: '2025-09-11' },
+  { id: 'RA004', type: '退役', auditStatus: '未通过', cost: 50, deviceName: '探照灯', deviceCode: 'D-20220619293', category: '应急处装备及配套物资/照明设备', spec: '五档调节/流明500-1000lm/续航5-10h(含)', attachment: '', desc: '完好可用，换型退役', applicant: '张三', phone: '13598695485', applyDate: '2025-09-11', auditDate: '2025-09-11' },
+  { id: 'RA005', type: '报废', auditStatus: '已通过', cost: 60, deviceName: '对讲机', deviceCode: 'PH-20220341', category: '应急处装备及配套物资/搜救设备', spec: '使用范围1-5公里/电池容量1000-2000mAh', attachment: '', desc: '信号模块损坏，报废', applicant: '张三', phone: '13598695485', applyDate: '2025-09-11', auditDate: '2025-09-11' },
+  { id: 'RA006', type: '报废', auditStatus: '已通过', cost: 60, deviceName: '对讲机', deviceCode: 'PH-202209851', category: '应急处装备及配套物资/搜救设备', spec: '使用范围1-5公里/电池容量1000-2000mAh', attachment: '', desc: '按键失灵，无维修价值报废', applicant: '李四', phone: '18856945265', applyDate: '2025-09-11', auditDate: '2025-09-11' }
 ]

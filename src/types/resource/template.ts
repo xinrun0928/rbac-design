@@ -18,12 +18,22 @@ export interface QuestionOptionItem {
 
 /** 考核题目 */
 export interface ExamQuestionItem {
+  /** 题型（选择题/判断题） */
+  type: string
   /** 题目内容 */
   content: string
   /** 从题库选中的临时值（仅表单使用） */
   bankValue?: string
   /** 题目选项 */
   options: QuestionOptionItem[]
+}
+
+/** 题型分布配置项 */
+export interface QuestionTypeConfigItem {
+  /** 题型（选择题/判断题） */
+  type: string
+  /** 每题分值 */
+  score: number
 }
 
 /** 题库题目 */
@@ -78,6 +88,8 @@ export interface ExamTemplateSearchForm {
 export interface ExamTemplateForm {
   /** 考核模板名称 */
   templateName: string
+  /** 考核模板编号（系统自动生成，只读） */
+  templateCode: string
   /** 适用类型: 1-按种类选择 2-按现有库存装备 */
   applyType: number
   /** 考核时长（分钟） */
@@ -86,6 +98,8 @@ export interface ExamTemplateForm {
   status: number
   /** 备注 */
   remark: string
+  /** 题型分布配置（每题分值，题量按题目自动统计） */
+  questionTypeConfigs: QuestionTypeConfigItem[]
   /** 考核题目 */
   questions: ExamQuestionItem[]
   /** 按种类选择时选中的装备种类ID（applyType=1 时使用） */

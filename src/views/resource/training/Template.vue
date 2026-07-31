@@ -176,6 +176,10 @@
               />
             </el-form-item>
 
+            <el-form-item label="模板编号" prop="templateCode">
+              <el-input v-model="formData.templateCode" placeholder="系统自动生成" disabled class="form-input" />
+            </el-form-item>
+
             <el-form-item label="适用类型" prop="applyType">
               <el-radio-group v-model="formData.applyType">
                 <el-radio :value="1">按种类选择</el-radio>
@@ -235,6 +239,24 @@
                 class="form-input"
               />
             </el-form-item>
+
+            <el-form-item label="题型分布" prop="questionTypeConfigs">
+              <div class="type-config">
+                <div v-for="cfg in formData.questionTypeConfigs" :key="cfg.type" class="type-config-row">
+                  <span class="type-name">{{ cfg.type }}</span>
+                  <span class="type-count">{{ getQuestionCountByType(cfg.type) }} 题</span>
+                  <div class="type-score">
+                    <el-input-number v-model="cfg.score" :min="1" :max="100" size="small" class="type-score-input" />
+                    <span class="form-tip-inline">分/题</span>
+                  </div>
+                </div>
+                <div class="type-config-result">
+                  <span>总分：<b class="result-value">{{ totalScore }}</b> 分</span>
+                  <span>及格分数：<b class="result-value">{{ passScore }}</b> 分</span>
+                </div>
+                <div class="type-config-standard">{{ calcStandard }}</div>
+              </div>
+            </el-form-item>
           </el-collapse-item>
 
           <!-- 考核题目 -->
@@ -250,6 +272,10 @@
               <div class="question-title">
                 <div class="question-title-left">
                   <span class="question-label">题目{{ qIndex + 1 }}</span>
+                  <el-radio-group v-model="question.type" size="small" class="question-type-radio">
+                    <el-radio-button value="选择题">选择题</el-radio-button>
+                    <el-radio-button value="判断题">判断题</el-radio-button>
+                  </el-radio-group>
                   <el-select
                     v-model="question.bankValue"
                     class="question-from-bank"
@@ -470,6 +496,7 @@ const createEmptyOption = (): QuestionOptionItem => ({
 })
 
 const createEmptyQuestion = (): ExamQuestionItem => ({
+  type: '选择题',
   content: '',
   bankValue: '',
   options: [createEmptyOption(), createEmptyOption(), createEmptyOption(), createEmptyOption()]
@@ -502,13 +529,36 @@ function categoryFullName(id: string): string {
 
 const formData = reactive<ExamTemplateForm>({
   templateName: '',
+  templateCode: '',
   applyType: 1,
   duration: 30,
   status: 1,
   remark: '',
+  questionTypeConfigs: [
+    { type: '选择题', score: 5 },
+    { type: '判断题', score: 4 }
+  ],
   questions: [createEmptyQuestion()],
   selectedCategories: [],
   selectedEquipment: []
+})
+
+function getQuestionCountByType(type: string): number {
+  return formData.questions.filter(q => q.type === type).length
+}
+
+const totalScore = computed(() =>
+  formData.questionTypeConfigs.reduce((sum, cfg) => sum + cfg.score * getQuestionCountByType(cfg.type), 0)
+)
+
+const passScore = computed(() => Math.round(totalScore.value * 0.6 * 10) / 10)
+
+const calcStandard = computed(() => {
+  const parts = formData.questionTypeConfigs
+    .filter(cfg => getQuestionCountByType(cfg.type) > 0)
+    .map(cfg => `${cfg.type} ${getQuestionCountByType(cfg.type)} 题 × ${cfg.score} 分`)
+  if (!parts.length) return '总分 = 0 分，及格分数 = 0 分'
+  return `总分 = ${parts.join(' + ')} = ${totalScore.value} 分；及格分数 = 总分 × 60% = ${passScore.value} 分`
 })
 
 const formRules: FormRules = {
@@ -561,13 +611,24 @@ const formRules: FormRules = {
   ]
 }
 
+function generateTemplateCode(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `KAOHE-${d.getFullYear()}${pad(d.getMonth() + 1)}-${String(tableData.value.length + 1).padStart(3, '0')}`
+}
+
 function resetForm() {
   formData.templateName = ''
+  formData.templateCode = ''
   formData.applyType = 1
   formData.duration = 30
   formData.status = 1
   formData.remark = ''
   formData.questions = [createEmptyQuestion()]
+  formData.questionTypeConfigs = [
+    { type: '选择题', score: 5 },
+    { type: '判断题', score: 4 }
+  ]
   formData.selectedCategories = []
   formData.selectedEquipment = []
 }
@@ -576,6 +637,7 @@ function handleCreate() {
   editingId.value = ''
   formTitle.value = '新建考核模板'
   resetForm()
+  formData.templateCode = generateTemplateCode()
   drawerVisible.value = true
 }
 
@@ -583,6 +645,7 @@ function handleEdit(row: ExamTemplate) {
   editingId.value = row.templateId
   formTitle.value = '修改考核模板'
   formData.templateName = row.templateName
+  formData.templateCode = row.templateCode
   formData.applyType = row.equipmentType === '按现有库存装备' ? 2 : 1
   formData.duration = row.duration
   formData.status = row.status
@@ -659,9 +722,10 @@ function buildEquipmentType(): string {
   return (formData.selectedEquipment ?? []).join('、')
 }
 
-function buildListQuestionTypes(count: number): QuestionTypeItem[] {
-  if (count <= 0) return []
-  return [{ type: '选择题', count, score: Number((100 / count).toFixed(1)) }]
+function buildListQuestionTypes(): QuestionTypeItem[] {
+  return formData.questionTypeConfigs
+    .map(cfg => ({ type: cfg.type, count: getQuestionCountByType(cfg.type), score: cfg.score }))
+    .filter(item => item.count > 0)
 }
 
 function handleSubmit() {
@@ -675,8 +739,10 @@ function handleSubmit() {
       options: q.options.map(o => ({ content: o.content, isCorrect: o.isCorrect }))
     }))
     const questionCount = questions.length
-    const questionTypes = buildListQuestionTypes(questionCount)
+    const questionTypes = buildListQuestionTypes()
     const equipmentType = buildEquipmentType()
+    const total = totalScore.value
+    const pass = passScore.value
 
     if (editingId.value) {
       const target = tableData.value.find(item => item.templateId === editingId.value)
@@ -684,8 +750,8 @@ function handleSubmit() {
         target.templateName = formData.templateName
         target.equipmentType = equipmentType
         target.duration = formData.duration
-        target.passScore = 80
-        target.totalScore = 100
+        target.passScore = pass
+        target.totalScore = total
         target.questionTypes = questionTypes
         target.questionCount = questionCount
         target.status = formData.status
@@ -698,11 +764,11 @@ function handleSubmit() {
       tableData.value.unshift({
         templateId: id,
         templateName: formData.templateName,
-        templateCode: `KAOHE-202510-${String(tableData.value.length + 1).padStart(3, '0')}`,
+        templateCode: formData.templateCode,
         equipmentType,
         duration: formData.duration,
-        passScore: 80,
-        totalScore: 100,
+        passScore: pass,
+        totalScore: total,
         questionTypes,
         questionCount,
         status: formData.status,
@@ -981,6 +1047,72 @@ function handleExport() {
     width: 100%;
   }
 
+  .type-config {
+    width: 100%;
+
+    .type-config-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+
+      .type-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #606266;
+        background: #f4f4f5;
+        padding: 2px 10px;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+
+      .type-count {
+        font-size: 13px;
+        color: #909399;
+        width: 60px;
+        flex-shrink: 0;
+      }
+
+      .type-score {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .type-score-input {
+          width: 120px;
+        }
+      }
+    }
+
+    .type-config-result {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 13px;
+      color: #606266;
+      background: #f8f9fb;
+      border: 1px solid #ebeef5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+
+      .result-value {
+        color: #409eff;
+        font-size: 15px;
+      }
+    }
+
+    .type-config-standard {
+      font-size: 12px;
+      color: #909399;
+      line-height: 1.6;
+      background: #fdf6ec;
+      border: 1px solid #f5dab1;
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+  }
+
   .duration-row {
     display: flex;
     align-items: center;
@@ -1032,6 +1164,10 @@ function handleExport() {
 
         .question-from-bank {
           width: 180px;
+          flex-shrink: 0;
+        }
+
+        .question-type-radio {
           flex-shrink: 0;
         }
       }

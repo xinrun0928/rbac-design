@@ -29,7 +29,7 @@
         </el-form>
         <div class="search-actions">
           <el-button type="primary" :icon="Plus" @click="handleAdd">突发事故上报</el-button>
-          <el-button :icon="Download" @click="handleExport">导出</el-button>
+          <el-button type="success" :icon="Download" @click="handleExport">导出</el-button>
         </div>
       </div>
 
@@ -1443,7 +1443,6 @@ function handlePageChange(page: number) {
   .search-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

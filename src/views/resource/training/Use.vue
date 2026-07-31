@@ -98,12 +98,15 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="创建人/创建时间" width="180" align="center">
+        <el-table-column prop="createBy" label="创建人" width="100" align="center">
           <template #default="{ row }">
-            <div class="creator-info">
-              <span class="creator-name">{{ row.createBy }}</span>
-              <span class="creator-time">{{ row.createTime }}</span>
-            </div>
+            <span class="creator-name">{{ row.createBy }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="createTime" label="创建时间" width="120" align="center">
+          <template #default="{ row }">
+            <span class="creator-time">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -755,22 +758,15 @@ function handleExport() {
       color: #409eff;
     }
 
-    .creator-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .creator-name {
+      font-size: 13px;
+      color: #303133;
+      font-weight: 500;
+    }
 
-      .creator-name {
-        font-size: 13px;
-        color: #303133;
-        font-weight: 500;
-      }
-
-      .creator-time {
-        font-size: 12px;
-        color: #909399;
-        margin-top: 2px;
-      }
+    .creator-time {
+      font-size: 13px;
+      color: #909399;
     }
 
     .time-text {

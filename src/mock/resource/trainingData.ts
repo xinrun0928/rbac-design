@@ -1,4 +1,4 @@
-import type { EquipmentTraining, TrainingCategory, TrainingResourceType } from '@/types/resource/training'
+import type { EquipmentTraining, TrainingCategory, TrainingResourceType, EquipmentAssessmentRecord, AssessmentStatus, AssessorType, ResponsibleType, AssessmentTargetDetail } from '@/types/resource/training'
 
 interface TrainingSeed {
   courseName: string
@@ -268,3 +268,183 @@ export const equipmentTrainingData: EquipmentTraining[] = seeds.map((seed, i) =>
     remark: seed.remark
   }
 })
+
+interface AssessmentSeed {
+  taskName: string
+  templateName: string
+  assessorType: AssessorType
+  assessorTarget: string
+  startDate: string
+  endDate: string
+  responsibleType: ResponsibleType
+  responsibleTarget: string
+  progress: number
+  status: AssessmentStatus
+  createBy: string
+  description: string
+}
+
+const assessmentSeeds: AssessmentSeed[] = [
+  {
+    taskName: '大疆 Mavic3 操作考核',
+    templateName: '大疆 Mavic3 操作考核模板',
+    assessorType: 'dept',
+    assessorTarget: '应急通信保障部',
+    startDate: '2025-10-10',
+    endDate: '2025-10-17',
+    responsibleType: 'dept',
+    responsibleTarget: '应急管理部',
+    progress: 100,
+    status: 'completed',
+    createBy: '张三',
+    description: '无人机操作规范考核'
+  },
+  {
+    taskName: '对讲机操作考核',
+    templateName: '通讯设备操作考核模板',
+    assessorType: 'person',
+    assessorTarget: '张伟',
+    startDate: '2025-10-12',
+    endDate: '2025-10-19',
+    responsibleType: 'person',
+    responsibleTarget: '李四',
+    progress: 70,
+    status: 'in_progress',
+    createBy: '李四',
+    description: '通信设备日常操作考核'
+  },
+  {
+    taskName: '强光手电使用考核',
+    templateName: '照明设备操作考核模板',
+    assessorType: 'post',
+    assessorTarget: '照明设备操作员',
+    startDate: '2025-10-15',
+    endDate: '2025-10-22',
+    responsibleType: 'dept',
+    responsibleTarget: '物资管理部',
+    progress: 0,
+    status: 'not_started',
+    createBy: '王五',
+    description: '照明设备使用规范考核'
+  },
+  {
+    taskName: '卫星电话操作考核',
+    templateName: '卫星通信设备考核模板',
+    assessorType: 'dept',
+    assessorTarget: '卫星通信组',
+    startDate: '2025-10-18',
+    endDate: '2025-10-25',
+    responsibleType: 'person',
+    responsibleTarget: '赵六',
+    progress: 50,
+    status: 'in_progress',
+    createBy: '赵六',
+    description: '卫星通信设备应急操作考核'
+  },
+  {
+    taskName: '旧款对讲机操作考核',
+    templateName: '通讯设备基础考核模板',
+    assessorType: 'person',
+    assessorTarget: '李娜',
+    startDate: '2025-10-08',
+    endDate: '2025-10-15',
+    responsibleType: 'dept',
+    responsibleTarget: '现场指挥部',
+    progress: 100,
+    status: 'completed',
+    createBy: '孙七',
+    description: '旧型号对讲机基础操作考核'
+  },
+  {
+    taskName: '应急装备综合考核',
+    templateName: '综合装备考核模板',
+    assessorType: 'post',
+    assessorTarget: '综合装备操作岗',
+    startDate: '2025-10-20',
+    endDate: '2025-10-27',
+    responsibleType: 'person',
+    responsibleTarget: '张三',
+    progress: 0,
+    status: 'not_started',
+    createBy: '张三',
+    description: '多种装备综合操作能力考核'
+  }
+]
+
+export const equipmentAssessmentData: EquipmentAssessmentRecord[] = assessmentSeeds.map((seed, i) => ({
+  taskId: `AST${String(i + 1).padStart(4, '0')}`,
+  taskName: seed.taskName,
+  templateId: `TPL${String(i + 1).padStart(4, '0')}`,
+  templateName: seed.templateName,
+  assessorType: seed.assessorType,
+  assessorTarget: seed.assessorTarget,
+  startDate: seed.startDate,
+  endDate: seed.endDate,
+  responsibleType: seed.responsibleType,
+  responsibleTarget: seed.responsibleTarget,
+  progress: seed.progress,
+  status: seed.status,
+  createBy: seed.createBy,
+  createTime: `${seed.startDate} 09:00:00`,
+  description: seed.description
+}))
+
+/** 考核对象类型选项 */
+export const assessorTypeOptions: { label: string; value: AssessorType }[] = [
+  { label: '部门', value: 'dept' },
+  { label: '个人', value: 'person' },
+  { label: '岗位', value: 'post' }
+]
+
+/** 部门选项 */
+export const assessorDeptOptions = ['应急通信保障部', '卫星通信组', '物资调度中心', '现场救援大队']
+
+/** 个人选项 */
+export const assessorPersonOptions = ['张伟', '李娜', '陈飞', '王浩', '赵阳']
+
+/** 岗位选项 */
+export const assessorPostOptions = ['照明设备操作员', '无人机飞控员', '对讲机操作员', '综合装备操作岗']
+
+/** 考核负责人/部门类型选项 */
+export const responsibleTypeOptions: { label: string; value: ResponsibleType }[] = [
+  { label: '部门', value: 'dept' },
+  { label: '个人', value: 'person' }
+]
+
+/** 考核负责人部门选项 */
+export const responsibleDeptOptions = ['应急管理部', '通信保障部', '物资管理部', '现场指挥部', '技术支持组']
+
+/** 考核负责人个人选项 */
+export const responsiblePersonOptions = ['张三', '李四', '王五', '赵六', '孙七']
+
+/** 考核对象详情数据 */
+export const assessmentTargetDetails: Record<string, AssessmentTargetDetail[]> = {
+  AST0001: [
+    { name: '陈飞', phone: '13598564522', dept: 'XXX处', status: 'completed', score: 92, isQualified: true, completeTime: '2025-10-12' },
+    { name: '林晓', phone: '18856995254', dept: 'XXX处', status: 'completed', score: 58, isQualified: false, completeTime: '2025-10-13' },
+    { name: '张伟', phone: '13795862264', dept: 'XXX处', status: 'not_completed' }
+  ],
+  AST0002: [
+    { name: '张伟', phone: '13795862264', dept: '通信保障部', status: 'completed', score: 85, isQualified: true, completeTime: '2025-10-14' },
+    { name: '李娜', phone: '13912345678', dept: '通信保障部', status: 'completed', score: 72, isQualified: true, completeTime: '2025-10-15' },
+    { name: '王浩', phone: '13887654321', dept: '通信保障部', status: 'not_completed' }
+  ],
+  AST0003: [
+    { name: '陈飞', phone: '13598564522', dept: '物资管理部', status: 'not_completed' },
+    { name: '赵阳', phone: '13611112222', dept: '物资管理部', status: 'not_completed' }
+  ],
+  AST0004: [
+    { name: '陈飞', phone: '13598564522', dept: '卫星通信组', status: 'completed', score: 90, isQualified: true, completeTime: '2025-10-20' },
+    { name: '张伟', phone: '13795862264', dept: '卫星通信组', status: 'not_completed' }
+  ],
+  AST0005: [
+    { name: '李娜', phone: '13912345678', dept: '现场指挥部', status: 'completed', score: 88, isQualified: true, completeTime: '2025-10-10' },
+    { name: '王浩', phone: '13887654321', dept: '现场指挥部', status: 'completed', score: 55, isQualified: false, completeTime: '2025-10-11' }
+  ],
+  AST0006: [
+    { name: '陈飞', phone: '13598564522', dept: '技术支持组', status: 'not_completed' },
+    { name: '林晓', phone: '18856995254', dept: '技术支持组', status: 'not_completed' },
+    { name: '张伟', phone: '13795862264', dept: '技术支持组', status: 'not_completed' },
+    { name: '李娜', phone: '13912345678', dept: '技术支持组', status: 'not_completed' }
+  ]
+}

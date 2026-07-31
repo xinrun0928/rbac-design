@@ -83,3 +83,97 @@ export interface EquipmentTrainingForm {
   /** 按现有库存装备时选中的装备名称（applyType=2 时使用） */
   selectedEquipment?: string[]
 }
+
+/** 装备操作考核任务状态 */
+export type AssessmentStatus = 'completed' | 'in_progress' | 'not_started'
+
+/** 考核对象类型 */
+export type AssessorType = 'dept' | 'person' | 'post'
+
+/** 考核负责人/部门类型 */
+export type ResponsibleType = 'dept' | 'person'
+
+/** 装备操作考核记录 */
+export interface EquipmentAssessmentRecord {
+  /** 考核任务ID */
+  taskId: string
+  /** 考核任务名称 */
+  taskName: string
+  /** 关联考核模板ID */
+  templateId: string
+  /** 关联考核模板名称 */
+  templateName: string
+  /** 考核对象类型 */
+  assessorType: AssessorType
+  /** 考核对象名称 */
+  assessorTarget: string
+  /** 考核开始日期 */
+  startDate: string
+  /** 考核结束日期 */
+  endDate: string
+  /** 考核负责人/部门类型 */
+  responsibleType: ResponsibleType
+  /** 考核负责人/部门名称 */
+  responsibleTarget: string
+  /** 考核进度（0-100） */
+  progress: number
+  /** 任务状态 */
+  status: AssessmentStatus
+  /** 创建人 */
+  createBy: string
+  /** 创建时间 */
+  createTime: string
+  /** 说明 */
+  description: string
+}
+
+/** 考核对象考核状态 */
+export type AssessmentTargetStatus = 'completed' | 'not_completed'
+
+/** 考核对象详情 */
+export interface AssessmentTargetDetail {
+  /** 考核对象名称 */
+  name: string
+  /** 联系电话 */
+  phone: string
+  /** 所属部门 */
+  dept: string
+  /** 考核状态 */
+  status: AssessmentTargetStatus
+  /** 考核分数 */
+  score?: number
+  /** 是否合格 */
+  isQualified?: boolean
+  /** 完成时间 */
+  completeTime?: string
+}
+
+/** 装备操作考核记录搜索表单 */
+export interface EquipmentAssessmentSearchForm {
+  /** 考核任务名称/模板名称关键字 */
+  keyword: string
+}
+
+/** 装备操作考核记录新增/编辑表单 */
+export interface EquipmentAssessmentForm {
+  /** 考核任务ID（编辑时存在） */
+  taskId?: string
+  /** 考核任务名称 */
+  taskName: string
+  /** 关联考核模板ID */
+  templateId: string
+  /** 考核对象类型 */
+  assessorType: AssessorType
+  /** 考核对象名称 */
+  assessorTarget: string
+  /** 考核开始日期 */
+  startDate: string
+  /** 考核结束日期 */
+  endDate: string
+  /** 考核负责人/部门类型 */
+  responsibleType: ResponsibleType
+  /** 考核负责人/部门名称 */
+  responsibleTarget: string
+  /** 说明 */
+  description: string
+}

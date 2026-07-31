@@ -48,7 +48,7 @@
         </el-tooltip>
       </div>
       <div class="collapsed-list">
-        <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" :class="{ active: item.id === selectedId }" @click="handleCollapsedItemClick(item)">
+        <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" :class="{ active: item.id === activeSelectedId }" @click="handleCollapsedItemClick(item)">
           <el-tooltip :content="item.name" placement="right">
             <div class="collapsed-icon-wrapper">
               <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
@@ -107,6 +107,8 @@ const flatTreeData = computed(() => {
   }
   return flatten(orgTreeData, 1)
 })
+
+const activeSelectedId = computed(() => props.selectedId ?? flatTreeData.value[0]?.id)
 
 watch(treeFilter, (val) => {
   treeRef.value?.filter(val)
@@ -186,7 +188,7 @@ defineExpose({
   flex-direction: column;
 
   &.collapsed {
-    width: 72px;
+    width: 84px;
 
     .collapsed-body {
       display: flex;
@@ -236,9 +238,20 @@ defineExpose({
           margin-top: 8px;
         }
 
-        &.active .collapsed-icon-wrapper {
-          box-shadow: 0 0 0 2px #409EFF;
-          border-radius: 10px;
+        &.active {
+          .collapsed-icon-wrapper {
+            box-shadow: 0 0 0 2px #409EFF;
+            border-radius: 11px;
+          }
+
+          .collapsed-icon {
+            width: 40px;
+            height: 40px;
+          }
+
+          .collapsed-char {
+            font-size: 18px;
+          }
         }
       }
 

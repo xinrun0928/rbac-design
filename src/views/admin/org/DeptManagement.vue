@@ -38,12 +38,10 @@
           >
             <el-table-column prop="deptName" label="部门名称" min-width="220" fixed>
               <template #default="{ row }">
-                <div class="dept-name-cell">
                   <el-icon class="dept-icon" color="#409EFF">
                     <OfficeBuilding />
                   </el-icon>
                   <span class="dept-name">{{ row.deptName }}</span>
-                </div>
               </template>
             </el-table-column>
 
@@ -509,71 +507,17 @@ onMounted(() => {
       }
     }
 
-    :deep(.el-table) {
-      border-radius: 8px;
-      flex: 1;
+    
 
-      .el-table__body-wrapper {
-        overflow-y: auto;
-
-        // 隐藏滚动条
-        &::-webkit-scrollbar {
-          width: 0;
-          height: 0;
-        }
-      }
-
-
-      .el-table__row .cell {
-        display: flex;
-        align-items: center;
-      }
-
-      .el-table__row .el-table__cell:not(:first-child) .cell {
-        justify-content: center;
-      }
-
-
-      .el-table__indent {
-        padding-left: 24px !important;
-        display: inline-block !important;
-      }
-
-      .el-table__expand-icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 4px;
-        vertical-align: middle;
-
-        .el-icon {
-          font-size: 14px;
-          transition: transform 0.2s ease;
-        }
-
-        &.expanded .el-icon {
-          transform: rotate(90deg);
-        }
-      }
-
-      .el-table__cell.is-leaf .el-table__expand-icon {
-        visibility: hidden;
-      }
+    .dept-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-right: 6px;
     }
 
-    .dept-name-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .dept-icon {
-        font-size: 16px;
-        flex-shrink: 0;
-      }
-
-      .dept-name {
-        font-weight: 500;
-        color: #303133;
-      }
+    .dept-name {
+      font-weight: 500;
+      color: #303133;
     }
 
     .code-text {

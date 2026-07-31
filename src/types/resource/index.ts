@@ -12,3 +12,6 @@ export * from './training'
 
 // 装备维保计划
 export * from './maintenance'
+
+// 库存查询
+export * from './warehouse'

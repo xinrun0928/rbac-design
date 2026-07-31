@@ -791,25 +791,6 @@ function handleExport() {
   }
 }
 
-// 抽屉样式
-:deep(.el-drawer) {
-  .el-drawer__header {
-    margin-bottom: 0;
-    padding: 20px 24px;
-    border-bottom: 1px solid #EBEEF5;
-
-    .el-drawer__title {
-      font-weight: 600;
-      font-size: 16px;
-    }
-  }
-
-  .el-drawer__body {
-    padding: 24px;
-    overflow-y: auto;
-  }
-}
-
 :deep(.el-checkbox) {
   margin-right: 16px;
 }

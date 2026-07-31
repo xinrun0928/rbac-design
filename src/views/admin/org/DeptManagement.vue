@@ -2,7 +2,7 @@
   <div class="dept-management">
 
     <div class="main-content animate-item">
-      <OrgTreePanel ref="orgTreeRef" @node-click="handleNodeClick" />
+      <OrgTreePanel ref="orgTreeRef" :selected-id="currentNode?.id" @node-click="handleNodeClick" />
 
       <!-- 右侧：部门列表 -->
       <div class="list-panel">

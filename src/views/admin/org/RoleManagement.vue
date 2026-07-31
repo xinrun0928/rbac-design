@@ -2,7 +2,7 @@
   <div class="role-management">
 
     <div class="main-content animate-item">
-      <OrgTreePanel ref="orgTreeRef" @node-click="handleNodeClick" />
+      <OrgTreePanel ref="orgTreeRef" :selected-id="currentNode?.id" @node-click="handleNodeClick" />
 
       <!-- 右侧：角色列表区域 -->
       <div class="list-panel">

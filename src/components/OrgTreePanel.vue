@@ -48,7 +48,7 @@
         </el-tooltip>
       </div>
       <div class="collapsed-list">
-        <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" @click="handleCollapsedItemClick(item)">
+        <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" :class="{ active: item.id === selectedId }" @click="handleCollapsedItemClick(item)">
           <el-tooltip :content="item.name" placement="right">
             <div class="collapsed-icon-wrapper">
               <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
@@ -76,6 +76,12 @@ import type ElTree from 'element-plus/es/components/tree'
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const treeCollapsed = ref(false)
 const treeFilter = ref('')
+
+const props = withDefaults(defineProps<{
+  selectedId?: number
+}>(), {
+  selectedId: undefined
+})
 
 const emit = defineEmits<{
   'node-click': [node: OrgTreeNode]
@@ -180,7 +186,7 @@ defineExpose({
   flex-direction: column;
 
   &.collapsed {
-    width: 72px;
+    width: 80px;
     align-items: center;
 
     .collapsed-body {
@@ -190,7 +196,6 @@ defineExpose({
       padding: 12px 4px;
       gap: 4px;
       flex: 1;
-      overflow: hidden;
 
       .collapsed-expand-bar {
         flex-shrink: 0;
@@ -231,10 +236,17 @@ defineExpose({
         &:first-child {
           margin-top: 8px;
         }
+
+        &.active .collapsed-icon-wrapper {
+          outline: 2px solid #409EFF;
+          outline-offset: 2px;
+          border-radius: 10px;
+        }
       }
 
       .collapsed-icon-wrapper {
         position: relative;
+        border-radius: 10px;
       }
 
       .collapsed-icon {
@@ -258,19 +270,18 @@ defineExpose({
 
       .collapsed-level {
         position: absolute;
-        top: -6px;
-        right: -6px;
+        top: -5px;
+        right: -5px;
         font-size: 9px;
         color: #fff;
-        line-height: 1;
         font-weight: 600;
         background: #909399;
         border-radius: 8px;
-        padding: 1px 4px;
-        min-width: 14px;
+        padding: 0 4px;
+        min-width: 16px;
         text-align: center;
-        height: 14px;
-        line-height: 14px;
+        height: 16px;
+        line-height: 16px;
         z-index: 1;
       }
     }

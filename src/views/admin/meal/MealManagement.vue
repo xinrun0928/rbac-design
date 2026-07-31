@@ -5,35 +5,29 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="套餐名称">
-            <el-input
-              v-model="searchForm.name"
-              placeholder="输入套餐名称，如：省交通本级"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
+        <span class="search-bar-title">套餐管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.name"
+            placeholder="搜索套餐名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.mealType" placeholder="节点类型" clearable style="width: 180px; margin-right: 12px">
+            <el-option
+              v-for="item in mealTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
-          </el-form-item>
-          <el-form-item label="节点类型">
-            <el-select v-model="searchForm.mealType" placeholder="请选择类型" clearable style="width: 180px">
-              <el-option
-                v-for="item in mealTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
-              <el-option label="正常" :value="1101" />
-              <el-option label="停用" :value="1001" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+          </el-select>
+          <el-select v-model="searchForm.status" placeholder="状态" clearable style="width: 180px; margin-right: 12px">
+            <el-option label="正常" :value="1101" />
+            <el-option label="停用" :value="1001" />
+          </el-select>
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增套餐</el-button>
         </div>
       </div>
@@ -955,23 +949,23 @@ onMounted(() => {
   // 搜索栏
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

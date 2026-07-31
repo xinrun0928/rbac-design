@@ -8,8 +8,6 @@ export const mockPostData: Post[] = [
     unitName: '交通运输局',
     status: 1,
     remark: '负责全局应急指挥调度工作',
-    updateTime: '2024-01-15 09:30:00',
-    deleted: 0,
     children: [
       {
         id: 11,
@@ -18,8 +16,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '全面负责应急指挥中心工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -29,8 +25,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '协助主任开展日常工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -40,8 +34,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '负责当班期间应急值守工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
     ],
@@ -53,8 +45,6 @@ export const mockPostData: Post[] = [
     unitName: '交通运输局',
     status: 1,
     remark: '日常值班相关岗位',
-    updateTime: '2024-01-15 09:30:00',
-    deleted: 0,
     children: [
       {
         id: 21,
@@ -63,8 +53,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '负责主班期间值班工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -74,8 +62,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '协助主班开展值班工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -85,8 +71,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '节假日及周末值班岗位',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
     ],
@@ -98,8 +82,6 @@ export const mockPostData: Post[] = [
     unitName: '交通运输局',
     status: 1,
     remark: '各类专项应急工作组',
-    updateTime: '2024-01-15 09:30:00',
-    deleted: 0,
     children: [
       {
         id: 31,
@@ -108,8 +90,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '负责防台防汛应急处置',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -119,8 +99,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 1,
         remark: '负责冬季除雪保畅工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -130,8 +108,6 @@ export const mockPostData: Post[] = [
         unitName: '公路局',
         status: 1,
         remark: '负责道路损毁抢通工作',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
     ],
@@ -143,8 +119,6 @@ export const mockPostData: Post[] = [
     unitName: '信息中心',
     status: 1,
     remark: '应急信息保障相关岗位',
-    updateTime: '2024-01-15 09:30:00',
-    deleted: 0,
     children: [
       {
         id: 41,
@@ -153,8 +127,6 @@ export const mockPostData: Post[] = [
         unitName: '信息中心',
         status: 1,
         remark: '负责应急信息收集与报送',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
       {
@@ -164,8 +136,6 @@ export const mockPostData: Post[] = [
         unitName: '信息中心',
         status: 1,
         remark: '负责应急通信设备保障',
-        updateTime: '2024-01-15 09:30:00',
-        deleted: 0,
         children: [],
       },
     ],
@@ -177,8 +147,6 @@ export const mockPostData: Post[] = [
     unitName: '交通运输局',
     status: 0,
     remark: '已停用的综合协调岗位',
-    updateTime: '2023-12-01 14:20:00',
-    deleted: 0,
     children: [
       {
         id: 51,
@@ -187,8 +155,6 @@ export const mockPostData: Post[] = [
         unitName: '交通运输局',
         status: 0,
         remark: '已停用',
-        updateTime: '2023-12-01 14:20:00',
-        deleted: 0,
         children: [],
       },
     ],

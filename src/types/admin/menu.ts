@@ -13,7 +13,7 @@ export interface Menu {
   /** 内容类型: 1-菜单页面, 2-大屏, 3-嵌入页面, 4-外部链接 */
   contentType: number
   /** 所属子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 图标名称 */
   icon: string
   /** 路由路径 */
@@ -25,25 +25,13 @@ export interface Menu {
   /** 状态: 1101-正常, 1001-停用 */
   status: number
   /** 备注 */
-  remark: string
+  remark?: string
   /** 扩展信息（JSON） */
   ext: string
   /** 是否隐藏: 0-显示, 1-隐藏 */
   hidden: number
-  /** 创建人 */
-  creater: string
   /** 创建时间 */
   createTime: string
-  /** 更新人 */
-  updater: string
-  /** 更新时间 */
-  updateTime: string
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
-  /** 签名 */
-  signature: string
-  /** 签名版本 */
-  signatureVersion: number
   /** 子菜单列表（前端辅助字段） */
   children?: Menu[]
 }
@@ -63,7 +51,7 @@ export interface MenuForm {
   /** 内容类型: 1-菜单页面, 2-大屏, 3-嵌入页面, 4-外部链接 */
   contentType: number
   /** 所属子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 图标名称 */
   icon: string
   /** 路由路径 */

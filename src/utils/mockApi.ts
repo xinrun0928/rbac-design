@@ -42,8 +42,8 @@ export async function getMeals(params: {
     data = data.filter(item => item.name.toLowerCase().includes(keyword))
   }
 
-  if (params.search?.type !== undefined && params.search.type !== '') {
-    data = data.filter(item => item.type === params.search!.type)
+  if (params.search?.mealType !== undefined && params.search.mealType !== '') {
+    data = data.filter(item => item.mealType === params.search!.mealType)
   }
 
   if (params.search?.status !== undefined && params.search.status !== '') {
@@ -63,25 +63,25 @@ export async function getMeals(params: {
 export async function addMeal(data: {
   code: string
   name: string
-  type: number
+  mealType: number
   sort: number
   status: number
 }): Promise<Meal> {
   await delay(400 + Math.random() * 300)
 
-  const maxId = mockMealData.reduce((max, p) => Math.max(max, p.id), 0)
+  const maxId = mockMealData.reduce((max, p) => Math.max(max, p.mealId), 0)
 
   const newMeal: Meal = {
-    id: maxId + 1,
+    mealId: maxId + 1,
     code: data.code.toUpperCase(),
     name: data.name,
-    type: data.type,
-    typeName: getTypeName(data.type),
+    mealType: data.mealType,
     sort: data.sort,
     status: data.status,
-    statusName: getStatusName(data.status),
-    creator: '当前用户',
-    createTime: formatNow()
+    creater: '当前用户',
+    createTime: formatNow(),
+    updateTime: formatNow(),
+    remark: ''
   }
 
   mockMealData.push(newMeal)
@@ -91,11 +91,11 @@ export async function addMeal(data: {
 /** 编辑套餐 */
 export async function updateMeal(
   id: number,
-  data: { code: string; name: string; type: number; sort: number; status: number }
+  data: { code: string; name: string; mealType: number; sort: number; status: number }
 ): Promise<Meal> {
   await delay(400 + Math.random() * 300)
 
-  const index = mockMealData.findIndex(p => p.id === id)
+  const index = mockMealData.findIndex(p => p.mealId === id)
   if (index === -1) {
     throw new Error('套餐不存在')
   }
@@ -104,11 +104,10 @@ export async function updateMeal(
     ...mockMealData[index],
     code: data.code.toUpperCase(),
     name: data.name,
-    type: data.type,
-    typeName: getTypeName(data.type),
+    mealType: data.mealType,
     sort: data.sort,
     status: data.status,
-    statusName: getStatusName(data.status)
+    updateTime: formatNow()
   }
 
   mockMealData[index] = updated
@@ -119,7 +118,7 @@ export async function updateMeal(
 export async function deleteMeal(id: number): Promise<void> {
   await delay(400 + Math.random() * 300)
 
-  const index = mockMealData.findIndex(p => p.id === id)
+  const index = mockMealData.findIndex(p => p.mealId === id)
   if (index === -1) {
     throw new Error('套餐不存在')
   }
@@ -132,7 +131,7 @@ export async function batchDeleteMeals(ids: number[]): Promise<void> {
   await delay(600 + Math.random() * 400)
 
   ids.forEach(id => {
-    const index = mockMealData.findIndex(p => p.id === id)
+    const index = mockMealData.findIndex(p => p.mealId === id)
     if (index !== -1) {
       mockMealData.splice(index, 1)
     }
@@ -143,13 +142,12 @@ export async function batchDeleteMeals(ids: number[]): Promise<void> {
 export async function toggleMealStatus(id: number, status: number): Promise<Meal> {
   await delay(300 + Math.random() * 200)
 
-  const index = mockMealData.findIndex(p => p.id === id)
+  const index = mockMealData.findIndex(p => p.mealId === id)
   if (index === -1) {
     throw new Error('套餐不存在')
   }
 
   mockMealData[index].status = status
-  mockMealData[index].statusName = getStatusName(status)
 
   return mockMealData[index]
 }

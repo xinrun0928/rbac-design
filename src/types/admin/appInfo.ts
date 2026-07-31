@@ -18,14 +18,8 @@ export interface AppInfo {
   latestApkUrl: string
   /** 备注 */
   remark: string
-  /** 创建人 */
-  creater: string
   /** 创建时间 */
   createTime: string
-  /** 更新人 */
-  updater: string
-  /** 更新时间 */
-  updateTime: string
 }
 
 /** 应用发布日志数据类型 */
@@ -62,12 +56,6 @@ export interface AppPublishLog {
   publishStatus: number
   /** 发布时间 */
   publishTime: string
-  /** 创建人 */
-  creater: string
   /** 创建时间 */
   createTime: string
-  /** 更新人 */
-  updater: string
-  /** 更新时间 */
-  updateTime: string
 }

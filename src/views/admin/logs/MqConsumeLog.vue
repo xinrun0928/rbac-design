@@ -38,7 +38,7 @@
         stripe
         highlight-current-row
         row-key="id"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -168,7 +168,7 @@
           <el-descriptions-item label="处理耗时">{{ currentLog.processTime ? currentLog.processTime + 'ms' : '-' }}</el-descriptions-item>
           <el-descriptions-item label="内容类型">{{ currentLog.contentType }}</el-descriptions-item>
           <el-descriptions-item label="创建时间">{{ currentLog.createTime }}</el-descriptions-item>
-          <el-descriptions-item label="更新时间">{{ currentLog.updateTime }}</el-descriptions-item>
+
         </el-descriptions>
 
         <div class="payload-section">
@@ -234,7 +234,7 @@ const pagination = reactive({
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  let data = tableData.value.filter(item => item.deleted === 0)
+  let data = tableData.value.filter(item => true)
 
   if (searchForm.queueName) {
     data = data.filter(item => item.queueName === searchForm.queueName)

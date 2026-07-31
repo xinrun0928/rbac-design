@@ -295,7 +295,7 @@
             <span>异常明细</span>
           </div>
           <el-table
-            :data="importErrorData"
+            :data="importInvalidData"
             border
             size="small"
             max-height="200"
@@ -484,7 +484,7 @@ const formRules = {
 
 // ── 计算属性 ──
 const filteredData = computed(() => {
-  let data = tableData.value.filter(item => item.deleted === 0)
+  let data = tableData.value.filter(item => true)
 
   if (searchForm.startDate && searchForm.endDate) {
     const start = new Date(searchForm.startDate)
@@ -681,8 +681,7 @@ function handleImportExecute() {
           startDate: item.startDate,
           endDate: item.endDate,
           remark: item.remark,
-          createTime: new Date().toISOString().replace('T', ' ').slice(0, 19),
-          deleted: 0
+          createTime: new Date().toISOString().replace('T', ' ').slice(0, 19)
         })
       })
       importSuccessCount.value = total
@@ -752,7 +751,6 @@ function handleDelete(row: Holiday) {
   ).then(() => {
     const idx = tableData.value.findIndex(item => item.id === row.id)
     if (idx !== -1) {
-      tableData.value[idx].deleted = 1
     }
     ElMessage.success('删除成功')
   }).catch(() => {})
@@ -793,8 +791,7 @@ async function handleSubmit() {
         startDate,
         endDate,
         remark: formData.remark,
-        createTime: new Date().toISOString().replace('T', ' ').slice(0, 19),
-        deleted: 0
+        createTime: new Date().toISOString().replace('T', ' ').slice(0, 19)
       })
       ElMessage.success('添加成功')
     }

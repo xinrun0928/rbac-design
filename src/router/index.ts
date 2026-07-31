@@ -11,6 +11,7 @@ import resourceRoutes from './modules/resource'
 import dssRoutes from './modules/dss'
 import fusionRoutes from './modules/fusion'
 import displayRoutes from './modules/display'
+import inspectionRoutes from './modules/inspection'
 
 // 公共路由（不需要权限验证）
 const publicRoutes: RouteRecordRaw[] = [
@@ -57,6 +58,7 @@ const businessRoutes: RouteRecordRaw[] = [
   dssRoutes,        // 辅助决策子系统
   fusionRoutes,     // 数据融合子系统
   displayRoutes,    // 综合展示子系统
+  inspectionRoutes, // 汛期巡查子系统
 ]
 
 const router = createRouter({

@@ -14,7 +14,7 @@ function formatNow(): string {
 /** 构建树形结构 */
 export function buildMenuTree(menus: Menu[], parentId: number = 0): Menu[] {
   return menus
-    .filter(item => item.parentId === parentId && item.deleted === 0)
+    .filter(item => item.parentId === parentId)
     .sort((a, b) => a.displayOrder - b.displayOrder)
     .map(item => {
       const children = buildMenuTree(menus, item.menuId)
@@ -27,21 +27,21 @@ export function buildMenuTree(menus: Menu[], parentId: number = 0): Menu[] {
 }
 
 /** 获取子系统下的菜单树 */
-export async function getMenuTreeBySubsystem(subsysId: number): Promise<Menu[]> {
+export async function getMenuTreeBySubsystem(subsystemId: number): Promise<Menu[]> {
   await delay(200 + Math.random() * 300)
 
-  const filteredData = mockMenuData.filter(item => item.subsysId === subsysId && item.deleted === 0)
+  const filteredData = mockMenuData.filter(item => item.subsystemId === subsystemId)
   return buildMenuTree(filteredData, 0)
 }
 
 /** 获取所有菜单列表（平铺） */
 export async function getMenus(params: {
-  subsysId: number
+  subsystemId: number
   search?: MenuSearchForm
 }): Promise<Menu[]> {
   await delay(200 + Math.random() * 300)
 
-  let data = mockMenuData.filter(item => item.subsysId === params.subsysId && item.deleted === 0)
+  let data = mockMenuData.filter(item => item.subsystemId === params.subsystemId)
 
   if (params.search?.menuName) {
     const keyword = params.search.menuName.trim().toLowerCase()
@@ -67,7 +67,7 @@ export async function addMenu(data: {
   menuCode: string
   menuType: number
   contentType: number
-  subsysId: number
+  subsystemId: number
   icon: string
   path: string
   component: string
@@ -88,7 +88,7 @@ export async function addMenu(data: {
     menuCode: data.menuCode.toUpperCase(),
     menuType: data.menuType,
     contentType: data.contentType,
-    subsysId: data.subsysId,
+    subsystemId: data.subsystemId,
     icon: data.icon,
     path: data.path,
     component: data.component,
@@ -97,13 +97,7 @@ export async function addMenu(data: {
     remark: data.remark,
     ext: data.ext,
     hidden: data.hidden,
-    creater: '当前用户',
-    createTime: formatNow(),
-    updater: '',
-    updateTime: formatNow(),
-    deleted: 0,
-    signature: '',
-    signatureVersion: 0
+    createTime: formatNow()
   }
 
   mockMenuData.push(newMenu)
@@ -119,7 +113,7 @@ export async function updateMenu(
     menuCode: string
     menuType: number
     contentType: number
-    subsysId: number
+    subsystemId: number
     icon: string
     path: string
     component: string
@@ -152,8 +146,7 @@ export async function updateMenu(
     remark: data.remark,
     ext: data.ext,
     hidden: data.hidden,
-    updater: '当前用户',
-    updateTime: formatNow()
+    createTime: formatNow()
   }
 
   mockMenuData[index] = updated
@@ -169,16 +162,17 @@ export async function deleteMenu(id: number): Promise<void> {
     throw new Error('菜单不存在')
   }
 
-  mockMenuData[index].deleted = 1
+  mockMenuData.splice(index, 1)
 
   // 同时删除所有子菜单
   const deleteChildren = (parentId: number) => {
-    mockMenuData.forEach((item, idx) => {
-      if (item.parentId === parentId && item.deleted === 0) {
-        mockMenuData[idx].deleted = 1
-        deleteChildren(item.menuId)
+    for (let i = mockMenuData.length - 1; i >= 0; i--) {
+      if (mockMenuData[i].parentId === parentId) {
+        const childId = mockMenuData[i].menuId
+        mockMenuData.splice(i, 1)
+        deleteChildren(childId)
       }
-    })
+    }
   }
   deleteChildren(id)
 }
@@ -190,16 +184,17 @@ export async function batchDeleteMenus(ids: number[]): Promise<void> {
   ids.forEach(id => {
     const index = mockMenuData.findIndex(p => p.menuId === id)
     if (index !== -1) {
-      mockMenuData[index].deleted = 1
+      mockMenuData.splice(index, 1)
 
       // 同时删除所有子菜单
       const deleteChildren = (parentId: number) => {
-        mockMenuData.forEach((item, idx) => {
-          if (item.parentId === parentId && item.deleted === 0) {
-            mockMenuData[idx].deleted = 1
-            deleteChildren(item.menuId)
+        for (let i = mockMenuData.length - 1; i >= 0; i--) {
+          if (mockMenuData[i].parentId === parentId) {
+            const childId = mockMenuData[i].menuId
+            mockMenuData.splice(i, 1)
+            deleteChildren(childId)
           }
-        })
+        }
       }
       deleteChildren(id)
     }
@@ -216,8 +211,6 @@ export async function toggleMenuStatus(id: number, status: number): Promise<Menu
   }
 
   mockMenuData[index].status = status
-  mockMenuData[index].updater = '当前用户'
-  mockMenuData[index].updateTime = formatNow()
 
   return mockMenuData[index]
 }

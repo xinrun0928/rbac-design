@@ -2,104 +2,49 @@
   <div class="post-management">
 
     <div class="main-content animate-item">
-      <!-- 左侧：组织树 -->
-      <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <div class="tree-header">
-          <span v-if="!treeCollapsed" class="tree-title">组织结构</span>
-          <el-button
-            :icon="treeCollapsed ? DArrowRight : DArrowLeft"
-            link
-            @click="treeCollapsed = !treeCollapsed"
-            class="collapse-btn"
-          />
-        </div>
-        <div v-if="!treeCollapsed" class="tree-body">
-          <el-input
-            v-model="treeFilter"
-            placeholder="搜索组织名称"
-            clearable
-            :prefix-icon="Search"
-            class="tree-search"
-          />
-          <el-tree
-            ref="treeRef"
-            :data="orgTreeData"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterTreeNode"
-            @node-click="handleNodeClick"
-            class="org-tree"
-          >
-            <template #default="{ data }">
-              <div class="tree-node">
-                <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
-                  <component :is="getNodeTypeIcon(data.nodeType)" />
-                </el-icon>
-                <span class="node-label">{{ data.name }}</span>
-              </div>
-            </template>
-          </el-tree>
-        </div>
-      </div>
+      <OrgTreePanel ref="orgTreeRef" :selected-id="currentNode?.id" @node-click="handleNodeClick" />
 
       <!-- 右侧：列表区域 -->
       <div class="list-panel">
-        <!-- 当前选中提示 -->
-        <div v-if="currentNode" class="current-node-bar">
-          <el-icon><Location /></el-icon>
-          <span>当前选中：<strong>{{ currentNode.name }}</strong></span>
-        </div>
-
         <!-- 数据表格 -->
         <el-card class="table-card" shadow="never">
-          <!-- 搜索栏 -->
           <div class="search-bar">
-            <el-form :model="postSearchForm" inline class="search-form">
-              <el-form-item label="岗位名称">
-                <el-input
-                  v-model="postSearchForm.name"
-                  placeholder="输入岗位名称"
-                  clearable
-                  :prefix-icon="Search"
-                  style="width: 180px"
-                  @keyup.enter="handlePostSearch"
-                />
-              </el-form-item>
-              <el-form-item label="岗位编号">
-                <el-input
-                  v-model="postSearchForm.code"
-                  placeholder="输入岗位编号"
-                  clearable
-                  :prefix-icon="Search"
-                  style="width: 180px"
-                  @keyup.enter="handlePostSearch"
-                />
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="postSearchForm.status" placeholder="全部" clearable style="width: 180px">
-                  <el-option label="启用" :value="1" />
-                  <el-option label="禁用" :value="0" />
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div class="search-actions">
+            <span class="search-bar-title">岗位管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="postSearchForm.name"
+                placeholder="搜索岗位名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handlePostSearch"
+                @clear="handlePostSearch"
+              />
+              <el-input
+                v-model="postSearchForm.code"
+                placeholder="搜索岗位编号"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handlePostSearch"
+                @clear="handlePostSearch"
+              />
               <el-button type="primary" :icon="Plus" @click="handleAddPost" :disabled="!currentNode">新增岗位</el-button>
             </div>
           </div>
+          <div class="table-wrapper">
           <el-table
             v-loading="loading"
             :data="filteredPostData"
+            height="100%"
             border
             stripe
             highlight-current-row
             row-key="id"
-            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
-            empty-text=" "
-          >
-            <el-table-column label="序号" width="60" align="center" type="index">
+            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+          empty-text=" "
+        >
+          <el-table-column label="序号" width="60" align="center" type="index">
               <template #default="{ $index }">
                 <span class="index-text">{{ $index + 1 }}</span>
               </template>
@@ -137,7 +82,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="250" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditPost(row)">编辑</el-button>
                 <el-button type="danger" link :icon="Delete" @click="handleDeletePost(row)">删除</el-button>
@@ -161,15 +106,18 @@
               </div>
             </template>
           </el-table>
+          </div>
 
           <!-- 分页 -->
-          <div v-if="showPagination" class="pagination-wrapper">
+          <div class="pagination-wrapper">
             <el-pagination
               v-model:current-page="pagination.page"
-              :page-size="pagination.pageSize"
-              :total="allFilteredData.length"
-              layout="total, prev, pager, next"
+              v-model:page-size="pagination.pageSize"
+              :total="pagination.total"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
               background
+              @size-change="handleSizeChange"
               @current-change="handlePageChange"
             />
           </div>
@@ -235,14 +183,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
-import type ElTree from 'element-plus/es/components/tree'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight, User
+  Refresh, Search, RefreshLeft, Plus, Delete, Edit, User
 } from '@element-plus/icons-vue'
+import OrgTreePanel from '@/components/OrgTreePanel.vue'
 import { orgTreeData } from '@/mock/admin/orgTreeData'
 import type { OrgTreeNode } from '@/types/admin/orgTree'
 
@@ -261,9 +208,7 @@ interface PostItem {
 // ── 状态 ──
 const loading = ref(false)
 const postData = ref<PostItem[]>([])
-const treeRef = ref<InstanceType<typeof ElTree>>()
-const treeCollapsed = ref(false)
-const treeFilter = ref('')
+const orgTreeRef = ref<InstanceType<typeof OrgTreePanel>>()
 const currentNode = ref<OrgTreeNode | null>(null)
 const postDrawerVisible = ref(false)
 const isPostEdit = ref(false)
@@ -287,25 +232,22 @@ const postFormData = reactive({
 // 分页
 const pagination = reactive({
   page: 1,
-  pageSize: 20
-})
-
-// ── 树节点筛选 ──
-watch(treeFilter, (val) => {
-  treeRef.value?.filter(val)
+  pageSize: 20,
+  total: 0
 })
 
 // ── 计算属性 ──
 const allFilteredData = computed(() => {
-  return postData.value.filter(p => {
+  const data = postData.value.filter(p => {
     // 按当前选中组织过滤
     if (currentNode.value && p.orgId !== currentNode.value.id) return false
     // 按搜索条件过滤
     if (postSearchForm.name && !p.name.includes(postSearchForm.name)) return false
     if (postSearchForm.code && !p.code.includes(postSearchForm.code)) return false
-    if (postSearchForm.status !== '' && p.status !== postSearchForm.status) return false
     return true
   })
+  pagination.total = data.length
+  return data
 })
 
 const filteredPostData = computed(() => {
@@ -313,7 +255,10 @@ const filteredPostData = computed(() => {
   return allFilteredData.value.slice(start, start + pagination.pageSize)
 })
 
-const showPagination = computed(() => allFilteredData.value.length > pagination.pageSize)
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
 
 function handlePageChange(page: number) {
   pagination.page = page
@@ -360,7 +305,7 @@ function handleNodeClick(data: OrgTreeNode) {
 }
 
 function handlePostSearch() {
-  // 搜索通过 computed 属性自动处理
+  pagination.page = 1
 }
 
 function handlePostReset() {
@@ -371,33 +316,6 @@ function handlePostReset() {
 
 function handleRefresh() {
   fetchPostData()
-}
-
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.includes(value)
-}
-
-function getNodeTypeIcon(nodeType: string) {
-  const icons: Record<string, any> = {
-    root: OfficeBuilding,
-    dept: OfficeBuilding,
-    branch: OfficeBuilding,
-    station: OfficeBuilding,
-    company: OfficeBuilding
-  }
-  return icons[nodeType] || OfficeBuilding
-}
-
-function getNodeTypeColor(nodeType: string): string {
-  const colors: Record<string, string> = {
-    root: '#409EFF',
-    dept: '#67C23A',
-    branch: '#E6A23C',
-    station: '#9B59B6',
-    company: '#F56C6C'
-  }
-  return colors[nodeType] || '#909399'
 }
 
 function handleAddPost() {
@@ -454,6 +372,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      orgTreeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -481,71 +402,8 @@ onMounted(() => {
   .main-content {
     display: flex;
     gap: 16px;
-    align-items: flex-start;
     flex: 1;
     overflow: hidden;
-  }
-
-  // 左侧树面板
-  .tree-panel {
-    width: 280px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: width 0.3s ease;
-    overflow: hidden;
-
-    &.collapsed { width: 48px; }
-
-    .tree-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid #EBEEF5;
-    }
-
-    .tree-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .tree-body {
-      padding: 12px;
-    }
-
-    .tree-search {
-      margin-bottom: 12px;
-    }
-
-    .org-tree {
-      max-height: calc(100vh - 320px);
-      overflow-y: auto;
-
-      :deep(.el-tree-node__content) {
-        height: 36px;
-        border-radius: 6px;
-        margin-bottom: 2px;
-      }
-
-      :deep(.el-tree-node.is-current > .el-tree-node__content) {
-        background: #ECF5FF;
-        color: #409EFF;
-      }
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-
-      .node-icon {
-        font-size: 14px;
-      }
-    }
   }
 
   // 右侧列表区
@@ -555,41 +413,33 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  }
-
-  .current-node-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: #ECF5FF;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #409EFF;
-
-    strong { color: #303133; }
+    height: 100%;
   }
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
+    }
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 
@@ -597,6 +447,7 @@ onMounted(() => {
     border-radius: 12px;
     border: none;
     flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -609,10 +460,13 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    :deep(.el-table) {
+    .table-wrapper {
       flex: 1;
-      border-radius: 8px;
       overflow: hidden;
+    }
+
+    :deep(.el-table) {
+      border-radius: 8px;
     }
 
     .index-text { color: #909399; font-size: 13px; }

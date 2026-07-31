@@ -7,7 +7,7 @@
         <el-form :model="searchForm" inline>
           <el-form-item label="请求方式">
             <el-select
-              v-model="searchForm.req_method"
+              v-model="searchForm.reqMethod"
               placeholder="请选择"
               clearable
               style="width: 180px"
@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="响应状态">
             <el-select
-              v-model="searchForm.rep_state"
+              v-model="searchForm.repState"
               placeholder="请选择"
               clearable
               style="width: 180px"
@@ -33,7 +33,7 @@
           </el-form-item>
           <el-form-item label="请求地址">
             <el-input
-              v-model="searchForm.req_url"
+              v-model="searchForm.reqUrl"
               placeholder="请输入请求地址"
               clearable
               :prefix-icon="Search"
@@ -43,7 +43,7 @@
           </el-form-item>
           <el-form-item label="调用时间">
             <el-date-picker
-              v-model="searchForm.create_time"
+              v-model="searchForm.createTime"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -62,7 +62,7 @@
         stripe
         highlight-current-row
         row-key="id"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         empty-text=" "
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
@@ -73,49 +73,49 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="req_method" label="请求方式" width="120" align="center">
+        <el-table-column prop="reqMethod" label="请求方式" width="120" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="getMethodType(row.req_method)"
+              :type="getMethodType(row.reqMethod)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.req_method }}
+              {{ row.reqMethod }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="req_url" label="请求地址" min-width="300">
+        <el-table-column prop="reqUrl" label="请求地址" min-width="300">
           <template #default="{ row }">
             <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
-              <span class="url-text" @click="handleCopyUrl(row.req_url)">{{ row.req_url }}</span>
+              <span class="url-text" @click="handleCopyUrl(row.reqUrl)">{{ row.reqUrl }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
 
-        <el-table-column prop="rep_state" label="响应状态" width="100" align="center">
+        <el-table-column prop="repState" label="响应状态" width="100" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="getStateType(row.rep_state)"
+              :type="getStateType(row.repState)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.rep_state }}
+              {{ row.repState }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="rep_time" label="耗时(ms)" width="90" align="center">
+        <el-table-column prop="repTime" label="耗时(ms)" width="90" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.rep_time }}</span>
+            <span class="time-text">{{ row.repTime }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" label="调用时间" width="180" align="center">
+        <el-table-column prop="createTime" label="调用时间" width="180" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.create_time }}</span>
+            <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -173,41 +173,41 @@
                 <span class="detail-label">请求方式</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="getMethodType(detailData.req_method)"
+                    :type="getMethodType(detailData.reqMethod)"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ detailData.req_method }}
+                    {{ detailData.reqMethod }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item full-width">
                 <span class="detail-label">请求地址</span>
-                <span class="detail-value mono">{{ detailData.req_url }}</span>
+                <span class="detail-value mono">{{ detailData.reqUrl }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">响应状态</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="getStateType(detailData.rep_state)"
+                    :type="getStateType(detailData.repState)"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ detailData.rep_state }}
+                    {{ detailData.repState }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">耗时</span>
-                <span class="detail-value">{{ detailData.rep_time }} ms</span>
+                <span class="detail-value">{{ detailData.repTime }} ms</span>
               </div>
               <div class="detail-item full-width">
                 <span class="detail-label">调用时间</span>
-                <span class="detail-value">{{ detailData.create_time }}</span>
+                <span class="detail-value">{{ detailData.createTime }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -217,30 +217,30 @@
             <div class="detail-grid">
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">请求头 (req_header)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_header || '-')">
+                  <span class="detail-label">请求头 (reqHeader)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.reqHeader || '-')">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.req_header || '-') }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.reqHeader || '-') }}</pre>
               </div>
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">请求参数 (req_params)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.req_params)">
+                  <span class="detail-label">请求参数 (reqParams)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.reqParams)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.req_params) }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.reqParams) }}</pre>
               </div>
               <div class="detail-item full-width">
                 <div class="label-row">
-                  <span class="detail-label">响应数据 (rep_data)</span>
-                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.rep_data)">
+                  <span class="detail-label">响应数据 (repData)</span>
+                  <el-button type="primary" link size="small" @click="handleCopyJson(detailData.repData)">
                     <el-icon><CopyDocument /></el-icon> 复制
                   </el-button>
                 </div>
-                <pre class="json-block">{{ formatJson(detailData.rep_data) }}</pre>
+                <pre class="json-block">{{ formatJson(detailData.repData) }}</pre>
               </div>
             </div>
           </el-collapse-item>
@@ -278,10 +278,10 @@ import { getHttpLogs, getHttpLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  req_method: string
-  rep_state: string
-  req_url: string
-  create_time: string[] | null
+  reqMethod: string
+  repState: string
+  reqUrl: string
+  createTime: string[] | null
 }
 
 // ── 状态 ──
@@ -294,46 +294,42 @@ const sqlDialogVisible = ref(false)
 
 const httpLogSql = `CREATE TABLE "public"."sys_http_log" (
   "id" int8 NOT NULL DEFAULT nextval('sys_http_log_id_seq'::regclass),
-  "req_method" varchar(50) COLLATE "pg_catalog"."default",
-  "req_url" text COLLATE "pg_catalog"."default",
-  "req_header" text COLLATE "pg_catalog"."default",
-  "req_params" text COLLATE "pg_catalog"."default",
-  "rep_data" text COLLATE "pg_catalog"."default",
-  "rep_state" varchar(50) COLLATE "pg_catalog"."default",
-  "rep_time" varchar(30) COLLATE "pg_catalog"."default",
-  "user_id" int8,
-  "org_id" int8 DEFAULT 0,
-  "create_time" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
-  "deleted" int2 DEFAULT 0,
-  "signature" varchar(512) COLLATE "pg_catalog"."default",
-  "signature_version" int2 DEFAULT 1,
+  "reqMethod" varchar(50) COLLATE "pg_catalog"."default",
+  "reqUrl" text COLLATE "pg_catalog"."default",
+  "reqHeader" text COLLATE "pg_catalog"."default",
+  "reqParams" text COLLATE "pg_catalog"."default",
+  "repData" text COLLATE "pg_catalog"."default",
+  "repState" varchar(50) COLLATE "pg_catalog"."default",
+  "repTime" varchar(30) COLLATE "pg_catalog"."default",
+  "userId" int8,
+  "orgId" int8 DEFAULT 0,
+  "createTime" timestamp(6) DEFAULT '1970-01-02 00:00:00'::timestamp without time zone,
+
   CONSTRAINT "sys_http_log_pkey" PRIMARY KEY ("id")
 );
 
 ALTER TABLE "public"."sys_http_log" OWNER TO "postgres";
 
 COMMENT ON COLUMN "public"."sys_http_log"."id" IS '日志ID';
-COMMENT ON COLUMN "public"."sys_http_log"."req_method" IS '请求方式';
-COMMENT ON COLUMN "public"."sys_http_log"."req_url" IS '请求链接';
-COMMENT ON COLUMN "public"."sys_http_log"."req_header" IS '请求头信息';
-COMMENT ON COLUMN "public"."sys_http_log"."req_params" IS '请求参数';
-COMMENT ON COLUMN "public"."sys_http_log"."rep_data" IS '响应数据';
-COMMENT ON COLUMN "public"."sys_http_log"."rep_state" IS '响应状态';
-COMMENT ON COLUMN "public"."sys_http_log"."rep_time" IS '响应时间（毫秒/耗时）';
-COMMENT ON COLUMN "public"."sys_http_log"."user_id" IS '用户ID';
-COMMENT ON COLUMN "public"."sys_http_log"."org_id" IS '组织ID';
-COMMENT ON COLUMN "public"."sys_http_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_http_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_http_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_http_log"."signature_version" IS '数据签名版本号';
+COMMENT ON COLUMN "public"."sys_http_log"."reqMethod" IS '请求方式';
+COMMENT ON COLUMN "public"."sys_http_log"."reqUrl" IS '请求链接';
+COMMENT ON COLUMN "public"."sys_http_log"."reqHeader" IS '请求头信息';
+COMMENT ON COLUMN "public"."sys_http_log"."reqParams" IS '请求参数';
+COMMENT ON COLUMN "public"."sys_http_log"."repData" IS '响应数据';
+COMMENT ON COLUMN "public"."sys_http_log"."repState" IS '响应状态';
+COMMENT ON COLUMN "public"."sys_http_log"."repTime" IS '响应时间（毫秒/耗时）';
+COMMENT ON COLUMN "public"."sys_http_log"."userId" IS '用户ID';
+COMMENT ON COLUMN "public"."sys_http_log"."orgId" IS '组织ID';
+COMMENT ON COLUMN "public"."sys_http_log"."createTime" IS '创建时间';
+
 
 COMMENT ON TABLE "public"."sys_http_log" IS '系统接口请求日志';`
 
 const searchForm = reactive<SearchForm>({
-  req_method: '',
-  rep_state: '',
-  req_url: '',
-  create_time: null
+  reqMethod: '',
+  repState: '',
+  reqUrl: '',
+  createTime: null
 })
 
 const pagination = reactive({
@@ -384,11 +380,11 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.req_method) searchParams.req_method = searchForm.req_method
-    if (searchForm.rep_state) searchParams.rep_state = searchForm.rep_state
-    if (searchForm.req_url) searchParams.req_url = searchForm.req_url
-    if (searchForm.create_time && searchForm.create_time.length === 2) {
-      searchParams.create_time = searchForm.create_time
+    if (searchForm.reqMethod) searchParams.reqMethod = searchForm.reqMethod
+    if (searchForm.repState) searchParams.repState = searchForm.repState
+    if (searchForm.reqUrl) searchParams.reqUrl = searchForm.reqUrl
+    if (searchForm.createTime && searchForm.createTime.length === 2) {
+      searchParams.createTime = searchForm.createTime
     }
 
     const res = await getHttpLogs({
@@ -411,10 +407,10 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.req_method = ''
-  searchForm.rep_state = ''
-  searchForm.req_url = ''
-  searchForm.create_time = null
+  searchForm.reqMethod = ''
+  searchForm.repState = ''
+  searchForm.reqUrl = ''
+  searchForm.createTime = null
   pagination.page = 1
   fetchData()
 }

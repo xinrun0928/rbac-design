@@ -24,35 +24,35 @@ export async function getAccessLogs(params: {
       const keyword = params.search.name.trim().toLowerCase()
       data = data.filter(item => item.name.toLowerCase().includes(keyword))
     }
-    if (params.search.user_name) {
-      const keyword = params.search.user_name.trim().toLowerCase()
-      data = data.filter(item => item.user_name?.toLowerCase().includes(keyword))
+    if (params.search.userName) {
+      const keyword = params.search.userName.trim().toLowerCase()
+      data = data.filter(item => item.userName?.toLowerCase().includes(keyword))
     }
     if (params.search.ip) {
       const keyword = params.search.ip.trim()
       data = data.filter(item => item.ip.includes(keyword))
     }
-    if (params.search.req_url) {
-      const keyword = params.search.req_url.trim().toLowerCase()
-      data = data.filter(item => item.req_url.toLowerCase().includes(keyword))
+    if (params.search.reqUrl) {
+      const keyword = params.search.reqUrl.trim().toLowerCase()
+      data = data.filter(item => item.reqUrl.toLowerCase().includes(keyword))
     }
-    if (params.search.op_type) {
-      data = data.filter(item => item.op_type === params.search!.op_type)
+    if (params.search.opType) {
+      data = data.filter(item => item.opType === params.search!.opType)
     }
-    if (params.search.func_type) {
-      data = data.filter(item => item.func_type === params.search!.func_type)
+    if (params.search.funcType) {
+      data = data.filter(item => item.funcType === params.search!.funcType)
     }
-    if (params.search.module_type) {
-      data = data.filter(item => item.module_type === params.search!.module_type)
+    if (params.search.moduleType) {
+      data = data.filter(item => item.moduleType === params.search!.moduleType)
     }
     if (params.search.status !== undefined && params.search.status !== '') {
       data = data.filter(item => item.status === params.search!.status)
     }
-    if (params.search.create_time && params.search.create_time.length === 2) {
-      const [start, end] = params.search.create_time
+    if (params.search.createTime && params.search.createTime.length === 2) {
+      const [start, end] = params.search.createTime
       if (start && end) {
         data = data.filter(item => {
-          const d = item.create_time
+          const d = item.createTime
           return d >= start && d <= end + ' 23:59:59'
         })
       }
@@ -85,9 +85,9 @@ export async function getMessageLogs(params: {
   let data = [...mockMessageLogData]
 
   if (params.search) {
-    if (params.search.template_id) {
-      const keyword = params.search.template_id.trim().toLowerCase()
-      data = data.filter(item => item.template_id.toLowerCase().includes(keyword))
+    if (params.search.templateId) {
+      const keyword = params.search.templateId.trim().toLowerCase()
+      data = data.filter(item => item.templateId.toLowerCase().includes(keyword))
     }
     if (params.search.phone) {
       const keyword = params.search.phone.trim()
@@ -100,11 +100,11 @@ export async function getMessageLogs(params: {
     if (params.search.status !== undefined && params.search.status !== '') {
       data = data.filter(item => item.status === params.search!.status)
     }
-    if (params.search.create_time && params.search.create_time.length === 2) {
-      const [start, end] = params.search.create_time
+    if (params.search.createTime && params.search.createTime.length === 2) {
+      const [start, end] = params.search.createTime
       if (start && end) {
         data = data.filter(item => {
-          const d = item.create_time
+          const d = item.createTime
           return d >= start && d <= end + ' 23:59:59'
         })
       }
@@ -123,7 +123,7 @@ export async function getMessageLogs(params: {
 /** 获取短信消息日志详情 */
 export async function getMessageLogDetail(messageId: string): Promise<SysMessageLog | undefined> {
   await delay(150)
-  return mockMessageLogData.find(item => item.message_id === messageId)
+  return mockMessageLogData.find(item => item.messageId === messageId)
 }
 
 /** 分页查询接口请求日志 */
@@ -137,25 +137,25 @@ export async function getHttpLogs(params: {
   let data = [...mockHttpLogData]
 
   if (params.search) {
-    if (params.search.user_id) {
-      const keyword = params.search.user_id.trim()
-      data = data.filter(item => String(item.user_id).includes(keyword))
+    if (params.search.userId) {
+      const keyword = params.search.userId.trim()
+      data = data.filter(item => String(item.userId).includes(keyword))
     }
-    if (params.search.req_url) {
-      const keyword = params.search.req_url.trim().toLowerCase()
-      data = data.filter(item => item.req_url.toLowerCase().includes(keyword))
+    if (params.search.reqUrl) {
+      const keyword = params.search.reqUrl.trim().toLowerCase()
+      data = data.filter(item => item.reqUrl.toLowerCase().includes(keyword))
     }
-    if (params.search.req_method) {
-      data = data.filter(item => item.req_method === params.search!.req_method)
+    if (params.search.reqMethod) {
+      data = data.filter(item => item.reqMethod === params.search!.reqMethod)
     }
-    if (params.search.rep_state !== undefined && params.search.rep_state !== '') {
-      data = data.filter(item => item.rep_state === params.search!.rep_state)
+    if (params.search.repState !== undefined && params.search.repState !== '') {
+      data = data.filter(item => item.repState === params.search!.repState)
     }
-    if (params.search.create_time && params.search.create_time.length === 2) {
-      const [start, end] = params.search.create_time
+    if (params.search.createTime && params.search.createTime.length === 2) {
+      const [start, end] = params.search.createTime
       if (start && end) {
         data = data.filter(item => {
-          const d = item.create_time
+          const d = item.createTime
           return d >= start && d <= end + ' 23:59:59'
         })
       }
@@ -188,30 +188,30 @@ export async function getLoginLogs(params: {
   let data = [...mockLoginLogData]
 
   if (params.search) {
-    if (params.search.user_name) {
-      const keyword = params.search.user_name.trim().toLowerCase()
-      data = data.filter(item => item.user_name?.toLowerCase().includes(keyword))
+    if (params.search.userName) {
+      const keyword = params.search.userName.trim().toLowerCase()
+      data = data.filter(item => item.userName?.toLowerCase().includes(keyword))
     }
-    if (params.search.client_id) {
-      const keyword = params.search.client_id.trim().toLowerCase()
-      data = data.filter(item => item.client_id.toLowerCase().includes(keyword))
+    if (params.search.clientId) {
+      const keyword = params.search.clientId.trim().toLowerCase()
+      data = data.filter(item => item.clientId.toLowerCase().includes(keyword))
     }
     if (params.search.ip) {
       const keyword = params.search.ip.trim()
       data = data.filter(item => item.ip.includes(keyword))
     }
-    if (params.search.operation_type !== undefined && params.search.operation_type !== '') {
-      data = data.filter(item => item.operation_type === params.search!.operation_type)
+    if (params.search.operationType !== undefined && params.search.operationType !== '') {
+      data = data.filter(item => item.operationType === params.search!.operationType)
     }
-    if (params.search.grant_type) {
-      const keyword = params.search.grant_type.trim().toLowerCase()
-      data = data.filter(item => item.grant_type.toLowerCase().includes(keyword))
+    if (params.search.grantType) {
+      const keyword = params.search.grantType.trim().toLowerCase()
+      data = data.filter(item => item.grantType.toLowerCase().includes(keyword))
     }
-    if (params.search.create_time && params.search.create_time.length === 2) {
-      const [start, end] = params.search.create_time
+    if (params.search.createTime && params.search.createTime.length === 2) {
+      const [start, end] = params.search.createTime
       if (start && end) {
         data = data.filter(item => {
-          const d = item.create_time
+          const d = item.createTime
           return d >= start && d <= end + ' 23:59:59'
         })
       }
@@ -230,5 +230,5 @@ export async function getLoginLogs(params: {
 /** 获取登录日志详情 */
 export async function getLoginLogDetail(logId: string): Promise<SysLoginLog | undefined> {
   await delay(150)
-  return mockLoginLogData.find(item => item.log_id === logId)
+  return mockLoginLogData.find(item => item.logId === logId)
 }

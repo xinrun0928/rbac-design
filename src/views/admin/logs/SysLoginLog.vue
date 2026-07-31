@@ -7,7 +7,7 @@
         <el-form :model="searchForm" inline>
           <el-form-item label="用户名">
             <el-input
-              v-model="searchForm.user_name"
+              v-model="searchForm.userName"
               placeholder="请输入用户名"
               clearable
               :prefix-icon="Search"
@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item label="客户端">
             <el-select
-              v-model="searchForm.client_id"
+              v-model="searchForm.clientId"
               placeholder="请选择"
               clearable
               style="width: 180px"
@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label="授权类型">
             <el-select
-              v-model="searchForm.grant_type"
+              v-model="searchForm.grantType"
               placeholder="请选择"
               clearable
               style="width: 180px"
@@ -39,7 +39,7 @@
           </el-form-item>
           <el-form-item label="登录时间">
             <el-date-picker
-              v-model="searchForm.create_time"
+              v-model="searchForm.createTime"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -57,61 +57,61 @@
         border
         stripe
         highlight-current-row
-        row-key="log_id"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        row-key="logId"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         empty-text=" "
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="puser_id" label="用户ID" width="160">
+        <el-table-column prop="puserId" label="用户ID" width="160">
           <template #default="{ row }">
-            <span class="id-text">{{ row.puser_id || '-' }}</span>
+            <span class="id-text">{{ row.puserId || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="org_id" label="组织ID" width="160">
+        <el-table-column prop="orgId" label="组织ID" width="160">
           <template #default="{ row }">
-            <span class="id-text">{{ row.org_id || '-' }}</span>
+            <span class="id-text">{{ row.orgId || '-' }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="user_name" label="用户名" min-width="200">
+        <el-table-column prop="userName" label="用户名" min-width="200">
           <template #default="{ row }">
-            <el-tooltip v-if="row.user_name" :content="'点击复制'" placement="top" :show-after="300">
-              <span class="user-text copyable" @click="handleCopyText(row.user_name)">{{ row.user_name }}</span>
+            <el-tooltip v-if="row.userName" :content="'点击复制'" placement="top" :show-after="300">
+              <span class="user-text copyable" @click="handleCopyText(row.userName)">{{ row.userName }}</span>
             </el-tooltip>
             <span v-else class="user-text">-</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="client_id" label="客户端" width="150">
+        <el-table-column prop="clientId" label="客户端" width="150">
           <template #default="{ row }">
-            <el-tag type="info" effect="plain" round>{{ row.client_id }}</el-tag>
+            <el-tag type="info" effect="plain" round>{{ row.clientId }}</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="grant_type" label="授权类型" width="120" align="center">
+        <el-table-column prop="grantType" label="授权类型" width="120" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="getGrantTypeType(row.grant_type)"
+              :type="getGrantTypeType(row.grantType)"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.grant_type }}
+              {{ row.grantType }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="operation_type" label="操作类型" width="100" align="center">
+        <el-table-column prop="operationType" label="操作类型" width="100" align="center">
           <template #default="{ row }">
             <el-tag
-              :type="row.operation_type === 1 ? 'success' : 'info'"
+              :type="row.operationType === 1 ? 'success' : 'info'"
               effect="dark"
               style="border: none; color: #fff"
               round
             >
-              {{ row.operation_type === 1 ? '登录' : '登出' }}
+              {{ row.operationType === 1 ? '登录' : '登出' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -128,9 +128,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" label="登录时间" width="180" align="center">
+        <el-table-column prop="createTime" label="登录时间" width="180" align="center">
           <template #default="{ row }">
-            <span class="time-text">{{ row.create_time }}</span>
+            <span class="time-text">{{ row.createTime }}</span>
           </template>
         </el-table-column>
 
@@ -182,55 +182,55 @@
             <div class="detail-grid">
               <div class="detail-item">
                 <span class="detail-label">记录ID</span>
-                <span class="detail-value mono">{{ detailData.log_id }}</span>
+                <span class="detail-value mono">{{ detailData.logId }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">用户名</span>
-                <span class="detail-value">{{ detailData.user_name || '-' }}</span>
+                <span class="detail-value">{{ detailData.userName || '-' }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">用户ID</span>
-                <span class="detail-value mono">{{ detailData.puser_id || '-' }}</span>
+                <span class="detail-value mono">{{ detailData.puserId || '-' }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">组织ID</span>
-                <span class="detail-value mono">{{ detailData.org_id || '-' }}</span>
+                <span class="detail-value mono">{{ detailData.orgId || '-' }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">操作类型</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="detailData.operation_type === 1 ? 'success' : 'info'"
+                    :type="detailData.operationType === 1 ? 'success' : 'info'"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ detailData.operation_type === 1 ? '登录' : '登出' }}
+                    {{ detailData.operationType === 1 ? '登录' : '登出' }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">客户端</span>
-                <span class="detail-value">{{ detailData.client_id }}</span>
+                <span class="detail-value">{{ detailData.clientId }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">授权类型</span>
                 <span class="detail-value">
                   <el-tag
-                    :type="getGrantTypeType(detailData.grant_type)"
+                    :type="getGrantTypeType(detailData.grantType)"
                     effect="dark"
                     style="border: none; color: #fff"
                     round
                     size="small"
                   >
-                    {{ detailData.grant_type }}
+                    {{ detailData.grantType }}
                   </el-tag>
                 </span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">登录时间</span>
-                <span class="detail-value">{{ detailData.create_time }}</span>
+                <span class="detail-value">{{ detailData.createTime }}</span>
               </div>
             </div>
           </el-collapse-item>
@@ -290,10 +290,10 @@ import { getLoginLogs, getLoginLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  user_name: string
-  client_id: string
-  grant_type: string
-  create_time: string[] | null
+  userName: string
+  clientId: string
+  grantType: string
+  createTime: string[] | null
 }
 
 // ── 状态 ──
@@ -305,54 +305,50 @@ const activeCollapse = ref(['basic', 'terminal'])
 const sqlDialogVisible = ref(false)
 
 const loginLogSql = `CREATE TABLE "public"."sys_login_log" (
-  "log_id" int8 NOT NULL,
-  "puser_id" int8,
-  "user_name" varchar(255) COLLATE "pg_catalog"."default",
-  "org_id" int8,
-  "client_id" varchar(255) COLLATE "pg_catalog"."default",
-  "grant_type" varchar(255) COLLATE "pg_catalog"."default",
+  "logId" int8 NOT NULL,
+  "puserId" int8,
+  "userName" varchar(255) COLLATE "pg_catalog"."default",
+  "orgId" int8,
+  "clientId" varchar(255) COLLATE "pg_catalog"."default",
+  "grantType" varchar(255) COLLATE "pg_catalog"."default",
   "ip" varchar(255) COLLATE "pg_catalog"."default",
   "location" varchar(255) COLLATE "pg_catalog"."default",
   "browser" varchar(255) COLLATE "pg_catalog"."default",
   "os" varchar(255) COLLATE "pg_catalog"."default",
-  "operation_type" int4,
-  "create_time" timestamp(6),
-  "deleted" int2 DEFAULT 0,
-  "signature" varchar(512) COLLATE "pg_catalog"."default",
-  "signature_version" int2 DEFAULT 1,
-  CONSTRAINT "sys_login_log_pkey" PRIMARY KEY ("log_id")
+  "operationType" int4,
+  "createTime" timestamp(6),
+
+  CONSTRAINT "sys_login_log_pkey" PRIMARY KEY ("logId")
 );
 
 ALTER TABLE "public"."sys_login_log" OWNER TO "postgres";
 
-CREATE INDEX "idx_sys_login_log_create_time" ON "public"."sys_login_log" USING btree ("create_time" "pg_catalog"."timestamp_ops" ASC NULLS LAST);
-CREATE INDEX "idx_sys_login_log_operation_type" ON "public"."sys_login_log" USING btree ("operation_type" "pg_catalog"."int4_ops" ASC NULLS LAST);
-CREATE INDEX "idx_sys_login_log_org_id" ON "public"."sys_login_log" USING btree ("org_id" "pg_catalog"."int8_ops" ASC NULLS LAST);
-CREATE INDEX "idx_sys_login_log_puser_id" ON "public"."sys_login_log" USING btree ("puser_id" "pg_catalog"."int8_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_createTime" ON "public"."sys_login_log" USING btree ("createTime" "pg_catalog"."timestamp_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_operationType" ON "public"."sys_login_log" USING btree ("operationType" "pg_catalog"."int4_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_orgId" ON "public"."sys_login_log" USING btree ("orgId" "pg_catalog"."int8_ops" ASC NULLS LAST);
+CREATE INDEX "idx_sys_login_log_puserId" ON "public"."sys_login_log" USING btree ("puserId" "pg_catalog"."int8_ops" ASC NULLS LAST);
 
-COMMENT ON COLUMN "public"."sys_login_log"."log_id" IS '唯一ID';
-COMMENT ON COLUMN "public"."sys_login_log"."puser_id" IS '平台账户ID';
-COMMENT ON COLUMN "public"."sys_login_log"."user_name" IS '用户名称';
-COMMENT ON COLUMN "public"."sys_login_log"."org_id" IS '组织ID';
-COMMENT ON COLUMN "public"."sys_login_log"."client_id" IS '客户端ID';
-COMMENT ON COLUMN "public"."sys_login_log"."grant_type" IS '授权类型';
+COMMENT ON COLUMN "public"."sys_login_log"."logId" IS '唯一ID';
+COMMENT ON COLUMN "public"."sys_login_log"."puserId" IS '平台账户ID';
+COMMENT ON COLUMN "public"."sys_login_log"."userName" IS '用户名称';
+COMMENT ON COLUMN "public"."sys_login_log"."orgId" IS '组织ID';
+COMMENT ON COLUMN "public"."sys_login_log"."clientId" IS '客户端ID';
+COMMENT ON COLUMN "public"."sys_login_log"."grantType" IS '授权类型';
 COMMENT ON COLUMN "public"."sys_login_log"."ip" IS '客户端IP地址';
 COMMENT ON COLUMN "public"."sys_login_log"."location" IS 'IP地理位置';
 COMMENT ON COLUMN "public"."sys_login_log"."browser" IS '浏览器信息';
 COMMENT ON COLUMN "public"."sys_login_log"."os" IS '操作系统';
-COMMENT ON COLUMN "public"."sys_login_log"."operation_type" IS '操作类型（1-登录，2-登出）';
-COMMENT ON COLUMN "public"."sys_login_log"."create_time" IS '创建时间';
-COMMENT ON COLUMN "public"."sys_login_log"."deleted" IS '逻辑删除标志（0正常 1删除）';
-COMMENT ON COLUMN "public"."sys_login_log"."signature" IS '数据签名';
-COMMENT ON COLUMN "public"."sys_login_log"."signature_version" IS '数据签名版本号';
+COMMENT ON COLUMN "public"."sys_login_log"."operationType" IS '操作类型（1-登录，2-登出）';
+COMMENT ON COLUMN "public"."sys_login_log"."createTime" IS '创建时间';
+
 
 COMMENT ON TABLE "public"."sys_login_log" IS '系统登录日志表';`
 
 const searchForm = reactive<SearchForm>({
-  user_name: '',
-  client_id: '',
-  grant_type: '',
-  create_time: null
+  userName: '',
+  clientId: '',
+  grantType: '',
+  createTime: null
 })
 
 const pagination = reactive({
@@ -394,11 +390,11 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.user_name) searchParams.user_name = searchForm.user_name
-    if (searchForm.client_id) searchParams.client_id = searchForm.client_id
-    if (searchForm.grant_type) searchParams.grant_type = searchForm.grant_type
-    if (searchForm.create_time && searchForm.create_time.length === 2) {
-      searchParams.create_time = searchForm.create_time
+    if (searchForm.userName) searchParams.userName = searchForm.userName
+    if (searchForm.clientId) searchParams.clientId = searchForm.clientId
+    if (searchForm.grantType) searchParams.grantType = searchForm.grantType
+    if (searchForm.createTime && searchForm.createTime.length === 2) {
+      searchParams.createTime = searchForm.createTime
     }
 
     const res = await getLoginLogs({
@@ -421,10 +417,10 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.user_name = ''
-  searchForm.client_id = ''
-  searchForm.grant_type = ''
-  searchForm.create_time = null
+  searchForm.userName = ''
+  searchForm.clientId = ''
+  searchForm.grantType = ''
+  searchForm.createTime = null
   pagination.page = 1
   fetchData()
 }
@@ -446,7 +442,7 @@ function handlePageChange(page: number) {
 
 async function handleViewDetail(row: SysLoginLog) {
   try {
-    const detail = await getLoginLogDetail(row.log_id)
+    const detail = await getLoginLogDetail(row.logId)
     if (detail) {
       detailData.value = detail
       detailDialogVisible.value = true

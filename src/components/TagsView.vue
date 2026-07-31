@@ -95,7 +95,7 @@ const visitedViews = ref<TagView[]>([])
 const visible = ref(false)
 const left = ref(0)
 const top = ref(0)
-const selectedTag = ref<TagView>({})
+const selectedTag = ref<TagView>({} as TagView)
 const scrollContainer = ref<HTMLElement>()
 
 // 固定标签（首页）

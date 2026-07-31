@@ -31,7 +31,7 @@
         stripe
         highlight-current-row
         row-key="sessionId"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Search, Delete } from '@element-plus/icons-vue'
 import { onlineUserData } from '@/mock/admin/monitorData'
 import type { OnlineUser, OnlineUserSearchForm } from '@/types/admin/monitor'
 

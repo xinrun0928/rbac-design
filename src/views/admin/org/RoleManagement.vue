@@ -2,87 +2,40 @@
   <div class="role-management">
 
     <div class="main-content animate-item">
-      <!-- 左侧：组织树 -->
-      <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <div class="tree-header">
-          <span v-if="!treeCollapsed" class="tree-title">组织结构</span>
-          <el-button
-            :icon="treeCollapsed ? DArrowRight : DArrowLeft"
-            link
-            @click="treeCollapsed = !treeCollapsed"
-            class="collapse-btn"
-          />
-        </div>
-        <div v-if="!treeCollapsed" class="tree-body">
-          <el-input
-            v-model="treeFilter"
-            placeholder="搜索组织名称"
-            clearable
-            :prefix-icon="Search"
-            class="tree-search"
-          />
-          <el-tree
-            ref="treeRef"
-            :data="orgTreeData"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterTreeNode"
-            @node-click="handleNodeClick"
-            class="org-tree"
-          >
-            <template #default="{ data }">
-              <div class="tree-node">
-                <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
-                  <component :is="getNodeTypeIcon(data.nodeType)" />
-                </el-icon>
-                <span class="node-label">{{ data.name }}</span>
-              </div>
-            </template>
-          </el-tree>
-        </div>
-      </div>
+      <OrgTreePanel ref="orgTreeRef" :selected-id="currentNode?.id" @node-click="handleNodeClick" />
 
       <!-- 右侧：角色列表区域 -->
       <div class="list-panel">
-        <!-- 当前选中提示 -->
-        <div v-if="currentNode" class="current-node-bar">
-          <div class="node-info">
-            <el-icon><Location /></el-icon>
-            <span>当前组织：<strong>{{ currentNode.name }}</strong></span>
-            <el-tag size="small" :type="getNodeTypeTagType(currentNode.nodeType)" effect="plain">
-              {{ getNodeTypeLabel(currentNode.nodeType) }}
-            </el-tag>
-          </div>
-          <div class="node-tags">
-            <span class="tags-label">关联套餐：</span>
-            <el-tag
-              v-if="currentNode.packageName"
-              :color="getPackageColor(currentNode.packageName)"
-              effect="dark"
-              style="border: none; color: #fff;"
-              size="small"
-            >
-              {{ currentNode.packageName }}
-            </el-tag>
-            <span v-else class="no-package">未关联套餐</span>
-          </div>
-          <el-button type="primary" :icon="Plus" @click="handleAddRole" class="add-btn">新增角色</el-button>
-        </div>
-
         <!-- 角色列表 -->
         <el-card class="table-card" shadow="never">
+          <div class="search-bar">
+            <span class="search-bar-title">角色管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="roleSearchForm.roleName"
+                placeholder="搜索角色名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleRoleSearch"
+                @clear="handleRoleSearch"
+              />
+              <el-select v-model="roleSearchForm.dataScope" placeholder="数据范围" clearable style="width: 180px; margin-right: 12px" @change="handleRoleSearch">
+                <el-option v-for="item in dataScopeOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <el-button type="primary" :icon="Plus" @click="handleAddRole">新增角色</el-button>
+            </div>
+          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
-            :data="roleList"
+            :data="filteredRoleData"
+            height="100%"
             border
             stripe
             highlight-current-row
             row-key="roleId"
-            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
             empty-text=" "
           >
             <el-table-column label="序号" width="60" align="center" type="index">
@@ -97,7 +50,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="roleName" label="角色名称" min-width="140">
+            <el-table-column prop="roleName" label="角色名称" min-width="190">
               <template #default="{ row }">
                 <div class="role-name-cell">
                   <el-icon :style="{ color: row.isSystem ? '#E6A23C' : '#67C23A' }">
@@ -109,7 +62,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="description" label="角色描述" min-width="150">
+            <el-table-column prop="description" label="角色描述" min-width="150" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="desc-text">{{ row.description || '-' }}</span>
               </template>
@@ -152,7 +105,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="250" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Edit" @click="handleEditRole(row)">编辑</el-button>
                 <el-button type="primary" link :icon="Setting" @click="handleConfigMenu(row)">配置菜单</el-button>
@@ -185,6 +138,19 @@
               </div>
             </template>
           </el-table>
+          </div>
+
+          <div class="pagination-wrapper">
+            <el-pagination
+              v-model:current-page="pagination.page"
+              v-model:page-size="pagination.pageSize"
+              :total="pagination.total"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
+              background
+              @size-change="handleSizeChange"
+              @current-change="handlePageChange"
+            />
           </div>
         </el-card>
       </div>
@@ -283,18 +249,18 @@
           <div class="bind-subsystem-list">
             <div
               v-for="sub in subsystems"
-              :key="sub.subsysId"
+              :key="sub.subsystemId"
               class="bind-subsystem-item"
-              :class="{ active: bindSelectedSubsystem === sub.subsysId }"
-              @click="loadBindMenuTree(sub.subsysId)"
+              :class="{ active: bindSelectedSubsystem === sub.subsystemId }"
+              @click="loadBindMenuTree(sub.subsystemId)"
             >
-              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsysId).bg }">
-                <el-icon :color="getSubsystemIconStyle(sub.subsysId).color">
-                  <component :is="getSubsystemIconStyle(sub.subsysId).icon" />
+              <div class="subsystem-icon" :style="{ background: getSubsystemIconStyle(sub.subsystemId).bg }">
+                <el-icon :color="getSubsystemIconStyle(sub.subsystemId).color">
+                  <component :is="getSubsystemIconStyle(sub.subsystemId).icon" />
                 </el-icon>
               </div>
-              <span class="subsystem-name">{{ sub.subsysShortName }}</span>
-              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsysId] || 0 }}）</span>
+              <span class="subsystem-name">{{ sub.subsystemShortName }}</span>
+              <span class="subsystem-count">（{{ subsystemMenuCount[sub.subsystemId] || 0 }}）</span>
             </div>
           </div>
         </div>
@@ -345,15 +311,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, Plus, Delete, Edit, Setting,
   SuccessFilled, CircleCloseFilled,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock
+  User, Lock
 } from '@element-plus/icons-vue'
+import OrgTreePanel from '@/components/OrgTreePanel.vue'
 import { orgTreeData } from '@/mock/admin/orgTreeData'
 import { mockMenuData } from '@/mock/admin/menuData'
 import { mockSubsystemData } from '@/mock/admin/subsystemData'
@@ -387,10 +354,8 @@ const dataScopeOptions = [
 
 // ── 状态 ──
 const loading = ref(false)
-const treeRef = ref<InstanceType<typeof ElTree>>()
+const orgTreeRef = ref<InstanceType<typeof OrgTreePanel>>()
 const bindTreeRef = ref<InstanceType<typeof ElTree>>()
-const treeCollapsed = ref(false)
-const treeFilter = ref('')
 const currentNode = ref<OrgTreeNode | null>(null)
 const roleDrawerVisible = ref(false)
 const isRoleEdit = ref(false)
@@ -401,6 +366,11 @@ const currentRole = ref<RoleItem | null>(null)
 const allRoles = ref<RoleItem[]>([])
 const checkedMenuIds = ref<number[]>([])
 
+const roleSearchForm = reactive({
+  roleName: '',
+  dataScope: ''
+})
+
 // 菜单绑定相关状态
 const bindSelectedSubsystem = ref<number>(1)
 const bindMenuTree = ref<Menu[]>([])
@@ -410,7 +380,7 @@ const bindIndeterminate = ref(false)
 const subsystemMenuCount = ref<Record<number, number>>({})
 
 // 子系统列表（排除隐藏的）
-const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && sub.deleted === 0)
+const subsystems = mockSubsystemData.filter(sub => !sub.isHidden && true)
 
 // 根据当前选中节点筛选角色
 const roleList = computed(() => {
@@ -428,10 +398,34 @@ const roleFormData = reactive({
   status: 1101
 })
 
-// ── 树节点筛选 ──
-watch(treeFilter, (val) => {
-  treeRef.value?.filter(val)
+// 分页
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0
 })
+
+const filteredRoleData = computed(() => {
+  let data = roleList.value
+  if (roleSearchForm.roleName) {
+    data = data.filter(item => item.roleName.includes(roleSearchForm.roleName))
+  }
+  if (roleSearchForm.dataScope) {
+    data = data.filter(item => item.dataScope === roleSearchForm.dataScope)
+  }
+  pagination.total = data.length
+  const start = (pagination.page - 1) * pagination.pageSize
+  return data.slice(start, start + pagination.pageSize)
+})
+
+function handleSizeChange(size: number) {
+  pagination.pageSize = size
+  pagination.page = 1
+}
+
+function handlePageChange(page: number) {
+  pagination.page = page
+}
 
 // ── 方法 ──
 function fetchRoleData() {
@@ -577,113 +571,8 @@ function handleNodeClick(data: OrgTreeNode) {
   currentNode.value = data
 }
 
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.includes(value)
-}
-
-function handleRefresh() {
-  fetchRoleData()
-}
-
-function getNodeTypeIcon(nodeType: string) {
-  return OfficeBuilding
-}
-
-function getNodeTypeColor(nodeType: string): string {
-  const colors: Record<string, string> = {
-    root: '#409EFF',
-    dept: '#67C23A',
-    branch: '#E6A23C',
-    station: '#9B59B6',
-    company: '#F56C6C'
-  }
-  return colors[nodeType] || '#909399'
-}
-
-function getNodeTypeLabel(nodeType: string): string {
-  const labels: Record<string, string> = {
-    root: '根节点',
-    dept: '部门',
-    branch: '分支',
-    station: '站点',
-    company: '企业'
-  }
-  return labels[nodeType] || '未知'
-}
-
-function getNodeTypeTagType(nodeType: string): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const types: Record<string, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    root: '',
-    dept: 'success',
-    branch: 'warning',
-    station: 'info',
-    company: 'danger'
-  }
-  return types[nodeType] || 'info'
-}
-
-function getPackageColor(packageName: string): string {
-  const colors: Record<string, string> = {
-    '省交通本级': '#409EFF',
-    '交通': '#67C23A',
-    '市交通': '#E6A23C',
-    '县交通': '#F56C6C',
-    '省事务中心': '#9B59B6',
-    '事务中心': '#1ABC9C',
-    '市事务中心': '#3498DB',
-    '县事务中心': '#2ECC71',
-    '省交通公司': '#E74C3C',
-    '公司': '#F39C12',
-    '监控中心': '#8E44AD',
-    '高速公路': '#16A085',
-    '普通公路': '#27AE60'
-  }
-  return colors[packageName] || '#909399'
-}
-
-function getDataScopeColor(dataScope: string): string {
-  const option = dataScopeOptions.find(o => o.value === dataScope)
-  return option?.color || '#909399'
-}
-
-function getDataScopeLabel(dataScope: string): string {
-  const option = dataScopeOptions.find(o => o.value === dataScope)
-  return option?.label || '未知'
-}
-
-function getMenuTypeColor(menuType: number): string {
-  const colors: Record<number, string> = {
-    0: '#409EFF',
-    1: '#67C23A',
-    2: '#F56C6C',
-    99: '#E6A23C'
-  }
-  return colors[menuType] || '#909399'
-}
-
-function getMenuTypeIcon(menuType: number) {
-  return OfficeBuilding
-}
-
-function getMenuTypeLabel(menuType: number): string {
-  const labels: Record<number, string> = {
-    0: '目录',
-    1: '菜单',
-    2: '权限',
-    99: '导航'
-  }
-  return labels[menuType] || '未知'
-}
-
-function getMenuTypeTagType(menuType: number): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const types: Record<number, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    0: '',
-    1: 'success',
-    2: 'danger',
-    99: 'warning'
-  }
-  return types[menuType] || 'info'
+function handleRoleSearch() {
+  pagination.page = 1
 }
 
 function handleAddRole() {
@@ -744,29 +633,29 @@ function handleConfigMenu(row: RoleItem) {
   calculateSubsystemMenuCount()
   // 默认选中第一个子系统
   if (subsystems.length > 0) {
-    loadBindMenuTree(subsystems[0].subsysId)
+    loadBindMenuTree(subsystems[0].subsystemId)
   }
 }
 
 function calculateSubsystemMenuCount() {
   const counts: Record<number, number> = {}
   for (const sub of subsystems) {
-    counts[sub.subsysId] = mockMenuData.filter(m => m.subsysId === sub.subsysId && m.deleted === 0).length
+    counts[sub.subsystemId] = mockMenuData.filter(m => m.subsystemId === sub.subsystemId && true).length
   }
   subsystemMenuCount.value = counts
 }
 
-function loadBindMenuTree(subsysId: number) {
-  bindSelectedSubsystem.value = subsysId
+function loadBindMenuTree(subsystemId: number) {
+  bindSelectedSubsystem.value = subsystemId
   // 获取该子系统的菜单并构建树
-  const subMenus = mockMenuData.filter(m => m.subsysId === subsysId && m.deleted === 0)
+  const subMenus = mockMenuData.filter(m => m.subsystemId === subsystemId && true)
   bindMenuTree.value = buildMenuTree(subMenus)
 
   // 设置已选中的菜单
   if (currentRole.value) {
     const roleSubMenus = currentRole.value.menuIds.filter(id => {
       const menu = mockMenuData.find(m => m.menuId === id)
-      return menu && menu.subsysId === subsysId
+      return menu && menu.subsystemId === subsystemId
     })
     bindCheckedKeys.value = roleSubMenus
   } else {
@@ -823,7 +712,7 @@ function handleSubmitMenu() {
   // 合并其他子系统已选中的菜单
   const otherSubMenus = currentRole.value.menuIds.filter(id => {
     const menu = mockMenuData.find(m => m.menuId === id)
-    return menu && menu.subsysId !== bindSelectedSubsystem.value
+    return menu && menu.subsystemId !== bindSelectedSubsystem.value
   })
 
   const allMenuIds = [...new Set([...otherSubMenus, ...checkedKeys])]
@@ -846,8 +735,19 @@ const subsystemIconMap: Record<number, { icon: string; color: string; bg: string
   99: { icon: 'Setting', color: '#909399', bg: 'linear-gradient(135deg, #F4F4F5 0%, #E9E9EB 100%)' }
 }
 
-function getSubsystemIconStyle(subsysId: number) {
-  return subsystemIconMap[subsysId] || subsystemIconMap[99]
+function getSubsystemIconStyle(subsystemId: number) {
+  return subsystemIconMap[subsystemId] || subsystemIconMap[99]
+}
+
+// 数据范围
+function getDataScopeColor(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.color || '#909399'
+}
+
+function getDataScopeLabel(dataScope: string): string {
+  const option = dataScopeOptions.find(o => o.value === dataScope)
+  return option?.label || dataScope
 }
 
 // 菜单类型样式
@@ -861,6 +761,16 @@ function getMenuTypeClass(menuType: number): string {
   return classes[menuType] || ''
 }
 
+function getMenuTypeLabel(menuType: number): string {
+  const labels: Record<number, string> = {
+    0: '目录',
+    1: '菜单',
+    2: '按钮',
+    99: '外链'
+  }
+  return labels[menuType] || ''
+}
+
 function handleRoleDrawerClose(done: () => void) {
   roleFormRef.value?.resetFields()
   done()
@@ -872,6 +782,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      orgTreeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -901,74 +814,6 @@ onMounted(() => {
     overflow: hidden;
   }
 
-  // 左侧树面板
-  .tree-panel {
-    width: 280px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: width 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    &.collapsed { width: 48px; }
-
-    .tree-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid #EBEEF5;
-    }
-
-    .tree-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .tree-body {
-      padding: 12px;
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tree-search {
-      margin-bottom: 12px;
-    }
-
-    .org-tree {
-      flex: 1;
-      overflow-y: auto;
-
-      :deep(.el-tree-node__content) {
-        height: 36px;
-        border-radius: 6px;
-        margin-bottom: 2px;
-      }
-
-      :deep(.el-tree-node.is-current > .el-tree-node__content) {
-        background: #ECF5FF;
-        color: #409EFF;
-      }
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-
-      .node-icon {
-        font-size: 14px;
-      }
-    }
-  }
-
   // 右侧列表区
   .list-panel {
     flex: 1;
@@ -976,50 +821,34 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
   }
 
-  .current-node-bar {
+  .search-bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
-    background: #ECF5FF;
-    border-radius: 8px;
+    justify-content: space-between;
     margin-bottom: 16px;
-    font-size: 13px;
-    color: #409EFF;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    .node-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
     }
+  }
 
-    .node-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-left: 16px;
-      border-left: 1px solid #B3D8FF;
-      color: #D46B08;
-      background: #FFF7E6;
-      border-radius: 6px;
-      padding: 4px 12px;
-    }
-
-    .tags-label {
-      font-weight: 500;
-    }
-
-    .no-package {
-      color: #C0C4CC;
-    }
-
-    .add-btn {
-      margin-left: auto;
-    }
-
-    strong { color: #303133; }
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .package-tags-bar {
@@ -1050,6 +879,7 @@ onMounted(() => {
     border-radius: 12px;
     border: none;
     flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1064,7 +894,7 @@ onMounted(() => {
 
     .table-wrapper {
       flex: 1;
-      overflow: auto;
+      overflow: hidden;
     }
 
     :deep(.el-table) {
@@ -1074,7 +904,7 @@ onMounted(() => {
     .index-text { color: #909399; font-size: 13px; }
     .code-text { font-family: 'Monaco','Menlo','Consolas', monospace; color: #409EFF; font-size: 12px; }
     .name-text { font-weight: 500; color: #303133; }
-    .desc-text { font-size: 13px; color: #909399; }
+    .desc-text { font-size: 13px; color: #909399; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .level-text { font-weight: 600; color: #E6A23C; }
 
     .role-name-cell {
@@ -1091,6 +921,15 @@ onMounted(() => {
       padding: 48px 0;
       .empty-title { font-size: 16px; color: #606266; margin: 16px 0 8px; }
       .empty-desc { font-size: 13px; color: #909399; }
+    }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #EBEEF5;
+      flex-shrink: 0;
     }
   }
 

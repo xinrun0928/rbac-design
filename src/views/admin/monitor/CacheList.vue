@@ -17,7 +17,7 @@
         stripe
         highlight-current-row
         row-key="cacheName"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -68,7 +68,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete } from '@element-plus/icons-vue'
+import { Search, Delete } from '@element-plus/icons-vue'
 import { cacheNameListData } from '@/mock/admin/monitorData'
 import type { CacheNameInfo } from '@/types/admin/monitor'
 

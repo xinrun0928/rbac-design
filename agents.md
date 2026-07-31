@@ -208,6 +208,30 @@ const handleSizeChange = () => {
 }
 ```
 
+### 表格列居中规范
+- **普通列表**：不需要额外样式，直接在 `el-table-column` 上设置 `align="center"` 即可居中
+- **树形列表**（使用 `tree-props` 的表格）：必须在 CSS 中添加以下样式，确保非首列内容居中，首列（树形列）保持左对齐：
+
+```scss
+.el-table__row .cell {
+  display: flex;
+  align-items: center;
+}
+
+.el-table__row .el-table__cell:not(:first-child) .cell {
+  justify-content: center;
+}
+```
+
+当前使用该样式的页面：
+- `src/views/admin/system/MenuManagement.vue`
+- `src/views/admin/org/DeptManagement.vue`
+- `src/views/admin/org/OrgTreeView.vue`
+- `src/views/admin/system/AreaManagement.vue`
+- `src/views/duty/base-info/PostManagement.vue`
+
+新开发树形列表页面时必须添加此样式。
+
 ### 样式规范
 - 侧边栏背景色：`#1a1f2e`
 - 菜单项高度：`50px`
@@ -220,9 +244,9 @@ const handleSizeChange = () => {
 ## 构建运行
 
 ```bash
-pnpm install    # 安装依赖
-pnpm dev        # 启动开发服务器
-pnpm build      # 构建生产版本
+npm install    # 安装依赖
+npm run dev    # 启动开发服务器
+npm run build  # 构建生产版本
 ```
 
 ---
@@ -232,7 +256,7 @@ pnpm build      # 构建生产版本
 1. 本项目仅用于演示，所有数据使用 Mock 模拟
 2. 使用 `@/` 路径别名代替相对路径
 3. 公共组件放置在 `src/components/` 目录
-4. **禁止运行 `pnpm dev`**：只需修改源码，由用户自行启动开发服务器查看效果，不要在代码中执行启动开发服务器的命令
+4. **禁止运行 `npm run dev`**：只需修改源码，由用户自行启动开发服务器查看效果，不要在代码中执行启动开发服务器的命令
 
 ---
 

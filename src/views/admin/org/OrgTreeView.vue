@@ -5,17 +5,20 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="组织名称">
-            <el-input v-model="searchForm.name" placeholder="输入组织名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="套餐类型">
-            <el-select v-model="searchForm.packageType" placeholder="请选择类型" clearable style="width: 180px">
-              <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">组织管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.name"
+            placeholder="搜索组织名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.packageType" placeholder="套餐类型" clearable style="width: 180px; margin-right: 12px" @change="handleSearch">
+            <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
           <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
         </div>
       </div>
@@ -24,7 +27,7 @@
         :data="orgTreeData"
         row-key="id"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         border
         stripe
         default-expand-all
@@ -88,7 +91,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="240" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="Plus" @click="handleAdd(row)">新增子集</el-button>
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
@@ -548,23 +551,22 @@ onMounted(() => {
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 
@@ -594,6 +596,10 @@ onMounted(() => {
         padding: 0 12px;
         display: flex;
         align-items: center;
+      }
+
+      .el-table__row .el-table__cell:not(:first-child) .cell {
+        justify-content: center;
       }
 
       .el-table__indent {

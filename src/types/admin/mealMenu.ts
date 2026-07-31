@@ -7,7 +7,7 @@ export interface MealMenuBinding {
   /** 菜单ID */
   menuId: number
   /** 子系统ID */
-  subsysId: number
+  subsystemId: number
   /** 创建时间 */
   createTime: string
 }
@@ -19,5 +19,5 @@ export interface MealMenuBindingForm {
   /** 菜单ID列表 */
   menuIds: number[]
   /** 子系统ID */
-  subsysId: number
+  subsystemId: number
 }

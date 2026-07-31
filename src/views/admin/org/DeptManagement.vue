@@ -2,61 +2,27 @@
   <div class="dept-management">
 
     <div class="main-content animate-item">
-      <!-- 左侧：组织架构树 -->
-      <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <div class="tree-header">
-          <span v-if="!treeCollapsed" class="tree-title">组织架构</span>
-          <el-button
-            :icon="treeCollapsed ? DArrowRight : DArrowLeft"
-            link
-            @click="treeCollapsed = !treeCollapsed"
-            class="collapse-btn"
-          />
-        </div>
-        <div v-if="!treeCollapsed" class="tree-body">
-          <el-tree
-            ref="treeRef"
-            :data="orgTreeData"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            @node-click="handleNodeClick"
-            class="org-tree"
-          >
-            <template #default="{ data }">
-              <div class="tree-node">
-                <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
-                  <component :is="getNodeTypeIcon(data.nodeType)" />
-                </el-icon>
-                <span class="node-label">{{ data.name }}</span>
-              </div>
-            </template>
-          </el-tree>
-        </div>
-      </div>
+      <OrgTreePanel ref="orgTreeRef" :selected-id="currentNode?.id" @node-click="handleNodeClick" />
 
       <!-- 右侧：部门列表 -->
       <div class="list-panel">
-        <div class="panel-header">
-          <span class="panel-title">部门列表 - {{ currentNode ? currentNode.name : '请选择组织' }}</span>
-          <div class="panel-actions">
-            <el-input
-              v-model="searchForm.deptName"
-              placeholder="搜索部门名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px; margin-right: 12px"
-              @keyup.enter="handleSearch"
-              @clear="handleSearch"
-            />
-            <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
-          </div>
-        </div>
-
         <!-- 部门树表格 -->
         <el-card class="table-card" shadow="never">
+          <div class="search-bar">
+            <span class="search-bar-title">部门管理<span v-if="currentNode" class="current-hint">（当前：{{ currentNode.name }}）</span></span>
+            <div class="search-bar-actions">
+              <el-input
+                v-model="searchForm.deptName"
+                placeholder="搜索部门名称"
+                clearable
+                :prefix-icon="Search"
+                style="width: 180px; margin-right: 12px"
+                @keyup.enter="handleSearch"
+                @clear="handleSearch"
+              />
+              <el-button type="primary" :icon="Plus" @click="handleAdd(null)" :disabled="!currentNode">新增部门</el-button>
+            </div>
+          </div>
           <div class="table-wrapper">
           <el-table
             v-loading="loading"
@@ -67,7 +33,7 @@
             stripe
             default-expand-all
             :indent="24"
-            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
             empty-text=" "
           >
             <el-table-column prop="deptName" label="部门名称" min-width="220" fixed>
@@ -81,7 +47,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="deptCode" label="部门编号" width="140" align="center">
+            <el-table-column prop="deptCode" label="部门编号" min-width="140" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="code-text">{{ row.deptCode }}</span>
               </template>
@@ -111,9 +77,9 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="sort" label="排序" width="70" align="center">
+            <el-table-column prop="displayOrder" label="排序" width="70" align="center">
               <template #default="{ row }">
-                <span class="sort-text">{{ row.sort }}</span>
+                <span class="displayOrder-text">{{ row.displayOrder }}</span>
               </template>
             </el-table-column>
 
@@ -129,7 +95,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="160" align="center" fixed="right">
+            <el-table-column label="操作" width="230" align="center" fixed="right">
               <template #default="{ row }">
                 <el-button type="primary" link :icon="Plus" @click.stop="handleAdd(row)">子部门</el-button>
                 <el-button type="primary" link :icon="Edit" @click.stop="handleEdit(row)">编辑</el-button>
@@ -180,7 +146,7 @@
           <el-tree-select
             v-model="formData.parentId"
             :data="parentDeptOptions"
-            :props="{ label: 'deptName', value: 'id', children: 'children' }"
+            :props="{ label: 'deptName', value: 'deptId', children: 'children' }"
             check-strictly
             :render-after-expand="false"
             placeholder="请选择上级部门（不选则为顶级）"
@@ -238,9 +204,9 @@
           />
         </el-form-item>
 
-        <el-form-item label="排序" prop="sort">
+        <el-form-item label="排序" prop="displayOrder">
           <el-input-number
-            v-model="formData.sort"
+            v-model="formData.displayOrder"
             :min="0"
             :max="9999"
             style="width: 180px"
@@ -269,14 +235,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, RefreshLeft, Plus, Delete, Edit,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight
+  OfficeBuilding, Location
 } from '@element-plus/icons-vue'
+import OrgTreePanel from '@/components/OrgTreePanel.vue'
 import { orgTreeData } from '@/mock/admin/orgTreeData'
 import { deptData as mockDeptData, buildDeptTree, flattenDeptData } from '@/mock/admin/deptData'
 import type { OrgTreeNode } from '@/types/admin/orgTree'
@@ -292,7 +258,7 @@ interface DeptForm {
   phone: string
   email: string
   fax: string
-  sort: number
+  displayOrder: number
   status: number
 }
 
@@ -300,8 +266,7 @@ interface DeptForm {
 const loading = ref(false)
 const submitLoading = ref(false)
 const deptDataList = ref<DeptItem[]>([])
-const treeRef = ref<InstanceType<typeof ElTree>>()
-const treeCollapsed = ref(false)
+const orgTreeRef = ref<InstanceType<typeof OrgTreePanel>>()
 const currentNode = ref<OrgTreeNode | null>(null)
 const drawerVisible = ref(false)
 const isEdit = ref(false)
@@ -321,7 +286,7 @@ const formData = reactive<DeptForm>({
   phone: '',
   email: '',
   fax: '',
-  sort: 0,
+  displayOrder: 0,
   status: 1101
 })
 
@@ -329,7 +294,7 @@ const formData = reactive<DeptForm>({
 const formRules: FormRules = {
   deptName: [{ required: true, message: '请输入部门名称', trigger: 'blur' }],
   deptCode: [{ required: true, message: '请输入部门编号', trigger: 'blur' }],
-  sort: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
+  displayOrder: [{ required: true, message: '请输入排序值', trigger: 'blur' }],
   status: [{ required: true, message: '请选择状态', trigger: 'change' }]
 }
 
@@ -365,10 +330,6 @@ function fetchDeptData() {
   }
 }
 
-function handleNodeClick(data: OrgTreeNode) {
-  currentNode.value = data
-}
-
 function handleSearch() {
   // 搜索通过 computed 属性自动处理
 }
@@ -382,26 +343,8 @@ function handleRefresh() {
   fetchDeptData()
 }
 
-function getNodeTypeIcon(nodeType: string) {
-  const icons: Record<string, any> = {
-    root: OfficeBuilding,
-    dept: OfficeBuilding,
-    branch: OfficeBuilding,
-    station: OfficeBuilding,
-    company: OfficeBuilding
-  }
-  return icons[nodeType] || OfficeBuilding
-}
-
-function getNodeTypeColor(nodeType: string): string {
-  const colors: Record<string, string> = {
-    root: '#409EFF',
-    dept: '#67C23A',
-    branch: '#E6A23C',
-    station: '#9B59B6',
-    company: '#F56C6C'
-  }
-  return colors[nodeType] || '#909399'
+function handleNodeClick(data: OrgTreeNode) {
+  currentNode.value = data
 }
 
 function handleAdd(parentRow: DeptItem | null) {
@@ -414,7 +357,7 @@ function handleAdd(parentRow: DeptItem | null) {
   formData.phone = ''
   formData.email = ''
   formData.fax = ''
-  formData.sort = 0
+  formData.displayOrder = 0
   formData.status = 1101
   drawerVisible.value = true
 }
@@ -429,7 +372,7 @@ function handleEdit(row: DeptItem) {
   formData.phone = row.phone
   formData.email = row.email
   formData.fax = row.fax
-  formData.sort = row.sort
+  formData.displayOrder = row.displayOrder
   formData.status = row.status
   drawerVisible.value = true
 }
@@ -465,6 +408,9 @@ onMounted(() => {
   // 默认选中广东省交通运输厅
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
+    nextTick(() => {
+      orgTreeRef.value?.setCurrentKey(1)
+    })
   }
 })
 </script>
@@ -497,70 +443,6 @@ onMounted(() => {
     overflow: hidden;
   }
 
-  // 左侧树面板
-  .tree-panel {
-    width: 280px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: width 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    &.collapsed { width: 48px; }
-
-    .tree-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid #EBEEF5;
-    }
-
-    .tree-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .tree-body {
-      padding: 12px;
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .org-tree {
-      flex: 1;
-      overflow-y: auto;
-
-      :deep(.el-tree-node__content) {
-        height: 36px;
-        border-radius: 6px;
-        margin-bottom: 2px;
-      }
-
-      :deep(.el-tree-node.is-current > .el-tree-node__content) {
-        background: #ECF5FF;
-        color: #409EFF;
-      }
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-
-      .node-icon {
-        font-size: 14px;
-      }
-    }
-  }
-
   // 右侧列表区
   .list-panel {
     flex: 1;
@@ -571,31 +453,35 @@ onMounted(() => {
     height: 100%;
   }
 
-  .panel-header {
+  .search-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    background: #fff;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    border-bottom: 1px solid #EBEEF5;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebeef5;
   }
 
-  .panel-title {
-    font-size: 15px;
+  .search-bar-title {
+    font-size: 16px;
     font-weight: 600;
     color: #303133;
+
+    .current-hint {
+      font-weight: 400;
+      font-size: 13px;
+      color: #409EFF;
+    }
   }
 
-  .panel-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    flex-shrink: 0;
   }
 
   .table-card {
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
     border: none;
     flex: 1;
     display: flex;
@@ -603,7 +489,7 @@ onMounted(() => {
     overflow: hidden;
 
     :deep(.el-card__body) {
-      padding: 0;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -612,7 +498,6 @@ onMounted(() => {
 
     .table-wrapper {
       flex: 1;
-      padding: 16px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -638,10 +523,16 @@ onMounted(() => {
         }
       }
 
+
       .el-table__row .cell {
         display: flex;
         align-items: center;
       }
+
+      .el-table__row .el-table__cell:not(:first-child) .cell {
+        justify-content: center;
+      }
+
 
       .el-table__indent {
         padding-left: 24px !important;
@@ -687,18 +578,19 @@ onMounted(() => {
 
     .code-text {
       font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-      color: #409EFF;
       font-size: 12px;
-      background: #ECF5FF;
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: #606266;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
     }
 
     .leader-text { font-weight: 500; color: #303133; }
     .phone-text { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-size: 13px; color: #606266; }
     .email-text { font-size: 13px; color: #606266; }
     .fax-text { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-size: 13px; color: #606266; }
-    .sort-text { font-weight: 600; color: #606266; }
+    .displayOrder-text { font-weight: 600; color: #606266; }
 
     .empty-state {
       padding: 48px 0;

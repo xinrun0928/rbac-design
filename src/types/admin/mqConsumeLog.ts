@@ -21,25 +21,13 @@ export interface MqConsumeLog {
   /** 消费状态: 0-待消费, 1-消费成功, 2-消费失败 */
   status: number
   /** 错误信息 */
-  errorMessage: string | null
+  errorMessage?: string | null
   /** 业务处理结果 */
-  businessResult: string | null
+  businessResult?: string | null
   /** 处理耗时（毫秒） */
-  processTime: number | null
-  /** 创建人 */
-  creater: string | null
+  processTime?: number | null
   /** 创建时间 */
   createTime: string
-  /** 更新人 */
-  updater: string | null
-  /** 更新时间 */
-  updateTime: string
-  /** 删除标记: 0-未删除, 1-已删除 */
-  deleted: number
-  /** 签名 */
-  signature: string | null
-  /** 签名版本 */
-  signatureVersion: number
 }
 
 /** MQ消息消费日志搜索表单类型 */

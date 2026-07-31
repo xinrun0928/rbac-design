@@ -1,7 +1,7 @@
 /** 组织成员数据类型 */
 export interface OrgMember {
   /** 成员ID */
-  memberId: number
+  userId: number
   /** 姓名 */
   name: string
   /** 手机号码 */

@@ -8,7 +8,7 @@ export * from './area'
 
 // 组织架构
 export * from './orgTree'
-export * from './orgMember'
+export type { OrgMember } from './orgMember'
 
 // 套餐管理
 export * from './meal'

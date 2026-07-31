@@ -5,35 +5,30 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="子系统编码">
-            <el-input
-              v-model="searchForm.subsysCode"
-              placeholder="输入编码，如：EMERGENCY"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="子系统名称">
-            <el-input
-              v-model="searchForm.subsysName"
-              placeholder="输入子系统名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
-              <el-option label="正常" :value="1101" />
-              <el-option label="停用" :value="1102" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">子系统管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.subsystemCode"
+            placeholder="搜索子系统编码"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-input
+            v-model="searchForm.subsystemName"
+            placeholder="搜索子系统名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.status" placeholder="状态" clearable style="width: 180px; margin-right: 12px">
+            <el-option label="正常" :value="1101" />
+            <el-option label="停用" :value="1102" />
+          </el-select>
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增子系统</el-button>
         </div>
       </div>
@@ -43,23 +38,23 @@
         border
         stripe
         highlight-current-row
-        row-key="subsysId"
+        row-key="subsystemId"
         @selection-change="handleSelectionChange"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         empty-text=" "
       >
-        <el-table-column prop="subsysId" label="ID" width="70" align="center">
+        <el-table-column prop="subsystemId" label="ID" width="70" align="center">
           <template #default="{ row }">
-            <span class="id-text">{{ row.subsysId }}</span>
+            <span class="id-text">{{ row.subsystemId }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="subsysCode" label="子系统编码" width="200">
+        <el-table-column prop="subsystemCode" label="子系统编码" width="200">
           <template #default="{ row }">
             <div class="code-cell">
-              <span class="code-text">{{ row.subsysCode }}</span>
+              <span class="code-text">{{ row.subsystemCode }}</span>
               <el-tooltip content="复制编码" placement="top">
-                <el-button type="primary" link size="small" @click="handleCopy(row.subsysCode)">
+                <el-button type="primary" link size="small" @click="handleCopy(row.subsystemCode)">
                   <el-icon><CopyDocument /></el-icon>
                 </el-button>
               </el-tooltip>
@@ -67,15 +62,15 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="subsysName" label="子系统名称" min-width="180">
+        <el-table-column prop="subsystemName" label="子系统名称" min-width="180">
           <template #default="{ row }">
-            <span class="name-text">{{ row.subsysName }}</span>
+            <span class="name-text">{{ row.subsystemName }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="subsysShortName" label="简称" width="100" align="center">
+        <el-table-column prop="subsystemShortName" label="简称" width="100" align="center">
           <template #default="{ row }">
-            <span class="short-name-text">{{ row.subsysShortName }}</span>
+            <span class="short-name-text">{{ row.subsystemShortName }}</span>
           </template>
         </el-table-column>
 
@@ -155,17 +150,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="creater" label="创建人" width="110" align="center">
-          <template #default="{ row }">
-            <div class="creator-cell">
-              <el-avatar :size="24" :style="{ background: getAvatarColor(row.creater) }">
-                {{ row.creater.charAt(0).toUpperCase() }}
-              </el-avatar>
-              <span>{{ row.creater }}</span>
-            </div>
-          </template>
-        </el-table-column>
-
         <el-table-column prop="createTime" label="创建时间" width="170" align="center">
           <template #default="{ row }">
             <el-tooltip :content="row.createTime" placement="top">
@@ -227,9 +211,9 @@
         label-position="right"
         class="subsystem-form"
       >
-        <el-form-item label="子系统编码" prop="subsysCode">
+        <el-form-item label="子系统编码" prop="subsystemCode">
           <el-input
-            v-model="addFormData.subsysCode"
+            v-model="addFormData.subsystemCode"
             placeholder="请输入编码，如：EMERGENCY_WATCH"
             maxlength="50"
             show-word-limit
@@ -242,18 +226,18 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item label="子系统名称" prop="subsysName">
+        <el-form-item label="子系统名称" prop="subsystemName">
           <el-input
-            v-model="addFormData.subsysName"
+            v-model="addFormData.subsystemName"
             placeholder="请输入子系统名称"
             maxlength="100"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="子系统简称" prop="subsysShortName">
+        <el-form-item label="子系统简称" prop="subsystemShortName">
           <el-input
-            v-model="addFormData.subsysShortName"
+            v-model="addFormData.subsystemShortName"
             placeholder="请输入简称，如：值守"
             maxlength="50"
             show-word-limit
@@ -350,9 +334,9 @@
         label-position="right"
         class="subsystem-form"
       >
-        <el-form-item label="子系统编码" prop="subsysCode">
+        <el-form-item label="子系统编码" prop="subsystemCode">
           <el-input
-            v-model="editFormData.subsysCode"
+            v-model="editFormData.subsystemCode"
             placeholder="请输入编码"
             disabled
             maxlength="50"
@@ -360,18 +344,18 @@
           />
         </el-form-item>
 
-        <el-form-item label="子系统名称" prop="subsysName">
+        <el-form-item label="子系统名称" prop="subsystemName">
           <el-input
-            v-model="editFormData.subsysName"
+            v-model="editFormData.subsystemName"
             placeholder="请输入子系统名称"
             maxlength="100"
             show-word-limit
           />
         </el-form-item>
 
-        <el-form-item label="子系统简称" prop="subsysShortName">
+        <el-form-item label="子系统简称" prop="subsystemShortName">
           <el-input
-            v-model="editFormData.subsysShortName"
+            v-model="editFormData.subsystemShortName"
             placeholder="请输入简称"
             maxlength="50"
             show-word-limit
@@ -494,8 +478,8 @@ const addFormRef = ref<FormInstance>()
 const editFormRef = ref<FormInstance>()
 
 const searchForm = reactive<SubsystemSearchForm>({
-  subsysCode: '',
-  subsysName: '',
+  subsystemCode: '',
+  subsystemName: '',
   status: ''
 })
 
@@ -506,9 +490,9 @@ const pagination = reactive({
 })
 
 const addFormData = reactive<SubsystemForm>({
-  subsysCode: '',
-  subsysName: '',
-  subsysShortName: '',
+  subsystemCode: '',
+  subsystemName: '',
+  subsystemShortName: '',
   pathPrefix: '',
   tablePrefix: '',
   displayOrder: 0,
@@ -520,9 +504,9 @@ const addFormData = reactive<SubsystemForm>({
 })
 
 const editFormData = reactive<SubsystemForm>({
-  subsysCode: '',
-  subsysName: '',
-  subsysShortName: '',
+  subsystemCode: '',
+  subsystemName: '',
+  subsystemShortName: '',
   pathPrefix: '',
   tablePrefix: '',
   displayOrder: 0,
@@ -561,15 +545,15 @@ const colorOptions = [
 
 // ── 表单验证规则 ──
 const formRules: FormRules = {
-  subsysCode: [
+  subsystemCode: [
     { required: true, message: '请输入子系统编码', trigger: 'blur' },
     { pattern: /^[A-Za-z_]+$/, message: '只能包含英文字母和下划线', trigger: 'blur' },
     { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
   ],
-  subsysName: [
+  subsystemName: [
     { required: true, message: '请输入子系统名称', trigger: 'blur' }
   ],
-  subsysShortName: [
+  subsystemShortName: [
     { required: true, message: '请输入子系统简称', trigger: 'blur' }
   ],
   displayOrder: [
@@ -604,8 +588,8 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.subsysCode = ''
-  searchForm.subsysName = ''
+  searchForm.subsystemCode = ''
+  searchForm.subsystemName = ''
   searchForm.status = ''
   pagination.page = 1
   fetchData()
@@ -634,7 +618,7 @@ function handlePageChange(page: number) {
 }
 
 function handleSelectionChange(rows: Subsystem[]) {
-  selectedIds.value = rows.map(r => r.subsysId)
+  selectedIds.value = rows.map(r => r.subsystemId)
 }
 
 function clearSelection() {
@@ -642,9 +626,9 @@ function clearSelection() {
 }
 
 function handleAdd() {
-  addFormData.subsysCode = ''
-  addFormData.subsysName = ''
-  addFormData.subsysShortName = ''
+  addFormData.subsystemCode = ''
+  addFormData.subsystemName = ''
+  addFormData.subsystemShortName = ''
   addFormData.displayOrder = pagination.total + 1
   addFormData.isHidden = false
   addFormData.status = 1101
@@ -653,16 +637,16 @@ function handleAdd() {
 }
 
 function handleEdit(row: Subsystem) {
-  editFormData.subsysId = row.subsysId
-  editFormData.subsysCode = row.subsysCode
-  editFormData.subsysName = row.subsysName
-  editFormData.subsysShortName = row.subsysShortName
+  editFormData.subsystemId = row.subsystemId
+  editFormData.subsystemCode = row.subsystemCode
+  editFormData.subsystemName = row.subsystemName
+  editFormData.subsystemShortName = row.subsystemShortName
   editFormData.pathPrefix = row.pathPrefix
   editFormData.tablePrefix = row.tablePrefix
   editFormData.displayOrder = row.displayOrder
   editFormData.isHidden = row.isHidden
   editFormData.status = row.status
-  editFormData.remark = row.remark
+  editFormData.remark = row.remark ?? ''
   editFormData.icon = row.icon || ''
   editFormData.color = row.color || ''
   drawerVisible.value = true
@@ -680,9 +664,9 @@ async function handleAddSubmit() {
   submitLoading.value = true
   try {
     await addSubsystem({
-      subsysCode: addFormData.subsysCode,
-      subsysName: addFormData.subsysName,
-      subsysShortName: addFormData.subsysShortName,
+      subsystemCode: addFormData.subsystemCode,
+      subsystemName: addFormData.subsystemName,
+      subsystemShortName: addFormData.subsystemShortName,
       pathPrefix: addFormData.pathPrefix,
       tablePrefix: addFormData.tablePrefix,
       displayOrder: addFormData.displayOrder,
@@ -713,11 +697,11 @@ async function handleEditSubmit() {
 
   submitLoading.value = true
   try {
-    if (editFormData.subsysId) {
-      await updateSubsystem(editFormData.subsysId, {
-        subsysCode: editFormData.subsysCode,
-        subsysName: editFormData.subsysName,
-        subsysShortName: editFormData.subsysShortName,
+    if (editFormData.subsystemId) {
+      await updateSubsystem(editFormData.subsystemId, {
+        subsystemCode: editFormData.subsystemCode,
+        subsystemName: editFormData.subsystemName,
+        subsystemShortName: editFormData.subsystemShortName,
         pathPrefix: editFormData.pathPrefix,
         tablePrefix: editFormData.tablePrefix,
         displayOrder: editFormData.displayOrder,
@@ -746,7 +730,7 @@ function resetForm() {
 async function handleDelete(row: Subsystem) {
   try {
     await ElMessageBox.confirm(
-      `您即将删除以下子系统：\n\n子系统名称：${row.subsysName}\n子系统编码：${row.subsysCode}\n\n删除后将无法恢复，确定要继续吗？`,
+      `您即将删除以下子系统：\n\n子系统名称：${row.subsystemName}\n子系统编码：${row.subsystemCode}\n\n删除后将无法恢复，确定要继续吗？`,
       '确认删除',
       {
         confirmButtonText: '确认删除',
@@ -757,7 +741,7 @@ async function handleDelete(row: Subsystem) {
     )
 
     loading.value = true
-    await deleteSubsystem(row.subsysId)
+    await deleteSubsystem(row.subsystemId)
     ElMessage.success('删除成功')
     fetchData()
   } catch (err) {
@@ -803,7 +787,7 @@ async function handleStatusChange(row: Subsystem, newStatus: number) {
 
   try {
     await ElMessageBox.confirm(
-      `您将把子系统 "${row.subsysName}" 的状态从 "${from}" 切换为 "${to}"，确定要继续吗？`,
+      `您将把子系统 "${row.subsystemName}" 的状态从 "${from}" 切换为 "${to}"，确定要继续吗？`,
       '切换状态确认',
       {
         confirmButtonText: '确认切换',
@@ -812,7 +796,7 @@ async function handleStatusChange(row: Subsystem, newStatus: number) {
       }
     )
 
-    await toggleSubsystemStatus(row.subsysId, newStatus)
+    await toggleSubsystemStatus(row.subsystemId, newStatus)
     row.status = newStatus
     ElMessage.success(`状态已切换为 "${to}"`)
   } catch (err) {
@@ -874,23 +858,23 @@ onMounted(() => {
   // 搜索栏
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

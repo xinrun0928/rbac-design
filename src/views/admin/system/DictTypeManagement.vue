@@ -5,15 +5,17 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="类型名称">
-            <el-input v-model="searchForm.dictTypeName" placeholder="输入类型名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="类型编码">
-            <el-input v-model="searchForm.dictType" placeholder="输入类型编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">字典管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.dictTypeName"
+            placeholder="搜索类型名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增类型</el-button>
         </div>
       </div>
@@ -24,7 +26,7 @@
         stripe
         highlight-current-row
         row-key="dictType"
-        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
         class="data-table"
       >
         <el-table-column label="序号" width="60" align="center" type="index">
@@ -33,7 +35,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictTypeName" label="类型名称" min-width="180">
+        <el-table-column prop="dictTypeName" label="类型名称" min-width="180" align="center">
           <template #default="{ row }">
             <el-button type="primary" link class="type-name-link" @click="handleViewData(row)">
               {{ row.dictTypeName }}
@@ -41,7 +43,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dictType" label="类型编码" min-width="220">
+        <el-table-column prop="dictType" label="类型编码" min-width="220" align="center">
           <template #default="{ row }">
             <span class="type-code-text">{{ row.dictType }}</span>
           </template>
@@ -136,7 +138,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit
+  Search, Plus, Delete, Edit
 } from '@element-plus/icons-vue'
 import { getDictTypes } from '@/mock/admin/dictData'
 import type { DictType } from '@/types/admin/dictData'
@@ -157,8 +159,7 @@ const pagination = reactive({
 })
 
 const searchForm = reactive({
-  dictTypeName: '',
-  dictType: ''
+  dictTypeName: ''
 })
 
 const formData = reactive({
@@ -177,7 +178,6 @@ const formRules: FormRules = {
 const filteredData = computed(() => {
   let data = tableData.value.filter(item => {
     if (searchForm.dictTypeName && !item.dictTypeName.includes(searchForm.dictTypeName)) return false
-    if (searchForm.dictType && !item.dictType.includes(searchForm.dictType)) return false
     return true
   })
 
@@ -201,7 +201,6 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.dictTypeName = ''
-  searchForm.dictType = ''
   pagination.page = 1
 }
 
@@ -291,23 +290,22 @@ fetchData()
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 

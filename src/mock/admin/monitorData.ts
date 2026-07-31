@@ -138,7 +138,6 @@ export const cacheListData: CacheEntry[] = (() => {
               configKey: `${name}.key${i + 1}`,
               configValue: `value_${Math.random().toString(36).slice(2, 8)}`,
               createTime: '2026-07-15 10:00:00',
-              updateTime: '2026-07-20 14:30:00',
               remark: `${name}配置项${i + 1}`
             })
           : `cached_value_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`,

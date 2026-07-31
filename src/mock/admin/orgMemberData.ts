@@ -3,7 +3,7 @@ import type { OrgMember } from '@/types/admin/orgMember'
 export const orgMemberList: OrgMember[] = [
   // orgId: 1 - 广东省交通运输厅（顶节点，12条数据）
   {
-    memberId: 1,
+    userId: 1,
     name: '张伟',
     phone: '13800138001',
     sex: 1,
@@ -19,7 +19,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 2,
+    userId: 2,
     name: '李娜',
     phone: '13800138002',
     sex: 2,
@@ -34,7 +34,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 3,
+    userId: 3,
     name: '王强',
     phone: '13800138003',
     sex: 1,
@@ -50,7 +50,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 4,
+    userId: 4,
     name: '赵敏',
     phone: '13800138004',
     sex: 2,
@@ -65,7 +65,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 5,
+    userId: 5,
     name: '刘洋',
     phone: '13800138005',
     sex: 1,
@@ -80,7 +80,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 6,
+    userId: 6,
     name: '陈静',
     phone: '13800138006',
     sex: 2,
@@ -95,7 +95,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 7,
+    userId: 7,
     name: '孙磊',
     phone: '13800138007',
     sex: 1,
@@ -111,7 +111,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 8,
+    userId: 8,
     name: '周芳',
     phone: '13800138008',
     sex: 2,
@@ -126,7 +126,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 9,
+    userId: 9,
     name: '吴刚',
     phone: '13800138009',
     sex: 1,
@@ -141,7 +141,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 10,
+    userId: 10,
     name: '郑丽',
     phone: '13800138010',
     sex: 2,
@@ -156,7 +156,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 11,
+    userId: 11,
     name: '黄涛',
     phone: '13800138011',
     sex: 1,
@@ -172,7 +172,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 12,
+    userId: 12,
     name: '许婷',
     phone: '13800138012',
     sex: 2,
@@ -188,7 +188,7 @@ export const orgMemberList: OrgMember[] = [
   },
   // orgId: 2 - 广州市交通运输局（3条数据）
   {
-    memberId: 13,
+    userId: 13,
     name: '林萍',
     phone: '13800138013',
     sex: 2,
@@ -203,7 +203,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 14,
+    userId: 14,
     name: '高峰',
     phone: '13800138014',
     sex: 1,
@@ -218,7 +218,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 15,
+    userId: 15,
     name: '马超',
     phone: '13800138015',
     sex: 1,
@@ -234,7 +234,7 @@ export const orgMemberList: OrgMember[] = [
   },
   // orgId: 3 - 深圳市交通运输局（2条数据）
   {
-    memberId: 16,
+    userId: 16,
     name: '刘芳',
     phone: '13800138016',
     sex: 2,
@@ -249,7 +249,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 17,
+    userId: 17,
     name: '陈明',
     phone: '13800138017',
     sex: 1,
@@ -265,7 +265,7 @@ export const orgMemberList: OrgMember[] = [
   },
   // orgId: 4 - 东莞市交通运输局（3条数据）
   {
-    memberId: 18,
+    userId: 18,
     name: '王芳',
     phone: '13800138018',
     sex: 2,
@@ -281,7 +281,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 19,
+    userId: 19,
     name: '李强',
     phone: '13800138019',
     sex: 1,
@@ -296,7 +296,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 20,
+    userId: 20,
     name: '赵伟',
     phone: '13800138020',
     sex: 1,
@@ -312,7 +312,7 @@ export const orgMemberList: OrgMember[] = [
   },
   // orgId: 5 - 佛山市交通运输局（2条数据）
   {
-    memberId: 21,
+    userId: 21,
     name: '周静',
     phone: '13800138021',
     sex: 2,
@@ -327,7 +327,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 22,
+    userId: 22,
     name: '吴明',
     phone: '13800138022',
     sex: 1,
@@ -343,7 +343,7 @@ export const orgMemberList: OrgMember[] = [
   },
   // orgId: 6 - 珠海市交通运输局（2条数据）
   {
-    memberId: 23,
+    userId: 23,
     name: '孙丽',
     phone: '13800138023',
     sex: 2,
@@ -358,7 +358,7 @@ export const orgMemberList: OrgMember[] = [
     ]
   },
   {
-    memberId: 24,
+    userId: 24,
     name: '钱伟',
     phone: '13800138024',
     sex: 1,

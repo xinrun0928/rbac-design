@@ -128,7 +128,7 @@
           :data="data.disks"
           border
           stripe
-          :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600' }"
+          :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
           size="small"
         >
           <el-table-column prop="path" label="盘符路径" min-width="120" align="center">

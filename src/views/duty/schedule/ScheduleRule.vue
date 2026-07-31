@@ -223,7 +223,6 @@ async function handleSubmit() {
         ruleName: formData.ruleName,
         sortOrder: formData.sortOrder,
         createTime: now,
-        deleted: 0,
       }
       ruleList.value.push(newItem)
       ElMessage.success('新建成功')

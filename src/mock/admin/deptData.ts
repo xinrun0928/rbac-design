@@ -7,7 +7,7 @@ export interface DeptItem {
   phone: string
   email: string
   fax: string
-  sort: number
+  displayOrder: number
   status: number
   children?: DeptItem[]
 }
@@ -22,7 +22,7 @@ export const deptData: DeptItem[] = [
     phone: '020-83730001',
     email: 'chenzy@gd.gov.cn',
     fax: '020-83730002',
-    sort: 1,
+    displayOrder: 1,
     status: 1101,
     children: [
       {
@@ -34,7 +34,7 @@ export const deptData: DeptItem[] = [
         phone: '020-83730101',
         email: 'zhaogq@gd.gov.cn',
         fax: '020-83730100',
-        sort: 1,
+        displayOrder: 1,
         status: 1101,
         children: [
           {
@@ -46,7 +46,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730102',
             email: 'sunxf@gd.gov.cn',
             fax: '',
-            sort: 1,
+            displayOrder: 1,
             status: 1101,
             children: [
               {
@@ -58,7 +58,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730111',
                 email: 'zhangsan@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -70,7 +70,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730112',
                 email: 'lisi@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               },
               {
@@ -82,7 +82,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730113',
                 email: 'wangwu@gd.gov.cn',
                 fax: '',
-                sort: 3,
+                displayOrder: 3,
                 status: 1101
               }
             ]
@@ -96,7 +96,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730103',
             email: 'liting@gd.gov.cn',
             fax: '',
-            sort: 2,
+            displayOrder: 2,
             status: 1101,
             children: [
               {
@@ -108,7 +108,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730121',
                 email: 'zhaoliu@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -120,7 +120,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730122',
                 email: 'qianqi@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -136,7 +136,7 @@ export const deptData: DeptItem[] = [
         phone: '020-83730201',
         email: 'zhouwb@gd.gov.cn',
         fax: '020-83730200',
-        sort: 2,
+        displayOrder: 2,
         status: 1101,
         children: [
           {
@@ -148,7 +148,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730202',
             email: 'wusy@gd.gov.cn',
             fax: '',
-            sort: 1,
+            displayOrder: 1,
             status: 1101,
             children: [
               {
@@ -160,7 +160,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730211',
                 email: 'sunba@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -172,7 +172,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730212',
                 email: 'zhoujiu@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -186,7 +186,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730203',
             email: 'zhengyw@gd.gov.cn',
             fax: '',
-            sort: 2,
+            displayOrder: 2,
             status: 1101
           }
         ]
@@ -200,7 +200,7 @@ export const deptData: DeptItem[] = [
         phone: '020-83730301',
         email: 'huangzq@gd.gov.cn',
         fax: '020-83730300',
-        sort: 3,
+        displayOrder: 3,
         status: 1101,
         children: [
           {
@@ -212,7 +212,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730302',
             email: 'linml@gd.gov.cn',
             fax: '',
-            sort: 1,
+            displayOrder: 1,
             status: 1101,
             children: [
               {
@@ -224,7 +224,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730311',
                 email: 'wushi@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -236,7 +236,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730312',
                 email: 'zheng11@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -250,7 +250,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730303',
             email: 'hejh@gd.gov.cn',
             fax: '',
-            sort: 2,
+            displayOrder: 2,
             status: 1101
           }
         ]
@@ -264,7 +264,7 @@ export const deptData: DeptItem[] = [
         phone: '020-83730401',
         email: 'yangmh@gd.gov.cn',
         fax: '020-83730400',
-        sort: 4,
+        displayOrder: 4,
         status: 1101,
         children: [
           {
@@ -276,7 +276,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730402',
             email: 'zhuxy@gd.gov.cn',
             fax: '',
-            sort: 1,
+            displayOrder: 1,
             status: 1101,
             children: [
               {
@@ -288,7 +288,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730411',
                 email: 'feng12@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -300,7 +300,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730412',
                 email: 'chen13@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -314,7 +314,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730403',
             email: 'majj@gd.gov.cn',
             fax: '',
-            sort: 2,
+            displayOrder: 2,
             status: 1101
           }
         ]
@@ -328,7 +328,7 @@ export const deptData: DeptItem[] = [
         phone: '020-83730004',
         email: 'zhangwm@gd.gov.cn',
         fax: '020-83730005',
-        sort: 5,
+        displayOrder: 5,
         status: 1101,
         children: [
           {
@@ -340,7 +340,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730501',
             email: 'wangf@gd.gov.cn',
             fax: '',
-            sort: 1,
+            displayOrder: 1,
             status: 1101,
             children: [
               {
@@ -352,7 +352,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730511',
                 email: 'lin14@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -364,7 +364,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730512',
                 email: 'huang15@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -378,7 +378,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730502',
             email: 'liuy@gd.gov.cn',
             fax: '',
-            sort: 2,
+            displayOrder: 2,
             status: 1101,
             children: [
               {
@@ -390,7 +390,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730521',
                 email: 'xu16@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -402,7 +402,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730522',
                 email: 'song17@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -416,7 +416,7 @@ export const deptData: DeptItem[] = [
             phone: '020-83730503',
             email: 'chenj@gd.gov.cn',
             fax: '',
-            sort: 3,
+            displayOrder: 3,
             status: 1101,
             children: [
               {
@@ -428,7 +428,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730531',
                 email: 'han18@gd.gov.cn',
                 fax: '',
-                sort: 1,
+                displayOrder: 1,
                 status: 1101
               },
               {
@@ -440,7 +440,7 @@ export const deptData: DeptItem[] = [
                 phone: '020-83730532',
                 email: 'tang19@gd.gov.cn',
                 fax: '',
-                sort: 2,
+                displayOrder: 2,
                 status: 1101
               }
             ]
@@ -455,7 +455,7 @@ export const deptData: DeptItem[] = [
 export function buildDeptTree(data: DeptItem[], parentId: number = 0): DeptItem[] {
   return data
     .filter(item => item.parentId === parentId)
-    .sort((a, b) => a.sort - b.sort)
+    .sort((a, b) => a.displayOrder - b.displayOrder)
     .map(item => {
       const children = buildDeptTree(data, item.deptId)
       const result: DeptItem = { ...item }

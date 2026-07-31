@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch } from 'vue'
 import {
   Search, DArrowLeft, DArrowRight,
   OfficeBuilding, HomeFilled, FolderOpened, Monitor, Briefcase, Folder
@@ -127,13 +127,10 @@ function findNodeById(nodes: OrgTreeNode[], id: number): OrgTreeNode | null {
 }
 
 function handleCollapsedItemClick(item: FlatTreeNode) {
-  treeCollapsed.value = false
   const node = findNodeById(orgTreeData, item.id)
   if (node) {
-    nextTick(() => {
-      emit('node-click', node)
-      treeRef.value?.setCurrentKey(node.id)
-    })
+    emit('node-click', node)
+    treeRef.value?.setCurrentKey(node.id)
   }
 }
 

@@ -19,6 +19,7 @@
             value-format="YYYY-MM-DD"
             style="width: 260px"
           />
+          <el-button type="success" :icon="Download" style="margin-left: 12px" @click="handleExport">导出</el-button>
         </div>
       </div>
       <el-table
@@ -196,7 +197,7 @@
 import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, View, CopyDocument
+  Refresh, Search, RefreshLeft, View, CopyDocument, Download
 } from '@element-plus/icons-vue'
 import { mqConsumeLogData, mqStatusOptions, queueNameOptions } from '@/mock/admin/mqConsumeLogData'
 import type { MqConsumeLog, MqConsumeLogSearchForm } from '@/types/admin/mqConsumeLog'
@@ -271,6 +272,32 @@ function handleSizeChange(size: number) {
 
 function handlePageChange(page: number) {
   pagination.page = page
+}
+
+// ── 导出日志 ──
+function csvCell(value: unknown): string {
+  const str = value == null ? '' : String(value)
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str
+}
+
+function handleExport() {
+  if (!filteredData.value.length) {
+    ElMessage.warning('暂无数据可导出')
+    return
+  }
+  const header = '序号,队列名称,路由键,交换机,消息ID,操作类型,状态,业务结果,处理耗时,投递标签,创建时间'
+  const body = filteredData.value.map((row, index) =>
+    [index + 1, row.queueName, row.routingKey, row.exchange, row.msgId, row.operation, getStatusLabel(row.status), row.businessResult || '', row.processTime ? row.processTime + 'ms' : '', row.deliveryTag, row.createTime]
+      .map(csvCell).join(',')
+  ).join('\n')
+  const blob = new Blob(['\ufeff' + `${header}\n${body}`], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `MQ消费日志_${new Date().toISOString().slice(0, 10)}.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+  ElMessage.success('导出成功')
 }
 
 function handleViewDetail(row: MqConsumeLog) {

@@ -42,6 +42,7 @@
             value-format="YYYY-MM-DD"
             style="width: 260px"
           />
+          <el-button type="success" :icon="Download" style="margin-left: 12px" @click="handleExport">导出</el-button>
         </div>
       </div>
 
@@ -277,7 +278,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Search, Refresh, RefreshRight, View,
-  CopyDocument, Document, User
+  CopyDocument, Document, User, Download
 } from '@element-plus/icons-vue'
 import type { SysLoginLog } from '@/types/admin/logs'
 import { getLoginLogs, getLoginLogDetail } from '@/utils/logMockApi'
@@ -432,6 +433,32 @@ function handleSizeChange(size: number) {
 function handlePageChange(page: number) {
   pagination.page = page
   fetchData()
+}
+
+// ── 导出日志 ──
+function csvCell(value: unknown): string {
+  const str = value == null ? '' : String(value)
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str
+}
+
+function handleExport() {
+  if (!tableData.value.length) {
+    ElMessage.warning('暂无数据可导出')
+    return
+  }
+  const header = '记录ID,用户ID,组织ID,用户名,客户端,授权类型,操作类型,IP地址,浏览器,登录时间'
+  const body = tableData.value.map(row =>
+    [row.logId, row.puserId, row.orgId, row.userName, row.clientId, row.grantType, row.operationType === 1 ? '登录' : '登出', row.ip, row.browser, row.createTime]
+      .map(csvCell).join(',')
+  ).join('\n')
+  const blob = new Blob(['\ufeff' + `${header}\n${body}`], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `登录日志_${new Date().toISOString().slice(0, 10)}.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+  ElMessage.success('导出成功')
 }
 
 async function handleViewDetail(row: SysLoginLog) {

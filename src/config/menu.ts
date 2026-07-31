@@ -85,6 +85,7 @@ export const adminSystemMenu: MenuItem[] = [
       { path: '/admin/dict', title: '字典管理', icon: Collection },
       { path: '/admin/attachment', title: '附件管理', icon: Paperclip },
       { path: '/admin/msg/template', title: '短信模版', icon: ChatDotSquare },
+      { path: '/admin/area', title: '区域管理', icon: Location },
     ]
   },
 ]

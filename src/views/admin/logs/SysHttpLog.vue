@@ -37,6 +37,7 @@
             value-format="YYYY-MM-DD"
             style="width: 260px"
           />
+          <el-button type="success" :icon="Download" style="margin-left: 12px" @click="handleExport">导出</el-button>
         </div>
       </div>
 
@@ -256,7 +257,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Search, Refresh, RefreshRight, View,
-  Connection, CopyDocument, Document
+  Connection, CopyDocument, Document, Download
 } from '@element-plus/icons-vue'
 import type { SysHttpLog } from '@/types/admin/logs'
 import { getHttpLogs, getHttpLogDetail } from '@/utils/logMockApi'
@@ -409,6 +410,32 @@ function handleSizeChange(size: number) {
 function handlePageChange(page: number) {
   pagination.page = page
   fetchData()
+}
+
+// ── 导出日志 ──
+function csvCell(value: unknown): string {
+  const str = value == null ? '' : String(value)
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str
+}
+
+function handleExport() {
+  if (!tableData.value.length) {
+    ElMessage.warning('暂无数据可导出')
+    return
+  }
+  const header = '日志ID,请求方式,请求地址,响应状态,耗时(ms),调用时间'
+  const body = tableData.value.map(row =>
+    [row.id, row.reqMethod, row.reqUrl, row.repState, row.repTime, row.createTime]
+      .map(csvCell).join(',')
+  ).join('\n')
+  const blob = new Blob(['\ufeff' + `${header}\n${body}`], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `接口日志_${new Date().toISOString().slice(0, 10)}.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+  ElMessage.success('导出成功')
 }
 
 // ── 复制URL ──

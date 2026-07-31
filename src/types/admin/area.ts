@@ -16,12 +16,16 @@ export interface Area {
   children?: Area[]
 }
 
+/** 区域展示数据类型（表格行） */
+export interface AreaView extends Area {
+  /** 下级区域数量 */
+  childCount: number
+}
+
 /** 区域搜索表单类型 */
 export interface AreaSearchForm {
   /** 区域名称 */
   name: string
   /** 区域编码 */
   code: string
-  /** 区域级别 */
-  level: string
 }

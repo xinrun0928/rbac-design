@@ -198,6 +198,8 @@ defineExpose({
         display: flex;
         justify-content: center;
         width: 100%;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #EBEEF5;
 
         .expand-btn {
           color: #909399;
@@ -235,7 +237,8 @@ defineExpose({
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-top: 4px;
         transition: opacity 0.2s;
 
         &:hover { opacity: 0.85; }
@@ -243,15 +246,17 @@ defineExpose({
         .collapsed-level {
           font-size: 8px;
           color: #fff;
-          line-height: 1;
+          line-height: 10px;
           font-weight: 600;
+          flex-shrink: 0;
         }
 
         .collapsed-char {
           font-size: 16px;
           font-weight: 600;
           color: #fff;
-          line-height: 1;
+          line-height: 20px;
+          flex-shrink: 0;
         }
       }
     }

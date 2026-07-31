@@ -152,16 +152,16 @@
       :title="formTitle"
       size="60%"
       direction="rtl"
-      class="template-drawer"
       destroy-on-close
       @close="handleClose"
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" @submit.prevent>
-          <!-- 基础信息卡片 -->
-          <el-card class="form-card" shadow="never">
-            <template #header>
-              <div class="card-header">
-                <el-icon class="card-header-icon"><InfoFilled /></el-icon>
+        <el-collapse v-model="activeCollapse" class="form-collapse">
+          <!-- 基础信息 -->
+          <el-collapse-item name="base">
+            <template #title>
+              <div class="collapse-title">
+                <el-icon class="collapse-title-icon"><InfoFilled /></el-icon>
                 <span>基础信息</span>
               </div>
             </template>
@@ -176,18 +176,6 @@
               />
             </el-form-item>
 
-            <el-form-item label="备注" prop="remark">
-              <el-input
-                v-model="formData.remark"
-                type="textarea"
-                :rows="3"
-                placeholder="请输入备注"
-                maxlength="200"
-                show-word-limit
-                class="form-input"
-              />
-            </el-form-item>
-
             <el-form-item label="适用类型" prop="applyType">
               <el-radio-group v-model="formData.applyType">
                 <el-radio :value="1">按种类选择</el-radio>
@@ -195,7 +183,7 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item v-if="formData.applyType === 1" label="选择装备种类" prop="selectedCategories">
+            <el-form-item v-if="formData.applyType === 1" prop="selectedCategories" label=" ">
               <el-tree-select
                 v-model="formData.selectedCategories"
                 :data="categoryTreeData"
@@ -210,7 +198,7 @@
               />
             </el-form-item>
 
-            <el-form-item v-else label="现有库存装备" prop="selectedEquipment">
+            <el-form-item v-else prop="selectedEquipment" label=" ">
               <el-select
                 v-model="formData.selectedEquipment"
                 multiple
@@ -235,32 +223,68 @@
                 <el-radio :value="0">停用</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-card>
 
-          <!-- 考核题目卡片 -->
-          <el-card class="form-card questions-card" shadow="never">
-            <template #header>
-              <div class="card-header card-header-between">
-                <div class="card-header">
-                  <el-icon class="card-header-icon"><Collection /></el-icon>
-                  <span>考核题目</span>
-                </div>
-                <el-button type="primary" plain :icon="Plus" size="small" @click="addQuestion">添加题目</el-button>
+            <el-form-item label="备注" prop="remark">
+              <el-input
+                v-model="formData.remark"
+                type="textarea"
+                :rows="3"
+                placeholder="请输入备注"
+                maxlength="200"
+                show-word-limit
+                class="form-input"
+              />
+            </el-form-item>
+          </el-collapse-item>
+
+          <!-- 考核题目 -->
+          <el-collapse-item name="questions">
+            <template #title>
+              <div class="collapse-title">
+                <el-icon class="collapse-title-icon"><Collection /></el-icon>
+                <span>考核题目</span>
               </div>
             </template>
 
             <div v-for="(question, qIndex) in formData.questions" :key="qIndex" class="question-block">
               <div class="question-title">
-                <span class="question-label">题目{{ qIndex + 1 }}</span>
-                <el-button
-                  type="danger"
-                  link
-                  :icon="Delete"
-                  :disabled="formData.questions.length <= 1"
-                  @click="removeQuestion(qIndex)"
-                >
-                  删除题目
-                </el-button>
+                <div class="question-title-left">
+                  <span class="question-label">题目{{ qIndex + 1 }}</span>
+                  <el-select
+                    v-model="question.bankValue"
+                    class="question-from-bank"
+                    placeholder="从题库"
+                    clearable
+                    @change="onQuestionBankChange(question, $event)"
+                  >
+                    <el-option v-for="bank in questionBankOptions" :key="bank.questionId" :label="bank.content" :value="bank.questionId" />
+                  </el-select>
+                </div>
+                <div class="question-title-right">
+                  <el-button
+                    link
+                    :icon="ArrowUp"
+                    :disabled="qIndex === 0"
+                    class="icon-btn"
+                    @click="moveQuestion(qIndex, -1)"
+                  />
+                  <el-button
+                    link
+                    :icon="ArrowDown"
+                    :disabled="qIndex === formData.questions.length - 1"
+                    class="icon-btn"
+                    @click="moveQuestion(qIndex, 1)"
+                  />
+                  <el-button
+                    type="danger"
+                    link
+                    :icon="Delete"
+                    :disabled="formData.questions.length <= 1"
+                    @click="removeQuestion(qIndex)"
+                  >
+                    删除题目
+                  </el-button>
+                </div>
               </div>
 
               <el-input
@@ -277,22 +301,12 @@
                 <div v-for="(option, oIndex) in question.options" :key="oIndex" class="option-row">
                   <span class="option-letter">{{ getOptionLetter(oIndex) }}</span>
                   <el-input v-model="option.content" placeholder="请输入选项内容" class="option-input" />
-                  <el-select
-                    v-model="option.bankValue"
-                    class="option-from-bank"
-                    placeholder="从题库"
-                    clearable
-                    @change="onBankChange(option, $event)"
-                  >
-                    <el-option v-for="bank in questionBankOptions" :key="bank" :label="bank" :value="bank" />
-                  </el-select>
                   <el-button
                     :type="option.isCorrect ? 'success' : 'default'"
                     :plain="!option.isCorrect"
                     class="correct-btn"
                     @click="toggleCorrect(option)"
                   >
-                    <el-icon v-if="option.isCorrect" style="margin-right: 2px"><Check /></el-icon>
                     正确
                   </el-button>
                   <el-button
@@ -326,7 +340,8 @@
             </div>
 
             <el-button type="primary" plain :icon="Plus" class="add-question-btn" @click="addQuestion">添加题目</el-button>
-          </el-card>
+          </el-collapse-item>
+        </el-collapse>
       </el-form>
 
       <template #footer>
@@ -343,9 +358,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
   Search, Plus, Download, Edit, Delete, Reading, Box, Tools, Operation, More,
-  ArrowUp, ArrowDown, InfoFilled, Collection, Check
+  ArrowUp, ArrowDown, InfoFilled, Collection
 } from '@element-plus/icons-vue'
 import { examTemplateData } from '@/mock/resource/templateData'
+import { mockQuestionBankData } from '@/mock/resource/questionBankData'
 import { materialCategoryData } from '@/mock/resource/categoryData'
 import { equipmentSetData } from '@/mock/resource/setData'
 import type { MaterialCategory } from '@/types/resource/category'
@@ -441,27 +457,21 @@ function buildQuestionTypesDesc(items: QuestionTypeItem[]): string {
 
 // ── 新增/编辑抽屉 ──
 const drawerVisible = ref(false)
+const activeCollapse = ref(['base', 'questions'])
 const formTitle = ref('新建考核模板')
 const formRef = ref<FormInstance>()
 const editingId = ref('')
 
-const questionBankOptions = [
-  '无人机起飞前应检查螺旋桨是否安装牢固',
-  '除颤仪使用时应保持电极片紧贴患者皮肤',
-  '对讲机在应急场景下应优先使用加密信道',
-  '灭火器使用前需检查压力表指针是否处于绿区',
-  '发电机启动前应确认燃油箱液位是否充足',
-  '救生衣穿着后应检查裆带是否系牢'
-]
+const questionBankOptions = mockQuestionBankData
 
 const createEmptyOption = (): QuestionOptionItem => ({
   content: '',
-  isCorrect: false,
-  bankValue: ''
+  isCorrect: false
 })
 
 const createEmptyQuestion = (): ExamQuestionItem => ({
   content: '',
+  bankValue: '',
   options: [createEmptyOption(), createEmptyOption(), createEmptyOption(), createEmptyOption()]
 })
 
@@ -597,6 +607,13 @@ function removeQuestion(index: number) {
   formData.questions.splice(index, 1)
 }
 
+function moveQuestion(index: number, dir: -1 | 1) {
+  const target = index + dir
+  if (target < 0 || target >= formData.questions.length) return
+  const arr = formData.questions
+  ;[arr[index], arr[target]] = [arr[target], arr[index]]
+}
+
 function addOption(question: ExamQuestionItem) {
   question.options.push(createEmptyOption())
 }
@@ -620,9 +637,11 @@ function getOptionLetter(index: number): string {
   return String.fromCharCode(65 + index)
 }
 
-function onBankChange(option: QuestionOptionItem, val: unknown) {
-  if (typeof val === 'string' && val) {
-    option.content = val
+function onQuestionBankChange(question: ExamQuestionItem, val: unknown) {
+  const bank = questionBankOptions.find(item => item.questionId === val)
+  if (bank) {
+    question.content = bank.content
+    question.options = bank.options.map(o => ({ content: o.content, isCorrect: o.isCorrect }))
   }
 }
 
@@ -917,144 +936,161 @@ function handleExport() {
     flex-shrink: 0;
   }
 
-  // ── 新增/编辑抽屉 ──
-  .template-drawer {
-    :deep(.el-drawer__body) {
-      background: #f5f7fa;
-      padding: 16px 20px;
+  // 抽屉样式
+  :deep(.el-drawer) {
+    .el-drawer__header {
+      margin-bottom: 0;
+      padding: 20px 24px;
+      border-bottom: 1px solid #EBEEF5;
+
+      .el-drawer__title {
+        font-weight: 600;
+        font-size: 16px;
+      }
     }
 
-    .form-card {
-      border-radius: 12px;
-      border: 1px solid #ebeef5;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      margin-bottom: 16px;
+    .el-drawer__body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+  }
 
-        :deep(.el-card__body) {
-          padding: 20px 24px;
-        }
+  // 表单折叠框
+  .form-collapse {
+    margin-bottom: 16px;
 
-        .card-header {
-          display: flex;
-          align-items: center;
-          gap: 8px;
+    .collapse-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
-          .card-header-icon {
-            color: #409eff;
-            font-size: 18px;
-          }
-
-          span {
-            font-size: 15px;
-            font-weight: 600;
-            color: #303133;
-          }
-        }
-
-        .card-header-between {
-          justify-content: space-between;
-        }
+      .collapse-title-icon {
+        color: #409eff;
+        font-size: 18px;
       }
 
-      .form-input {
-        width: 100%;
+      span {
+        font-size: 15px;
+        font-weight: 600;
+        color: #303133;
       }
+    }
+  }
 
-      .duration-row {
+  .form-input {
+    width: 100%;
+  }
+
+  .duration-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+
+    .duration-input {
+      width: 200px;
+    }
+
+    .form-tip-inline {
+      font-size: 13px;
+      color: #909399;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── 考核题目 ──
+  .question-block {
+    background: #f8f9fb;
+    border: 1px solid #ebeef5;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    .question-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+
+      .question-title-left {
         display: flex;
         align-items: center;
         gap: 8px;
-        width: 100%;
+        flex: 1;
+        min-width: 0;
 
-        .duration-input {
-          width: 200px;
+        .question-label {
+          font-size: 13px;
+          font-weight: 600;
+          color: #409eff;
+          background: #ecf5ff;
+          padding: 3px 10px;
+          border-radius: 6px;
+          flex-shrink: 0;
         }
 
-        .form-tip-inline {
-          font-size: 13px;
-          color: #909399;
+        .question-from-bank {
+          width: 180px;
           flex-shrink: 0;
         }
       }
 
-      // ── 考核题目 ──
-      .question-block {
-        background: #f8f9fb;
-        border: 1px solid #ebeef5;
-        border-radius: 10px;
-        padding: 16px;
-        margin-bottom: 16px;
+      .question-title-right {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+    }
 
-        .question-title {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 12px;
+    .question-content {
+      margin-bottom: 14px;
+    }
 
-          .question-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #409eff;
-            background: #ecf5ff;
-            padding: 3px 10px;
-            border-radius: 6px;
-          }
-        }
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
 
-        .question-content {
-          margin-bottom: 14px;
-        }
-
-        .option-row {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 10px;
-
-          .option-letter {
-            width: 28px;
-            height: 28px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #ecf5ff;
-            color: #409eff;
-            font-weight: 600;
-            border-radius: 6px;
-            font-size: 13px;
-          }
+      .option-letter {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ecf5ff;
+        color: #409eff;
+        font-weight: 600;
+        border-radius: 6px;
+        font-size: 13px;
+      }
 
           .option-input {
             flex: 1;
-          }
-
-          .option-from-bank {
-            width: 150px;
-            flex-shrink: 0;
           }
 
           .correct-btn {
             flex-shrink: 0;
           }
 
-          .icon-btn {
-            flex-shrink: 0;
-            padding: 8px 6px;
-          }
-        }
-
-        .option-actions {
-          display: flex;
-          justify-content: center;
-        }
+      .icon-btn {
+        flex-shrink: 0;
+        padding: 8px 6px;
       }
+    }
 
-      .add-question-btn {
-        width: 100%;
-        border-style: dashed;
-        height: 44px;
-      }
+    .option-actions {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .add-question-btn {
+    width: 100%;
+    border-style: dashed;
+    height: 44px;
   }
 }
 @keyframes fadeInUp {

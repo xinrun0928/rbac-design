@@ -14,12 +14,22 @@ export interface QuestionOptionItem {
   content: string
   /** 是否为正确答案 */
   isCorrect: boolean
-  /** 从题库选中的临时值（仅表单使用） */
-  bankValue?: string
 }
 
 /** 考核题目 */
 export interface ExamQuestionItem {
+  /** 题目内容 */
+  content: string
+  /** 从题库选中的临时值（仅表单使用） */
+  bankValue?: string
+  /** 题目选项 */
+  options: QuestionOptionItem[]
+}
+
+/** 题库题目 */
+export interface QuestionBankItem {
+  /** 题目ID */
+  questionId: string
   /** 题目内容 */
   content: string
   /** 题目选项 */

@@ -5,60 +5,36 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="日志名称">
-            <el-input
-              v-model="searchForm.name"
-              placeholder="请输入日志名称"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="请求地址">
-            <el-input
-              v-model="searchForm.reqUrl"
-              placeholder="请输入请求地址"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="IP地址">
-            <el-input
-              v-model="searchForm.ip"
-              placeholder="请输入IP地址"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="操作结果">
-            <el-select
-              v-model="searchForm.result"
-              placeholder="请选择"
-              clearable
-              style="width: 180px"
-            >
-              <el-option label="SUCCESS" value="SUCCESS" />
-              <el-option label="FAIL" value="FAIL" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="访问时间">
-            <el-date-picker
-              v-model="searchForm.createTime"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="YYYY-MM-DD"
-              style="width: 260px"
-            />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">访问日志</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.name"
+            placeholder="搜索日志名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-input
+            v-model="searchForm.reqUrl"
+            placeholder="搜索请求地址"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-date-picker
+            v-model="searchForm.createTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+            style="width: 260px"
+          />
+        </div>
       </div>
 
       <el-table
@@ -73,13 +49,13 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="name" label="日志名称" min-width="140">
+        <el-table-column prop="name" label="日志名称" min-width="140" align="center">
           <template #default="{ row }">
             <span class="name-text">{{ row.name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="reqUrl" label="请求地址" min-width="240">
+        <el-table-column prop="reqUrl" label="请求地址" min-width="240" show-overflow-tooltip>
           <template #default="{ row }">
             <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
               <span class="url-text" @click="handleCopyText(row.reqUrl)">{{ row.reqUrl }}</span>
@@ -120,19 +96,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="ip" label="IP地址" width="130">
+        <el-table-column prop="ip" label="IP地址" width="130" align="center">
           <template #default="{ row }">
             <span class="ip-text">{{ row.ip }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="browser" label="浏览器" width="100">
+        <el-table-column prop="browser" label="浏览器" width="100" align="center">
           <template #default="{ row }">
             <span class="browser-text">{{ row.browser }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="os" label="操作系统" width="100">
+        <el-table-column prop="os" label="操作系统" width="100" align="center">
           <template #default="{ row }">
             <span class="browser-text">{{ row.os }}</span>
           </template>
@@ -144,7 +120,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="90" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">
               详情
@@ -316,8 +292,6 @@ import { getAccessLogs, getAccessLogDetail } from '@/utils/logMockApi'
 interface SearchForm {
   name: string
   reqUrl: string
-  ip: string
-  result: string
   createTime: string[] | null
 }
 
@@ -393,8 +367,6 @@ const activeCollapse = ref(['basic', 'request', 'other'])
 const searchForm = reactive<SearchForm>({
   name: '',
   reqUrl: '',
-  ip: '',
-  result: '',
   createTime: null
 })
 
@@ -451,8 +423,6 @@ async function fetchData() {
     const searchParams: Record<string, any> = {}
     if (searchForm.name) searchParams.name = searchForm.name
     if (searchForm.reqUrl) searchParams.reqUrl = searchForm.reqUrl
-    if (searchForm.ip) searchParams.ip = searchForm.ip
-    if (searchForm.result) searchParams.result = searchForm.result
     if (searchForm.createTime && searchForm.createTime.length === 2) {
       searchParams.createTime = searchForm.createTime
     }
@@ -479,8 +449,6 @@ function handleSearch() {
 function handleReset() {
   searchForm.name = ''
   searchForm.reqUrl = ''
-  searchForm.ip = ''
-  searchForm.result = ''
   searchForm.createTime = null
   pagination.page = 1
   fetchData()
@@ -543,15 +511,25 @@ onMounted(() => {
 
   // 搜索栏
   .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
+  }
 
-    .search-form {
-      .el-form-item {
-        margin-bottom: 0;
-      }
-    }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   // 表格卡片

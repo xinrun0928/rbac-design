@@ -50,9 +50,11 @@
       <div class="collapsed-list">
         <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item" @click="handleCollapsedItemClick(item)">
           <el-tooltip :content="item.name" placement="right">
-            <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
+            <div class="collapsed-icon-wrapper">
+              <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
+                <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
+              </div>
               <span class="collapsed-level">{{ item.level }}</span>
-              <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
             </div>
           </el-tooltip>
         </div>
@@ -228,36 +230,51 @@ defineExpose({
         flex-direction: column;
         align-items: center;
         cursor: pointer;
+
+        &:first-child {
+          margin-top: 8px;
+        }
+      }
+
+      .collapsed-icon-wrapper {
+        position: relative;
       }
 
       .collapsed-icon {
         width: 36px;
-        height: 40px;
+        height: 36px;
         border-radius: 8px;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        padding-top: 4px;
+        justify-content: center;
         transition: opacity 0.2s;
 
         &:hover { opacity: 0.85; }
 
-        .collapsed-level {
-          font-size: 8px;
-          color: #fff;
-          line-height: 10px;
-          font-weight: 600;
-          flex-shrink: 0;
-        }
-
         .collapsed-char {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           color: #fff;
-          line-height: 20px;
-          flex-shrink: 0;
+          line-height: 1;
         }
+      }
+
+      .collapsed-level {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        font-size: 9px;
+        color: #fff;
+        line-height: 1;
+        font-weight: 600;
+        background: #909399;
+        border-radius: 8px;
+        padding: 1px 4px;
+        min-width: 14px;
+        text-align: center;
+        height: 14px;
+        line-height: 14px;
+        z-index: 1;
       }
     }
   }

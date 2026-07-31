@@ -140,9 +140,8 @@
     <el-drawer
       v-model="drawerVisible"
       :title="drawerTitle"
-      size="50%"
+      size="60%"
       direction="rtl"
-      class="training-drawer"
       destroy-on-close
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
@@ -150,30 +149,38 @@
           <el-input v-model="formData.courseName" placeholder="请输入课程包名称" maxlength="100" show-word-limit />
         </el-form-item>
         <el-form-item label="课程包编号" prop="courseCode">
-          <el-input v-model="formData.courseCode" placeholder="请输入课程包编号，如 PEIX-202510-001" />
+          <el-input v-model="formData.courseCode" placeholder="系统自动生成" disabled />
         </el-form-item>
-        <el-form-item label="物资分类" prop="category">
-          <el-select v-model="formData.category" placeholder="请选择物资分类" style="width: 100%">
-            <el-option
-              v-for="cat in categoryOptions"
-              :key="cat"
-              :label="cat"
-              :value="cat"
-            />
+        <el-form-item label="适用类型" prop="applyType">
+          <el-radio-group v-model="formData.applyType">
+            <el-radio :value="1">按种类选择</el-radio>
+            <el-radio :value="2">按现有库存装备</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="formData.applyType === 1" prop="selectedCategories" label=" ">
+          <el-tree-select
+            v-model="formData.selectedCategories"
+            :data="categoryTreeData"
+            :props="{ label: 'categoryName', value: 'categoryId', children: 'children' }"
+            node-key="categoryId"
+            multiple
+            show-checkbox
+            check-strictly
+            :render-after-expand="false"
+            placeholder="请选择装备种类（支持多选）"
+            style="width: 100%"
+          />
+        </el-form-item>
+        <el-form-item v-else prop="selectedEquipment" label=" ">
+          <el-select
+            v-model="formData.selectedEquipment"
+            multiple
+            filterable
+            placeholder="请选择现有库存装备（支持多选）"
+            style="width: 100%"
+          >
+            <el-option v-for="name in equipmentOptions" :key="name" :label="name" :value="name" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="装备分类" prop="equipmentCategory">
-          <el-select v-model="formData.equipmentCategory" placeholder="请选择装备分类" style="width: 100%" filterable>
-            <el-option
-              v-for="eq in equipmentCategoryOptions"
-              :key="eq"
-              :label="eq"
-              :value="eq"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="装备型号" prop="equipmentModel">
-          <el-input v-model="formData.equipmentModel" placeholder="请输入装备型号" />
         </el-form-item>
         <el-form-item label="资源类型" prop="resourceTypeList">
           <el-checkbox-group v-model="formData.resourceTypeList">
@@ -185,8 +192,54 @@
             />
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="附件数量" prop="attachmentCount">
-          <el-input-number v-model="formData.attachmentCount" :min="0" :max="999" style="width: 100%" />
+        <el-form-item label="配套资源附件" prop="attachments">
+          <div class="attachment-upload">
+            <el-upload
+              v-model:file-list="formData.attachments"
+              :auto-upload="false"
+              multiple
+              :show-file-list="false"
+            >
+              <el-button type="primary" plain :icon="Upload">上传附件</el-button>
+              <template #tip>
+                <div class="upload-tip">支持多文件上传，可删除已上传的附件</div>
+              </template>
+            </el-upload>
+            <el-table
+              v-if="formData.attachments.length"
+              :data="formData.attachments"
+              border
+              size="small"
+              class="attachment-table"
+              :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+            >
+              <el-table-column type="index" label="序号" width="60" align="center" />
+              <el-table-column prop="name" label="设备物资名称" min-width="200" align="center">
+                <template #default="{ row }">
+                  <span class="attachment-name" :title="row.name">{{ row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="类别" width="100" align="center">
+                <template #default="{ row }">
+                  <el-tag type="primary" effect="plain" size="small">{{ getFileExt(row.name) }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="大小" width="100" align="center">
+                <template #default="{ row }">
+                  <span class="attachment-size">{{ formatFileSize(row.size) }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="80" align="center">
+                <template #default="{ $index }">
+                  <el-button type="danger" link :icon="Delete" @click="removeAttachment($index)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div v-else class="attachment-empty">尚未上传附件</div>
+            <div class="attachment-count-text">
+              附件数量：<b class="attachment-count-num">{{ formData.attachments.length }}</b>
+            </div>
+          </div>
         </el-form-item>
         <el-form-item label="启用状态" prop="status">
           <el-radio-group v-model="formData.status">
@@ -210,9 +263,12 @@
 import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Search, Plus, Download, Edit, Delete, Reading, Box, Tools, Operation, More } from '@element-plus/icons-vue'
+import { Search, Plus, Download, Edit, Delete, Reading, Box, Tools, Operation, More, Upload } from '@element-plus/icons-vue'
 import { equipmentTrainingData } from '@/mock/resource/trainingData'
+import { materialCategoryData } from '@/mock/resource/categoryData'
+import { equipmentSetData } from '@/mock/resource/setData'
 import type { EquipmentTraining, EquipmentTrainingForm, EquipmentTrainingSearchForm, TrainingCategory, TrainingResourceType } from '@/types/resource/training'
+import type { MaterialCategory } from '@/types/resource/category'
 
 const loading = ref(false)
 const tableData = ref<EquipmentTraining[]>([...equipmentTrainingData])
@@ -291,23 +347,50 @@ function handlePageChange(page: number) {
 }
 
 // ── 选项 ──
-const categoryOptions: TrainingCategory[] = ['基本生活保障物资', '应急装备及配套物资', '工程材料与机械加工', '其他']
-
-const equipmentCategoryOptions = [
-  '应急装备及配套物资/搜救设备',
-  '应急装备及配套物资/发电设备',
-  '应急装备及配套物资/通信设备',
-  '应急装备及配套物资/水域救援设备',
-  '应急装备及配套物资/医疗救援设备',
-  '应急装备及配套物资/其他',
-  '消防器材',
-  '基本生活保障物资/住宿物资',
-  '基本生活保障物资/生活物资',
-  '工程材料与机械加工/工程机械',
-  '工程材料与机械加工/应急物资'
-]
-
 const resourceTypeOptions: TrainingResourceType[] = ['操作手册', '演示视频', '安全注意事项', '事故案例', '维保要点', '干扰处理案例', '维护视频', '故障排查指南']
+
+// ── 适用类型选择 ──
+const categoryTreeData = materialCategoryData
+
+const equipmentOptions = computed(() => {
+  const names = new Set<string>()
+  equipmentSetData.forEach(set => set.equipmentItems.forEach(item => names.add(item.equipmentName)))
+  return Array.from(names)
+})
+
+function findCategoryPath(nodes: MaterialCategory[], id: string, trail: string[] = []): string[] | null {
+  for (const node of nodes) {
+    const next = [...trail, node.categoryName]
+    if (node.categoryId === id) return next
+    if (node.children) {
+      const found = findCategoryPath(node.children, id, next)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+function categoryFullName(id: string): string {
+  return findCategoryPath(categoryTreeData, id)?.join('/') ?? id
+}
+
+// ── 附件 ──
+function getFileExt(name: string): string {
+  const idx = name.lastIndexOf('.')
+  return idx >= 0 ? name.slice(idx + 1).toUpperCase() : '文件'
+}
+
+function formatFileSize(size: number): string {
+  if (!size) return '-'
+  if (size < 1024) return `${size}B`
+  if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)}KB`
+  if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(1)}MB`
+  return `${(size / (1024 * 1024 * 1024)).toFixed(1)}GB`
+}
+
+function removeAttachment(index: number) {
+  formData.attachments.splice(index, 1)
+}
 
 // ── 新增/编辑抽屉 ──
 const drawerVisible = ref(false)
@@ -318,23 +401,45 @@ const editingId = ref('')
 const createEmptyForm = (): EquipmentTrainingForm => ({
   courseName: '',
   courseCode: '',
-  category: '应急装备及配套物资',
+  applyType: 1,
   equipmentCategory: '',
-  equipmentModel: '',
   resourceTypeList: [],
+  attachments: [],
   attachmentCount: 0,
   status: 1,
-  remark: ''
+  remark: '',
+  selectedCategories: [],
+  selectedEquipment: []
 })
 
 const formData = reactive<EquipmentTrainingForm>(createEmptyForm())
 
 const formRules: FormRules = {
   courseName: [{ required: true, message: '请输入课程包名称', trigger: 'blur' }],
-  courseCode: [{ required: true, message: '请输入课程包编号', trigger: 'blur' }],
-  category: [{ required: true, message: '请选择物资分类', trigger: 'change' }],
-  equipmentCategory: [{ required: true, message: '请选择装备分类', trigger: 'change' }],
-  equipmentModel: [{ required: true, message: '请输入装备型号', trigger: 'blur' }],
+  selectedCategories: [
+    {
+      validator: (_rule, _value, callback) => {
+        if (formData.applyType === 1 && !formData.selectedCategories?.length) {
+          callback(new Error('请至少选择一种装备种类'))
+          return
+        }
+        callback()
+      },
+      trigger: 'change'
+    }
+  ],
+  selectedEquipment: [
+    {
+      validator: (_rule, _value, callback) => {
+        if (formData.applyType === 2 && !formData.selectedEquipment?.length) {
+          callback(new Error('请至少选择一件现有库存装备'))
+          return
+        }
+        callback()
+      },
+      trigger: 'change'
+    }
+  ],
   resourceTypeList: [
     {
       validator: (_rule, value: TrainingResourceType[], callback) => {
@@ -350,6 +455,12 @@ const formRules: FormRules = {
   status: [{ required: true, message: '请选择启用状态', trigger: 'change' }]
 }
 
+function generateCourseCode(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `PEIX-${d.getFullYear()}${pad(d.getMonth() + 1)}-${String(tableData.value.length + 1).padStart(3, '0')}`
+}
+
 function resetForm() {
   Object.assign(formData, createEmptyForm())
 }
@@ -358,6 +469,7 @@ function handleCreate() {
   editingId.value = ''
   drawerTitle.value = '新建教程'
   resetForm()
+  formData.courseCode = generateCourseCode()
   drawerVisible.value = true
 }
 
@@ -366,30 +478,54 @@ function handleEdit(row: EquipmentTraining) {
   drawerTitle.value = '修改教程'
   formData.courseName = row.courseName
   formData.courseCode = row.courseCode
-  formData.category = row.category
+  formData.applyType = 1
   formData.equipmentCategory = row.equipmentCategory
-  formData.equipmentModel = row.equipmentModel
   formData.resourceTypeList = [...row.resourceTypeList]
+  formData.attachments = []
   formData.attachmentCount = row.attachmentCount
   formData.status = row.status
   formData.remark = row.remark
+  formData.selectedCategories = []
+  formData.selectedEquipment = []
   drawerVisible.value = true
+}
+
+function buildEquipmentCategory(): string {
+  if (formData.applyType === 1) {
+    return (formData.selectedCategories ?? []).map(categoryFullName).join('、')
+  }
+  return (formData.selectedEquipment ?? []).join('、')
+}
+
+function deriveCategory(equipmentCategory: string): TrainingCategory {
+  const first = equipmentCategory.split('/')[0].trim()
+  if (first === '基本生活保障物资') return '基本生活保障物资'
+  if (first === '工程材料与机械加工') return '工程材料与机械加工'
+  if (first === '其他') return '其他'
+  return '应急装备及配套物资'
+}
+
+function deriveEquipmentModel(equipmentCategory: string): string {
+  const parts = equipmentCategory.split('、')[0].split('/')
+  return parts[parts.length - 1].trim()
 }
 
 function handleSubmit() {
   formRef.value?.validate(valid => {
     if (!valid) return
+    const equipmentCategory = buildEquipmentCategory()
+    const attachmentCount = formData.attachments.length
     if (editingId.value) {
       const target = tableData.value.find(item => item.courseId === editingId.value)
       if (target) {
         target.courseName = formData.courseName
         target.courseCode = formData.courseCode
-        target.category = formData.category
-        target.equipmentCategory = formData.equipmentCategory
-        target.equipmentModel = formData.equipmentModel
+        target.category = deriveCategory(equipmentCategory)
+        target.equipmentCategory = equipmentCategory
+        target.equipmentModel = deriveEquipmentModel(equipmentCategory)
         target.resourceTypeList = [...formData.resourceTypeList]
         target.resourceTypes = formData.resourceTypeList.join('、')
-        target.attachmentCount = formData.attachmentCount
+        target.attachmentCount = attachmentCount
         target.status = formData.status
         target.remark = formData.remark
         target.updateTime = formatNow()
@@ -401,12 +537,12 @@ function handleSubmit() {
         courseId: id,
         courseName: formData.courseName,
         courseCode: formData.courseCode,
-        category: formData.category,
-        equipmentCategory: formData.equipmentCategory,
-        equipmentModel: formData.equipmentModel,
+        category: deriveCategory(equipmentCategory),
+        equipmentCategory,
+        equipmentModel: deriveEquipmentModel(equipmentCategory),
         resourceTypeList: [...formData.resourceTypeList],
         resourceTypes: formData.resourceTypeList.join('、'),
-        attachmentCount: formData.attachmentCount,
+        attachmentCount,
         status: formData.status,
         createBy: '当前用户',
         createTime: new Date().toISOString().slice(0, 10),
@@ -655,10 +791,76 @@ function handleExport() {
   }
 }
 
-// 抽屉表单
-.training-drawer {
-  :deep(.el-checkbox) {
-    margin-right: 16px;
+// 抽屉样式
+:deep(.el-drawer) {
+  .el-drawer__header {
+    margin-bottom: 0;
+    padding: 20px 24px;
+    border-bottom: 1px solid #EBEEF5;
+
+    .el-drawer__title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  .el-drawer__body {
+    padding: 24px;
+    overflow-y: auto;
+  }
+}
+
+:deep(.el-checkbox) {
+  margin-right: 16px;
+}
+
+// 附件上传
+.attachment-upload {
+  width: 100%;
+
+  .upload-tip {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 8px;
+  }
+
+  .attachment-table {
+    margin-top: 12px;
+    border-radius: 6px;
+  }
+
+  .attachment-empty {
+    font-size: 13px;
+    color: #909399;
+    border: 1px dashed #dcdfe6;
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .attachment-size {
+    font-size: 13px;
+    color: #606266;
+  }
+
+  .attachment-name {
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .attachment-count-text {
+    font-size: 13px;
+    color: #606266;
+    margin-top: 12px;
+
+    .attachment-count-num {
+      color: #409eff;
+      font-size: 15px;
+    }
   }
 }
 

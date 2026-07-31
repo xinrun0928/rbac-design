@@ -4,6 +4,20 @@ export type TrainingResourceType = '操作手册' | '演示视频' | '安全注�
 /** 装备使用教程 - 物资分类 */
 export type TrainingCategory = '基本生活保障物资' | '应急装备及配套物资' | '工程材料与机械加工' | '其他'
 
+/** 装备使用教程 - 上传附件 */
+export interface TrainingAttachment {
+  /** 附件ID（唯一） */
+  uid: number
+  /** 附件名称 */
+  name: string
+  /** 附件大小（字节） */
+  size: number
+  /** 上传状态 */
+  status?: 'ready' | 'uploading' | 'success' | 'fail'
+  /** 附件URL */
+  url?: string
+}
+
 /** 装备使用教程 */
 export interface EquipmentTraining {
   /** 课程包ID */
@@ -48,20 +62,24 @@ export interface EquipmentTrainingForm {
   courseId?: string
   /** 课程包/培训名称 */
   courseName: string
-  /** 课程包编号 */
+  /** 课程包编号（系统自动生成，只读） */
   courseCode: string
-  /** 物资分类 */
-  category: TrainingCategory
-  /** 适用装备分类 */
+  /** 适用类型: 1-按种类选择 2-按现有库存装备 */
+  applyType: number
+  /** 适用装备分类/型号（由适用类型选择生成） */
   equipmentCategory: string
-  /** 适用装备型号 */
-  equipmentModel: string
   /** 资源类型列表 */
   resourceTypeList: TrainingResourceType[]
-  /** 配套资源附件数 */
+  /** 上传的配套资源附件列表 */
+  attachments: TrainingAttachment[]
+  /** 配套资源附件数（由附件列表数量自动生成） */
   attachmentCount: number
   /** 启用状态: 1-已启用 0-未启用 */
   status: number
   /** 备注 */
   remark: string
+  /** 按种类选择时选中的装备种类ID（applyType=1 时使用） */
+  selectedCategories?: string[]
+  /** 按现有库存装备时选中的装备名称（applyType=2 时使用） */
+  selectedEquipment?: string[]
 }

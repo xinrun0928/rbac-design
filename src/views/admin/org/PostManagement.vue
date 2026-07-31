@@ -56,7 +56,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="name" label="岗位名称" min-width="150">
+            <el-table-column prop="name" label="岗位名称" min-width="150" align="center">
               <template #default="{ row }">
                 <span class="name-text">{{ row.name }}</span>
               </template>
@@ -76,7 +76,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip>
+            <el-table-column prop="remark" label="备注" min-width="150" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="remark-text">{{ row.remark || '-' }}</span>
               </template>

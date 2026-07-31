@@ -68,7 +68,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="roles" label="角色" width="180">
+            <el-table-column prop="roles" label="角色" width="180" align="center">
               <template #default="{ row }">
                 <div class="tag-cell">
                   <el-tag
@@ -86,7 +86,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="departments" label="部门" width="150">
+            <el-table-column prop="departments" label="部门" width="150" align="center">
               <template #default="{ row }">
                 <div class="tag-cell">
                   <el-tag
@@ -104,7 +104,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="position" label="职务" width="150">
+            <el-table-column prop="position" label="职务" width="150" align="center">
               <template #default="{ row }">
                 <div class="tag-cell">
                   <el-tag
@@ -128,13 +128,13 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="email" label="邮箱" min-width="180">
+            <el-table-column prop="email" label="邮箱" min-width="180" align="center">
               <template #default="{ row }">
                 <span class="email-text">{{ row.email }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="responsibility" label="备注" min-width="170">
+            <el-table-column prop="responsibility" label="备注" min-width="170" align="center">
               <template #default="{ row }">
                 <span class="remark-text">{{ row.responsibility || '-' }}</span>
               </template>

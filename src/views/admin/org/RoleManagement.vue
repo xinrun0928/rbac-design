@@ -44,13 +44,13 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="roleCode" label="角色编码" width="140">
+            <el-table-column prop="roleCode" label="角色编码" width="140" align="center">
               <template #default="{ row }">
                 <span class="code-text">{{ row.roleCode }}</span>
               </template>
             </el-table-column>
 
-            <el-table-column prop="roleName" label="角色名称" min-width="190">
+            <el-table-column prop="roleName" label="角色名称" min-width="190" align="center">
               <template #default="{ row }">
                 <div class="role-name-cell">
                   <el-icon :style="{ color: row.isSystem ? '#E6A23C' : '#67C23A' }">
@@ -62,7 +62,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="description" label="角色描述" min-width="150" show-overflow-tooltip>
+            <el-table-column prop="description" label="角色描述" min-width="150" align="center" show-overflow-tooltip>
               <template #default="{ row }">
                 <span class="desc-text">{{ row.description || '-' }}</span>
               </template>

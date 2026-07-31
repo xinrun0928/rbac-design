@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="configValue" label="参数键值" min-width="140">
+        <el-table-column prop="configValue" label="参数键值" min-width="140" align="center">
           <template #default="{ row }">
             <span class="value-text">{{ row.configValue || '-' }}</span>
           </template>

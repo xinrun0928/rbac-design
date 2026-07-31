@@ -186,14 +186,14 @@ defineExpose({
   flex-direction: column;
 
   &.collapsed {
-    width: 80px;
+    width: 88px;
     align-items: center;
 
     .collapsed-body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 12px 4px;
+      padding: 12px 0;
       gap: 4px;
       flex: 1;
 

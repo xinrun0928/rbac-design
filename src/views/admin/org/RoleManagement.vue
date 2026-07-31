@@ -2,69 +2,7 @@
   <div class="role-management">
 
     <div class="main-content animate-item">
-      <!-- 左侧：组织树 -->
-      <div class="tree-panel" :class="{ collapsed: treeCollapsed }">
-        <template v-if="!treeCollapsed">
-          <div class="tree-header">
-            <span class="tree-title">组织结构</span>
-            <el-button
-              :icon="DArrowLeft"
-              link
-              @click="treeCollapsed = true"
-              class="collapse-btn"
-            />
-          </div>
-          <div class="tree-body">
-            <el-input
-              v-model="treeFilter"
-              placeholder="搜索组织名称"
-              clearable
-              :prefix-icon="Search"
-              class="tree-search"
-            />
-            <el-tree
-              ref="treeRef"
-              :data="orgTreeData"
-              :props="{ label: 'name', children: 'children' }"
-              node-key="id"
-              highlight-current
-              default-expand-all
-              :expand-on-click-node="false"
-              :filter-node-method="filterTreeNode"
-              @node-click="handleNodeClick"
-              class="org-tree"
-            >
-              <template #default="{ data }">
-                <div class="tree-node">
-                  <el-icon class="node-icon" :style="{ color: getNodeTypeColor(data.nodeType) }">
-                    <component :is="getNodeTypeIcon(data.nodeType)" />
-                  </el-icon>
-                  <span class="node-label">{{ data.name }}</span>
-                </div>
-              </template>
-            </el-tree>
-          </div>
-        </template>
-        <div v-else class="collapsed-body">
-          <div class="collapsed-list">
-            <div v-for="(item, index) in flatTreeData" :key="index" class="collapsed-item">
-              <el-tooltip :content="item.name" placement="right">
-                <div class="collapsed-icon-wrapper">
-                  <el-tag :type="getLevelTagType(item.level)" size="small" class="level-badge" effect="dark">{{ item.level }}</el-tag>
-                  <div class="collapsed-icon" :style="{ background: getNodeTypeColor(item.nodeType) }">
-                    <span class="collapsed-char">{{ item.name.charAt(0) }}</span>
-                  </div>
-                </div>
-              </el-tooltip>
-            </div>
-          </div>
-        </div>
-        <div v-if="treeCollapsed" class="collapsed-expand-bar">
-          <el-tooltip content="展开" placement="right">
-            <el-button :icon="DArrowRight" link @click="treeCollapsed = false" class="expand-btn" />
-          </el-tooltip>
-        </div>
-      </div>
+      <OrgTreePanel ref="orgTreeRef" @node-click="handleNodeClick" />
 
       <!-- 右侧：角色列表区域 -->
       <div class="list-panel">
@@ -373,16 +311,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import type ElTree from 'element-plus/es/components/tree'
 import {
   Refresh, Search, Plus, Delete, Edit, Setting,
   SuccessFilled, CircleCloseFilled,
-  OfficeBuilding, Location, DArrowLeft, DArrowRight, User, Lock,
-  HomeFilled, FolderOpened, Monitor, Briefcase, Folder
+  User, Lock
 } from '@element-plus/icons-vue'
+import OrgTreePanel from '@/components/OrgTreePanel.vue'
 import { orgTreeData } from '@/mock/admin/orgTreeData'
 import { mockMenuData } from '@/mock/admin/menuData'
 import { mockSubsystemData } from '@/mock/admin/subsystemData'
@@ -416,10 +354,8 @@ const dataScopeOptions = [
 
 // ── 状态 ──
 const loading = ref(false)
-const treeRef = ref<InstanceType<typeof ElTree>>()
+const orgTreeRef = ref<InstanceType<typeof OrgTreePanel>>()
 const bindTreeRef = ref<InstanceType<typeof ElTree>>()
-const treeCollapsed = ref(false)
-const treeFilter = ref('')
 const currentNode = ref<OrgTreeNode | null>(null)
 const roleDrawerVisible = ref(false)
 const isRoleEdit = ref(false)
@@ -490,11 +426,6 @@ function handleSizeChange(size: number) {
 function handlePageChange(page: number) {
   pagination.page = page
 }
-
-// ── 树节点筛选 ──
-watch(treeFilter, (val) => {
-  treeRef.value?.filter(val)
-})
 
 // ── 方法 ──
 function fetchRoleData() {
@@ -808,66 +739,6 @@ function getSubsystemIconStyle(subsystemId: number) {
   return subsystemIconMap[subsystemId] || subsystemIconMap[99]
 }
 
-// 树节点筛选
-function filterTreeNode(value: string, data: OrgTreeNode): boolean {
-  if (!value) return true
-  return data.name.toLowerCase().includes(value.toLowerCase())
-}
-
-interface FlatTreeNode {
-  name: string
-  nodeType: string
-  level: number
-}
-
-const flatTreeData = computed(() => {
-  function flatten(nodes: OrgTreeNode[], level: number): FlatTreeNode[] {
-    const result: FlatTreeNode[] = []
-    for (const node of nodes) {
-      result.push({ name: node.name, nodeType: node.nodeType, level })
-      if (node.children && node.children.length > 0) {
-        result.push(...flatten(node.children, level + 1))
-      }
-    }
-    return result
-  }
-  return flatten(orgTreeData, 1)
-})
-
-function getLevelTagType(level: number): 'info' | 'success' | 'warning' | 'danger' | '' {
-  const types: Record<number, any> = {
-    1: 'danger',
-    2: 'warning',
-    3: '',
-    4: 'success',
-    5: 'info'
-  }
-  return types[level] || 'info'
-}
-
-// 节点图标
-function getNodeTypeIcon(nodeType: string) {
-  const icons: Record<string, any> = {
-    root: HomeFilled,
-    dept: OfficeBuilding,
-    branch: FolderOpened,
-    station: Monitor,
-    company: Briefcase
-  }
-  return icons[nodeType] || Folder
-}
-
-function getNodeTypeColor(nodeType: string): string {
-  const colors: Record<string, string> = {
-    root: '#409EFF',
-    dept: '#67C23A',
-    branch: '#E6A23C',
-    station: '#9B59B6',
-    company: '#F56C6C'
-  }
-  return colors[nodeType] || '#909399'
-}
-
 // 数据范围
 function getDataScopeColor(dataScope: string): string {
   const option = dataScopeOptions.find(o => o.value === dataScope)
@@ -912,7 +783,7 @@ onMounted(() => {
   if (orgTreeData.length > 0) {
     currentNode.value = orgTreeData[0]
     nextTick(() => {
-      treeRef.value?.setCurrentKey(1)
+      orgTreeRef.value?.setCurrentKey(1)
     })
   }
 })
@@ -941,162 +812,6 @@ onMounted(() => {
     gap: 16px;
     flex: 1;
     overflow: hidden;
-  }
-
-  // 左侧树面板
-  .tree-panel {
-    width: 280px;
-    flex-shrink: 0;
-    align-self: stretch;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: width 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    &.collapsed {
-      width: 72px;
-      align-items: center;
-
-      .collapsed-body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 12px 4px;
-        gap: 8px;
-        flex: 1;
-        overflow: hidden;
-
-        .collapsed-list {
-          flex: 1;
-          min-height: 0;
-          overflow-y: auto;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 16px;
-
-          &::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-          }
-        }
-
-        .collapsed-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .collapsed-icon-wrapper {
-          position: relative;
-        }
-
-        .level-badge {
-          position: absolute;
-          top: -7px;
-          right: -7px;
-          z-index: 1;
-          font-size: 9px;
-          padding: 0 4px;
-          height: 16px;
-          line-height: 16px;
-          min-width: 16px;
-          text-align: center;
-          border: none;
-        }
-
-        .collapsed-icon {
-          width: 36px;
-          height: 36px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: opacity 0.2s;
-
-          &:hover { opacity: 0.85; }
-
-          .collapsed-char {
-            font-size: 14px;
-            font-weight: 600;
-            color: #fff;
-            line-height: 1;
-          }
-        }
-
-      }
-    }
-
-    .collapsed-expand-bar {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: center;
-      padding: 8px 0 12px;
-      width: 100%;
-
-      .expand-btn {
-        color: #909399;
-        font-size: 18px;
-      }
-    }
-
-    .tree-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid #EBEEF5;
-    }
-
-    .tree-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #303133;
-    }
-
-    .tree-body {
-      padding: 12px;
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tree-search {
-      margin-bottom: 12px;
-    }
-
-    .org-tree {
-      flex: 1;
-      overflow-y: auto;
-
-      :deep(.el-tree-node__content) {
-        height: 36px;
-        border-radius: 6px;
-        margin-bottom: 2px;
-      }
-
-      :deep(.el-tree-node.is-current > .el-tree-node__content) {
-        background: #ECF5FF;
-        color: #409EFF;
-      }
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-
-      .node-icon {
-        font-size: 14px;
-      }
-    }
   }
 
   // 右侧列表区

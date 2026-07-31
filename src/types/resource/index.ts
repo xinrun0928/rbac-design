@@ -9,3 +9,6 @@ export * from './template'
 
 // 装备使用教程
 export * from './training'
+
+// 装备维保计划
+export * from './maintenance'

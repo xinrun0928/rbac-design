@@ -5,20 +5,27 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="区域名称">
-            <el-input v-model="searchForm.name" placeholder="输入区域名称" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="区域编码">
-            <el-input v-model="searchForm.code" placeholder="输入区域编码" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-          <el-form-item label="区域层级">
-            <el-select v-model="searchForm.level" placeholder="请选择层级" clearable style="width: 180px">
-              <el-option v-for="item in areaLevelOptions" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="search-actions">
+        <span class="search-bar-title">区域管理</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.code"
+            placeholder="搜索区域编号"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-input
+            v-model="searchForm.name"
+            placeholder="搜索区域名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-button type="success" :icon="Download" @click="handleExport">导出</el-button>
           <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增区域</el-button>
         </div>
       </div>
@@ -31,9 +38,10 @@
         stripe
         default-expand-all
         :indent="24"
+        class="data-table"
         :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
       >
-        <el-table-column prop="name" label="区域名称" min-width="200">
+        <el-table-column prop="name" label="区域名称" min-width="300" fixed>
           <template #default="{ row }">
             <div class="area-name-cell">
               <el-icon class="area-icon" :style="{ color: getLevelColor(row.level) }">
@@ -44,33 +52,21 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="code" label="区域编码" width="140" align="center">
+        <el-table-column prop="code" label="区域编码" width="160" align="center">
           <template #default="{ row }">
             <span class="code-text">{{ row.code }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="level" label="区域层级" width="100" align="center">
+        <el-table-column label="下级区域数量" width="140" align="center">
           <template #default="{ row }">
-            <el-tag :type="getLevelTagType(row.level)" effect="plain" size="small">
-              {{ getLevelLabel(row.level) }}
+            <el-tag :type="getChildCountTagType(row)" effect="plain" size="small">
+              {{ childCountOf(row) }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="parentCode" label="父级编码" width="120" align="center">
-          <template #default="{ row }">
-            <span class="parent-code-text">{{ row.parentCode || '-' }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="displayOrder" label="排序" width="80" align="center">
-          <template #default="{ row }">
-            <span class="order-text">{{ row.displayOrder }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="220" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="Plus" @click="handleAdd(row)">子区域</el-button>
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
@@ -138,10 +134,10 @@ import { ref, reactive, computed, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit, Location
+  Refresh, Search, RefreshLeft, Plus, Delete, Edit, Download, Location
 } from '@element-plus/icons-vue'
 import { areaData, areaLevelOptions } from '@/mock/admin/areaData'
-import type { Area, AreaSearchForm } from '@/types/admin/area'
+import type { Area } from '@/types/admin/area'
 
 // ── 状态 ──
 const loading = ref(false)
@@ -150,10 +146,9 @@ const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
-const searchForm = reactive<AreaSearchForm>({
+const searchForm = reactive({
   name: '',
-  code: '',
-  level: ''
+  code: ''
 })
 
 const formData = reactive({
@@ -172,28 +167,40 @@ const formRules: FormRules = {
 }
 
 // ── 计算属性 ──
-function filterTree(data: Area[], name: string, code: string, level: string): Area[] {
+function filterTree(data: Area[], name: string, code: string): Area[] {
   return data.filter(item => {
     const nameMatch = !name || item.name.includes(name)
     const codeMatch = !code || item.code.includes(code)
-    const levelMatch = !level || item.level === level
 
     if (item.children && item.children.length > 0) {
-      item.children = filterTree(item.children, name, code, level)
-      return nameMatch && codeMatch && levelMatch || (item.children && item.children.length > 0)
+      item.children = filterTree(item.children, name, code)
+      return nameMatch && codeMatch || (item.children && item.children.length > 0)
     }
 
-    return nameMatch && codeMatch && levelMatch
+    return nameMatch && codeMatch
   })
 }
 
 const filteredData = computed(() => {
-  return filterTree(JSON.parse(JSON.stringify(tableData.value)), searchForm.name, searchForm.code, searchForm.level)
+  return filterTree(JSON.parse(JSON.stringify(tableData.value)), searchForm.name, searchForm.code)
 })
 
 const parentAreaOptions = computed(() => {
   return [{ code: '', name: '顶级区域', children: tableData.value }]
 })
+
+// 下级区域数量
+function childCountOf(row: Area): number {
+  return row.children?.length || 0
+}
+
+function getChildCountTagType(row: Area): '' | 'success' | 'warning' | 'info' | 'danger' {
+  const count = childCountOf(row)
+  if (count === 0) return 'info'
+  if (count < 5) return 'success'
+  if (count < 10) return 'warning'
+  return 'danger'
+}
 
 // ── 方法 ──
 function handleSearch() {
@@ -203,7 +210,6 @@ function handleSearch() {
 function handleReset() {
   searchForm.name = ''
   searchForm.code = ''
-  searchForm.level = ''
 }
 
 function handleRefresh() {
@@ -212,6 +218,33 @@ function handleRefresh() {
     tableData.value = JSON.parse(JSON.stringify(areaData))
     loading.value = false
   }, 500)
+}
+
+// 扁平化树数据用于导出
+function flattenTree(data: Area[], level = 1, rows: Array<{ code: string; name: string; childCount: number }> = []) {
+  for (const item of data) {
+    rows.push({ code: item.code, name: item.name, childCount: item.children?.length || 0 })
+    if (item.children && item.children.length > 0) {
+      flattenTree(item.children, level + 1, rows)
+    }
+  }
+  return rows
+}
+
+// 导出区域
+function handleExport() {
+  const rows = flattenTree(tableData.value)
+  const header = '区域编码,区域名称,下级区域数量'
+  const body = rows.map(r => `${r.code},${r.name},${r.childCount}`).join('\n')
+  const csvContent = `${header}\n${body}`
+  const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `区域管理_${new Date().toISOString().slice(0, 10)}.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+  ElMessage.success('导出成功')
 }
 
 function handleAdd(parentRow: Area | null) {
@@ -260,11 +293,6 @@ function resetForm() {
   formRef.value?.resetFields()
 }
 
-function getLevelLabel(level: string): string {
-  const option = areaLevelOptions.find(o => o.value === level)
-  return option?.label || level
-}
-
 function getLevelColor(level: string): string {
   const colors: Record<string, string> = {
     province: '#409EFF',
@@ -273,16 +301,6 @@ function getLevelColor(level: string): string {
     street: '#9B59B6'
   }
   return colors[level] || '#909399'
-}
-
-function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | 'danger' {
-  const types: Record<string, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    province: '',
-    city: 'success',
-    district: 'warning',
-    street: 'info'
-  }
-  return types[level] || 'info'
 }
 </script>
 
@@ -306,23 +324,23 @@ function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | '
 
   .search-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
   }
 
-  .search-form {
-    flex: 1;
-    .el-form-item { margin-bottom: 0; margin-right: 12px; }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
   }
 
-  .search-actions {
+  .search-bar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 
@@ -342,52 +360,28 @@ function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | '
       overflow: hidden;
     }
 
-    :deep(.el-table) {
+    :deep(.el-table__row .cell) {
+      display: flex;
+      align-items: center;
+    }
+
+    :deep(.el-table__row .el-table__cell:not(:first-child) .cell) {
+      justify-content: center;
+    }
+
+    .data-table {
       flex: 1;
-      border-radius: 8px;
-      overflow: hidden;
-
-      .el-table__row .cell {
-        display: flex;
-        align-items: center;
-      }
-
-      .el-table__row .el-table__cell:not(:first-child) .cell {
-        justify-content: center;
-      }
-
-      .el-table__indent {
-        padding-left: 24px !important;
-        display: inline-block !important;
-      }
-
-      .el-table__expand-icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 4px;
-        vertical-align: middle;
-
-        .el-icon {
-          font-size: 14px;
-          transition: transform 0.2s ease;
-        }
-
-        &.expanded .el-icon {
-          transform: rotate(90deg);
-        }
-      }
-
-      .el-table__cell.is-leaf .el-table__expand-icon {
-        visibility: hidden;
-      }
     }
 
     .area-name-cell {
       display: flex;
       align-items: center;
-      gap: 8px;
 
-      .area-icon { font-size: 16px; }
+      .area-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-right: 6px;
+      }
       .area-name { font-weight: 500; color: #303133; }
     }
 
@@ -398,27 +392,6 @@ function getLevelTagType(level: string): '' | 'success' | 'warning' | 'info' | '
       background: #ECF5FF;
       padding: 2px 6px;
       border-radius: 4px;
-    }
-
-    .parent-code-text { font-size: 12px; color: #909399; }
-    .order-text { font-weight: 600; color: #606266; }
-  }
-
-  :deep(.el-drawer) {
-    .el-drawer__header {
-      margin-bottom: 0;
-      padding: 20px 24px;
-      border-bottom: 1px solid #EBEEF5;
-
-      .el-drawer__title {
-        font-weight: 600;
-        font-size: 16px;
-      }
-    }
-
-    .el-drawer__body {
-      padding: 24px;
-      overflow-y: auto;
     }
   }
 

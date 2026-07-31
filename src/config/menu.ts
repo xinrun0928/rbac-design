@@ -85,6 +85,7 @@ export const adminSystemMenu: MenuItem[] = [
       { path: '/admin/dict', title: '字典管理', icon: Collection },
       { path: '/admin/attachment', title: '附件管理', icon: Paperclip },
       { path: '/admin/msg/template', title: '短信模版', icon: ChatDotSquare },
+      { path: '/admin/area', title: '区域管理', icon: Location },
     ]
   },
 ]
@@ -541,6 +542,16 @@ export const materialMenus: MenuItem[] = [
     ]
   },
   {
+    path: '/resource/drone-group',
+    title: '无人机飞控管理',
+    icon: Promotion,
+    isGroup: true,
+    groupTitle: '无人机飞控管理',
+    children: [
+      { path: '/resource/drone/platform', title: '飞控平台', icon: VideoPlay },
+    ]
+  },
+  {
     path: '/resource/maintenance-group',
     title: '装备维保管理',
     icon: Tools,
@@ -560,9 +571,10 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '装备培训与考核',
     children: [
-      { path: '/resource/training/use', title: '装备使用培训', icon: Reading },
+      { path: '/resource/training/use', title: '装备使用教程', icon: Reading },
       { path: '/resource/training/template', title: '装备操作考核模板', icon: Files },
       { path: '/resource/training/record', title: '装备操作考核记录', icon: Notebook },
+      { path: '/resource/training/task', title: '装备操作考核任务', icon: EditPen },
     ]
   },
   {
@@ -572,7 +584,6 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '基础管理',
     children: [
-      { path: '/resource/basic/warehouse', title: '仓库管理', icon: OfficeBuilding },
       { path: '/resource/basic/category', title: '物资装备种类管理', icon: Collection },
       { path: '/resource/basic/set', title: '装备套组管理', icon: Box },
     ]

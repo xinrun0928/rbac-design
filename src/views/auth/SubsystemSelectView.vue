@@ -370,7 +370,7 @@ const handleLogout = () => {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0 40px 40px 0;
+  border-width: 0 60px 60px 0;
   border-color: transparent #3498db transparent transparent;
   border-radius: 0 10px 0 0;
 }
@@ -422,8 +422,8 @@ const handleLogout = () => {
 
 .admin-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   color: #fff;
   font-size: 16px;
   z-index: 1;

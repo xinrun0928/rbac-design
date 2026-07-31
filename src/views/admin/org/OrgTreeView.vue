@@ -19,6 +19,15 @@
           <el-select v-model="searchForm.packageType" placeholder="套餐类型" clearable style="width: 180px; margin-right: 12px" @change="handleSearch">
             <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
+          <el-cascader
+            v-model="searchForm.areaName"
+            :options="areaOptions"
+            :props="{ label: 'name', value: 'name', children: 'children', checkStrictly: true }"
+            placeholder="选择区域"
+            clearable
+            style="width: 180px; margin-right: 12px"
+            @change="handleSearch"
+          />
           <el-button type="primary" :icon="Plus" @click="handleAdd(null)">新增组织</el-button>
         </div>
       </div>
@@ -129,7 +138,7 @@
           <el-cascader
             v-model="formData.areaCode"
             :options="areaOptions"
-            :props="{ label: 'areaName', value: 'areaCode', children: 'children' }"
+            :props="{ label: 'name', value: 'code', children: 'children', checkStrictly: true }"
             placeholder="请选择归属地区"
             clearable
             style="width: 100%"
@@ -225,7 +234,8 @@ const formRef = ref<FormInstance>()
 
 const searchForm = reactive({
   name: '',
-  packageType: null as number | null
+  packageType: null as number | null,
+  areaName: [] as string[]
 })
 
 const formData = reactive({
@@ -294,12 +304,14 @@ const parentTreeData = computed(() => {
 // 组织树数据（带搜索过滤）
 const orgTreeData = computed(() => {
   let data = rawOrgTreeData
-  if (searchForm.name || searchForm.packageType !== null) {
+  if (searchForm.name || searchForm.packageType !== null || searchForm.areaName.length) {
     const flatData = flattenTree(data)
     const filtered = flatData.filter(item => {
       const nameMatch = !searchForm.name || item.name.includes(searchForm.name)
       const typeMatch = searchForm.packageType === null || getTypeFromPackageName(item.packageName) === searchForm.packageType
-      return nameMatch && typeMatch
+      const areaName = searchForm.areaName[searchForm.areaName.length - 1]
+      const areaMatch = !areaName || (item.areaName || '').includes(areaName)
+      return nameMatch && typeMatch && areaMatch
     })
     data = buildTree(filtered)
   }
@@ -368,12 +380,14 @@ function handleSearch() {
 function handleReset() {
   searchForm.name = ''
   searchForm.packageType = null
+  searchForm.areaName = []
   fetchData()
 }
 
 function handleRefresh() {
   searchForm.name = ''
   searchForm.packageType = null
+  searchForm.areaName = []
   fetchData()
 }
 

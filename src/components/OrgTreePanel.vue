@@ -189,14 +189,16 @@ defineExpose({
 
   &.collapsed {
     width: 84px;
+    min-height: 0;
 
     .collapsed-body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 12px 0;
+      padding: 8px 0;
       gap: 4px;
       flex: 1;
+      min-height: 0;
       width: 100%;
 
       .collapsed-expand-bar {
@@ -220,7 +222,7 @@ defineExpose({
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
 
         &::-webkit-scrollbar {
           width: 0;
@@ -235,7 +237,7 @@ defineExpose({
         cursor: pointer;
 
         &:first-child {
-          margin-top: 8px;
+          margin-top: 4px;
         }
 
         &.active {

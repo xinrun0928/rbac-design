@@ -52,13 +52,11 @@
 
             <el-table-column prop="roleName" label="角色名称" min-width="190">
               <template #default="{ row }">
-                <div class="role-name-cell">
                   <el-icon :style="{ color: row.isSystem ? '#E6A23C' : '#67C23A' }">
                     <component :is="row.isSystem ? 'Lock' : 'User'" />
                   </el-icon>
                   <span class="name-text">{{ row.roleName }}</span>
                   <el-tag v-if="row.isSystem" size="small" type="warning" effect="plain">系统</el-tag>
-                </div>
               </template>
             </el-table-column>
 
@@ -907,14 +905,10 @@ onMounted(() => {
     .desc-text { font-size: 13px; color: #909399; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .level-text { font-weight: 600; color: #E6A23C; }
 
-    .role-name-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .el-icon {
-        font-size: 16px;
-      }
+    .el-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-right: 6px;
     }
 
     .empty-state {

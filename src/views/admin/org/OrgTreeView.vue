@@ -36,12 +36,10 @@
       >
         <el-table-column prop="name" label="组织名称" min-width="280" fixed>
           <template #default="{ row }">
-            <div class="org-name-cell">
               <el-icon class="org-icon" :style="{ color: getPackageColor(row.packageName) }">
                 <OfficeBuilding />
               </el-icon>
               <span class="org-name">{{ row.name }}</span>
-            </div>
           </template>
         </el-table-column>
 
@@ -586,62 +584,24 @@ onMounted(() => {
       overflow: hidden;
     }
 
-    :deep(.el-table) {
-      flex: 1;
-      --el-table-row-hover-bg-color: #f5f7fa;
-      border-radius: 8px;
-      overflow: hidden;
-
-      .el-table__row .cell {
-        padding: 0 12px;
-        display: flex;
-        align-items: center;
-      }
-
-      .el-table__row .el-table__cell:not(:first-child) .cell {
-        justify-content: center;
-      }
-
-      .el-table__indent {
-        padding-left: 24px !important;
-        display: inline-block !important;
-      }
-
-      .el-table__expand-icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 4px;
-        vertical-align: middle;
-
-        .el-icon {
-          font-size: 14px;
-          transition: transform 0.2s ease;
-        }
-
-        &.expanded .el-icon {
-          transform: rotate(90deg);
-        }
-      }
-
-      .el-table__cell.is-leaf .el-table__expand-icon {
-        visibility: hidden;
-      }
-    }
-
-    .org-name-cell {
+    :deep(.el-table__row .cell) {
       display: flex;
       align-items: center;
-      gap: 8px;
+    }
 
-      .org-icon {
-        font-size: 16px;
-        flex-shrink: 0;
-      }
+    :deep(.el-table__row .el-table__cell:not(:first-child) .cell) {
+      justify-content: center;
+    }
 
-      .org-name {
-        font-weight: 500;
-        color: #303133;
-      }
+    .org-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-right: 6px;
+    }
+
+    .org-name {
+      font-weight: 500;
+      color: #303133;
     }
 
     .desc-text {

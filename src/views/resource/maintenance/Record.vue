@@ -139,7 +139,7 @@ const statsCards = computed<StatsCard[]>(() => [
   { key: '已完成', label: '已完成', value: allData.value.filter(d => d.status === '已完成').length, icon: Select, color: '#909399', bgColor: '#f4f4f5' }
 ])
 
-const statusTabs = [
+const statusTabs: { label: string; value: MaintenanceTaskStatus | 'all' }[] = [
   { label: '全部', value: 'all' },
   { label: '待维保', value: '待维保' },
   { label: '已维保', value: '已完成' }

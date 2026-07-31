@@ -70,7 +70,7 @@
       <!-- 品类汇总表格 -->
       <SummaryTable
         v-if="activeTab === 'summary'"
-        :data="filteredData"
+        :data="filteredData as InventorySummary[]"
         :loading="loading"
         @show-detail="handleShowSummaryDetail"
         @edit="handleEdit"
@@ -80,7 +80,7 @@
       <!-- 物资明细表格 -->
       <DetailTable
         v-if="activeTab === 'detail'"
-        :data="filteredData"
+        :data="filteredData as InventoryDetail[]"
         :loading="loading"
         @show-detail="handleShowDetailDetail"
         @edit="handleEdit"
@@ -235,7 +235,7 @@
               <el-pagination
                 v-model:current-page="devicePagination.page"
                 v-model:page-size="devicePagination.pageSize"
-                :total="devicePagination.total"
+                :total="deviceTotal"
                 :page-sizes="[10, 20, 50, 100]"
                 layout="total, sizes, prev, pager, next, jumper"
                 background
@@ -304,7 +304,7 @@
               <el-pagination
                 v-model:current-page="maintenancePagination.page"
                 v-model:page-size="maintenancePagination.pageSize"
-                :total="maintenancePagination.total"
+                :total="maintenanceTotal"
                 :page-sizes="[10, 20, 50, 100]"
                 layout="total, sizes, prev, pager, next, jumper"
                 background
@@ -319,7 +319,7 @@
           <div class="detail-section detail-section-flex">
             <div class="section-title">保险续期记录</div>
             <div class="section-toolbar">
-              <span>共{{ insurancePagination.total }}条数据</span>
+              <span>共{{ insuranceTotal }}条数据</span>
               <div class="section-toolbar-right">
                 <el-select v-model="insuranceStatusFilter" placeholder="全部保险状态" style="width: 140px; margin-right: 12px" clearable>
                   <el-option label="全部保险状态" value="" />
@@ -370,7 +370,7 @@
               <el-pagination
                 v-model:current-page="insurancePagination.page"
                 v-model:page-size="insurancePagination.pageSize"
-                :total="insurancePagination.total"
+                :total="insuranceTotal"
                 :page-sizes="[10, 20, 50, 100]"
                 layout="total, sizes, prev, pager, next, jumper"
                 background

@@ -130,6 +130,22 @@ export const mockSubsystemData: Subsystem[] = [
     color: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
   },
   {
+    subsystemId: 10,
+    subsystemCode: 'FLOOD_INSPECTION',
+    subsystemName: '汛期巡查子系统',
+    subsystemShortName: '巡查',
+    pathPrefix: '/inspection',
+    tablePrefix: 'inspection_',
+    displayOrder: 9,
+    isHidden: false,
+    status: 1101,
+    remark: '汛期巡查、隐患上报、整改跟踪',
+    createTime: '2026-05-31 11:59:20',
+    // 前端扩展字段
+    icon: 'View',
+    color: 'linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%)'
+  },
+  {
     subsystemId: 99,
     subsystemCode: 'SYSTEM',
     subsystemName: '后台管理子系统',

@@ -219,10 +219,12 @@ defineExpose({
         min-height: 0;
         height: 0;
         overflow-y: auto;
+        overflow-x: visible;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 12px;
+        padding: 0 6px;
 
         &::-webkit-scrollbar {
           width: 0;
@@ -235,20 +237,28 @@ defineExpose({
         flex-direction: column;
         align-items: center;
         cursor: pointer;
+        flex-shrink: 0;
 
         &:first-child {
           margin-top: 4px;
         }
 
         &.active .collapsed-icon-wrapper {
-          box-shadow: 0 0 0 2px #409EFF;
+          box-shadow: 0 0 0 3px #409EFF;
           border-radius: 10px;
+          background: rgba(64, 158, 255, 0.08);
+        }
+
+        &:hover .collapsed-icon {
+          transform: scale(1.05);
         }
       }
 
       .collapsed-icon-wrapper {
         position: relative;
         border-radius: 10px;
+        padding: 2px;
+        transition: all 0.2s ease;
       }
 
       .collapsed-icon {
@@ -258,9 +268,7 @@ defineExpose({
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: opacity 0.2s;
-
-        &:hover { opacity: 0.85; }
+        transition: all 0.2s ease;
 
         .collapsed-char {
           font-size: 14px;

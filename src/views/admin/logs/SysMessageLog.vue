@@ -4,49 +4,27 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline>
-          <el-form-item label="模板ID">
-            <el-input
-              v-model="searchForm.templateId"
-              placeholder="请输入模板ID"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="手机号码">
-            <el-input
-              v-model="searchForm.phone"
-              placeholder="请输入手机号码"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="内容">
-            <el-input
-              v-model="searchForm.content"
-              placeholder="请输入内容关键词"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="发送时间">
-            <el-date-picker
-              v-model="searchForm.createTime"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="YYYY-MM-DD"
-              style="width: 260px"
-            />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">短信日志</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.phone"
+            placeholder="搜索手机号码"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-date-picker
+            v-model="searchForm.createTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+            style="width: 260px"
+          />
+        </div>
       </div>
 
       <el-table
@@ -61,13 +39,13 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="messageId" label="消息ID" min-width="180">
+        <el-table-column prop="messageId" label="消息ID" min-width="190" align="center">
           <template #default="{ row }">
             <span class="id-text">{{ row.messageId }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="templateId" label="模板ID" width="120">
+        <el-table-column prop="templateId" label="模板ID" width="120" align="center">
           <template #default="{ row }">
             <span class="template-text">{{ row.templateId }}</span>
           </template>
@@ -79,7 +57,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="content" label="内容" min-width="200">
+        <el-table-column prop="content" label="内容" min-width="200" align="center">
           <template #default="{ row }">
             <el-tooltip
               :content="row.content"
@@ -94,7 +72,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="status" label="发送状态" min-width="120" align="center">
+        <el-table-column prop="status" label="发送状态" min-width="205" align="center">
           <template #default="{ row }">
             <el-tag
               :type="parseSendStatus(row.replyText).success ? 'success' : 'danger'"
@@ -113,7 +91,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="90" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">
               详情
@@ -259,9 +237,7 @@ import { getMessageLogs, getMessageLogDetail } from '@/utils/logMockApi'
 
 // ── 搜索表单类型 ──
 interface SearchForm {
-  templateId: string
   phone: string
-  content: string
   createTime: string[] | null
 }
 
@@ -305,9 +281,7 @@ COMMENT ON COLUMN "public"."sys_message_log"."updateTime" IS '更新时间';
 COMMENT ON TABLE "public"."sys_message_log" IS '系统短信消息记录表';`
 
 const searchForm = reactive<SearchForm>({
-  templateId: '',
   phone: '',
-  content: '',
   createTime: null
 })
 
@@ -381,9 +355,7 @@ async function fetchData() {
   loading.value = true
   try {
     const searchParams: Record<string, any> = {}
-    if (searchForm.templateId) searchParams.templateId = searchForm.templateId
     if (searchForm.phone) searchParams.phone = searchForm.phone
-    if (searchForm.content) searchParams.content = searchForm.content
     if (searchForm.createTime && searchForm.createTime.length === 2) {
       searchParams.createTime = searchForm.createTime
     }
@@ -408,9 +380,7 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.templateId = ''
   searchForm.phone = ''
-  searchForm.content = ''
   searchForm.createTime = null
   pagination.page = 1
   fetchData()
@@ -473,13 +443,25 @@ onMounted(() => {
 
   // 搜索栏
   .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
+  }
 
-    .el-form-item {
-      margin-bottom: 0;
-    }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   // 表格卡片

@@ -1,22 +1,23 @@
 <template>
   <div class="cache-data-management">
-    <!-- 顶部面包屑返回 -->
-    <div class="page-header animate-item">
-      <el-page-header @back="handleBack">
-        <template #content>
-          <span class="page-title">缓存数据 - {{ cacheName }}</span>
-        </template>
-      </el-page-header>
-    </div>
-
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="键名">
-            <el-input v-model="searchForm.key" placeholder="输入键名" clearable :prefix-icon="Search" style="width: 180px" @keyup.enter="handleSearch" />
-          </el-form-item>
-        </el-form>
+        <div class="search-bar-title-wrap">
+          <el-button type="primary" link :icon="Back" class="back-btn" @click="handleBack" />
+          <span class="search-bar-title">缓存数据 - {{ cacheName }}</span>
+        </div>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.key"
+            placeholder="搜索键名"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+        </div>
       </div>
 
       <el-table
@@ -151,7 +152,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search, Delete } from '@element-plus/icons-vue'
+import { Search, Delete, Back } from '@element-plus/icons-vue'
 import { cacheListData } from '@/mock/admin/monitorData'
 import type { CacheEntry, CacheMapDetail } from '@/types/admin/monitor'
 import { formatTtl } from '@/utils/format'
@@ -248,19 +249,6 @@ function handleDelete(row: CacheEntry) {
     &:nth-child(2) { animation-delay: 0.12s; }
   }
 
-  .page-header {
-    padding: 16px 20px;
-    background: #fff;
-    border-bottom: 1px solid #ebeef5;
-    flex-shrink: 0;
-
-    .page-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #303133;
-    }
-  }
-
   .table-card {
     border-radius: 0;
     border: none;
@@ -279,13 +267,36 @@ function handleDelete(row: CacheEntry) {
     }
 
     .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebeef5;
     }
 
-    .search-form {
-      .el-form-item { margin-bottom: 0; margin-right: 12px; }
+    .search-bar-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .back-btn {
+      font-size: 16px;
+      padding: 0;
+    }
+
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .index-text { color: #909399; font-size: 13px; }

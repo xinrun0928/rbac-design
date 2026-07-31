@@ -4,55 +4,40 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline>
-          <el-form-item label="请求方式">
-            <el-select
-              v-model="searchForm.reqMethod"
-              placeholder="请选择"
-              clearable
-              style="width: 180px"
-            >
-              <el-option label="POST_JSON" value="POST_JSON" />
-              <el-option label="POST_FORM" value="POST_FORM" />
-              <el-option label="GET" value="GET" />
-              <el-option label="POST" value="POST" />
-              <el-option label="PUT" value="PUT" />
-              <el-option label="DELETE" value="DELETE" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="响应状态">
-            <el-select
-              v-model="searchForm.repState"
-              placeholder="请选择"
-              clearable
-              style="width: 180px"
-            >
-              <el-option label="SUCCESS" value="SUCCESS" />
-              <el-option label="FAIL" value="FAIL" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="请求地址">
-            <el-input
-              v-model="searchForm.reqUrl"
-              placeholder="请输入请求地址"
-              clearable
-              :prefix-icon="Search"
-              style="width: 180px"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item label="调用时间">
-            <el-date-picker
-              v-model="searchForm.createTime"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="YYYY-MM-DD"
-              style="width: 260px"
-            />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">接口日志</span>
+        <div class="search-bar-actions">
+          <el-select
+            v-model="searchForm.reqMethod"
+            placeholder="请求方式"
+            clearable
+            style="width: 180px; margin-right: 12px"
+          >
+            <el-option label="POST_JSON" value="POST_JSON" />
+            <el-option label="POST_FORM" value="POST_FORM" />
+            <el-option label="GET" value="GET" />
+            <el-option label="POST" value="POST" />
+            <el-option label="PUT" value="PUT" />
+            <el-option label="DELETE" value="DELETE" />
+          </el-select>
+          <el-input
+            v-model="searchForm.reqUrl"
+            placeholder="搜索请求地址"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-date-picker
+            v-model="searchForm.createTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+            style="width: 260px"
+          />
+        </div>
       </div>
 
       <el-table
@@ -86,7 +71,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="reqUrl" label="请求地址" min-width="300">
+        <el-table-column prop="reqUrl" label="请求地址" min-width="300" show-overflow-tooltip>
           <template #default="{ row }">
             <el-tooltip :content="'点击复制'" placement="top" :show-after="300">
               <span class="url-text" @click="handleCopyUrl(row.reqUrl)">{{ row.reqUrl }}</span>
@@ -119,7 +104,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="100" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="View" @click="handleViewDetail(row)">
               详情
@@ -279,7 +264,6 @@ import { getHttpLogs, getHttpLogDetail } from '@/utils/logMockApi'
 // ── 搜索表单类型 ──
 interface SearchForm {
   reqMethod: string
-  repState: string
   reqUrl: string
   createTime: string[] | null
 }
@@ -327,7 +311,6 @@ COMMENT ON TABLE "public"."sys_http_log" IS '系统接口请求日志';`
 
 const searchForm = reactive<SearchForm>({
   reqMethod: '',
-  repState: '',
   reqUrl: '',
   createTime: null
 })
@@ -381,7 +364,6 @@ async function fetchData() {
   try {
     const searchParams: Record<string, any> = {}
     if (searchForm.reqMethod) searchParams.reqMethod = searchForm.reqMethod
-    if (searchForm.repState) searchParams.repState = searchForm.repState
     if (searchForm.reqUrl) searchParams.reqUrl = searchForm.reqUrl
     if (searchForm.createTime && searchForm.createTime.length === 2) {
       searchParams.createTime = searchForm.createTime
@@ -408,7 +390,6 @@ function handleSearch() {
 
 function handleReset() {
   searchForm.reqMethod = ''
-  searchForm.repState = ''
   searchForm.reqUrl = ''
   searchForm.createTime = null
   pagination.page = 1
@@ -492,13 +473,25 @@ onMounted(() => {
 
   // 搜索栏
   .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
+  }
 
-    .el-form-item {
-      margin-bottom: 0;
-    }
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
+
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   // 表格卡片

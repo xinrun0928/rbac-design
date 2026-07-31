@@ -4,29 +4,26 @@
     <el-card class="table-card animate-item" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <div class="search-content">
-          <el-form :model="searchForm" inline>
-            <el-form-item label="版本号">
-              <el-input v-model="searchForm.versionCode" placeholder="输入版本号" clearable :prefix-icon="Search" style="width: 180px" />
-            </el-form-item>
-            <el-form-item label="更新类型">
-              <el-select v-model="searchForm.updateType" placeholder="请选择" clearable style="width: 180px">
-                <el-option label="WGT热更" :value="1" />
-                <el-option label="APK整包" :value="2" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="发布状态">
-              <el-select v-model="searchForm.publishStatus" placeholder="请选择" clearable style="width: 180px">
-                <el-option label="待发布" :value="1" />
-                <el-option label="已发布" :value="2" />
-                <el-option label="已撤销" :value="3" />
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-              <el-button :icon="RefreshLeft" @click="handleReset">重置</el-button>
-            </el-form-item>
-          </el-form>
+        <span class="search-bar-title">App发布日志</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.versionCode"
+            placeholder="搜索版本号"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px; margin-right: 12px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+          <el-select v-model="searchForm.updateType" placeholder="更新类型" clearable style="width: 180px; margin-right: 12px">
+            <el-option label="WGT热更" :value="1" />
+            <el-option label="APK整包" :value="2" />
+          </el-select>
+          <el-select v-model="searchForm.publishStatus" placeholder="发布状态" clearable style="width: 180px; margin-right: 12px">
+            <el-option label="待发布" :value="1" />
+            <el-option label="已发布" :value="2" />
+            <el-option label="已撤销" :value="3" />
+          </el-select>
           <el-button type="primary" :icon="Plus" @click="handleAdd">新增发布</el-button>
         </div>
       </div>
@@ -188,7 +185,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import {
-  Refresh, Search, RefreshLeft, Plus, Delete, Edit, Back, Upload
+  Refresh, Search, Plus, Delete, Edit, Back, Upload
 } from '@element-plus/icons-vue'
 import { appPublishLogData } from '@/mock/admin/appData'
 import type { AppPublishLog } from '@/types/admin/appInfo'
@@ -253,12 +250,6 @@ function goBack() {
 
 function handleSearch() {
   // 搜索通过 computed 属性自动处理
-}
-
-function handleReset() {
-  searchForm.versionCode = ''
-  searchForm.updateType = ''
-  searchForm.publishStatus = ''
 }
 
 function handleRefresh() {
@@ -381,23 +372,25 @@ onMounted(() => {
   }
 
   .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid #ebeef5;
+  }
 
-    .search-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+  .search-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+  }
 
-      .el-form {
-        flex: 1;
-      }
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-    }
+  .search-bar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .toolbar {

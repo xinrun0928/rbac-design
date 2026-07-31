@@ -51,9 +51,6 @@
             <h4>{{ subsystem.subsystemName }}</h4>
             <p>{{ subsystem.remark }}</p>
           </div>
-          <div v-if="selectedId === subsystem.subsystemId" class="selected-badge">
-            <el-icon><Check /></el-icon>
-          </div>
           <div v-if="subsystem.subsystemId === 99" class="admin-badge">
             <el-icon><Tools /></el-icon>
           </div>
@@ -80,7 +77,6 @@ import {
   Odometer,
   Setting,
   View,
-  Check,
   Tools
 } from '@element-plus/icons-vue'
 import { mockSubsystemData } from '@/mock/admin/subsystemData'
@@ -424,23 +420,6 @@ const handleLogout = () => {
   margin: 0 auto;
 }
 
-.selected-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #409EFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 14px;
-  animation: scaleIn 0.3s ease;
-  z-index: 2;
-}
-
 .admin-badge {
   position: absolute;
   top: 8px;
@@ -456,17 +435,6 @@ const handleLogout = () => {
     opacity: 0;
   }
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
     opacity: 1;
   }
 }

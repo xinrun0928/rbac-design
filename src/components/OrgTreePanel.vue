@@ -240,20 +240,9 @@ defineExpose({
           margin-top: 4px;
         }
 
-        &.active {
-          .collapsed-icon-wrapper {
-            box-shadow: 0 0 0 2px #409EFF;
-            border-radius: 11px;
-          }
-
-          .collapsed-icon {
-            width: 40px;
-            height: 40px;
-          }
-
-          .collapsed-char {
-            font-size: 18px;
-          }
+        &.active .collapsed-icon-wrapper {
+          box-shadow: 0 0 0 2px #409EFF;
+          border-radius: 10px;
         }
       }
 

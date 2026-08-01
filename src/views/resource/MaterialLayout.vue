@@ -2,7 +2,7 @@
   <div class="material-layout" :class="{ collapsed: isCollapsed }">
     <!-- 左侧导航栏 -->
     <AppSidebar
-      title="物资管理"
+      title="物资管理子系统"
       :icon="Box"
       :menus="materialMenus"
       :collapsed="isCollapsed"
@@ -11,23 +11,7 @@
     <!-- 右侧内容区 -->
     <div class="material-main">
       <!-- 顶部栏 -->
-      <header class="material-header">
-        <div class="header-left">
-          <div class="collapse-btn" @click="toggleCollapse">
-            <el-icon :size="18">
-              <Fold v-if="!isCollapsed" />
-              <Expand v-else />
-            </el-icon>
-          </div>
-          <Breadcrumb :menus="materialMenus" />
-        </div>
-        <div class="header-right">
-          <GithubIcon />
-          <FullscreenToggle />
-          <NotificationBell />
-          <UserDropdown />
-        </div>
-      </header>
+      <LayoutHeader :menus="materialMenus" v-model:collapsed="isCollapsed" />
 
       <!-- 历史会话标签页 -->
       <TagsView :menus="materialMenus" storage-key="material-tags-view" />
@@ -43,24 +27,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  Box,
-  Fold,
-  Expand
+  Box
 } from '@element-plus/icons-vue'
 import { materialMenus } from '@/config/menu'
 import AppSidebar from '@/components/AppSidebar.vue'
-import Breadcrumb from '@/components/Breadcrumb.vue'
 import TagsView from '@/components/TagsView.vue'
-import GithubIcon from '@/components/GithubIcon.vue'
-import FullscreenToggle from '@/components/FullscreenToggle.vue'
-import NotificationBell from '@/components/NotificationBell.vue'
-import UserDropdown from '@/components/UserDropdown.vue'
+import LayoutHeader from '@/components/LayoutHeader.vue'
 
 const isCollapsed = ref(false)
-
-const toggleCollapse = () => {
-  isCollapsed.value = !isCollapsed.value
-}
 </script>
 
 <style lang="scss" scoped>
@@ -76,44 +50,6 @@ const toggleCollapse = () => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.material-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 50px;
-  padding: 0 16px;
-  background: #fff;
-  border-bottom: 1px solid #e6e6e6;
-  flex-shrink: 0;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.collapse-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s;
-
-  &:hover {
-    background: #f5f7fa;
-  }
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .material-content {

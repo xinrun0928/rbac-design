@@ -5,15 +5,41 @@
       :key="item.key"
       class="stats-card"
       :class="{ active: clickable && modelValue === item.key }"
-      :style="{ width: cardWidth + 'px' }"
+      :style="{
+        width: cardWidth ? `${cardWidth}px` : undefined,
+        '--theme-color': item.color,
+        '--theme-bg': item.bgColor
+      }"
       @click="handleClick(item)"
     >
-      <div class="stats-icon" :style="{ background: item.bgColor, color: item.color }">
-        <el-icon :size="26"><component :is="item.icon" /></el-icon>
+      <!-- 背景装饰 -->
+      <div class="card-decoration"></div>
+
+      <!-- 图标 -->
+      <div
+        class="stats-icon"
+        :style="{
+          background: item.bgColor,
+          color: item.color
+        }"
+      >
+        <el-icon :size="22">
+          <component :is="item.icon" />
+        </el-icon>
       </div>
+
+      <!-- 信息 -->
       <div class="stats-info">
-        <div class="stats-value" :style="{ color: item.color }">{{ item.value }}</div>
-        <div class="stats-label">{{ item.label }}</div>
+        <div
+          class="stats-value"
+          :style="{ color: item.color }"
+        >
+          {{ item.value }}
+        </div>
+
+        <div class="stats-label">
+          {{ item.label }}
+        </div>
       </div>
     </div>
   </div>
@@ -22,38 +48,29 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 
-/**
- * 顶部统计卡片项
- */
 export interface StatsCardItem {
-  /** 唯一标识（用于 v-model 选中匹配） */
   key: string
-  /** 显示标签 */
   label: string
-  /** 数值 */
   value: number | string
-  /** 图标组件 */
   icon: Component
-  /** 图标/数值主色 */
   color: string
-  /** 图标背景色 */
   bgColor: string
 }
 
-const props = withDefaults(defineProps<{
-  /** 统计卡片数据 */
-  items: StatsCardItem[]
-  /** 当前激活项 key（v-model） */
-  modelValue?: string
-  /** 是否可点击筛选（默认 true） */
-  clickable?: boolean
-  /** 卡片宽度（默认 200px） */
-  cardWidth?: number
-}>(), {
-  modelValue: '',
-  clickable: true,
-  cardWidth: 200
-})
+const props = withDefaults(
+  defineProps<{
+    items: StatsCardItem[]
+    modelValue?: string
+    clickable?: boolean
+    /** 不传则自动伸缩 */
+    cardWidth?: number
+  }>(),
+  {
+    modelValue: '',
+    clickable: true,
+    cardWidth: 0
+  }
+)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', key: string): void
@@ -62,78 +79,163 @@ const emit = defineEmits<{
 
 function handleClick(item: StatsCardItem) {
   if (!props.clickable) return
+
   emit('update:modelValue', item.key)
   emit('change', item.key)
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .stats-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
   justify-content: center;
   gap: 16px;
   margin-bottom: 16px;
-  padding: 16px 0;
-  background: #f8f9fb;
-  border-radius: 10px;
-  flex-shrink: 0;
+}
 
-  &.no-click {
-    .stats-card {
-      cursor: default;
+.stats-row.no-click {
+  .stats-card {
+    cursor: default;
 
-      &:hover {
-        transform: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      }
+    &:hover {
+      transform: none;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
     }
   }
 }
 
 .stats-card {
+  position: relative;
+
+  width: 200px;
+  height: 86px;
+
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
-  background: #fff;
-  border: 2px solid transparent;
-  border-radius: 10px;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  border: 1px solid #edf2f7;
+
+  overflow: hidden;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  transition: all 0.25s ease;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
   }
 
   &.active {
-    border-color: #409eff;
-    box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-  }
+    border-color: var(--theme-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 
-  .stats-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .stats-info {
-    .stats-value {
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1.2;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--theme-color);
     }
 
-    .stats-label {
-      font-size: 13px;
-      color: #909399;
-      margin-top: 4px;
+    .stats-icon {
+      transform: scale(1.06);
     }
+  }
+}
+
+/* 背景装饰 */
+.card-decoration {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  background: var(--theme-bg);
+  opacity: 0.22;
+}
+
+.stats-icon {
+  position: relative;
+  z-index: 1;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  transition: all 0.25s;
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stats-info {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.stats-value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
+}
+
+.stats-label {
+  margin-top: 6px;
+
+  font-size: 13px;
+  color: #909399;
+
+  white-space: nowrap;
+}
+
+/* 平板 */
+@media (max-width: 992px) {
+  .stats-row {
+    grid-template-columns: repeat(auto-fit, 180px);
+  }
+
+  .stats-card {
+    width: 180px;
+  }
+}
+
+/* 手机 */
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-card {
+    width: 100%;
+    max-width: 360px;
+    justify-self: center;
   }
 }
 </style>

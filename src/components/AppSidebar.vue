@@ -239,7 +239,7 @@ $app-primary: #409EFF;
   // 菜单项样式
   :deep(.el-menu-item),
   :deep(.el-sub-menu__title) {
-    margin: 4px 8px;
+    margin: 4px 0px;
     border-radius: 8px;
     background: $app-sidebar-bg !important;
     color: #bfcbd9 !important;
@@ -263,8 +263,8 @@ $app-primary: #409EFF;
       content: '';
       position: absolute;
       right: 0;
-      top: 8px;
-      bottom: 8px;
+      top: 5px;
+      bottom: 5px;
       width: 3px;
       border-radius: 3px;
       background: $app-primary !important;

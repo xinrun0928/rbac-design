@@ -123,9 +123,9 @@
         <div class="detail-header">
           <div class="header-title">
             <h2 class="detail-title">{{ currentDetail.title }}【{{ currentDetail.code }}】</h2>
-            <el-dropdown @command="handleVersionChange" trigger="click">
+            <el-dropdown @command="handleVersionChange" trigger="click" popper-class="version-popper">
               <span class="version-dropdown">
-                <el-icon><Check /></el-icon> 查看历史版本
+                <el-icon><Check /></el-icon> 当前版本：{{ currentVersion }}
                 <el-icon class="el-icon--right"><ArrowDown /></el-icon>
               </span>
               <template #dropdown>
@@ -144,49 +144,52 @@
 
         <!-- 基本信息 -->
         <div class="detail-info">
-          <div class="info-row">
-            <span class="info-label">编　　号：</span>
-            <span class="info-value">{{ currentDetail.code }}</span>
+          <div class="info-grid">
+            <div class="info-row">
+              <span class="info-label">编　　号：</span>
+              <span class="info-value">{{ currentDetail.code }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">类　　型：</span>
+              <span class="info-value">{{ currentDetail.type }}（适用于广州）</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">发布状态：</span>
+              <span class="info-value">
+                <el-tag :type="currentDetail.status === '已发布' ? 'success' : 'warning'" size="small">{{ currentDetail.status }}</el-tag>
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">审核结果：</span>
+              <span class="info-value">
+                <span :class="['audit-tag', `audit-${currentDetail.auditResult}`]">{{ currentDetail.auditResult }}</span>
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">关联预案：</span>
+              <span class="info-value">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">发布日期：</span>
+              <span class="info-value">2026-04-20</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">施行日期：</span>
+              <span class="info-value">2026-04-20</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">失效日期：</span>
+              <span class="info-value">2026-04-20</span>
+            </div>
           </div>
-          <div class="info-row">
-            <span class="info-label">类　　型：</span>
-            <span class="info-value">{{ currentDetail.type }}（适用于广州）</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">发布状态：</span>
-            <span class="info-value">
-              <el-tag :type="currentDetail.status === '已发布' ? 'success' : 'warning'" size="small">{{ currentDetail.status }}</el-tag>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">审核结果：</span>
-            <span class="info-value">
-              <span :class="['audit-tag', `audit-${currentDetail.auditResult}`]">{{ currentDetail.auditResult }}</span>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">关联预案：</span>
-            <span class="info-value">-</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">发布日期：</span>
-            <span class="info-value">2026-04-20</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">施行日期：</span>
-            <span class="info-value">2026-04-20</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">失效日期：</span>
-            <span class="info-value">2026-04-20</span>
-          </div>
-          <div class="info-row">
+
+          <div class="info-row info-row-full">
             <span class="info-label">相关附件：</span>
             <span class="info-value">
               <el-link type="primary" :underline="false">广州市...通知.pdf</el-link>
             </span>
           </div>
-          <div class="info-row">
+          <div class="info-row info-row-full">
             <span class="info-label">备　　注：</span>
             <span class="info-value">-</span>
           </div>
@@ -197,24 +200,33 @@
           <el-tabs v-model="activeTab">
             <el-tab-pane label="知识内容" name="content">
               <div class="knowledge-content">
-                <div class="content-header">
-                  <p>各区发展改革委、各有关单位：</p>
-                  <p>根据《广东省行政规范性文件管理规定》，现将《广州市发展和改革委员会关于印发广州市轨道交通领域自主创新产品评定及推广应用实施办法（试行）的通知》（穗发改规字〔2023〕5号）重新发布，对相关表述作不涉及实质内容的修改。执行如遇问题，请径向市发展改革委反映。</p>
-                  <p class="content-sign">广州市发展和改革委员会</p>
-                  <p class="content-date">2026年4月20日</p>
+                <!-- 版本说明 -->
+                <div v-if="currentVersionContent" class="version-info">
+                  <span class="version-info-item">
+                    <el-icon><Clock /></el-icon> 版本 {{ currentVersionContent.version }}
+                  </span>
+                  <span class="version-info-item">
+                    <el-icon><Calendar /></el-icon> {{ currentVersionContent.updateTime }} 发布
+                  </span>
+                  <span class="version-info-item version-info-reason">
+                    <el-icon><EditPen /></el-icon> {{ currentVersionContent.reason }}
+                  </span>
                 </div>
 
-                <div class="content-body">
-                  <h3>第一章　　总则</h3>
-                  <p><strong>第一条</strong>　为贯彻落实《国家发展改革委等部门关于促进首台（套）重大技术装备示范应用的意见》（发改产业〔2018〕558号）等文件精神，进一步提升我市轨道交通产业链整体创新水平，引导轨道交通领域企业增强自主研制能力，支持轨道交通领域自主创新产品推广应用，制定本办法。</p>
-                  <p><strong>第二条</strong>　本办法所称轨道交通领域自主创新产品（以下简称"轨道交通自主创新产品"）是指适应我市轨道交通产业发展趋势，通过原始创新、集成创新或引进消化吸收再创新，在关键技术、系统集成、新材料或新能源应用等方面有重大突破，拥有自主知识产权但处于市场推广初期的轨道交通领域装备产品，包括我市城市（城际）轨道交通全产业链中的成套装备、整机设备及核心部件、控制系统、基础材料、软件系统（平台）等。</p>
-                  <p><strong>第三条</strong>　市发展改革委作为我市轨道交通产业链牵头部门，负责统筹全市轨道交通自主创新产品的申报评定、推广应用和监督管理等。依托我市轨道交通技术创新研究平台、行业组织或检验检测机构等，作为轨道交通自主创新评定机构负责具体评审工作。</p>
-
-                  <h3>第二章　　评定条件及程序</h3>
-                  <p><strong>第四条</strong>　我市轨道交通自主创新产品评定原则上每年组织开展一次，从业单位按照自愿原则申报。对于我市轨道交通领域亟需的重大技术装备，可根据技术装备研制进展"成熟一个、评定一个"。</p>
-                  <p><strong>第五条</strong>　申报我市轨道交通自主创新产品评定的单位和装备产品应具备以下条件：</p>
-                  <p>（一）申报单位依法注册和纳税、管理规范、生产经营正常，无严重违法失信记录，近三年未发生重大环境污染或安全生产等事故；同时具备设计、研发、制造装备产品的技术基础，具有批量生产的硬件和软件条件。</p>
+                <div v-if="currentVersionContent" class="content-header">
+                  <p v-for="(p, i) in currentVersionContent.header" :key="'h' + i">{{ p }}</p>
+                  <p class="content-sign">{{ currentVersionContent.sign }}</p>
+                  <p class="content-date">{{ currentVersionContent.date }}</p>
                 </div>
+
+                <div v-if="currentVersionContent" class="content-body">
+                  <template v-for="(section, si) in currentVersionContent.body" :key="'s' + si">
+                    <h3>{{ section.title }}</h3>
+                    <p v-for="(para, pi) in section.paragraphs" :key="'p' + si + '-' + pi">{{ para }}</p>
+                  </template>
+                </div>
+
+                <el-empty v-else description="暂无版本内容，仅展示当前版本" />
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -371,10 +383,11 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Search, Plus, Document, Notebook, User, Collection, Box, Check, ArrowDown, Paperclip, Download } from '@element-plus/icons-vue'
+import { Search, Plus, Document, Notebook, User, Collection, Box, Check, ArrowDown, Paperclip, Download, Clock, Calendar, EditPen } from '@element-plus/icons-vue'
 import { mockKnowledgeList } from '@/mock/dss/knowledgeData'
+import { mockKnowledgeVersions } from '@/mock/dss/knowledgeVersionData'
 import StatsCards from '@/components/StatsCards.vue'
-import type { KnowledgeItem } from '@/types/dss'
+import type { KnowledgeItem, KnowledgeVersion } from '@/types/dss'
 
 const loading = ref(false)
 const allData = ref<KnowledgeItem[]>(mockKnowledgeList)
@@ -385,9 +398,23 @@ const searchKeyword = ref('')
 // 详情抽屉相关
 const detailDrawerVisible = ref(false)
 const currentDetail = ref<KnowledgeItem | null>(null)
-const currentVersion = ref('v3.0')
+const currentVersion = ref('')
 const activeTab = ref('content')
-const versionList = ['v3.0', 'v2.0', 'v1.0']
+
+/** 当前知识条目可用的历史版本 */
+const versionList = computed(() => {
+  if (!currentDetail.value) return []
+  const versions = mockKnowledgeVersions[currentDetail.value.code]
+  return versions ? versions.map(v => v.version) : [currentDetail.value.version]
+})
+
+/** 当前选中版本的正文内容 */
+const currentVersionContent = computed<KnowledgeVersion | null>(() => {
+  if (!currentDetail.value) return null
+  const versions = mockKnowledgeVersions[currentDetail.value.code]
+  if (!versions || !versions.length) return null
+  return versions.find(v => v.version === currentVersion.value) ?? versions[0]
+})
 
 // 新建知识抽屉相关
 const createDrawerVisible = ref(false)
@@ -535,13 +562,16 @@ function handlePageChange(page: number) {
 
 function handleViewDetail(row: KnowledgeItem) {
   currentDetail.value = row
-  currentVersion.value = row.version.toLowerCase()
+  const versions = mockKnowledgeVersions[row.code]
+  currentVersion.value = versions && versions.length ? versions[0].version : row.version
+  activeTab.value = 'content'
   detailDrawerVisible.value = true
 }
 
 function handleVersionChange(version: string) {
   currentVersion.value = version
-  ElMessage.info(`切换到版本 ${version}`)
+  const target = currentVersionContent.value
+  ElMessage.info(`已切换到版本 ${version}${target ? `（${target.updateTime} 发布）` : ''}`)
 }
 
 function handleWithdraw() {
@@ -749,18 +779,36 @@ function handleWithdraw() {
   }
 }
 
+:global(.version-popper) {
+  .el-dropdown-menu__item {
+    &.is-active {
+      color: #409EFF;
+      font-weight: 600;
+      background: #ecf5ff;
+    }
+  }
+}
+
 .detail-info {
   padding: 16px 24px;
   background: #fafafa;
   border-bottom: 1px solid #ebeef5;
 
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 24px;
+    row-gap: 12px;
+    margin-bottom: 12px;
+  }
+
   .info-row {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    min-width: 0;
 
-    &:last-child {
-      margin-bottom: 0;
+    &.info-row-full {
+      margin-top: 12px;
     }
   }
 
@@ -776,6 +824,10 @@ function handleWithdraw() {
     font-size: 13px;
     color: #303133;
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -811,6 +863,36 @@ function handleWithdraw() {
   font-size: 14px;
   line-height: 1.8;
   color: #303133;
+
+  .version-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background: #f5f7fa;
+    border: 1px solid #e4e7ed;
+    border-left: 3px solid #409EFF;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #606266;
+
+    .version-info-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .el-icon {
+        color: #409EFF;
+      }
+    }
+
+    .version-info-reason {
+      flex: 1;
+      min-width: 200px;
+    }
+  }
 
   .content-header {
     margin-bottom: 24px;

@@ -8,7 +8,9 @@ export type {
   KnowledgeAuditRecord,
   KnowledgeMaintainPlan,
   KnowledgeRecord,
-  ExpireKnowledge
+  ExpireKnowledge,
+  KnowledgeContentSection,
+  KnowledgeVersion
 } from './knowledge'
 
 // 用户反馈类型

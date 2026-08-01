@@ -33,6 +33,32 @@ export interface KnowledgeItem {
   versionReason: string
 }
 
+/** 知识内容章节 */
+export interface KnowledgeContentSection {
+  /** 章节标题 */
+  title: string
+  /** 章节段落 */
+  paragraphs: string[]
+}
+
+/** 知识版本内容 */
+export interface KnowledgeVersion {
+  /** 版本号 */
+  version: string
+  /** 版本发布时间 */
+  updateTime: string
+  /** 版本迭代说明 */
+  reason: string
+  /** 文头段落 */
+  header: string[]
+  /** 落款单位 */
+  sign: string
+  /** 落款日期 */
+  date: string
+  /** 正文章节 */
+  body: KnowledgeContentSection[]
+}
+
 /** 知识分类树节点 */
 export interface KnowledgeCategory {
   /** 类别ID */

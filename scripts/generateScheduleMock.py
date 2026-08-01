@@ -58,6 +58,8 @@ for item in items:
             "endDate": None,
             "teams": [],
             "items": [],
+            "progress": 0,
+            "milestones": [],
         },
     )
     mod["itemCount"] += 1

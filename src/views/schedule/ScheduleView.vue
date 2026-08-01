@@ -202,10 +202,10 @@ import { teamColor } from './scheduleUtils'
 const router = useRouter()
 
 // 视图与分组
-const viewMode = ref<'table' | 'gantt'>('table')
+const viewMode = ref<'table' | 'gantt'>('gantt')
 const groupBy = ref<'system' | 'team'>('system')
 const timeUnit = ref<'day' | 'week' | 'month' | 'year'>('week')
-const ganttZoom = ref(1)
+const ganttZoom = ref(1.5)
 // 全屏
 const isFullscreen = ref(false)
 function toggleFullscreen() {

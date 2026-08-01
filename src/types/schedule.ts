@@ -33,6 +33,14 @@ export interface ScheduleItem {
   team: string
 }
 
+/** 模块里程碑 */
+export interface ScheduleMilestone {
+  /** 里程碑日期 */
+  date: string
+  /** 里程碑标题 */
+  title: string
+}
+
 /** 模块级汇总数据 */
 export interface ScheduleModule {
   /** 唯一标识（系统/子系统/模块） */
@@ -57,6 +65,10 @@ export interface ScheduleModule {
   teamText: string
   /** 功能项明细 */
   items: ScheduleItem[]
+  /** 完成进度（0-100） */
+  progress?: number
+  /** 模块里程碑 */
+  milestones?: ScheduleMilestone[]
 }
 
 /** 研发团队信息 */

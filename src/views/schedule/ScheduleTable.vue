@@ -62,7 +62,15 @@
 
       <el-table-column prop="moduleName" label="模块名称" min-width="220" show-overflow-tooltip>
         <template #default="{ row }">
-          <span class="module-name-text">{{ row.moduleName }}</span>
+          <span
+            class="module-name-link"
+            role="button"
+            tabindex="0"
+            :title="row.moduleName"
+            @click="emit('open-drawer', row)"
+            @keydown.enter.stop.prevent="emit('open-drawer', row)"
+            @keydown.space.stop.prevent="emit('open-drawer', row)"
+          >{{ row.moduleName }}</span>
         </template>
       </el-table-column>
 
@@ -228,6 +236,20 @@ function handlePageChange(page: number) {
 .module-name-text {
   font-weight: 500;
   color: #303133;
+}
+
+.module-name-link {
+  font-weight: 500;
+  color: #409eff;
+  cursor: pointer;
+  transition: color .15s;
+}
+
+.module-name-link:hover,
+.module-name-link:focus-visible {
+  color: #66b1ff;
+  text-decoration: underline;
+  outline: none;
 }
 
 .team-tag {

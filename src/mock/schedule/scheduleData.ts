@@ -7799,6 +7799,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -7911,6 +7913,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -8083,6 +8087,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -8123,6 +8129,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -8163,6 +8171,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -8239,6 +8249,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -8303,6 +8315,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -8355,6 +8369,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -8395,6 +8411,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -8435,6 +8453,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -8499,6 +8519,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -8587,6 +8609,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -8651,6 +8675,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -8703,6 +8729,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -8743,6 +8771,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -8771,6 +8801,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -8859,6 +8891,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -8899,6 +8933,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -8939,6 +8975,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -9099,6 +9137,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -9187,6 +9227,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -9287,6 +9329,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -9327,6 +9371,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -9403,6 +9449,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -9563,6 +9611,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -9687,6 +9737,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -9919,6 +9971,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -10043,6 +10097,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -10263,6 +10319,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -10543,6 +10601,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -10571,6 +10631,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10599,6 +10661,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10627,6 +10691,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10655,6 +10721,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10695,6 +10763,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10735,6 +10805,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10763,6 +10835,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10803,6 +10877,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10855,6 +10931,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10895,6 +10973,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10935,6 +11015,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -10975,6 +11057,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11015,6 +11099,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11043,6 +11129,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11071,6 +11159,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11123,6 +11213,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11163,6 +11255,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11191,6 +11285,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11231,6 +11327,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11271,6 +11369,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11311,6 +11411,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11363,6 +11465,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11391,6 +11495,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11431,6 +11537,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11459,6 +11567,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11572,6 +11682,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -11624,6 +11736,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -11664,6 +11778,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -11728,6 +11844,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -11780,6 +11898,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11820,6 +11940,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -11884,6 +12006,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -11948,6 +12072,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -11988,6 +12114,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -12028,6 +12156,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -12068,6 +12198,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -12096,6 +12228,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -12136,6 +12270,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -12188,6 +12324,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -12240,6 +12378,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -12292,6 +12432,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -12332,6 +12474,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -12372,6 +12516,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -12412,6 +12558,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -12488,6 +12636,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -12564,6 +12714,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -12629,6 +12781,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组+D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组+D组"
   },
   {
@@ -12706,6 +12860,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组+D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组+D组"
   },
   {
@@ -12783,6 +12939,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组+B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组+B组"
   },
   {
@@ -12860,6 +13018,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组+C组"
   },
   {
@@ -12924,6 +13084,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -12964,6 +13126,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -13016,6 +13180,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -13056,6 +13222,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -13096,6 +13264,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13160,6 +13330,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13236,6 +13408,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13300,6 +13474,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13388,6 +13564,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13464,6 +13642,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13576,6 +13756,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13712,6 +13894,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13812,6 +13996,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -13925,6 +14111,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组+E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组+E组"
   },
   {
@@ -14025,6 +14213,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -14138,6 +14328,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组+A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组+A组"
   },
   {
@@ -14178,6 +14370,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -14242,6 +14436,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -14331,6 +14527,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -14432,6 +14630,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组+D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组+D组"
   },
   {
@@ -14496,6 +14696,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -14572,6 +14774,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -14636,6 +14840,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -14736,6 +14942,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -14776,6 +14984,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -14816,6 +15026,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -14892,6 +15104,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -14944,6 +15158,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -14996,6 +15212,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -15036,6 +15254,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -15089,6 +15309,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组+E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组+E组"
   },
   {
@@ -15117,6 +15339,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -15157,6 +15381,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -15197,6 +15423,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -15237,6 +15465,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -15277,6 +15507,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -15317,6 +15549,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -15357,6 +15591,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -15409,6 +15645,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -15449,6 +15687,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -15501,6 +15741,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -15553,6 +15795,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -15593,6 +15837,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -15633,6 +15879,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -15685,6 +15933,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -15713,6 +15963,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -15753,6 +16005,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -15793,6 +16047,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -15821,6 +16077,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -15861,6 +16119,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -15925,6 +16185,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -15965,6 +16227,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -16005,6 +16269,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16033,6 +16299,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -16134,6 +16402,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组+B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组+B组"
   },
   {
@@ -16187,6 +16457,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -16240,6 +16512,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组+E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组+E组"
   },
   {
@@ -16292,6 +16566,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16345,6 +16621,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -16409,6 +16687,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16473,6 +16753,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16585,6 +16867,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16649,6 +16933,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -16774,6 +17060,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -16899,6 +17187,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组+D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组+D组"
   },
   {
@@ -16963,6 +17253,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17003,6 +17295,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -17055,6 +17349,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -17168,6 +17464,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -17233,6 +17531,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组+C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组+C组"
   },
   {
@@ -17297,6 +17597,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17349,6 +17651,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17389,6 +17693,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -17417,6 +17723,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -17445,6 +17753,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17485,6 +17795,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -17513,6 +17825,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17674,6 +17988,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组+D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组+D组"
   },
   {
@@ -17702,6 +18018,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -17730,6 +18048,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -17758,6 +18078,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -17786,6 +18108,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   },
   {
@@ -17814,6 +18138,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17842,6 +18168,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -17894,6 +18222,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -17934,6 +18264,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -17962,6 +18294,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "A组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "A组"
   },
   {
@@ -17990,6 +18324,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -18030,6 +18366,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "E组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "E组"
   },
   {
@@ -18070,6 +18408,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -18098,6 +18438,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -18138,6 +18480,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "B组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "B组"
   },
   {
@@ -18178,6 +18522,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "C组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "C组"
   },
   {
@@ -18218,6 +18564,8 @@ export const mockScheduleModules: ScheduleModule[] = [
         "team": "D组"
       }
     ],
+    "progress": 0,
+    "milestones": [],
     "teamText": "D组"
   }
 ]

@@ -20,6 +20,7 @@
     "datav-vue3": "^1.0.0",
     "echarts": "^6.1.0",
     "element-plus": "^2.9.0",
+    "html-to-image": "^1.11.13",
     "lunar": "^2.0.0",
     "vue": "^3.4.0",
     "vue-router": "^4.6.4"

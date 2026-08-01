@@ -4,6 +4,12 @@
 import { mockScheduleTeams } from '@/mock/schedule/scheduleData'
 import type { ScheduleModule } from '@/types/schedule'
 
+export interface ModuleTeamSegment {
+  team: string
+  ratio: number
+  color: string
+}
+
 /** 团队颜色映射 */
 export const teamColorMap: Record<string, string> = {
   'A组': '#409EFF',
@@ -16,6 +22,27 @@ export const teamColorMap: Record<string, string> = {
 /** 团队颜色 */
 export function teamColor(team: string): string {
   return teamColorMap[team] || '#409EFF'
+}
+
+/** 按团队人天占比生成模块色条分段 */
+export function moduleTeamSegments(mod: ScheduleModule): ModuleTeamSegment[] {
+  if (!mod.teams.length) return [{ team: 'A组', ratio: 1, color: teamColor('A组') }]
+
+  const teamDays = new Map(mod.teams.map(team => [team, 0]))
+  for (const item of mod.items) {
+    const teams = item.team.split('+').filter(Boolean)
+    if (!teams.length) continue
+    const share = item.personDays / teams.length
+    for (const team of teams) teamDays.set(team, (teamDays.get(team) ?? 0) + share)
+  }
+
+  const total = Array.from(teamDays.values()).reduce((sum, days) => sum + days, 0)
+  const fallbackRatio = 1 / mod.teams.length
+  return mod.teams.map(team => ({
+    team,
+    ratio: total > 0 ? (teamDays.get(team) ?? 0) / total : fallbackRatio,
+    color: teamColor(team)
+  }))
 }
 
 /** 团队成员姓名（如：李圳飞 / 谢绍标） */

@@ -133,6 +133,65 @@ src/
 - **删除**：必须二次确认 `ElMessageBox.confirm`
 - **表格滚动**：包裹 `.table-wrapper { flex: 1; overflow: auto; }`
 
+### 顶部统计卡片组件规范（StatsCards）
+
+**页面顶部如需要统计/分类筛选卡片，必须使用统一封装组件 `StatsCards`，禁止手写 `stats-row`/`stats-card` 结构。**
+
+**组件位置：** `src/components/StatsCards.vue`
+
+**基本用法（可点击筛选）：**
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Document, Notebook } from '@element-plus/icons-vue'
+import StatsCards from '@/components/StatsCards.vue'
+
+const activeKey = ref('全部')
+
+const statsCards = [
+  { key: '全部', label: '全部', value: 10, icon: Document, color: '#409EFF', bgColor: '#ecf5ff' },
+  { key: '历史案例', label: '历史案例', value: 3, icon: Notebook, color: '#67C23A', bgColor: '#f0f9eb' }
+]
+</script>
+
+<template>
+  <StatsCards v-model="activeKey" :items="statsCards" />
+</template>
+```
+
+**纯展示（不可点击）：**
+```vue
+<StatsCards :items="statsCards" :clickable="false" />
+```
+
+**属性说明：**
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| items | StatsCardItem[] | - | 卡片数据数组（必填） |
+| v-model | string | '' | 当前激活项 key，用于选中高亮 |
+| clickable | boolean | true | 是否可点击筛选 |
+| cardWidth | number | 200 | 卡片宽度（px） |
+
+**StatsCardItem 结构：**
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| key | string | 唯一标识，用于 v-model 选中匹配 |
+| label | string | 显示标签 |
+| value | number / string | 显示数值 |
+| icon | Component | 图标组件（来自 `@element-plus/icons-vue`） |
+| color | string | 图标/数值主色 |
+| bgColor | string | 图标背景色 |
+
+**事件：**
+| 事件 | 参数 | 说明 |
+|------|------|------|
+| change | key: string | 点击卡片时触发（`v-model` 已自动更新选中值，仅需在需要联动筛选时监听） |
+
+**注意：**
+- 选中态通过 `v-model` 绑定驱动，点击卡片自动高亮并同步 `activeKey`
+- 点击后需重置分页页码：在 `@change` 回调中设置 `pagination.page = 1`
+- 若卡片数据为动态计算值，使用 `computed` 传入 `value` 字段
+
 ### 分页组件规范
 
 **基本用法：**
@@ -148,7 +207,6 @@ src/
   @current-change="handleCurrentChange"
 />
 ```
-
 **属性说明：**
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|

@@ -34,7 +34,8 @@
 src/
 ├── assets/                 # 静态资源
 ├── components/             # 公共组件
-│   └── TopNavBar.vue      # 顶部导航栏
+│   ├── TopNavBar.vue      # 顶部导航栏
+│   └── LayoutHeader.vue   # 布局顶部栏（折叠按钮+面包屑+右侧图标）
 ├── config/                 # 配置文件
 │   └── menu.ts            # 菜单配置
 ├── mock/                   # Mock 数据（按子系统划分）

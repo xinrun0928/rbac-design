@@ -1,20 +1,25 @@
 <template>
   <div class="schedule-gantt">
-    <div class="gantt-scroll">
+    <div class="gantt-scroll" ref="ganttScrollRef">
       <div class="gantt-inner" :style="{ width: totalGanttWidth + 'px' }">
         <!-- 时间轴 -->
         <div class="gantt-axis">
           <div class="axis-corner">模块 / 日期</div>
           <div class="axis-months">
             <div
-              v-for="m in months"
-              :key="m.label"
+              v-for="seg in axisSegments"
+              :key="seg.label + seg.start"
               class="axis-month"
-              :style="{ left: monthLeft(m) + 'px', width: monthWidth(m) + 'px' }"
+              :style="{ left: segmentLeft(seg) + 'px', width: segmentWidth(seg) + 'px' }"
             >
-              {{ m.label }}
+              {{ seg.label }}
             </div>
           </div>
+        </div>
+
+        <!-- 今日参考线 -->
+        <div class="gantt-today-line" :style="{ left: todayLineLeft + 'px' }">
+          <span class="today-dot"></span>
         </div>
 
         <!-- 分组行 -->
@@ -49,11 +54,40 @@
         <div v-if="groupedRows.length === 0" class="gantt-empty">暂无匹配的排期数据</div>
       </div>
     </div>
+
+    <!-- 右下角悬浮操作按钮 -->
+    <div class="gantt-controls">
+      <el-tooltip content="定位到今天" placement="left">
+        <el-button
+          :icon="Position"
+          circle
+          type="primary"
+          plain
+          @click="scrollToToday"
+        />
+      </el-tooltip>
+      <el-tooltip :content="fullscreen ? '退出全屏' : '全屏查看'" placement="left">
+        <el-button
+          :icon="fullscreen ? Aim : FullScreen"
+          circle
+          type="primary"
+          plain
+          @click="emit('toggle-fullscreen')"
+        />
+      </el-tooltip>
+    </div>
+
+    <!-- 右下角缩放条 -->
+    <div class="gantt-zoombar">
+      <span class="zoom-value">{{ Math.round(zoom * 100) }}%</span>
+      <el-slider v-model="zoom" :min="0.5" :max="5" :step="0.1" class="zoom-slider" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
+import { Position, FullScreen, Aim } from '@element-plus/icons-vue'
 import type { ScheduleModule } from '@/types/schedule'
 import { mockScheduleItems, mockScheduleTeams } from '@/mock/schedule/scheduleData'
 import { teamColor, DAY_MS, parseDate } from './scheduleUtils'
@@ -62,32 +96,108 @@ const props = defineProps<{
   modules: ScheduleModule[]
   groupBy: 'system' | 'team'
   systemNames: string[]
+  timeUnit: 'day' | 'week' | 'month' | 'year'
+  fullscreen: boolean
 }>()
+
+const zoom = defineModel<number>('zoom', { default: 1 })
 
 const emit = defineEmits<{
   (e: 'open-drawer', mod: ScheduleModule): void
+  (e: 'toggle-fullscreen'): void
 }>()
 
-const rangeStart = computed(() => {
+const ganttScrollRef = ref<HTMLElement | null>(null)
+
+// 今日参考线位置：按当前时刻（含时分秒）在当天内比例定位 + 左侧标签列宽度 220
+const todayLineLeft = computed(() =>
+  220 + ((Date.now() - rangeStart.value) / DAY_MS) * dayWidth.value
+)
+
+// 定位到今日并居中
+function scrollToToday() {
+  const el = ganttScrollRef.value
+  if (!el) return
+  const todayX = todayLineLeft.value
+  const target = todayX - el.clientWidth / 2
+  const maxScroll = el.scrollWidth - el.clientWidth
+  el.scrollTo({ left: Math.max(0, Math.min(target, maxScroll)), behavior: 'smooth' })
+}
+
+// 切换时间轴单位后自动回到今日
+watch(
+  () => props.timeUnit,
+  async () => {
+    await nextTick()
+    scrollToToday()
+  }
+)
+
+
+// 时间轴刻度单位对应的每像素天数宽度（天>周>月>年，比例逐渐变小）
+const UNIT_DAY_WIDTH: Record<string, number> = {
+  day: 40,
+  week: 8,
+  month: 4,
+  year: 1.5
+}
+
+const dayWidth = computed(() => UNIT_DAY_WIDTH[props.timeUnit] * zoom.value)
+
+// 按时间轴单位对齐范围起止，保证每个单位完整展示
+function unitRangeStart(): number {
   const min = Math.min(...mockScheduleItems.map(it => parseDate(it.startDate)))
   const d = new Date(min)
-  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1)
-})
+  switch (props.timeUnit) {
+    case 'year':
+      return Date.UTC(d.getUTCFullYear(), 0, 1)
+    case 'week': {
+      const dow = d.getUTCDay()
+      const offsetToMonday = dow === 0 ? 6 : dow - 1
+      const monday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - offsetToMonday))
+      return Date.UTC(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate())
+    }
+    case 'day':
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+    default:
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1)
+  }
+}
 
-const rangeEnd = computed(() => {
+function unitRangeEnd(): number {
   const max = Math.max(...mockScheduleItems.map(it => parseDate(it.endDate)))
   const d = new Date(max)
-  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)
-})
+  switch (props.timeUnit) {
+    case 'year':
+      return Date.UTC(d.getUTCFullYear() + 1, 0, 0)
+    case 'week': {
+      const dow = d.getUTCDay()
+      const offsetToSunday = dow === 0 ? 0 : 7 - dow
+      const sunday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + offsetToSunday))
+      return Date.UTC(sunday.getUTCFullYear(), sunday.getUTCMonth(), sunday.getUTCDate())
+    }
+    case 'day':
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+    default:
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)
+  }
+}
+
+const rangeStart = computed(unitRangeStart)
+const rangeEnd = computed(unitRangeEnd)
 
 const totalDays = computed(() => Math.round((rangeEnd.value - rangeStart.value) / DAY_MS) + 1)
 
-const dayWidth = 6
+const totalGanttWidth = computed(() => 220 + totalDays.value * dayWidth.value)
 
-const totalGanttWidth = computed(() => 220 + totalDays.value * dayWidth)
+interface AxisSegment {
+  label: string
+  start: number
+  days: number
+}
 
-const months = computed(() => {
-  const list: { label: string; start: number; days: number }[] = []
+function buildMonths(): AxisSegment[] {
+  const list: AxisSegment[] = []
   let cursor = new Date(rangeStart.value)
   while (cursor.getTime() <= rangeEnd.value) {
     const year = cursor.getUTCFullYear()
@@ -102,23 +212,76 @@ const months = computed(() => {
     cursor = new Date(Date.UTC(year, month + 1, 1))
   }
   return list
-})
-
-function monthLeft(m: { start: number }) {
-  return ((m.start - rangeStart.value) / DAY_MS) * dayWidth
 }
 
-function monthWidth(m: { days: number }) {
-  return m.days * dayWidth
+function buildYears(): AxisSegment[] {
+  const list: AxisSegment[] = []
+  let cursor = new Date(rangeStart.value)
+  while (cursor.getTime() <= rangeEnd.value) {
+    const year = cursor.getUTCFullYear()
+    const start = Date.UTC(year, 0, 1)
+    const end = Date.UTC(year + 1, 0, 0)
+    list.push({
+      label: `${year}年`,
+      start,
+      days: Math.round((end - start) / DAY_MS) + 1
+    })
+    cursor = new Date(Date.UTC(year + 1, 0, 1))
+  }
+  return list
+}
+
+function buildWeeks(): AxisSegment[] {
+  const list: AxisSegment[] = []
+  const firstDay = new Date(rangeStart.value)
+  const dow = firstDay.getUTCDay()
+  const offsetToMonday = dow === 0 ? 6 : dow - 1
+  const weekStart = new Date(rangeStart.value)
+  weekStart.setUTCDate(firstDay.getUTCDate() - offsetToMonday)
+  let cursor = new Date(Date.UTC(weekStart.getUTCFullYear(), weekStart.getUTCMonth(), weekStart.getUTCDate()))
+  while (cursor.getTime() <= rangeEnd.value) {
+    const label = `${String(cursor.getUTCMonth() + 1).padStart(2, '0')}-${String(cursor.getUTCDate()).padStart(2, '0')}`
+    list.push({ label: `周 ${label}`, start: cursor.getTime(), days: 7 })
+    cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth(), cursor.getUTCDate() + 7))
+  }
+  return list
+}
+
+function buildDays(): AxisSegment[] {
+  const list: AxisSegment[] = []
+  const cursor = new Date(rangeStart.value)
+  while (cursor.getTime() <= rangeEnd.value) {
+    const label = `${String(cursor.getUTCMonth() + 1).padStart(2, '0')}-${String(cursor.getUTCDate()).padStart(2, '0')}`
+    list.push({ label, start: cursor.getTime(), days: 1 })
+    cursor.setUTCDate(cursor.getUTCDate() + 1)
+  }
+  return list
+}
+
+const axisSegments = computed<AxisSegment[]>(() => {
+  switch (props.timeUnit) {
+    case 'day': return buildDays()
+    case 'week': return buildWeeks()
+    case 'year': return buildYears()
+    default: return buildMonths()
+  }
+})
+
+function segmentLeft(m: { start: number }) {
+  return ((m.start - rangeStart.value) / DAY_MS) * dayWidth.value
+}
+
+function segmentWidth(m: { days: number }) {
+  return m.days * dayWidth.value
 }
 
 function barLeft(startDate: string) {
-  return ((parseDate(startDate) - rangeStart.value) / DAY_MS) * dayWidth
+  return ((parseDate(startDate) - rangeStart.value) / DAY_MS) * dayWidth.value
 }
 
 function barWidth(startDate: string, endDate: string) {
   const days = (parseDate(endDate) - parseDate(startDate)) / DAY_MS + 1
-  return Math.max(days, 1) * dayWidth
+  return Math.max(days, 1) * dayWidth.value
 }
 
 function barStyle(mod: ScheduleModule) {
@@ -153,6 +316,7 @@ const groupedRows = computed(() => {
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  position: relative;
 }
 
 .gantt-scroll {
@@ -177,7 +341,6 @@ const groupedRows = computed(() => {
     position: sticky;
     left: 0;
     z-index: 6;
-    float: left;
     width: 220px;
     height: 40px;
     display: flex;
@@ -303,6 +466,73 @@ const groupedRows = computed(() => {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 2px;
+  }
+}
+
+/* 今日参考线 */
+.gantt-today-line {
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  width: 2px;
+  background: #F56C6C;
+  z-index: 4;
+  pointer-events: none;
+
+  .today-dot {
+    position: absolute;
+    top: -1px;
+    left: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #F56C6C;
+  }
+}
+
+/* 右下角悬浮操作按钮 */
+.gantt-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: transparent;
+  opacity: 0.6;
+
+  :deep(.el-button) {
+    margin-left: 0;
+  }
+}
+
+/* 右下角缩放条（位于操作按钮左侧） */
+.gantt-zoombar {
+  position: absolute;
+  right: 76px;
+  bottom: 16px;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: transparent;
+  opacity: 0.6;
+
+  .zoom-value {
+    font-size: 12px;
+    color: #606266;
+    min-width: 42px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .zoom-slider {
+    width: 110px;
+    margin: 0;
   }
 }
 </style>

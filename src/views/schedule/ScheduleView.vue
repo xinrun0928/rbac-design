@@ -66,9 +66,30 @@
                 <el-radio-button value="team">按团队</el-radio-button>
               </el-radio-group>
             </div>
+
+            <div v-if="viewMode === 'gantt'" class="unit-switch">
+              <el-radio-group v-model="timeUnit" size="small">
+                <el-radio-button value="day">按天</el-radio-button>
+                <el-radio-button value="week">按周</el-radio-button>
+                <el-radio-button value="month">按月</el-radio-button>
+                <el-radio-button value="year">按年</el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+        </div>
+
+        <!-- 团队图例 + 统计数字 -->
+        <div class="legend-row">
+          <div class="team-legend">
+            <span class="legend-title">团队图例：</span>
+            <span v-for="t in mockScheduleTeams" :key="t.name" class="legend-item">
+              <i class="legend-dot" :style="{ background: teamColor(t.name) }"></i>
+              {{ t.name }}
+              <em v-if="t.frontend">（{{ t.frontend }} / {{ t.backend }}）</em>
+            </span>
           </div>
 
-          <div class="toolbar-summary">
+          <div class="legend-summary">
             <span class="summary-item">
               <b>{{ filteredModules.length }}</b> 个模块
             </span>
@@ -78,25 +99,7 @@
             <span class="summary-item">
               <b>{{ filteredPersonDays }}</b> 人天
             </span>
-            <el-divider direction="vertical" />
-            <el-tooltip :content="isFullscreen ? '退出全屏' : '全屏查看'" placement="top">
-              <el-button
-                :icon="isFullscreen ? Aim : FullScreen"
-                circle
-                @click="toggleFullscreen"
-              />
-            </el-tooltip>
           </div>
-        </div>
-
-        <!-- 团队图例 -->
-        <div class="team-legend">
-          <span class="legend-title">团队图例：</span>
-          <span v-for="t in mockScheduleTeams" :key="t.name" class="legend-item">
-            <i class="legend-dot" :style="{ background: teamColor(t.name) }"></i>
-            {{ t.name }}
-            <em v-if="t.frontend">（{{ t.frontend }} / {{ t.backend }}）</em>
-          </span>
         </div>
 
         <!-- 视图 -->
@@ -111,7 +114,11 @@
             :modules="filteredModules"
             :group-by="groupBy"
             :system-names="systemNames"
+            :time-unit="timeUnit"
+            v-model:zoom="ganttZoom"
+            :fullscreen="isFullscreen"
             @open-drawer="openDrawer"
+            @toggle-fullscreen="toggleFullscreen"
           />
         </div>
       </el-card>
@@ -169,9 +176,7 @@ import {
   Box,
   DataAnalysis,
   Connection,
-  DataBoard,
-  FullScreen,
-  Aim
+  DataBoard
 } from '@element-plus/icons-vue'
 import StatsCards from '@/components/StatsCards.vue'
 import ScheduleTable from './ScheduleTable.vue'
@@ -185,7 +190,8 @@ const router = useRouter()
 // 视图与分组
 const viewMode = ref<'table' | 'gantt'>('table')
 const groupBy = ref<'system' | 'team'>('system')
-
+const timeUnit = ref<'day' | 'week' | 'month' | 'year'>('week')
+const ganttZoom = ref(1)
 // 全屏
 const isFullscreen = ref(false)
 function toggleFullscreen() {
@@ -436,24 +442,6 @@ function goBack() {
   }
 }
 
-.toolbar-summary {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-
-  .summary-item {
-    font-size: 13px;
-    color: #606266;
-
-    b {
-      font-size: 16px;
-      color: #409EFF;
-      font-weight: 700;
-      margin-right: 2px;
-    }
-  }
-}
-
 .team-option {
   display: flex;
   align-items: center;
@@ -465,8 +453,16 @@ function goBack() {
   color: #909399;
 }
 
-.team-legend {
+.legend-row {
   margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.team-legend {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -495,6 +491,24 @@ function goBack() {
     height: 12px;
     border-radius: 3px;
     display: inline-block;
+  }
+}
+
+.legend-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .summary-item {
+    font-size: 13px;
+    color: #606266;
+
+    b {
+      font-size: 16px;
+      color: #409EFF;
+      font-weight: 700;
+      margin-right: 2px;
+    }
   }
 }
 

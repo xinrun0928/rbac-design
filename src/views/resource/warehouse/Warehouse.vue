@@ -2,17 +2,7 @@
   <div class="inventory-query-page">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部统计卡片 -->
-      <div class="stats-row">
-        <div class="stats-card active">
-          <div class="stats-icon" style="background: #ecf5ff; color: #409eff">
-            <el-icon :size="26"><OfficeBuilding /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value" style="color: #409eff">{{ filteredData.length }}</div>
-            <div class="stats-label">全部</div>
-          </div>
-        </div>
-      </div>
+      <StatsCards :items="statsCards" :clickable="false" />
 
       <!-- 库存预警筛选 -->
       <div class="search-bar">
@@ -91,6 +81,7 @@ import { ref, reactive, computed } from 'vue'
 import { OfficeBuilding } from '@element-plus/icons-vue'
 import { warehouseRecordData } from '@/mock/resource/warehouseData'
 import type { WarehouseRecord, StockWarningStatus } from '@/types/resource/warehouse'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 
@@ -103,6 +94,10 @@ const warningTabs = [
 ]
 
 const pagination = reactive({ page: 1, pageSize: 20, total: 0 })
+
+const statsCards = computed(() => [
+  { key: 'all', label: '全部', value: filteredData.value.length, icon: OfficeBuilding, color: '#409eff', bgColor: '#ecf5ff' }
+])
 
 const filteredData = computed(() => {
   let data = [...warehouseRecordData]
@@ -164,64 +159,6 @@ function handlePageChange(page: number) {
       flex-direction: column;
       flex: 1;
       overflow: hidden;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 16px 0;
-      background: #f8f9fb;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .stats-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 200px;
-      padding: 14px 18px;
-      background: #fff;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        border-color: #409eff;
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-      }
-
-      .stats-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stats-info {
-        .stats-value {
-          font-size: 26px;
-          font-weight: 700;
-          line-height: 1.2;
-        }
-        .stats-label {
-          font-size: 13px;
-          color: #909399;
-          margin-top: 4px;
-        }
-      }
     }
 
     .search-bar {

@@ -28,24 +28,8 @@
             <el-button type="primary" @click="handleAddUser">+ 添加人员</el-button>
           </div>
 
-          <!-- 分类标签 - stats-card 风格 -->
-          <div class="stats-row">
-            <div
-              v-for="tab in categoryTabs"
-              :key="tab.key"
-              class="stats-card"
-              :class="{ active: activeCategory === tab.key }"
-              @click="activeCategory = tab.key"
-            >
-              <div class="stats-icon" :style="{ background: tab.bgColor, color: tab.color }">
-                <el-icon :size="22"><component :is="tab.icon" /></el-icon>
-              </div>
-              <div class="stats-info">
-                <div class="stats-value" :style="{ color: tab.color }">{{ tab.count }}</div>
-                <div class="stats-label">{{ tab.label }}</div>
-              </div>
-            </div>
-          </div>
+          <!-- 分类标签 - 统计卡片 -->
+          <StatsCards v-model="activeCategory" :items="statsCards" @change="handleStatsChange" />
 
           <!-- 账号状态筛选 -->
           <div class="search-bar">
@@ -138,6 +122,7 @@ import { ElMessage } from 'element-plus'
 import { MoreFilled, User, UserFilled, OfficeBuilding, CircleCheck, CircleClose, Document } from '@element-plus/icons-vue'
 import { mockRoles, mockBasicUsers } from '@/mock/dss/basicData'
 import type { BasicUser, RoleItem } from '@/types/dss'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 const allData = ref<BasicUser[]>(mockBasicUsers)
@@ -146,11 +131,11 @@ const selectedRole = ref('超级管理员')
 const activeCategory = ref('全部')
 const activeAccountStatus = ref('全部')
 
-const categoryTabs = [
-  { key: '全部', label: '全部', count: allData.value.length, icon: Document, color: '#409EFF', bgColor: '#ecf5ff' },
-  { key: '启用', label: '已启用', count: allData.value.filter(u => u.accountStatus === '启用').length, icon: CircleCheck, color: '#67C23A', bgColor: '#f0f9eb' },
-  { key: '停用', label: '已停用', count: allData.value.filter(u => u.accountStatus === '停用').length, icon: CircleClose, color: '#F56C6C', bgColor: '#fef0f0' }
-]
+const statsCards = computed(() => [
+  { key: '全部', label: '全部', value: allData.value.length, icon: Document, color: '#409EFF', bgColor: '#ecf5ff' },
+  { key: '启用', label: '已启用', value: allData.value.filter(u => u.accountStatus === '启用').length, icon: CircleCheck, color: '#67C23A', bgColor: '#f0f9eb' },
+  { key: '停用', label: '已停用', value: allData.value.filter(u => u.accountStatus === '停用').length, icon: CircleClose, color: '#F56C6C', bgColor: '#fef0f0' }
+])
 
 const accountStatuses = ['全部', '启用', '停用']
 
@@ -191,6 +176,10 @@ function handleSizeChange(size: number) {
 
 function handlePageChange(page: number) {
   pagination.page = page
+}
+
+function handleStatsChange() {
+  pagination.page = 1
 }
 </script>
 
@@ -295,64 +284,6 @@ function handlePageChange(page: number) {
       font-weight: 600;
       color: #303133;
       margin: 0;
-    }
-
-    .stats-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 16px;
-      background: #f8f9fb;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .stats-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      padding: 14px 18px;
-      background: #fff;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        border-color: #409eff;
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-      }
-
-      .stats-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stats-info {
-        .stats-value {
-          font-size: 22px;
-          font-weight: 700;
-          line-height: 1.2;
-        }
-
-        .stats-label {
-          font-size: 12px;
-          color: #909399;
-          margin-top: 2px;
-        }
-      }
     }
 
     .search-bar {

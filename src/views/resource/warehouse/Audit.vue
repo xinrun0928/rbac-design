@@ -2,23 +2,7 @@
   <div class="audit-page">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部统计卡片 -->
-      <div class="stats-row">
-        <div
-          v-for="item in statsCards"
-          :key="item.key"
-          class="stats-card"
-          :class="{ active: currentResult === item.key }"
-          @click="handleResultChange(item.key)"
-        >
-          <div class="stats-icon" :style="{ background: item.bgColor, color: item.color }">
-            <el-icon :size="26"><component :is="item.icon" /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value" :style="{ color: item.color }">{{ item.value }}</div>
-            <div class="stats-label">{{ item.label }}</div>
-          </div>
-        </div>
-      </div>
+      <StatsCards v-model="currentResult" :items="statsCards" @change="handleResultChange" />
 
       <!-- 审核结果筛选 -->
       <div class="search-bar">
@@ -112,6 +96,7 @@ import { ref, reactive, computed } from 'vue'
 import { Document, Clock, CircleCheck } from '@element-plus/icons-vue'
 import { auditRecordData } from '@/mock/resource/warehouseData'
 import type { AuditRecord, AuditStatus, AuditItem } from '@/types/resource/warehouse'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 
@@ -214,64 +199,6 @@ function handlePageChange(page: number) {
       flex-direction: column;
       flex: 1;
       overflow: hidden;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 16px 0;
-      background: #f8f9fb;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .stats-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 200px;
-      padding: 14px 18px;
-      background: #fff;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        border-color: #409eff;
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-      }
-
-      .stats-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stats-info {
-        .stats-value {
-          font-size: 26px;
-          font-weight: 700;
-          line-height: 1.2;
-        }
-        .stats-label {
-          font-size: 13px;
-          color: #909399;
-          margin-top: 4px;
-        }
-      }
     }
 
     .search-bar {

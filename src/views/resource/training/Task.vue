@@ -9,23 +9,7 @@
       </div>
 
       <!-- 顶部统计卡片 -->
-      <div class="stats-row">
-        <div
-          v-for="item in statsCards"
-          :key="item.key"
-          class="stats-card"
-          :class="{ active: currentStatus === item.key }"
-          @click="handleStatusChange(item.key)"
-        >
-          <div class="stats-icon" :style="{ background: item.bgColor, color: item.color }">
-            <el-icon :size="26"><component :is="item.icon" /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value" :style="{ color: item.color }">{{ item.value }}</div>
-            <div class="stats-label">{{ item.label }}</div>
-          </div>
-        </div>
-      </div>
+      <StatsCards v-model="currentStatus" :items="statsCards" :card-width="160" @change="handleStatusChange" />
 
       <!-- 是否合格筛选 -->
       <div class="search-bar">
@@ -101,6 +85,7 @@ import { ref, reactive, computed } from 'vue'
 import { Reading, CircleCheck, WarningFilled, Document } from '@element-plus/icons-vue'
 import { examTaskRecordData } from '@/mock/resource/warehouseData'
 import type { ExamTaskRecord } from '@/types/resource/warehouse'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 
@@ -200,60 +185,6 @@ function handlePageChange(page: number) {
       font-size: 18px;
       font-weight: 600;
       color: #303133;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 16px 0;
-
-      .stats-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 24px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        min-width: 160px;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        &.active {
-          border-color: var(--el-color-primary);
-          background: var(--el-color-primary-light-9);
-        }
-
-        .stats-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .stats-info {
-          .stats-value {
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1.2;
-          }
-
-          .stats-label {
-            font-size: 13px;
-            color: #909399;
-            margin-top: 2px;
-          }
-        }
-      }
     }
 
     .search-bar {

@@ -2,23 +2,7 @@
   <div class="feedback-list-page">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部统计卡片 -->
-      <div class="stats-row">
-        <div
-          v-for="tab in categoryTabs"
-          :key="tab.key"
-          class="stats-card"
-          :class="{ active: activeCategory === tab.key }"
-          @click="activeCategory = tab.key"
-        >
-          <div class="stats-icon" :style="{ background: tab.bgColor, color: tab.color }">
-            <el-icon :size="26"><component :is="tab.icon" /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value" :style="{ color: tab.color }">{{ tab.count }}</div>
-            <div class="stats-label">{{ tab.label }}</div>
-          </div>
-        </div>
-      </div>
+      <StatsCards v-model="activeCategory" :items="statsCards" :card-width="160" @change="handleStatsChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">
@@ -125,19 +109,20 @@ import { ElMessage } from 'element-plus'
 import { MoreFilled, ArrowDown, Document, Warning, InfoFilled, CircleClose, Tools, Bell, ChatDotRound } from '@element-plus/icons-vue'
 import { mockFeedbackList } from '@/mock/dss/feedbackData'
 import type { FeedbackItem } from '@/types/dss'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 const allData = ref<FeedbackItem[]>(mockFeedbackList)
 const activeCategory = ref('全部')
 
-const categoryTabs = [
-  { key: '全部', label: '全部', count: 6, icon: Document, color: '#409EFF', bgColor: '#ecf5ff' },
-  { key: '版本过期', label: '版本过期', count: 2, icon: Warning, color: '#E6A23C', bgColor: '#fdf6ec' },
-  { key: '内容错误', label: '内容错误', count: 4, icon: CircleClose, color: '#F56C6C', bgColor: '#fef0f0' },
-  { key: '信息缺失', label: '信息缺失', count: 2, icon: InfoFilled, color: '#909399', bgColor: '#f4f4f5' },
-  { key: '系统故障', label: '系统故障', count: 4, icon: Tools, color: '#F56C6C', bgColor: '#fef0f0' },
-  { key: '优化建议', label: '优化建议', count: 4, icon: Bell, color: '#67C23A', bgColor: '#f0f9eb' },
-  { key: '其他', label: '其他', count: 4, icon: ChatDotRound, color: '#909399', bgColor: '#f4f4f5' }
+const statsCards = [
+  { key: '全部', label: '全部', value: 6, icon: Document, color: '#409EFF', bgColor: '#ecf5ff' },
+  { key: '版本过期', label: '版本过期', value: 2, icon: Warning, color: '#E6A23C', bgColor: '#fdf6ec' },
+  { key: '内容错误', label: '内容错误', value: 4, icon: CircleClose, color: '#F56C6C', bgColor: '#fef0f0' },
+  { key: '信息缺失', label: '信息缺失', value: 2, icon: InfoFilled, color: '#909399', bgColor: '#f4f4f5' },
+  { key: '系统故障', label: '系统故障', value: 4, icon: Tools, color: '#F56C6C', bgColor: '#fef0f0' },
+  { key: '优化建议', label: '优化建议', value: 4, icon: Bell, color: '#67C23A', bgColor: '#f0f9eb' },
+  { key: '其他', label: '其他', value: 4, icon: ChatDotRound, color: '#909399', bgColor: '#f4f4f5' }
 ]
 
 const pagination = reactive({
@@ -178,6 +163,10 @@ function handleSizeChange(size: number) {
 function handlePageChange(page: number) {
   pagination.page = page
 }
+
+function handleStatsChange() {
+  pagination.page = 1
+}
 </script>
 
 <style lang="scss" scoped>
@@ -209,65 +198,6 @@ function handlePageChange(page: number) {
       flex-direction: column;
       flex: 1;
       overflow: hidden;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 16px 0;
-      background: #f8f9fb;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .stats-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 160px;
-      padding: 14px 18px;
-      background: #fff;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        border-color: #409eff;
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-      }
-
-      .stats-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stats-info {
-        .stats-value {
-          font-size: 26px;
-          font-weight: 700;
-          line-height: 1.2;
-        }
-
-        .stats-label {
-          font-size: 13px;
-          color: #909399;
-          margin-top: 4px;
-        }
-      }
     }
 
     .search-bar {

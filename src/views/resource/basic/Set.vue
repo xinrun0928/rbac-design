@@ -2,23 +2,7 @@
   <div class="equipment-set-management">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部筛选卡片 -->
-      <div class="stats-row">
-        <div
-          v-for="item in statsCards"
-          :key="item.key"
-          class="stats-card"
-          :class="{ active: currentTab === item.key }"
-          @click="handleTabChange(item.key)"
-        >
-          <div class="stats-icon" :style="{ background: item.bgColor, color: item.color }">
-            <el-icon :size="26"><component :is="item.icon" /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value" :style="{ color: item.color }">{{ item.value }}</div>
-            <div class="stats-label">{{ item.label }}</div>
-          </div>
-        </div>
-      </div>
+      <StatsCards v-model="currentTab" :items="statsCards" :card-width="180" @change="handleTabChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">
@@ -193,6 +177,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { Search, Plus, Download, Edit, Delete, Box, CircleCheck, CircleClose } from '@element-plus/icons-vue'
 import { equipmentSetData } from '@/mock/resource/setData'
 import type { EquipmentSet, EquipmentSetForm, EquipmentSetItem, EquipmentSetSearchForm } from '@/types/resource/set'
+import StatsCards from '@/components/StatsCards.vue'
 
 const loading = ref(false)
 const tableData = ref<EquipmentSet[]>(equipmentSetData)
@@ -452,65 +437,6 @@ function handleExport() {
     }
 
     // ── 顶部筛选卡片 ──
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 20px;
-      padding: 16px 0;
-      background: #f8f9fb;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .stats-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 180px;
-      padding: 16px 20px;
-      background: #fff;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        border-color: #409eff;
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
-      }
-
-      .stats-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stats-info {
-        .stats-value {
-          font-size: 26px;
-          font-weight: 700;
-          line-height: 1.2;
-        }
-
-        .stats-label {
-          font-size: 13px;
-          color: #909399;
-          margin-top: 4px;
-        }
-      }
-    }
-
     // ── 搜索栏 ──
     .search-bar {
       display: flex;

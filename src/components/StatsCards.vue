@@ -87,8 +87,8 @@ function handleClick(item: StatsCardItem) {
 
 <style scoped lang="scss">
 .stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
   margin-bottom: 16px;
@@ -108,7 +108,9 @@ function handleClick(item: StatsCardItem) {
 .stats-card {
   position: relative;
 
-  width: 200px;
+  flex: 1 1 150px;
+  min-width: 130px;
+  max-width: 200px;
   height: 86px;
 
   display: flex;
@@ -217,25 +219,19 @@ function handleClick(item: StatsCardItem) {
 
 /* 平板 */
 @media (max-width: 992px) {
-  .stats-row {
-    grid-template-columns: repeat(auto-fit, 180px);
-  }
-
   .stats-card {
-    width: 180px;
+    flex: 1 1 130px;
+    min-width: 120px;
+    max-width: 180px;
   }
 }
 
 /* 手机 */
 @media (max-width: 768px) {
-  .stats-row {
-    grid-template-columns: 1fr;
-  }
-
   .stats-card {
-    width: 100%;
+    flex: 1 1 100%;
+    min-width: 0;
     max-width: 360px;
-    justify-self: center;
   }
 }
 </style>

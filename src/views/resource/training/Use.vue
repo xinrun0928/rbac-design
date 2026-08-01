@@ -2,7 +2,7 @@
   <div class="equipment-training-use">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部统计卡片 -->
-      <StatsCards v-model="currentCategory" :items="statsCards" :card-width="220" @change="handleCategoryChange" />
+      <StatsCards v-model="currentCategory" :items="statsCards" @change="handleCategoryChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">

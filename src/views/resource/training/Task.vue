@@ -9,7 +9,7 @@
       </div>
 
       <!-- 顶部统计卡片 -->
-      <StatsCards v-model="currentStatus" :items="statsCards" :card-width="160" @change="handleStatusChange" />
+      <StatsCards v-model="currentStatus" :items="statsCards" @change="handleStatusChange" />
 
       <!-- 是否合格筛选 -->
       <div class="search-bar">

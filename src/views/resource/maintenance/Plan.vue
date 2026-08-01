@@ -3,7 +3,7 @@
     <!-- 列表视图 -->
     <el-card v-if="!drawerVisible" class="table-card animate-item" shadow="never">
       <!-- 顶部筛选卡片 -->
-      <StatsCards v-model="currentCategory" :items="statsCards" :card-width="220" @change="handleCategoryChange" />
+      <StatsCards v-model="currentCategory" :items="statsCards" @change="handleCategoryChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">

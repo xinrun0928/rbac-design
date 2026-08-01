@@ -2,7 +2,7 @@
   <div class="event-report-page">
     <el-card class="table-card" shadow="never">
       <!-- 统计卡片 -->
-      <StatsCards v-model="currentTab" :items="statsCards" :card-width="180" @change="handleTabChange" />
+      <StatsCards v-model="currentTab" :items="statsCards" @change="handleTabChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">

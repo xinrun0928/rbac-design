@@ -43,7 +43,7 @@
             <el-icon><component :is="child.icon" /></el-icon>
             <template #title>
               <div class="menu-title">
-                <span>{{ child.title }}</span>
+                <span :title="child.title">{{ child.title }}</span>
                 <span class="status-tag" :class="getMenuStatus(child)">
                   {{ statusText(getMenuStatus(child)) }}
                 </span>
@@ -65,7 +65,7 @@
             <el-icon><component :is="child.icon" /></el-icon>
             <template #title>
               <div class="menu-title">
-                <span>{{ child.title }}</span>
+                <span :title="child.title">{{ child.title }}</span>
                 <span class="status-tag" :class="getMenuStatus(child)">
                   {{ statusText(getMenuStatus(child)) }}
                 </span>
@@ -78,7 +78,7 @@
           <el-icon><component :is="item.icon" /></el-icon>
           <template #title>
             <div class="menu-title">
-              <span>{{ item.title }}</span>
+              <span :title="item.title">{{ item.title }}</span>
               <span class="status-tag" :class="getMenuStatus(item)">
                 {{ statusText(getMenuStatus(item)) }}
               </span>

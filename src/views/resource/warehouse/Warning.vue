@@ -12,7 +12,7 @@
       </div>
 
       <!-- 顶部统计卡片 -->
-      <StatsCards v-model="currentStatusFilter" :items="statsCards" :card-width="160" @change="handleStatusFilterChange" />
+      <StatsCards v-model="currentStatusFilter" :items="statsCards" @change="handleStatusFilterChange" />
 
       <!-- 物资类型筛选 -->
       <div class="search-bar">

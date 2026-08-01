@@ -2,7 +2,7 @@
   <div class="equipment-set-management">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部筛选卡片 -->
-      <StatsCards v-model="currentTab" :items="statsCards" :card-width="180" @change="handleTabChange" />
+      <StatsCards v-model="currentTab" :items="statsCards" @change="handleTabChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">

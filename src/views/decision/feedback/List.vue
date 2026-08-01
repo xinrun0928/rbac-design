@@ -2,7 +2,7 @@
   <div class="feedback-list-page">
     <el-card class="table-card animate-item" shadow="never">
       <!-- 顶部统计卡片 -->
-      <StatsCards v-model="activeCategory" :items="statsCards" :card-width="160" @change="handleStatsChange" />
+      <StatsCards v-model="activeCategory" :items="statsCards" @change="handleStatsChange" />
 
       <!-- 搜索栏 -->
       <div class="search-bar">

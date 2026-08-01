@@ -1,10 +1,19 @@
 <template>
   <div class="schedule-gantt">
-    <div class="gantt-scroll" ref="ganttScrollRef">
+    <div
+      class="gantt-scroll"
+      ref="ganttScrollRef"
+      :class="{ 'is-dragging': isDragging }"
+      @pointerdown="handlePointerDown"
+      @pointermove="handlePointerMove"
+      @pointerup="stopDragging"
+      @pointercancel="stopDragging"
+      @wheel="handleWheel"
+    >
       <div class="gantt-inner" :style="{ width: totalGanttWidth + 'px' }">
         <!-- 时间轴 -->
         <div class="gantt-axis">
-          <div class="axis-corner">模块 / 日期</div>
+          <div class="axis-corner">子系统 / 模块名称</div>
           <div class="axis-months">
             <div
               v-for="seg in axisSegments"
@@ -24,9 +33,16 @@
 
         <!-- 分组行 -->
         <template v-for="group in groupedRows" :key="group.title">
-          <div class="gantt-group">{{ group.title }}</div>
+          <div class="gantt-group">
+            <div class="gantt-group-label" :title="group.title">{{ group.title }}</div>
+            <div class="gantt-group-track"></div>
+          </div>
           <div v-for="mod in group.modules" :key="mod.key" class="gantt-row">
-            <div class="gantt-label" :title="mod.moduleName">
+            <div
+              class="gantt-label"
+              :title="`${mod.subsystemName} / ${mod.moduleName}`"
+            >
+              <span class="gantt-label-subsystem">{{ mod.subsystemName }}</span>
               <span class="gantt-label-text">{{ mod.moduleName }}</span>
             </div>
             <div class="gantt-track">
@@ -55,9 +71,9 @@
       </div>
     </div>
 
-    <!-- 右下角悬浮操作按钮 -->
+    <!-- 右下角时间轴控制 -->
     <div class="gantt-controls">
-      <el-tooltip content="定位到今天" placement="left">
+      <el-tooltip content="定位到今天" placement="top">
         <el-button
           :icon="Position"
           circle
@@ -66,28 +82,17 @@
           @click="scrollToToday"
         />
       </el-tooltip>
-      <el-tooltip :content="fullscreen ? '退出全屏' : '全屏查看'" placement="left">
-        <el-button
-          :icon="fullscreen ? Aim : FullScreen"
-          circle
-          type="primary"
-          plain
-          @click="emit('toggle-fullscreen')"
-        />
-      </el-tooltip>
-    </div>
-
-    <!-- 右下角缩放条 -->
-    <div class="gantt-zoombar">
-      <span class="zoom-value">{{ Math.round(zoom * 100) }}%</span>
+      <span class="control-divider"></span>
+      <span class="zoom-label">缩放</span>
       <el-slider v-model="zoom" :min="0.5" :max="5" :step="0.1" class="zoom-slider" />
+      <span class="zoom-value">{{ Math.round(zoom * 100) }}%</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue'
-import { Position, FullScreen, Aim } from '@element-plus/icons-vue'
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { Position } from '@element-plus/icons-vue'
 import type { ScheduleModule } from '@/types/schedule'
 import { mockScheduleItems, mockScheduleTeams } from '@/mock/schedule/scheduleData'
 import { teamColor, DAY_MS, parseDate } from './scheduleUtils'
@@ -97,21 +102,78 @@ const props = defineProps<{
   groupBy: 'system' | 'team'
   systemNames: string[]
   timeUnit: 'day' | 'week' | 'month' | 'year'
-  fullscreen: boolean
 }>()
 
 const zoom = defineModel<number>('zoom', { default: 1 })
 
 const emit = defineEmits<{
   (e: 'open-drawer', mod: ScheduleModule): void
-  (e: 'toggle-fullscreen'): void
 }>()
 
 const ganttScrollRef = ref<HTMLElement | null>(null)
+const ganttViewportWidth = ref(0)
+const isDragging = ref(false)
+const dragStartX = ref(0)
+const dragStartScrollLeft = ref(0)
+let resizeObserver: ResizeObserver | null = null
+
+function updateViewportWidth() {
+  ganttViewportWidth.value = ganttScrollRef.value?.clientWidth ?? 0
+}
+
+onMounted(() => {
+  updateViewportWidth()
+  if (typeof ResizeObserver !== 'undefined' && ganttScrollRef.value) {
+    resizeObserver = new ResizeObserver(updateViewportWidth)
+    resizeObserver.observe(ganttScrollRef.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+})
+
+function handlePointerDown(event: PointerEvent) {
+  if (event.pointerType === 'touch' || event.button !== 0) return
+  const target = event.target as HTMLElement
+  if (target.closest('.gantt-controls, .gantt-bar')) return
+
+  const el = ganttScrollRef.value
+  if (!el || el.scrollWidth <= el.clientWidth) return
+
+  isDragging.value = true
+  dragStartX.value = event.clientX
+  dragStartScrollLeft.value = el.scrollLeft
+  el.setPointerCapture(event.pointerId)
+  event.preventDefault()
+}
+
+function handlePointerMove(event: PointerEvent) {
+  if (!isDragging.value) return
+  const el = ganttScrollRef.value
+  if (!el) return
+  el.scrollLeft = dragStartScrollLeft.value - (event.clientX - dragStartX.value)
+}
+
+function stopDragging(event: PointerEvent) {
+  if (!isDragging.value) return
+  const el = ganttScrollRef.value
+  isDragging.value = false
+  if (el?.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId)
+}
+
+function handleWheel(event: WheelEvent) {
+  const el = ganttScrollRef.value
+  if (!el || (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY))) return
+
+  const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+  el.scrollLeft += delta
+  event.preventDefault()
+}
 
 // 今日参考线位置：按当前时刻（含时分秒）在当天内比例定位 + 左侧标签列宽度 220
 const todayLineLeft = computed(() =>
-  220 + ((Date.now() - rangeStart.value) / DAY_MS) * dayWidth.value
+  LABEL_WIDTH + ((Date.now() - rangeStart.value) / DAY_MS) * dayWidth.value
 )
 
 // 定位到今日并居中
@@ -129,12 +191,15 @@ watch(
   () => props.timeUnit,
   async () => {
     await nextTick()
+    updateViewportWidth()
+    await nextTick()
     scrollToToday()
   }
 )
 
 
 // 时间轴刻度单位对应的每像素天数宽度（天>周>月>年，比例逐渐变小）
+const LABEL_WIDTH = 220
 const UNIT_DAY_WIDTH: Record<string, number> = {
   day: 40,
   week: 8,
@@ -142,7 +207,12 @@ const UNIT_DAY_WIDTH: Record<string, number> = {
   year: 1.5
 }
 
-const dayWidth = computed(() => UNIT_DAY_WIDTH[props.timeUnit] * zoom.value)
+const baseDayWidth = computed(() => UNIT_DAY_WIDTH[props.timeUnit] * zoom.value)
+const fitDayWidth = computed(() => {
+  const availableTimelineWidth = Math.max(ganttViewportWidth.value - LABEL_WIDTH, 0)
+  return totalDays.value > 0 ? availableTimelineWidth / totalDays.value : 0
+})
+const dayWidth = computed(() => Math.max(baseDayWidth.value, fitDayWidth.value))
 
 // 按时间轴单位对齐范围起止，保证每个单位完整展示
 function unitRangeStart(): number {
@@ -188,7 +258,7 @@ const rangeEnd = computed(unitRangeEnd)
 
 const totalDays = computed(() => Math.round((rangeEnd.value - rangeStart.value) / DAY_MS) + 1)
 
-const totalGanttWidth = computed(() => 220 + totalDays.value * dayWidth.value)
+const totalGanttWidth = computed(() => LABEL_WIDTH + totalDays.value * dayWidth.value)
 
 interface AxisSegment {
   label: string
@@ -320,13 +390,25 @@ const groupedRows = computed(() => {
 }
 
 .gantt-scroll {
+  width: 100%;
   height: 100%;
+  min-width: 0;
   overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  scrollbar-gutter: stable;
+  cursor: grab;
+
+  &.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
 }
 
 .gantt-inner {
   position: relative;
   min-width: 100%;
+  width: max-content;
 }
 
 .gantt-axis {
@@ -348,9 +430,10 @@ const groupedRows = computed(() => {
     justify-content: center;
     font-size: 13px;
     font-weight: 600;
-    color: #606266;
-    background: #f5f7fa;
-    border-right: 1px solid #ebeef5;
+    color: #303133;
+    background: linear-gradient(180deg, #f5f7fa 0%, #eef1f6 100%);
+    border-right: 1px solid #e4e7ed;
+    box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.08);
   }
 
   .axis-months {
@@ -369,26 +452,55 @@ const groupedRows = computed(() => {
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    color: #606266;
-    border-left: 1px dashed #dcdfe6;
+    font-weight: 500;
+    color: #5b6473;
+    background: linear-gradient(180deg, rgba(245, 247, 250, 0.95) 0%, rgba(238, 241, 246, 0.95) 100%);
+    border-left: 1px solid #e4e7ed;
+    letter-spacing: 0.2px;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.02);
   }
 }
 
 .gantt-group {
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #409EFF;
-  background: rgba(64, 158, 255, 0.08);
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  width: 100%;
   border-bottom: 1px solid #ebeef5;
   border-top: 1px solid #ebeef5;
+  background: linear-gradient(90deg, #ecf5ff 0%, #f5f7fa 100%);
+
+  .gantt-group-label {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    width: 220px;
+    min-width: 220px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #409EFF;
+    background: linear-gradient(90deg, rgba(64, 158, 255, 0.12) 0%, rgba(64, 158, 255, 0.04) 100%);
+    border-right: 1px solid #ebeef5;
+    box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.08);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gantt-group-track {
+    height: 100%;
+    min-height: 1px;
+  }
+
+  &:first-child {
+    border-top: 1px solid #ebeef5;
+  }
 }
 
 .gantt-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  width: 100%;
   border-bottom: 1px solid #f2f3f5;
 
   &:hover {
@@ -402,27 +514,43 @@ const groupedRows = computed(() => {
   z-index: 2;
   width: 220px;
   min-width: 220px;
-  height: 44px;
+  height: 52px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
   padding: 0 16px;
   background: #fff;
   border-right: 1px solid #ebeef5;
   overflow: hidden;
 
+  .gantt-label-subsystem,
   .gantt-label-text {
-    font-size: 13px;
-    color: #303133;
+    display: block;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .gantt-label-subsystem {
+    font-size: 11px;
+    line-height: 15px;
+    color: #909399;
+  }
+
+  .gantt-label-text {
+    font-size: 13px;
+    line-height: 17px;
+    color: #303133;
   }
 }
 
 .gantt-track {
   position: relative;
-  flex: 1;
-  height: 44px;
+  width: 100%;
+  min-width: 0;
+  height: 52px;
 }
 
 .gantt-bar {
@@ -490,48 +618,49 @@ const groupedRows = computed(() => {
   }
 }
 
-/* 右下角悬浮操作按钮 */
+/* 右下角时间轴控制面板 */
 .gantt-controls {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  background: transparent;
-  opacity: 0.6;
-
-  :deep(.el-button) {
-    margin-left: 0;
-  }
-}
-
-/* 右下角缩放条（位于操作按钮左侧） */
-.gantt-zoombar {
-  position: absolute;
-  right: 76px;
-  bottom: 16px;
+  right: 18px;
+  bottom: 18px;
   z-index: 9;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
-  background: transparent;
-  opacity: 0.6;
+  height: 44px;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid #dcdfe6;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
 
+  :deep(.el-button) {
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+
+  .control-divider {
+    width: 1px;
+    height: 20px;
+    background: #dcdfe6;
+  }
+
+  .zoom-label,
   .zoom-value {
     font-size: 12px;
     color: #606266;
-    min-width: 42px;
+    white-space: nowrap;
+  }
+
+  .zoom-value {
+    min-width: 38px;
     text-align: right;
     font-variant-numeric: tabular-nums;
   }
 
   .zoom-slider {
-    width: 110px;
+    width: 120px;
     margin: 0;
   }
 }

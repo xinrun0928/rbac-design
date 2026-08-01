@@ -99,6 +99,20 @@
             <span class="summary-item">
               <b>{{ filteredPersonDays }}</b> 人天
             </span>
+            <el-divider direction="vertical" class="summary-divider" />
+            <el-tooltip
+              :content="isFullscreen ? '退出全屏' : '全屏查看'"
+              placement="top"
+              :show-after="200"
+            >
+              <el-button
+                :icon="isFullscreen ? Aim : FullScreen"
+                type="primary"
+                circle
+                class="fullscreen-button"
+                @click="toggleFullscreen"
+              />
+            </el-tooltip>
           </div>
         </div>
 
@@ -116,9 +130,7 @@
             :system-names="systemNames"
             :time-unit="timeUnit"
             v-model:zoom="ganttZoom"
-            :fullscreen="isFullscreen"
             @open-drawer="openDrawer"
-            @toggle-fullscreen="toggleFullscreen"
           />
         </div>
       </el-card>
@@ -176,7 +188,9 @@ import {
   Box,
   DataAnalysis,
   Connection,
-  DataBoard
+  DataBoard,
+  FullScreen,
+  Aim
 } from '@element-plus/icons-vue'
 import StatsCards from '@/components/StatsCards.vue'
 import ScheduleTable from './ScheduleTable.vue'
@@ -498,6 +512,19 @@ function goBack() {
   display: flex;
   align-items: center;
   gap: 20px;
+
+  .summary-divider {
+    height: 16px;
+    margin: 0;
+  }
+
+  .fullscreen-button {
+    margin-left: -4px;
+
+    :deep(.el-icon) {
+      font-size: 16px;
+    }
+  }
 
   .summary-item {
     font-size: 13px;

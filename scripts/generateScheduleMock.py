@@ -21,8 +21,9 @@ cur = {"sys": None, "sub": None, "mod": None}
 for idx, r in enumerate(data):
     if r[1]:
         cur["sys"] = r[1]
-    if r[2]:
+    if r[2] and r[2] != cur["sub"]:
         cur["sub"] = r[2]
+        cur["mod"] = None
     if r[3]:
         cur["mod"] = r[3]
     module = cur["mod"] or cur["sub"]

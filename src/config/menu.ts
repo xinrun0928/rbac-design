@@ -64,6 +64,7 @@ export interface MenuItem {
   children?: MenuItem[]
   isGroup?: boolean
   groupTitle?: string
+  status?: 'done' | 'doing' | 'todo'
 }
 
 // 超级管理员 - 首页
@@ -615,8 +616,8 @@ export const decisionMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '辅助决策工具',
     children: [
-      { path: '/decision/tool/policy', title: '政策法规查询', icon: Search },
-      { path: '/decision/tool/ai', title: '交通智慧大模型', icon: Cpu },
+      { path: '/decision/tool/policy', title: '政策法规查询', icon: Search, status: 'todo' },
+      { path: '/decision/tool/ai', title: '交通智慧大模型', icon: Cpu, status: 'todo' },
     ]
   },
   {

@@ -5,6 +5,21 @@
       <span v-show="!collapsed" class="sidebar-title">{{ title }}</span>
     </div>
 
+    <div v-show="!collapsed" class="sidebar-progress">
+      <div class="progress-header">
+        <span>页面完成度</span>
+        <span>{{ finishPercent }}%</span>
+      </div>
+      <el-progress
+        :percentage="finishPercent"
+        :stroke-width="6"
+        :show-text="false"
+      />
+      <div class="progress-desc">
+        已完成 {{ finishCount }} / {{ totalCount }} 个页面
+      </div>
+    </div>
+
     <el-menu
       :default-active="activeMenu"
       :collapse="collapsed"
@@ -22,7 +37,14 @@
             :index="child.path"
           >
             <el-icon><component :is="child.icon" /></el-icon>
-            <template #title>{{ child.title }}</template>
+            <template #title>
+              <div class="menu-title">
+                <span>{{ child.title }}</span>
+                <span class="status-tag" :class="getMenuStatus(child)">
+                  {{ statusText(getMenuStatus(child)) }}
+                </span>
+              </div>
+            </template>
           </el-menu-item>
         </template>
         <!-- 子菜单 -->
@@ -37,13 +59,27 @@
             :index="child.path"
           >
             <el-icon><component :is="child.icon" /></el-icon>
-            <template #title>{{ child.title }}</template>
+            <template #title>
+              <div class="menu-title">
+                <span>{{ child.title }}</span>
+                <span class="status-tag" :class="getMenuStatus(child)">
+                  {{ statusText(getMenuStatus(child)) }}
+                </span>
+              </div>
+            </template>
           </el-menu-item>
         </el-sub-menu>
         <!-- 普通菜单项 -->
         <el-menu-item v-else :index="item.path">
           <el-icon><component :is="item.icon" /></el-icon>
-          <template #title>{{ item.title }}</template>
+          <template #title>
+            <div class="menu-title">
+              <span>{{ item.title }}</span>
+              <span class="status-tag" :class="getMenuStatus(item)">
+                {{ statusText(getMenuStatus(item)) }}
+              </span>
+            </div>
+          </template>
         </el-menu-item>
       </template>
     </el-menu>
@@ -56,6 +92,8 @@ import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import type { MenuItem } from '@/config/menu'
 
+type MenuStatus = NonNullable<MenuItem['status']>
+
 const props = defineProps<{
   title: string
   icon: Component
@@ -65,13 +103,56 @@ const props = defineProps<{
 
 const route = useRoute()
 const activeMenu = computed(() => route.path)
+
+const pageList = computed(() => {
+  const result: MenuItem[] = []
+
+  const collectLeafMenus = (menus: MenuItem[]) => {
+    menus.forEach(item => {
+      if (item.children?.length) {
+        collectLeafMenus(item.children)
+        return
+      }
+
+      result.push(item)
+    })
+  }
+
+  collectLeafMenus(props.menus)
+  return result
+})
+
+const totalCount = computed(() => pageList.value.length)
+const finishCount = computed(() => pageList.value.filter(item => getMenuStatus(item) === 'done').length)
+const finishPercent = computed(() => {
+  if (!totalCount.value) return 0
+  return Math.round((finishCount.value / totalCount.value) * 100)
+})
+
+function getMenuStatus(item: MenuItem): MenuStatus {
+  return item.status || 'done'
+}
+
+function statusText(status: MenuStatus): string {
+  const statusMap: Record<MenuStatus, string> = {
+    done: '✓',
+    doing: '开发中',
+    todo: '未开始'
+  }
+
+  return statusMap[status]
+}
 </script>
 
 <style lang="scss" scoped>
+$app-sidebar-bg: #1a1f2e;
+$app-sidebar-hover: #263445;
+$app-primary: #409EFF;
+
 .app-sidebar {
   width: 220px;
   height: 100vh;
-  background: #1a1f2e;
+  background: $app-sidebar-bg;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -80,6 +161,28 @@ const activeMenu = computed(() => route.path)
 
   &.collapsed {
     width: 64px;
+
+    .sidebar-header {
+      padding: 0;
+      justify-content: center;
+    }
+
+    .sidebar-menu {
+      :deep(.el-menu-item),
+      :deep(.el-sub-menu__title) {
+        justify-content: center;
+        padding: 0 !important;
+      }
+
+      :deep(.el-menu-item .el-icon),
+      :deep(.el-sub-menu__title .el-icon) {
+        margin-right: 0;
+      }
+    }
+
+    .status-tag {
+      display: none;
+    }
   }
 }
 
@@ -88,8 +191,8 @@ const activeMenu = computed(() => route.path)
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
   white-space: nowrap;
 }
@@ -100,17 +203,44 @@ const activeMenu = computed(() => route.path)
   color: #fff;
 }
 
+.sidebar-progress {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.progress-desc {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:deep(.el-progress-bar__outer) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+:deep(.el-progress-bar__inner) {
+  background: linear-gradient(90deg, #409EFF, #67C23A);
+}
+
 .sidebar-menu {
   flex: 1;
   border-right: none;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #1a1f2e !important;
+  background: $app-sidebar-bg !important;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
+    display: none;
   }
 
   &:not(.el-menu--collapse) {
@@ -120,78 +250,131 @@ const activeMenu = computed(() => route.path)
   // 菜单项样式
   :deep(.el-menu-item),
   :deep(.el-sub-menu__title) {
-    background: #1a1f2e !important;
+    margin: 4px 8px;
+    border-radius: 8px;
+    background: $app-sidebar-bg !important;
     color: #bfcbd9 !important;
-    height: 50px !important;
-    line-height: 50px !important;
+    height: 46px !important;
+    line-height: 46px !important;
+    transition: all 0.2s;
   }
 
   :deep(.el-menu-item:hover),
   :deep(.el-sub-menu__title:hover) {
-    background: #263445 !important;
-    color: #409EFF !important;
+    background: $app-sidebar-hover !important;
+    color: #fff !important;
   }
 
   :deep(.el-menu-item.is-active) {
-    background: #263445 !important;
-    color: #409EFF !important;
+    background: rgba(64, 158, 255, 0.15) !important;
+    color: $app-primary !important;
     position: relative;
 
     &::after {
       content: '';
       position: absolute;
       right: 0;
-      top: 0;
-      bottom: 0;
+      top: 8px;
+      bottom: 8px;
       width: 3px;
-      background: #409EFF !important;
+      border-radius: 3px;
+      background: $app-primary !important;
     }
   }
 
   :deep(.el-menu-item .el-icon),
   :deep(.el-sub-menu__title .el-icon) {
+    margin-right: 10px;
     color: inherit !important;
   }
 
   :deep(.el-sub-menu.is-opened > .el-sub-menu__title) {
-    color: rgba(255, 255, 255, 0.65) !important;
+    color: #fff !important;
   }
 
   :deep(.el-sub-menu .el-menu-item) {
-    background: #1a1f2e !important;
+    margin-left: 20px;
+    background: $app-sidebar-bg !important;
     color: #bfcbd9 !important;
     min-width: 0 !important;
-    height: 50px !important;
-    line-height: 50px !important;
+    height: 42px !important;
+    line-height: 42px !important;
   }
 
   :deep(.el-sub-menu .el-menu-item:hover) {
-    background: #263445 !important;
-    color: #409EFF !important;
+    background: $app-sidebar-hover !important;
   }
 
   :deep(.el-sub-menu .el-menu-item.is-active) {
-    background: #263445 !important;
-    color: #409EFF !important;
+    background: rgba(64, 158, 255, 0.15) !important;
+    color: $app-primary !important;
     position: relative;
 
     &::after {
       content: '';
       position: absolute;
       right: 0;
-      top: 0;
-      bottom: 0;
+      top: 8px;
+      bottom: 8px;
       width: 3px;
-      background: #409EFF !important;
+      border-radius: 3px;
+      background: $app-primary !important;
     }
   }
 }
 
+.menu-title {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  span:first-child {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.status-tag {
+  flex-shrink: 0;
+  width: 44px;
+  padding: 0 4px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 10px;
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+
+  &.done {
+    width: 18px;
+    padding: 0;
+    border-radius: 50%;
+    color: #67C23A;
+    background: rgba(103, 194, 58, 0.15);
+  }
+
+  &.doing {
+    color: #E6A23C;
+    background: rgba(230, 162, 60, 0.15);
+  }
+
+  &.todo {
+    color: #909399;
+    background: rgba(144, 147, 153, 0.15);
+  }
+}
+
 .menu-group-title {
-  padding: 16px 20px 8px;
+  padding: 14px 20px 6px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.35);
-  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 </style>

@@ -167,6 +167,11 @@ function removeShift(index: number) {
 // ── 方法 ──
 function fetchData() {
   ruleList.value = JSON.parse(JSON.stringify(mockScheduleRuleData))
+  // 默认选中第一条规则
+  if (ruleList.value.length > 0) {
+    selectedRule.value = ruleList.value[0]
+    shiftList.value = [{ name: '', startTime: null, endTime: null }]
+  }
 }
 
 function selectRule(rule: ScheduleRule) {

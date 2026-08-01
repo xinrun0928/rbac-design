@@ -69,7 +69,7 @@ export interface MenuItem {
 
 // 超级管理员 - 首页
 export const adminDashboardMenu: MenuItem[] = [
-  { path: '/admin/dashboard', title: '首页', icon: HomeFilled },
+  { path: '/admin/dashboard', title: '首页', icon: HomeFilled, status: 'done' },
 ]
 
 // 超级管理员 - 系统管理菜单
@@ -81,12 +81,12 @@ export const adminSystemMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '系统管理',
     children: [
-      { path: '/admin/menu', title: '菜单管理', icon: MenuIcon },
-      { path: '/admin/config', title: '配置管理', icon: Tools },
-      { path: '/admin/dict', title: '字典管理', icon: Collection },
-      { path: '/admin/attachment', title: '附件管理', icon: Paperclip },
-      { path: '/admin/msg/template', title: '短信模版', icon: ChatDotSquare },
-      { path: '/admin/area', title: '区域管理', icon: Location },
+      { path: '/admin/menu', title: '菜单管理', icon: MenuIcon, status: 'done' },
+      { path: '/admin/config', title: '配置管理', icon: Tools, status: 'done' },
+      { path: '/admin/dict', title: '字典管理', icon: Collection, status: 'done' },
+      { path: '/admin/attachment', title: '附件管理', icon: Paperclip, status: 'done' },
+      { path: '/admin/msg/template', title: '短信模版', icon: ChatDotSquare, status: 'done' },
+      { path: '/admin/area', title: '区域管理', icon: Location, status: 'done' },
     ]
   },
 ]
@@ -100,11 +100,11 @@ export const adminOrgMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '组织架构',
     children: [
-      { path: '/admin/organization', title: '组织管理', icon: Share },
-      { path: '/admin/dept', title: '部门管理', icon: OfficeBuilding },
-      { path: '/admin/post', title: '岗位管理', icon: Briefcase },
-      { path: '/admin/role', title: '角色管理', icon: UserFilled },
-      { path: '/admin/member', title: '成员管理', icon: User },
+      { path: '/admin/organization', title: '组织管理', icon: Share, status: 'done' },
+      { path: '/admin/dept', title: '部门管理', icon: OfficeBuilding, status: 'done' },
+      { path: '/admin/post', title: '岗位管理', icon: Briefcase, status: 'done' },
+      { path: '/admin/role', title: '角色管理', icon: UserFilled, status: 'done' },
+      { path: '/admin/member', title: '成员管理', icon: User, status: 'done' },
     ]
   },
 ]
@@ -118,8 +118,8 @@ export const adminMealMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '套餐管理',
     children: [
-      { path: '/admin/subsystem', title: '子系统管理', icon: Monitor },
-      { path: '/admin/meal', title: '套餐列表', icon: Box },
+      { path: '/admin/subsystem', title: '子系统管理', icon: Monitor, status: 'done' },
+      { path: '/admin/meal', title: '套餐列表', icon: Box, status: 'done' },
     ]
   },
 ]
@@ -133,7 +133,7 @@ export const adminAppMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '应用管理',
     children: [
-      { path: '/admin/app', title: 'App管理', icon: Cellphone },
+      { path: '/admin/app', title: 'App管理', icon: Cellphone, status: 'done' },
     ]
   },
 ]
@@ -147,10 +147,10 @@ export const adminMonitorMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '系统监控',
     children: [
-      { path: '/admin/monitor/online', title: '在线用户', icon: User },
-      { path: '/admin/monitor/server', title: '服务监控', icon: Monitor },
-      { path: '/admin/monitor/cache', title: '缓存监控', icon: Coin },
-      { path: '/admin/monitor/cache/list', title: '缓存列表', icon: List },
+      { path: '/admin/monitor/online', title: '在线用户', icon: User, status: 'done' },
+      { path: '/admin/monitor/server', title: '服务监控', icon: Monitor, status: 'done' },
+      { path: '/admin/monitor/cache', title: '缓存监控', icon: Coin, status: 'done' },
+      { path: '/admin/monitor/cache/list', title: '缓存列表', icon: List, status: 'done' },
     ]
   },
 ]
@@ -164,11 +164,11 @@ export const adminLogMenu: MenuItem[] = [
     isGroup: true,
     groupTitle: '日志管理',
     children: [
-      { path: '/admin/logs/access', title: '访问日志', icon: Notebook },
-      { path: '/admin/logs/http', title: '接口日志', icon: Connection },
-      { path: '/admin/logs/login', title: '登录日志', icon: User },
-      { path: '/admin/logs/message', title: '短信日志', icon: ChatDotRound },
-      { path: '/admin/mq/log', title: 'MQ消费日志', icon: Promotion },
+      { path: '/admin/logs/access', title: '访问日志', icon: Notebook, status: 'done' },
+      { path: '/admin/logs/http', title: '接口日志', icon: Connection, status: 'done' },
+      { path: '/admin/logs/login', title: '登录日志', icon: User, status: 'done' },
+      { path: '/admin/logs/message', title: '短信日志', icon: ChatDotRound, status: 'done' },
+      { path: '/admin/mq/log', title: 'MQ消费日志', icon: Promotion, status: 'done' },
     ]
   }
 ]
@@ -187,7 +187,7 @@ export const adminMenus: MenuItem[] = [
 // 应急值守管理菜单
 export const dutyMenus: MenuItem[] = [
   { path: '/duty/dashboard', title: '工作台', icon: HomeFilled, status: 'todo' },
-  { path: '/duty/statistics', title: '我的统计', icon: DataLine },
+  { path: '/duty/statistics', title: '我的统计', icon: DataLine, status: 'done' },
   {
     path: '/duty/duty-record-group',
     title: '值班记录',
@@ -239,7 +239,7 @@ export const dutyMenus: MenuItem[] = [
     groupTitle: '排班管理',
     children: [
       { path: '/duty/schedule/table', title: '值班表', icon: List, status: 'todo' },
-      { path: '/duty/schedule/rule', title: '排班规则', icon: Setting },
+      { path: '/duty/schedule/rule', title: '排班规则', icon: Setting, status: 'done' },
     ]
   },
   {
@@ -249,7 +249,7 @@ export const dutyMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '工作制度及要求',
     children: [
-      { path: '/duty/regulation/query', title: '综合查询', icon: Search },
+      { path: '/duty/regulation/query', title: '综合查询', icon: Search, status: 'done' },
       { path: '/duty/regulation/maintain', title: '内容维护', icon: Tools, status: 'todo' },
     ]
   },
@@ -260,26 +260,26 @@ export const dutyMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '基础信息',
     children: [
-      { path: '/duty/base-info/post', title: '岗位管理', icon: Briefcase },
+      { path: '/duty/base-info/post', title: '岗位管理', icon: Briefcase, status: 'done' },
       { path: '/duty/base-info/personnel', title: '值班人员管理', icon: User, status: 'todo' },
-      { path: '/duty/base-info/holiday', title: '节假日维护', icon: Calendar },
+      { path: '/duty/base-info/holiday', title: '节假日维护', icon: Calendar, status: 'done' },
     ]
   },
 ]
 
 // 应急事件管理菜单
 export const eventMenus: MenuItem[] = [
-  { path: '/event/report', title: '事故上报', icon: EditPen },
+  { path: '/event/report', title: '事故上报', icon: EditPen, status: 'done' },
   { path: '/event/receive', title: '事故信息接收', icon: ChatDotRound, status: 'todo' },
   { path: '/event/warning', title: '预警处置', icon: Warning, status: 'todo' },
   { path: '/event/warning/rule', title: '事故预警规则', icon: Document, status: 'todo' },
   { path: '/event/receive/rule', title: '事故接报规则', icon: List, status: 'todo' },
   { path: '/event/task', title: '任务分配及跟踪', icon: DataAnalysis, status: 'todo' },
-  { path: '/event/todo', title: '我的待办', icon: Clock },
+  { path: '/event/todo', title: '我的待办', icon: Clock, status: 'doing' },
   { path: '/event/document', title: '文档库', icon: Folder, status: 'todo' },
   { path: '/event/archive', title: '归档事故库', icon: Box, status: 'todo' },
-  { path: '/event/dict', title: '字典管理', icon: Collection },
-  { path: '/event/log', title: '系统日志', icon: Notebook },
+  { path: '/event/dict', title: '字典管理', icon: Collection, status: 'done' },
+  { path: '/event/log', title: '系统日志', icon: Notebook, status: 'done' },
 ]
 
 // 指挥调度子系统菜单
@@ -305,7 +305,7 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '重点路段统计',
     children: [
-      { path: '/dispatch/road/statistics', title: '重点路段统计', icon: DataLine },
+      { path: '/dispatch/road/statistics', title: '重点路段统计', icon: DataLine, status: 'doing' },
     ]
   },
   {
@@ -353,9 +353,9 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '大客流大货流',
     children: [
-      { path: '/dispatch/flow/road', title: '路段', icon: Guide },
-      { path: '/dispatch/flow/service-area', title: '服务区', icon: OfficeBuilding },
-      { path: '/dispatch/flow/toll-station', title: '收费站', icon: OfficeBuilding },
+      { path: '/dispatch/flow/road', title: '路段', icon: Guide, status: 'doing' },
+      { path: '/dispatch/flow/service-area', title: '服务区', icon: OfficeBuilding, status: 'doing' },
+      { path: '/dispatch/flow/toll-station', title: '收费站', icon: OfficeBuilding, status: 'doing' },
     ]
   },
   {
@@ -533,13 +533,13 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '设备物资仓库管理',
     children: [
-      { path: '/resource/warehouse/query', title: '库存查询', icon: Search },
-      { path: '/resource/warehouse/apply', title: '调用申请', icon: Document },
-      { path: '/resource/warehouse/check', title: '库存盘点', icon: Check },
-      { path: '/resource/warehouse/audit', title: '调用审核', icon: EditPen },
-      { path: '/resource/warehouse/warehouse', title: '仓库查询', icon: OfficeBuilding },
-      { path: '/resource/warehouse/warning', title: '安全库存预警', icon: Warning },
-      { path: '/resource/warehouse/fault-warning', title: '故障/报废预警', icon: Warning },
+      { path: '/resource/warehouse/query', title: '库存查询', icon: Search, status: 'done' },
+      { path: '/resource/warehouse/apply', title: '调用申请', icon: Document, status: 'doing' },
+      { path: '/resource/warehouse/check', title: '库存盘点', icon: Check, status: 'doing' },
+      { path: '/resource/warehouse/audit', title: '调用审核', icon: EditPen, status: 'doing' },
+      { path: '/resource/warehouse/warehouse', title: '仓库查询', icon: OfficeBuilding, status: 'doing' },
+      { path: '/resource/warehouse/warning', title: '安全库存预警', icon: Warning, status: 'doing' },
+      { path: '/resource/warehouse/fault-warning', title: '故障/报废预警', icon: Warning, status: 'doing' },
     ]
   },
   {
@@ -559,10 +559,10 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '装备维保管理',
     children: [
-      { path: '/resource/maintenance/plan', title: '装备维保计划', icon: Document },
-      { path: '/resource/maintenance/record', title: '维保记录', icon: Notebook },
-      { path: '/resource/maintenance/fault', title: '故障设备', icon: Warning },
-      { path: '/resource/maintenance/retire', title: '退役/报废审核', icon: CircleClose },
+      { path: '/resource/maintenance/plan', title: '装备维保计划', icon: Document, status: 'doing' },
+      { path: '/resource/maintenance/record', title: '维保记录', icon: Notebook, status: 'doing' },
+      { path: '/resource/maintenance/fault', title: '故障设备', icon: Warning, status: 'doing' },
+      { path: '/resource/maintenance/retire', title: '退役/报废审核', icon: CircleClose, status: 'doing' },
     ]
   },
   {
@@ -572,10 +572,10 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '装备培训与考核',
     children: [
-      { path: '/resource/training/use', title: '装备使用教程', icon: Reading },
-      { path: '/resource/training/template', title: '装备操作考核模板', icon: Files },
-      { path: '/resource/training/record', title: '装备操作考核记录', icon: Notebook },
-      { path: '/resource/training/task', title: '装备操作考核任务', icon: EditPen },
+      { path: '/resource/training/use', title: '装备使用教程', icon: Reading, status: 'done' },
+      { path: '/resource/training/template', title: '装备操作考核模板', icon: Files, status: 'done' },
+      { path: '/resource/training/record', title: '装备操作考核记录', icon: Notebook, status: 'done' },
+      { path: '/resource/training/task', title: '装备操作考核任务', icon: EditPen, status: 'doing' },
     ]
   },
   {
@@ -585,8 +585,8 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '基础管理',
     children: [
-      { path: '/resource/basic/category', title: '物资装备种类管理', icon: Collection },
-      { path: '/resource/basic/set', title: '装备套组管理', icon: Box },
+      { path: '/resource/basic/category', title: '物资装备种类管理', icon: Collection, status: 'done' },
+      { path: '/resource/basic/set', title: '装备套组管理', icon: Box, status: 'done' },
     ]
   },
 ]
@@ -601,12 +601,12 @@ export const decisionMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '知识管理',
     children: [
-      { path: '/decision/knowledge/input', title: '知识录入', icon: Edit },
-      { path: '/decision/knowledge/audit', title: '审核审批', icon: Check },
-      { path: '/decision/knowledge/category', title: '知识分类', icon: Folder },
-      { path: '/decision/knowledge/maintain', title: '知识维护与更新', icon: Tools },
-      { path: '/decision/knowledge/record', title: '维护更新记录', icon: Notebook },
-      { path: '/decision/knowledge/expire', title: '过期知识处理', icon: Clock },
+      { path: '/decision/knowledge/input', title: '知识录入', icon: Edit, status: 'done' },
+      { path: '/decision/knowledge/audit', title: '审核审批', icon: Check, status: 'doing' },
+      { path: '/decision/knowledge/category', title: '知识分类', icon: Folder, status: 'doing' },
+      { path: '/decision/knowledge/maintain', title: '知识维护与更新', icon: Tools, status: 'doing' },
+      { path: '/decision/knowledge/record', title: '维护更新记录', icon: Notebook, status: 'doing' },
+      { path: '/decision/knowledge/expire', title: '过期知识处理', icon: Clock, status: 'doing' },
     ]
   },
   {
@@ -627,7 +627,7 @@ export const decisionMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '用户反馈管理',
     children: [
-      { path: '/decision/feedback/list', title: '用户反馈', icon: ChatDotSquare },
+      { path: '/decision/feedback/list', title: '用户反馈', icon: ChatDotSquare, status: 'doing' },
     ]
   },
   {
@@ -637,7 +637,7 @@ export const decisionMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '基础管理',
     children: [
-      { path: '/decision/basic/management', title: '基础管理', icon: Setting },
+      { path: '/decision/basic/management', title: '基础管理', icon: Setting, status: 'doing' },
     ]
   },
 ]

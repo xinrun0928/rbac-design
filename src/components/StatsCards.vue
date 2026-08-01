@@ -1,17 +1,18 @@
 <template>
   <div class="stats-row" :class="{ 'no-click': !clickable }">
-    <div
-      v-for="item in items"
-      :key="item.key"
-      class="stats-card"
-      :class="{ active: clickable && modelValue === item.key }"
-      :style="{
-        width: cardWidth ? `${cardWidth}px` : undefined,
-        '--theme-color': item.color,
-        '--theme-bg': item.bgColor
-      }"
-      @click="handleClick(item)"
-    >
+    <div class="stats-inner">
+      <div
+        v-for="item in items"
+        :key="item.key"
+        class="stats-card"
+        :class="{ active: clickable && modelValue === item.key }"
+        :style="{
+          width: cardWidth ? `${cardWidth}px` : undefined,
+          '--theme-color': item.color,
+          '--theme-bg': item.bgColor
+        }"
+        @click="handleClick(item)"
+      >
       <!-- 背景装饰 -->
       <div class="card-decoration"></div>
 
@@ -38,9 +39,12 @@
         </div>
 
         <div class="stats-label">
-          {{ item.label }}
+          <el-tooltip :content="item.label" :disabled="!isLabelOverflow(item.label)" placement="top" :show-after="200">
+            <span class="stats-label-text">{{ item.label }}</span>
+          </el-tooltip>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -83,15 +87,48 @@ function handleClick(item: StatsCardItem) {
   emit('update:modelValue', item.key)
   emit('change', item.key)
 }
+
+// 估算文案是否超出卡片可用宽度（中文字符按 13px、其他按 7px）
+function isLabelOverflow(label: string): boolean {
+  const width = props.cardWidth || 200
+  const available = width - 90
+  let textWidth = 0
+  for (const ch of label) {
+    textWidth += /[\u4e00-\u9fff]/.test(ch) ? 13 : 7
+  }
+  return textWidth > available
+}
 </script>
 
 <style scoped lang="scss">
 .stats-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin-bottom: 16px;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #c0c4cc transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c0c4cc;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+.stats-inner {
+  display: flex;
+  gap: 16px;
+  margin: 0 auto;
+  width: max-content;
 }
 
 .stats-row.no-click {
@@ -108,9 +145,8 @@ function handleClick(item: StatsCardItem) {
 .stats-card {
   position: relative;
 
-  flex: 1 1 150px;
-  min-width: 130px;
-  max-width: 200px;
+  flex: 0 0 200px;
+  width: 200px;
   height: 86px;
 
   display: flex;
@@ -197,6 +233,7 @@ function handleClick(item: StatsCardItem) {
   position: relative;
   z-index: 1;
   flex: 1;
+  min-width: 0;
 }
 
 .stats-value {
@@ -214,24 +251,34 @@ function handleClick(item: StatsCardItem) {
   font-size: 13px;
   color: #909399;
 
-  white-space: nowrap;
+  overflow: hidden;
+
+  :deep(.el-tooltip__trigger) {
+    display: block;
+    width: 100%;
+  }
+
+  .stats-label-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 /* 平板 */
 @media (max-width: 992px) {
   .stats-card {
-    flex: 1 1 130px;
-    min-width: 120px;
-    max-width: 180px;
+    flex: 0 0 180px;
+    width: 180px;
   }
 }
 
 /* 手机 */
 @media (max-width: 768px) {
   .stats-card {
-    flex: 1 1 100%;
-    min-width: 0;
-    max-width: 360px;
+    flex: 0 0 160px;
+    width: 160px;
   }
 }
 </style>

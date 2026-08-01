@@ -62,6 +62,7 @@ src/
 │       └── display.ts     # 综合展示
 ├── types/                  # TypeScript 类型
 │   ├── index.ts           # 统一导出
+│   ├── schedule.ts        # 模块级排期相关类型
 │   └── admin/             # 后台管理相关类型
 ├── utils/                  # 工具函数
 │   ├── logMockApi.ts      # 日志 Mock API
@@ -80,8 +81,25 @@ src/
     │   ├── monitor/       # 系统监控（在线用户、服务监控、缓存监控、缓存列表）
     │   └── logs/          # 日志管理
     ├── enterprise/         # 企业视角（预留）
+    ├── schedule/           # 模块级排期v4（项目功能模块人员安排）
     └── common/             # 公共页面（预留）
 ```
+
+### 模块级排期v4（schedule）
+
+- **页面**：`src/views/schedule/ScheduleView.vue`
+- **路由**：`/schedule-v4`（在 `src/router/index.ts` 的 publicRoutes 中注册）
+- **入口**：登录页右上角「模块级排期v4」按钮
+- **类型**：`src/types/schedule.ts`（ScheduleItem / ScheduleModule / ScheduleTeam）
+- **Mock 数据**：`src/mock/schedule/scheduleData.ts`，由 `scripts/generateScheduleMock.py` 从根目录 `模块级排期v4.xlsx` 自动生成，**禁止手动修改**
+- **数据量**：642 个功能项、174 个模块（规范化）、8 个系统、54 个子系统、5 个研发团队
+- **页面功能**：
+  - StatsCards 系统筛选（可点击）
+  - 团队筛选 + 关键词搜索
+  - 表格视图（模块级行 + 展开功能项明细）
+  - 甘特图视图（按系统/按团队分组切换，CSS 实现无第三方库）
+  - 点击模块行/色条弹出抽屉查看功能项明细
+- **再生成数据**：xlsx 更新后运行 `python3 scripts/generateScheduleMock.py`
 
 ---
 

@@ -1,5 +1,11 @@
 <template>
   <div class="login-container">
+    <!-- 右上角入口 -->
+    <div class="schedule-entry" @click="goToSchedule">
+      <el-icon><Calendar /></el-icon>
+      <span>模块级排期v4</span>
+    </div>
+
     <div class="login-wrapper">
       <!-- 左侧装饰区域 -->
       <div class="login-left">
@@ -196,7 +202,8 @@ import {
   OfficeBuilding,
   Location,
   ChatDotSquare,
-  Document
+  Document,
+  Calendar
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -347,6 +354,11 @@ const goToForgotPassword = () => {
   router.push('/forgot-password')
 }
 
+// 跳转到模块级排期v4
+const goToSchedule = () => {
+  router.push('/schedule-v4')
+}
+
 onMounted(() => {
   refreshCaptcha()
 })
@@ -366,6 +378,33 @@ onUnmounted(() => {
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+}
+
+/* 右上角模块级排期入口 */
+.schedule-entry {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .login-wrapper {

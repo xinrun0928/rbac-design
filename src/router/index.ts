@@ -40,6 +40,11 @@ const publicRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/auth/SubsystemSelectView.vue')
   },
   {
+    path: '/schedule-v4',
+    name: 'ScheduleV4',
+    component: () => import('@/views/schedule/ScheduleView.vue')
+  },
+  {
     path: '/redirect/:path(.*)',
     name: 'Redirect',
     component: () => import('@/views/redirect/index.vue')

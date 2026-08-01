@@ -148,6 +148,10 @@ function handleSubmit() {
 </script>
 
 <style lang="scss" scoped>
+:deep(.el-drawer__footer) {
+  border-top: 1px solid #ebeef5;
+}
+
 .form-input {
   width: 100%;
 }

@@ -1,0 +1,42 @@
+<template>
+  <el-tooltip content="GitHub 仓库" placement="bottom">
+    <a
+      class="header-icon"
+      href="https://github.com/xinrun0928/rbac-design"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg
+        class="github-icon"
+        viewBox="0 0 1024 1024"
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+      >
+        <path
+          fill="currentColor"
+          d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.4 31.5-10.2 31.5-22.2 0-11.2-.4-40.9-.6-80.3-129.6 28.2-156.9-62.4-156.9-62.4-21.2-53.8-51.8-68.2-51.8-68.2-42.3-28.9 3.2-28.3 3.2-28.3 46.8 3.3 71.4 48 71.4 48 41.6 71.3 109.2 50.7 135.8 38.8 4.2-30.2 16.3-50.8 29.6-62.5-103.6-11.8-212.5-51.8-212.5-230.5 0-50.9 18.2-92.5 48-125.2-4.8-11.8-20.8-59.2 4.6-123.4 0 0 39.1-12.5 128.1 47.8 37.2-10.4 77-15.5 116.6-15.7 39.6 0.2 79.4 5.3 116.7 15.7 88.9-60.3 127.9-47.8 127.9-47.8 25.5 64.2 9.5 111.6 4.7 123.4 29.9 32.7 48 74.3 48 125.2 0 179-109.1 218.6-213.1 230.2 16.7 14.4 31.6 42.7 31.6 86.1 0 62.2-.6 112.3-.6 127.6 0 12.1 7.8 27.8 31.8 22.1 174.3-61.2 299.4-227.5 299.4-423 0-247.1-200.3-447.3-447.6-447.3z"
+        />
+      </svg>
+    </a>
+  </el-tooltip>
+</template>
+
+<style scoped>
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #606266;
+  transition: all 0.3s;
+}
+
+.header-icon:hover {
+  color: #409EFF;
+  background: #f5f7fa;
+}
+</style>

@@ -22,6 +22,7 @@
           <Breadcrumb :menus="dutyMenus" />
         </div>
         <div class="header-right">
+          <GithubIcon />
           <FullscreenToggle />
           <NotificationBell />
           <UserDropdown />
@@ -49,6 +50,7 @@ import {
 import { dutyMenus } from '@/config/menu'
 import AppSidebar from '@/components/AppSidebar.vue'
 import TagsView from '@/components/TagsView.vue'
+import GithubIcon from '@/components/GithubIcon.vue'
 import FullscreenToggle from '@/components/FullscreenToggle.vue'
 import NotificationBell from '@/components/NotificationBell.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'

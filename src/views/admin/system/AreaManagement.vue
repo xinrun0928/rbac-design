@@ -398,7 +398,6 @@ function getLevelColor(level: string): string {
   .drawer-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
     padding-top: 20px;
     border-top: 1px solid #EBEEF5;
     margin-top: 20px;

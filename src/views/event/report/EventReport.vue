@@ -1512,12 +1512,10 @@ function handlePageChange(page: number) {
 
   .footer-left {
     display: flex;
-    gap: 12px;
   }
 
   .footer-right {
     display: flex;
-    gap: 12px;
   }
 }
 

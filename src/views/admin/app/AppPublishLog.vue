@@ -470,7 +470,6 @@ onMounted(() => {
     .drawer-footer {
       display: flex;
       justify-content: flex-end;
-      gap: 12px;
       padding: 16px 24px;
       border-top: 1px solid #EBEEF5;
     }

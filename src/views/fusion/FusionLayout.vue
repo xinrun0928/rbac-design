@@ -22,6 +22,7 @@
           <Breadcrumb :menus="fusionMenus" />
         </div>
         <div class="header-right">
+          <GithubIcon />
           <FullscreenToggle />
           <NotificationBell />
           <UserDropdown />
@@ -50,6 +51,7 @@ import { fusionMenus } from '@/config/menu'
 import AppSidebar from '@/components/AppSidebar.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
 import TagsView from '@/components/TagsView.vue'
+import GithubIcon from '@/components/GithubIcon.vue'
 import FullscreenToggle from '@/components/FullscreenToggle.vue'
 import NotificationBell from '@/components/NotificationBell.vue'
 import UserDropdown from '@/components/UserDropdown.vue'

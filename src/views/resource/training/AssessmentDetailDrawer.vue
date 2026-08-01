@@ -367,7 +367,6 @@ function handleClose() {
   .footer-right {
     display: flex;
     align-items: center;
-    gap: 12px;
   }
 }
 

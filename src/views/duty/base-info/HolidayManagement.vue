@@ -803,6 +803,10 @@ async function handleSubmit() {
 </script>
 
 <style lang="scss" scoped>
+:deep(.el-drawer__footer) {
+  border-top: 1px solid #ebeef5;
+}
+
 .holiday-management-page {
   padding: 0;
   background: linear-gradient(160deg, #F5F7FA 0%, #E8ECF1 100%);

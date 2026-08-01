@@ -1170,6 +1170,10 @@ function handleInsuranceRenewalSubmit() {
 </script>
 
 <style lang="scss" scoped>
+:deep(.el-drawer__footer) {
+  border-top: 1px solid #ebeef5;
+}
+
 .inventory-query-page {
   padding: 16px;
   background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);

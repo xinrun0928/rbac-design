@@ -571,7 +571,6 @@ function handleCopyJson(jsonStr: string | null) {
       border-top: 1px solid #EBEEF5;
       display: flex;
       justify-content: flex-end;
-      gap: 8px;
     }
   }
 

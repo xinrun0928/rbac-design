@@ -96,8 +96,8 @@ onBeforeUnmount(() => {
   background: #fff;
 }
 
-.rte-editor {
-  height: v-bind('height + "px"');
+:deep(.w-e-text-container) {
+  height: v-bind('height + "px"') !important;
   overflow-y: auto;
   background: #fff;
 }

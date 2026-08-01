@@ -251,28 +251,7 @@
       <div class="create-container">
         <!-- 抽屉头部 -->
         <div class="create-header">
-          <div class="header-left">
-            <el-button @click="createDrawerVisible = false">返回</el-button>
-            <h2 class="create-title">新建知识</h2>
-          </div>
-          <el-dropdown @command="handleCreateAction" trigger="click">
-            <el-button type="primary">
-              操作 <el-icon class="el-icon--right"><ArrowDown /></el-icon>
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="draft">保存草稿</el-dropdown-item>
-                <el-dropdown-item command="submit">保存并提交审核</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-
-        <!-- 标签页 -->
-        <div class="create-tabs">
-          <el-tabs v-model="createActiveTab">
-            <el-tab-pane label="知识内容编辑" name="contentEdit" />
-          </el-tabs>
+          <h2 class="create-title">新建知识</h2>
         </div>
 
         <!-- 表单内容 -->
@@ -366,9 +345,16 @@
                 <span class="title-bar"></span>
                 知识内容编辑
               </div>
-              <RichTextEditor v-model="createFormData.content" :height="400" placeholder="请输入知识内容..." />
+              <RichTextEditor v-model="createFormData.content" :height="500" placeholder="请输入知识内容..." />
             </div>
           </el-form>
+        </div>
+
+        <!-- 底部操作 -->
+        <div class="create-footer">
+          <el-button @click="createDrawerVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleSaveDraft">保存草稿</el-button>
+          <el-button type="success" @click="handleSubmitAudit">保存并提交审核</el-button>
         </div>
       </div>
     </el-drawer>
@@ -415,7 +401,6 @@ const currentVersionContent = computed<KnowledgeVersion | null>(() => {
 // 新建知识抽屉相关
 const createDrawerVisible = ref(false)
 const createFormRef = ref()
-const createActiveTab = ref('contentEdit')
 const createFormData = reactive({
   title: '',
   code: '',
@@ -458,14 +443,6 @@ function handleSaveDraft() {
 
 function handleSubmitAudit() {
   ElMessage.success('已提交审核')
-}
-
-function handleCreateAction(command: string) {
-  if (command === 'draft') {
-    handleSaveDraft()
-  } else if (command === 'submit') {
-    handleSubmitAudit()
-  }
 }
 
 const statsCards = [
@@ -945,12 +922,6 @@ function handleWithdraw() {
   padding: 16px 24px;
   border-bottom: 1px solid #ebeef5;
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
   .create-title {
     font-size: 18px;
     font-weight: 600;
@@ -959,24 +930,20 @@ function handleWithdraw() {
   }
 }
 
-.create-tabs {
-  padding: 0 24px;
-
-  :deep(.el-tabs) {
-    .el-tabs__header {
-      margin: 0;
-    }
-
-    .el-tabs__nav-wrap::after {
-      height: 1px;
-    }
-  }
-}
-
 .create-form-wrapper {
   flex: 1;
   overflow: auto;
   padding: 20px 24px;
+}
+
+.create-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #ebeef5;
+  background: #fff;
+  flex-shrink: 0;
 }
 
 .create-form {

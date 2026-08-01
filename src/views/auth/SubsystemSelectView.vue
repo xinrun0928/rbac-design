@@ -51,6 +51,17 @@
             <h4>{{ subsystem.subsystemName }}</h4>
             <p>{{ subsystem.remark }}</p>
           </div>
+          <div v-if="getProgress(subsystem.subsystemId).total > 0" class="subsystem-progress">
+            <el-progress
+              :percentage="getProgress(subsystem.subsystemId).percent"
+              :stroke-width="6"
+              :show-text="false"
+              :color="getProgress(subsystem.subsystemId).percent === 100 ? '#67C23A' : '#409EFF'"
+            />
+            <div class="progress-text">
+              已完成 {{ getProgress(subsystem.subsystemId).done }} / {{ getProgress(subsystem.subsystemId).total }} 页
+            </div>
+          </div>
           <div v-if="subsystem.subsystemId === 99" class="admin-badge">
             <el-icon><Tools /></el-icon>
           </div>
@@ -81,9 +92,48 @@ import {
 } from '@element-plus/icons-vue'
 import { mockSubsystemData } from '@/mock/admin/subsystemData'
 import type { Subsystem } from '@/types/admin/subsystem'
+import {
+  adminMenus,
+  dutyMenus,
+  planMenus,
+  eventMenus,
+  dispatchMenus,
+  materialMenus,
+  decisionMenus,
+  fusionMenus
+} from '@/config/menu'
+import type { MenuItem } from '@/config/menu'
+import { calcMenuProgress } from '@/utils/menuProgress'
+import type { MenuProgress } from '@/utils/menuProgress'
 
 const router = useRouter()
 const selectedId = ref<number | null>(null)
+
+// 子系统 ID -> 菜单配置映射（无菜单配置的子系统不展示进度条）
+const subsystemMenusMap: Record<number, MenuItem[]> = {
+  1: dutyMenus,
+  2: planMenus,
+  3: eventMenus,
+  4: dispatchMenus,
+  5: materialMenus,
+  6: decisionMenus,
+  7: fusionMenus,
+  99: adminMenus
+}
+
+// 各子系统菜单完成度（只计算一次，缓存结果）
+const progressMap = computed(() => {
+  const result: Record<number, MenuProgress> = {}
+  for (const [id, menus] of Object.entries(subsystemMenusMap)) {
+    result[Number(id)] = calcMenuProgress(menus)
+  }
+  return result
+})
+
+// 获取某子系统的菜单完成度（未配置菜单的子系统返回全 0）
+function getProgress(subsystemId: number): MenuProgress {
+  return progressMap.value[subsystemId] || { total: 0, done: 0, doing: 0, todo: 0, percent: 0 }
+}
 
 // 当前组织信息
 const currentOrg = reactive({
@@ -418,6 +468,19 @@ const handleLogout = () => {
   line-height: 1.5;
   max-width: 180px;
   margin: 0 auto;
+}
+
+.subsystem-progress {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.progress-text {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #909399;
+  text-align: center;
 }
 
 .admin-badge {

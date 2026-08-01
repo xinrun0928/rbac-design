@@ -95,8 +95,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Component } from 'vue'
 import type { MenuItem } from '@/config/menu'
-
-type MenuStatus = NonNullable<MenuItem['status']>
+import { calcMenuProgress, getMenuStatus, statusText } from '@/utils/menuProgress'
 
 const props = defineProps<{
   title: string
@@ -114,44 +113,10 @@ function goToSubsystemSelect() {
   router.push('/subsystem-select')
 }
 
-const pageList = computed(() => {
-  const result: MenuItem[] = []
-
-  const collectLeafMenus = (menus: MenuItem[]) => {
-    menus.forEach(item => {
-      if (item.children?.length) {
-        collectLeafMenus(item.children)
-        return
-      }
-
-      result.push(item)
-    })
-  }
-
-  collectLeafMenus(props.menus)
-  return result
-})
-
-const totalCount = computed(() => pageList.value.length)
-const finishCount = computed(() => pageList.value.filter(item => getMenuStatus(item) === 'done').length)
-const finishPercent = computed(() => {
-  if (!totalCount.value) return 0
-  return Math.round((finishCount.value / totalCount.value) * 100)
-})
-
-function getMenuStatus(item: MenuItem): MenuStatus {
-  return item.status || 'todo'
-}
-
-function statusText(status: MenuStatus): string {
-  const statusMap: Record<MenuStatus, string> = {
-    done: '✓',
-    doing: '开发中',
-    todo: '未开始'
-  }
-
-  return statusMap[status]
-}
+const progress = computed(() => calcMenuProgress(props.menus))
+const totalCount = computed(() => progress.value.total)
+const finishCount = computed(() => progress.value.done)
+const finishPercent = computed(() => progress.value.percent)
 </script>
 
 <style lang="scss" scoped>

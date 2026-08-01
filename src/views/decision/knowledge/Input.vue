@@ -366,12 +366,7 @@
                 <span class="title-bar"></span>
                 知识内容编辑
               </div>
-              <el-input
-                v-model="createFormData.content"
-                type="textarea"
-                :rows="15"
-                placeholder="请输入知识内容"
-              />
+              <RichTextEditor v-model="createFormData.content" :height="400" placeholder="请输入知识内容..." />
             </div>
           </el-form>
         </div>
@@ -387,6 +382,7 @@ import { Search, Plus, Document, Notebook, User, Collection, Box, Check, ArrowDo
 import { mockKnowledgeList } from '@/mock/dss/knowledgeData'
 import { mockKnowledgeVersions } from '@/mock/dss/knowledgeVersionData'
 import StatsCards from '@/components/StatsCards.vue'
+import RichTextEditor from '@/components/RichTextEditor.vue'
 import type { KnowledgeItem, KnowledgeVersion } from '@/types/dss'
 
 const loading = ref(false)
@@ -461,12 +457,7 @@ function handleSaveDraft() {
 }
 
 function handleSubmitAudit() {
-  createFormRef.value?.validate((valid: boolean) => {
-    if (valid) {
-      ElMessage.success('已提交审核')
-      createDrawerVisible.value = false
-    }
-  })
+  ElMessage.success('已提交审核')
 }
 
 function handleCreateAction(command: string) {

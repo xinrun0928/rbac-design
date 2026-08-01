@@ -1,6 +1,10 @@
 <template>
   <aside class="app-sidebar" :class="{ collapsed }">
-    <div class="sidebar-header">
+    <div
+      class="sidebar-header"
+      title="切换子系统"
+      @click="goToSubsystemSelect"
+    >
       <el-icon :size="22" color="#409EFF"><component :is="icon" /></el-icon>
       <span v-show="!collapsed" class="sidebar-title">{{ title }}</span>
     </div>
@@ -88,7 +92,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Component } from 'vue'
 import type { MenuItem } from '@/config/menu'
 
@@ -102,7 +106,13 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
+const router = useRouter()
 const activeMenu = computed(() => route.path)
+
+// 点击顶部子系统名称，跳转到选择子系统页面
+function goToSubsystemSelect() {
+  router.push('/subsystem-select')
+}
 
 const pageList = computed(() => {
   const result: MenuItem[] = []
@@ -130,7 +140,7 @@ const finishPercent = computed(() => {
 })
 
 function getMenuStatus(item: MenuItem): MenuStatus {
-  return item.status || 'done'
+  return item.status || 'todo'
 }
 
 function statusText(status: MenuStatus): string {
@@ -203,6 +213,12 @@ $app-primary: #409EFF;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
   white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
 .sidebar-title {

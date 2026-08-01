@@ -6,3 +6,6 @@ export * from './duty'
 
 // 物资管理类型
 export * from './resource'
+
+// 辅助决策类型
+export * from './dss'

@@ -232,6 +232,55 @@ const handleSizeChange = () => {
 
 新开发树形列表页面时必须添加此样式。
 
+### 表格列表规范（el-table）
+
+所有列表页面（除树形列表外）必须遵循以下规范：
+
+**1. 序号列**
+- 每个列表表格必须包含序号列，作为表格第一列：
+```vue
+<el-table-column type="index" label="序号" width="60" align="center" />
+```
+- 树形列表（使用 `tree-props` 的表格）**不需要**序号列
+
+**2. 表头居中**
+- 所有 `el-table` 必须统一设置表头居中，且表头必须固定（不随内容滚动）：
+```vue
+:header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+```
+
+**3. 内容溢出省略号**
+- 内容可能超出列宽的列，必须设置 `show-overflow-tooltip`，实现省略号 + hover 提示完整内容：
+```vue
+<el-table-column prop="xxx" label="列名" min-width="200" show-overflow-tooltip />
+```
+- 注意：`show-overflow-tooltip` 的省略号只对**直接内联文本**生效。若使用自定义模板渲染可点击文本，应使用普通 `<span>`（保持内联），**不要**使用 `el-link`（flex 容器会破坏省略号）、**不要**给 span 设置 `display: inline-block`，否则溢出省略号失效
+
+**4. 表头固定**
+- 表格表头必须固定，配合 `.table-wrapper { flex: 1; overflow: auto; }` 实现：
+```vue
+<el-table
+  v-loading="loading"
+  :data="tableData"
+  border
+  stripe
+  highlight-current-row
+  :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+  class="data-table"
+>
+```
+- 表头固定为 `el-table` 默认行为（`height`/`max-height` 或 flex 布局 + `.data-table { flex: 1; }` 时自动固定）
+
+**5. 操作列**
+- 操作列统一放在最右侧，使用 `fixed="right"` 固定：
+```vue
+<el-table-column label="操作" width="120" align="center" fixed="right">
+  <template #default="{ row }">
+    <el-button type="primary" link size="small">编辑</el-button>
+  </template>
+</el-table-column>
+```
+
 ### 样式规范
 - 侧边栏背景色：`#1a1f2e`
 - 菜单项高度：`50px`

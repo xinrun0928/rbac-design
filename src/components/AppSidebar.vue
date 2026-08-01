@@ -172,11 +172,19 @@ $app-primary: #409EFF;
       :deep(.el-sub-menu__title) {
         justify-content: center;
         padding: 0 !important;
+        margin: 4px 0;
       }
 
       :deep(.el-menu-item .el-icon),
       :deep(.el-sub-menu__title .el-icon) {
         margin-right: 0;
+      }
+
+      // 折叠状态下 Element Plus 会用 tooltip trigger 包裹图标，
+      // 其默认 padding: 0 20px 会把图标挤出居中位置，需重置并居中
+      :deep(.el-menu-tooltip__trigger) {
+        padding: 0 !important;
+        justify-content: center;
       }
     }
 

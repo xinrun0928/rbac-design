@@ -549,7 +549,8 @@ export const materialMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '无人机飞控管理',
     children: [
-      { path: '/resource/drone/platform', title: '飞控平台', icon: VideoPlay, status: 'todo' },
+      { path: '/resource/drone/device', title: '设备管理', icon: Cpu, status: 'doing' },
+      { path: '/resource/drone/monitor', title: '飞行监控', icon: Monitor, status: 'doing' },
     ]
   },
   {

@@ -21,7 +21,8 @@ const resourceRoutes: RouteRecordRaw = {
     { path: 'warehouse/warning', name: 'MaterialWarehouseWarning', component: () => import('@/views/resource/warehouse/Warning.vue'), meta: { title: '安全库存预警' } },
     { path: 'warehouse/fault-warning', name: 'MaterialWarehouseFaultWarning', component: () => import('@/views/resource/warehouse/FaultWarning.vue'), meta: { title: '故障/报废预警' } },
     // 无人机飞控管理
-    { path: 'drone/platform', name: 'MaterialDronePlatform', component: () => import('@/views/resource/drone/Platform.vue'), meta: { title: '飞控平台' } },
+    { path: 'drone/device', name: 'MaterialDroneDevice', component: () => import('@/views/resource/drone/Device.vue'), meta: { title: '设备管理' } },
+    { path: 'drone/monitor', name: 'MaterialDroneMonitor', component: () => import('@/views/resource/drone/Monitor.vue'), meta: { title: '飞行监控' } },
     // 装备维保管理
     { path: 'maintenance/plan', name: 'MaterialMaintenancePlan', component: () => import('@/views/resource/maintenance/Plan.vue'), meta: { title: '装备维保计划' } },
     { path: 'maintenance/record', name: 'MaterialMaintenanceRecord', component: () => import('@/views/resource/maintenance/Record.vue'), meta: { title: '维保记录' } },

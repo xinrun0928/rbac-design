@@ -1,5 +1,15 @@
 <template>
   <div class="subsystem-select-container">
+
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+      <div class="grid-line"></div>
+      <div class="light-point point-1"></div>
+      <div class="light-point point-2"></div>
+      <div class="light-point point-3"></div>
+    </div>
+
+
     <div class="subsystem-select-wrapper">
       <!-- 头部 -->
       <div class="select-header">
@@ -27,7 +37,6 @@
       <!-- 选择提示 -->
       <div class="select-tip">
         <h2>选择子系统</h2>
-        <p>请选择要进入的业务子系统</p>
       </div>
 
       <!-- 子系统网格 -->
@@ -68,6 +77,11 @@
         </div>
       </div>
     </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      © 2026 广东省应急指挥调度平台
+    </footer>
   </div>
 </template>
 
@@ -254,25 +268,112 @@ const handleLogout = () => {
 
 <style scoped>
 .subsystem-select-container {
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 40px 20px;
+  padding: 80px 20px 40px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      #1e5eff,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      #00c6ff,
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #071a3d,
+      #0b3d91
+    );
 }
 
+/* 背景科技装饰 */
+.bg-decoration {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.grid-line {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(60px);
+  }
+}
+
+.light-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 30px #fff;
+  animation: float 6s infinite;
+}
+
+.point-1 {
+  top: 18%;
+  left: 15%;
+}
+
+.point-2 {
+  top: 55%;
+  right: 20%;
+}
+
+.point-3 {
+  bottom: 15%;
+  left: 40%;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+/* 主卡片 */
 .subsystem-select-wrapper {
   width: 100%;
   max-width: 1400px;
-  min-height: calc(100vh - 80px);
-  background: #fff;
-  border-radius: 16px;
-  padding: 32px 48px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  min-height: calc(100vh - 160px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 36px 48px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(10px);
 }
 
 /* 头部 */
@@ -280,9 +381,9 @@ const handleLogout = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ebeef5;
-  margin-bottom: 32px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 36px;
 }
 
 .org-info {
@@ -294,10 +395,11 @@ const handleLogout = () => {
 .org-icon {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .org-initial {
@@ -307,15 +409,15 @@ const handleLogout = () => {
 }
 
 .org-detail h3 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-  color: #303133;
-  margin-bottom: 2px;
+  color: #1f2937;
+  margin-bottom: 4px;
 }
 
 .org-detail p {
-  font-size: 12px;
-  color: #909399;
+  font-size: 13px;
+  color: #94a3b8;
 }
 
 .header-actions {
@@ -325,32 +427,31 @@ const handleLogout = () => {
 
 .header-actions .el-button {
   font-size: 13px;
-  color: #606266;
+  color: #64748b;
+}
+
+.header-actions .el-button:hover {
+  color: #1677ff;
 }
 
 /* 选择提示 */
 .select-tip {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 .select-tip h2 {
   font-size: 24px;
   font-weight: 600;
-  color: #303133;
-  margin-bottom: 8px;
-}
-
-.select-tip p {
-  font-size: 14px;
-  color: #909399;
+  color: #1f2937;
+  letter-spacing: 0.5px;
 }
 
 /* 子系统网格 */
 .subsystem-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
+  gap: 22px;
   flex: 1;
   align-content: start;
   padding-bottom: 20px;
@@ -387,28 +488,32 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   padding: 28px 16px;
-  border: 2px solid #ebeef5;
-  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 160px;
+  min-height: 168px;
   background: #fff;
 }
 
 .subsystem-card:hover {
-  border-color: #409EFF;
-  box-shadow: 0 8px 20px rgba(64, 158, 255, 0.2);
+  border-color: #1677ff;
+  box-shadow: 0 10px 24px rgba(22, 119, 255, 0.22);
   transform: translateY(-6px);
 }
 
 .subsystem-card.is-selected {
-  border-color: #409EFF;
-  background: linear-gradient(135deg, rgba(64, 158, 255, 0.05) 0%, rgba(64, 158, 255, 0.1) 100%);
-  box-shadow: 0 8px 20px rgba(64, 158, 255, 0.25);
+  border-color: #1677ff;
+  background: linear-gradient(
+    135deg,
+    rgba(22, 119, 255, 0.05) 0%,
+    rgba(22, 119, 255, 0.12) 100%
+  );
+  box-shadow: 0 10px 24px rgba(22, 119, 255, 0.28);
 }
 
 .subsystem-card.is-admin {
-  border-color: #3498db;
+  border-color: #1677ff;
   position: relative;
 }
 
@@ -420,14 +525,14 @@ const handleLogout = () => {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0 60px 60px 0;
-  border-color: transparent #3498db transparent transparent;
-  border-radius: 0 10px 0 0;
+  border-width: 0 56px 56px 0;
+  border-color: transparent #1677ff transparent transparent;
+  border-radius: 0 14px 0 0;
 }
 
 .subsystem-card.is-admin:hover {
-  border-color: #2c3e50;
-  box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
+  border-color: #00b7ff;
+  box-shadow: 0 10px 24px rgba(0, 183, 255, 0.3);
 }
 
 .subsystem-icon {
@@ -440,6 +545,7 @@ const handleLogout = () => {
   color: #fff;
   margin-bottom: 16px;
   transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .subsystem-card:hover .subsystem-icon {
@@ -457,14 +563,14 @@ const handleLogout = () => {
 .subsystem-info h4 {
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: #1f2937;
   margin-bottom: 6px;
   line-height: 1.4;
 }
 
 .subsystem-info p {
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
   line-height: 1.5;
   max-width: 180px;
   margin: 0 auto;
@@ -479,7 +585,7 @@ const handleLogout = () => {
 .progress-text {
   margin-top: 6px;
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
   text-align: center;
 }
 
@@ -500,5 +606,14 @@ const handleLogout = () => {
   to {
     opacity: 1;
   }
+}
+
+/* 页脚 */
+.footer {
+  position: fixed;
+  bottom: 20px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  z-index: 1;
 }
 </style>

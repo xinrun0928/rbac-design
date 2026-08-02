@@ -1,6 +1,16 @@
 <template>
   <div class="forgot-container">
+
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+      <div class="grid-line"></div>
+      <div class="light-point point-1"></div>
+      <div class="light-point point-2"></div>
+      <div class="light-point point-3"></div>
+    </div>
+
     <div class="forgot-wrapper">
+
       <!-- 返回登录 -->
       <div class="back-login">
         <el-link type="primary" :underline="false" @click="goToLogin">
@@ -242,6 +252,11 @@
         </div>
       </div>
     </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      © 2026 广东省应急指挥调度平台
+    </footer>
   </div>
 </template>
 
@@ -485,44 +500,156 @@ onUnmounted(() => {
 
 <style scoped>
 .forgot-container {
+  width: 100%;
   min-height: 100vh;
+  overflow: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 60px 20px 40px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      #1e5eff,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      #00c6ff,
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #071a3d,
+      #0b3d91
+    );
 }
 
-.forgot-wrapper {
-  width: 480px;
+/* 背景科技装饰 */
+.bg-decoration {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.grid-line {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(60px);
+  }
+}
+
+.light-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   background: #fff;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 30px #fff;
+  animation: float 6s infinite;
+}
+
+.point-1 {
+  top: 25%;
+  left: 18%;
+}
+
+.point-2 {
+  top: 65%;
+  right: 22%;
+}
+
+.point-3 {
+  bottom: 18%;
+  left: 42%;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+/* 主卡片 */
+.forgot-wrapper {
+  width: 540px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 40px 44px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(10px);
 }
 
 .back-login {
   margin-bottom: 24px;
 }
 
+.back-login .el-link {
+  font-size: 14px;
+  color: #1677ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-login .el-link:hover {
+  color: #00b7ff;
+}
+
+/* 步骤条 */
 .steps-bar {
-  margin-bottom: 40px;
+  margin-bottom: 36px;
+}
+
+.steps-bar :deep(.el-step__title) {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.steps-bar :deep(.el-step__title.is-finish),
+.steps-bar :deep(.el-step__title.is-process) {
+  color: #1677ff;
 }
 
 .step-content {
-  min-height: 300px;
+  min-height: 320px;
 }
 
 .step-panel h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  color: #303133;
+  color: #1f2937;
   margin-bottom: 8px;
+  letter-spacing: 0.3px;
 }
 
 .step-desc {
   font-size: 14px;
-  color: #909399;
+  color: #94a3b8;
   margin-bottom: 24px;
 }
 
@@ -543,9 +670,9 @@ onUnmounted(() => {
 .captcha-canvas {
   width: 120px;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #e5e7eb;
 }
 
 .next-btn {
@@ -563,16 +690,27 @@ onUnmounted(() => {
   gap: 6px;
 }
 
+.verify-options :deep(.el-radio-button.is-active .el-radio-button__inner) {
+  background: linear-gradient(135deg, #1677ff 0%, #00b7ff 100%);
+  border-color: #1677ff;
+  box-shadow: -1px 0 0 0 #1677ff;
+}
+
 .phone-info {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  background: #f1f5ff;
+  border-radius: 10px;
   margin-bottom: 20px;
   font-size: 14px;
-  color: #606266;
+  color: #475569;
+  border: 1px solid #e0ebff;
+}
+
+.phone-info .el-icon {
+  color: #1677ff;
 }
 
 .sms-row {
@@ -627,19 +765,37 @@ onUnmounted(() => {
 /* 成功页面 */
 .success-panel {
   text-align: center;
-  padding-top: 40px;
+  padding-top: 30px;
 }
 
 .success-icon {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .success-panel h3 {
   margin-bottom: 12px;
+  color: #1f2937;
 }
 
 .success-panel .next-btn {
   width: 200px;
   margin-top: 20px;
+}
+
+/* 页脚 */
+.footer {
+  position: fixed;
+  bottom: 20px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  z-index: 1;
+}
+
+/* 响应式 */
+@media (max-width: 600px) {
+  .forgot-wrapper {
+    width: 95%;
+    padding: 28px 24px;
+  }
 }
 </style>

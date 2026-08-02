@@ -8,35 +8,6 @@
       <div class="light-point point-3"></div>
     </div>
 
-    <!-- 顶部快捷入口 -->
-    <div class="left-entries">
-      <div class="entry-slot spec-entry arch" @click="goToSpecs('architecture')">
-        <span class="entry-icon"><el-icon><SetUp /></el-icon></span>
-        <span class="entry-text">微服务架构</span>
-      </div>
-
-      <div class="entry-slot spec-entry depl" @click="goToDeploy">
-        <span class="entry-icon"><el-icon><Platform /></el-icon></span>
-        <span class="entry-text">部署架构图</span>
-      </div>
-
-      <div class="entry-slot spec-entry back" @click="goToSpecs('backend')">
-        <span class="entry-icon"><el-icon><Collection /></el-icon></span>
-        <span class="entry-text">后端开发规范</span>
-      </div>
-    </div>
-
-    <!-- 顶部快捷入口 -->
-    <div class="schedule-entry" @click="goToSchedule">
-      <span class="entry-icon">
-        <el-icon>
-          <Calendar />
-        </el-icon>
-      </span>
-      <span class="entry-text">模块级排期 v4</span>
-      <span class="entry-badge">NEW</span>
-    </div>
-
     <div class="login-card">
       <!-- 左侧品牌区域 -->
       <section class="brand-panel">
@@ -269,8 +240,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
@@ -280,16 +251,13 @@ import {
   Message,
   DataBoard,
   OfficeBuilding,
-  Document,
-  Calendar,
-  Collection,
-  SetUp,
-  Platform
+  Document
 } from '@element-plus/icons-vue'
-import { specCategories } from '@/views/specs/specs'
+import { getLoginInfo, setLoginInfo, setToken } from '@/utils/auth'
 
 /** 路由 */
 const router = useRouter()
+const route = useRoute()
 
 /** 登录类型 */
 const loginType = ref<'password' | 'sms'>('password')
@@ -309,16 +277,31 @@ let smsTimer: ReturnType<typeof setInterval> | null = null
 const passwordFormRef = ref<FormInstance>()
 
 const passwordForm = reactive({
-  username: 'admin',
-  password: '123456'
+  username: '',
+  password: ''
 })
 
 /** 手机登录表单 */
 const smsFormRef = ref<FormInstance>()
 
 const smsForm = reactive({
-  phone: '13800138000',
-  code: '123456'
+  phone: '13888888888',
+  code: ''
+})
+
+/** 页面加载时从本地缓存回填登录信息 */
+onMounted(() => {
+  const info = getLoginInfo()
+  if (info) {
+    if (info.loginType === 'password') {
+      passwordForm.username = info.username
+      passwordForm.password = info.password
+      loginType.value = 'password'
+    } else {
+      smsForm.phone = info.phone
+      loginType.value = 'sms'
+    }
+  }
 })
 
 /** 密码校验规则 */
@@ -372,6 +355,16 @@ const smsRules: FormRules = {
   ]
 }
 
+/** 登录成功跳转（支持原目标地址回跳） */
+const goAfterLogin = () => {
+  const redirect = route.query.redirect
+  if (typeof redirect === 'string' && redirect) {
+    router.push(redirect)
+  } else {
+    router.push('/org-select')
+  }
+}
+
 /** 密码登录 */
 const handlePasswordLogin = async () => {
   if (!passwordFormRef.value) return
@@ -381,8 +374,22 @@ const handlePasswordLogin = async () => {
       loading.value = true
       setTimeout(() => {
         loading.value = false
-        ElMessage.success('登录成功')
-        router.push('/org-select')
+        if (
+          passwordForm.username.trim() === 'infoview' &&
+          passwordForm.password === 'infoview'
+        ) {
+          setToken(`mock_token_${Date.now()}`)
+          setLoginInfo({
+            username: passwordForm.username.trim(),
+            password: passwordForm.password,
+            phone: smsForm.phone,
+            loginType: 'password'
+          })
+          ElMessage.success('登录成功')
+          goAfterLogin()
+        } else {
+          ElMessage.error('账号或密码错误')
+        }
       }, 1200)
     }
   })
@@ -397,8 +404,19 @@ const handleSmsLogin = async () => {
       loading.value = true
       setTimeout(() => {
         loading.value = false
-        ElMessage.success('登录成功')
-        router.push('/org-select')
+        if (smsForm.phone === '13888888888' && smsForm.code === '168168') {
+          setToken(`mock_token_${Date.now()}`)
+          setLoginInfo({
+            username: passwordForm.username,
+            password: passwordForm.password,
+            phone: smsForm.phone,
+            loginType: 'sms'
+          })
+          ElMessage.success('登录成功')
+          goAfterLogin()
+        } else {
+          ElMessage.error('手机号或验证码错误')
+        }
       }, 1200)
     }
   })
@@ -432,23 +450,6 @@ const handleSocialLogin = (type: string) => {
 /** 忘记密码 */
 const goToForgotPassword = () => {
   router.push('/forgot-password')
-}
-
-/** 模块排期 */
-const goToSchedule = () => {
-  router.push('/schedule-v4')
-}
-
-/** 部署架构图跳转 */
-const goToDeploy = () => {
-  router.push('/deploy-architecture')
-}
-
-/** 规范文档跳转（跳转指定分类的第一个文档） */
-const goToSpecs = (category: string) => {
-  const cat = specCategories.find((c) => c.key === category)
-  const first = cat?.items[0]
-  router.push(first ? `/specs/${first.key}` : '/specs')
 }
 
 /** 销毁 */
@@ -536,177 +537,6 @@ onUnmounted(() => {
 @keyframes float {
   50% {
     transform: translateY(-30px);
-  }
-}
-
-/* ===============================
-   顶部入口
-=============================== */
-.left-entries {
-  position: fixed;
-  top: 25px;
-  left: 30px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.entry-slot {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.spec-entry {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px 8px 10px;
-  border-radius: 14px;
-  color: #fff;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 6px 20px rgba(6, 37, 94, 0.18);
-  transition: transform 0.28s, background 0.28s, border-color 0.28s, box-shadow 0.28s;
-
-  .entry-icon {
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(6, 37, 94, 0.2);
-    transition: transform 0.28s;
-  }
-
-  .entry-text {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-  }
-
-  /* 微服务架构 */
-  &.arch {
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.35), rgba(94, 231, 223, 0.22));
-    border-color: rgba(134, 231, 223, 0.4);
-
-    .entry-icon {
-      background: linear-gradient(135deg, #6ab0ff, #4facfe);
-    }
-
-    &:hover {
-      border-color: rgba(134, 231, 223, 0.7);
-      box-shadow: 0 8px 26px rgba(64, 158, 255, 0.35);
-    }
-  }
-
-  /* 部署架构图 */
-  &.depl {
-    background: linear-gradient(135deg, rgba(103, 194, 58, 0.3), rgba(230, 162, 60, 0.18));
-    border-color: rgba(160, 218, 128, 0.4);
-
-    .entry-icon {
-      background: linear-gradient(135deg, #67c23a, #4ea640);
-    }
-
-    &:hover {
-      border-color: rgba(160, 218, 128, 0.7);
-      box-shadow: 0 8px 26px rgba(103, 194, 58, 0.32);
-    }
-  }
-
-  /* 后端开发规范 */
-  &.back {
-    background: linear-gradient(135deg, rgba(230, 162, 60, 0.32), rgba(190, 144, 202, 0.2));
-    border-color: rgba(235, 190, 120, 0.4);
-
-    .entry-icon {
-      background: linear-gradient(135deg, #e6a23c, #c77d1f);
-    }
-
-    &:hover {
-      border-color: rgba(235, 190, 120, 0.7);
-      box-shadow: 0 8px 26px rgba(230, 162, 60, 0.3);
-    }
-  }
-
-  &:hover {
-    transform: translateY(-3px);
-
-    .entry-icon {
-      transform: rotate(-8deg) scale(1.05);
-    }
-  }
-}
-
-.schedule-entry {
-  position: fixed;
-  right: 30px;
-  top: 25px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px 8px 10px;
-  border-radius: 14px;
-  color: #fff;
-  cursor: pointer;
-  background: linear-gradient(135deg, rgba(121, 134, 203, 0.32), rgba(78, 205, 196, 0.2));
-  border: 1px solid rgba(178, 181, 235, 0.4);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 6px 20px rgba(6, 37, 94, 0.18);
-  transition: transform 0.28s, background 0.28s, border-color 0.28s, box-shadow 0.28s;
-  z-index: 10;
-
-  .entry-icon {
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #fff;
-    background: linear-gradient(135deg, #8a93e0, #6ac6b9);
-    box-shadow: 0 4px 12px rgba(6, 37, 94, 0.2);
-    transition: transform 0.28s;
-  }
-
-  .entry-text {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-  }
-
-  .entry-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #fff;
-    background: linear-gradient(135deg, #e6a23c, #f56c6c);
-    border-radius: 10px;
-    padding: 2px 7px;
-    box-shadow: 0 3px 10px rgba(230, 162, 60, 0.35);
-  }
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: rgba(178, 181, 235, 0.7);
-    box-shadow: 0 8px 26px rgba(121, 134, 203, 0.35);
-
-    .entry-icon {
-      transform: rotate(-8deg) scale(1.05);
-    }
   }
 }
 

@@ -9,6 +9,12 @@
           <h2>部署架构图</h2>
           <p>Deployment Architecture</p>
         </div>
+        <div class="deploy-header-actions">
+          <button type="button" class="download-btn" title="下载图片" @click="handleDownload">
+            <el-icon><Download /></el-icon>
+            <span>下载</span>
+          </button>
+        </div>
       </header>
 
       <div class="deploy-body">
@@ -20,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { Back } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { Back, Download } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import deployImg from '../../../docs/部署架构图.png'
 
@@ -29,13 +36,23 @@ const router = useRouter()
 function goSpecs() {
   router.push('/specs/architecture')
 }
+
+function handleDownload() {
+  const link = document.createElement('a')
+  link.href = deployImg
+  link.download = '部署架构图.png'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  ElMessage.success('图片下载已开始')
+}
 </script>
 
 <style scoped lang="scss">
 .deploy-page {
   height: 100vh;
   display: flex;
-  padding: 20px;
+  padding: 0;
   background: linear-gradient(160deg, #f5f7fa 0%, #eef1f6 100%);
   box-sizing: border-box;
 }
@@ -94,6 +111,29 @@ function goSpecs() {
       font-size: 11px;
       opacity: 0.75;
       letter-spacing: 0.3px;
+    }
+  }
+
+  .deploy-header-actions {
+    margin-left: auto;
+  }
+
+  .download-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.26);
     }
   }
 }

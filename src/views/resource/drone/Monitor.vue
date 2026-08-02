@@ -5,14 +5,10 @@
       <StatsCards :items="statsCards" :clickable="false" />
 
       <!-- 操作栏 -->
-      <div class="action-bar">
-        <div class="action-bar-info">
-          <span class="info-text">左侧真实地图展示当前所有正在飞行无人机定位；右侧按正在使用、未使用页签筛选无人机，点击列表或地图点位可联动定位并查看无人机基础信息、当前定位、起飞时间、已飞行时间和飞行路径。</span>
-        </div>
-        <div class="action-bar-buttons">
-          <el-button :icon="Microphone" @click="handleVoiceToggle">
-            声音提示
-          </el-button>
+      <div class="search-bar">
+        <h3 class="page-title">无人机飞行监控</h3>
+        <div class="search-bar-actions">
+          <el-button :icon="Microphone" @click="handleVoiceToggle">声音提示</el-button>
           <el-button type="primary" :icon="Refresh" @click="handleRefresh">刷新数据</el-button>
         </div>
       </div>
@@ -122,6 +118,19 @@
         </div>
       </div>
     </el-card>
+
+    <!-- 无人机详情抽屉 -->
+    <DroneDetailDrawer
+      v-model:visible="drawerVisible"
+      :detail="selectedFlightDetail"
+      @control="handleOpenControl"
+    />
+
+    <!-- 无人机控制对话框 -->
+    <DroneControlDialog
+      v-model:visible="controlVisible"
+      :detail="selectedFlightDetail"
+    />
   </div>
 </template>
 
@@ -129,14 +138,19 @@
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Microphone, Refresh, InfoFilled, WarningFilled, Location, Timer, Odometer, Bell, CircleCheck } from '@element-plus/icons-vue'
-import { droneTelemetryData } from '@/mock/resource/droneData'
-import type { DroneTelemetry, FlightStatus } from '@/types/resource/drone'
+import { droneTelemetryData, droneFlightDetailMap } from '@/mock/resource/droneData'
+import type { DroneTelemetry, DroneFlightDetail, FlightStatus } from '@/types/resource/drone'
 import StatsCards from '@/components/StatsCards.vue'
+import DroneDetailDrawer from './DroneDetailDrawer.vue'
+import DroneControlDialog from '@/components/DroneControlDialog.vue'
 
 // ── 状态 ──
 const voiceEnabled = ref(true)
 const activeFlightStatus = ref<FlightStatus>('正在使用')
 const selectedDrone = ref<DroneTelemetry | null>(null)
+const selectedFlightDetail = ref<DroneFlightDetail | null>(null)
+const drawerVisible = ref(false)
+const controlVisible = ref(false)
 const drones = ref<DroneTelemetry[]>([...droneTelemetryData])
 
 // ── 计算属性 ──
@@ -222,6 +236,12 @@ function handleRefresh() {
 
 function handleSelectDrone(drone: DroneTelemetry) {
   selectedDrone.value = drone
+  selectedFlightDetail.value = droneFlightDetailMap[drone.code] || null
+  drawerVisible.value = true
+}
+
+function handleOpenControl() {
+  controlVisible.value = true
 }
 
 function getMarkerStyle(drone: DroneTelemetry) {
@@ -270,31 +290,28 @@ function getMarkerStyle(drone: DroneTelemetry) {
   }
 }
 
-// ── 操作栏 ──
-.action-bar {
+// ── 搜索栏 ──
+.search-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #ebeef5;
+
+  .page-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #303133;
+  }
 }
 
-.action-bar-info {
-  flex: 1;
-  margin-right: 16px;
-}
-
-.info-text {
-  font-size: 13px;
-  color: #909399;
-  line-height: 1.6;
-}
-
-.action-bar-buttons {
+.search-bar-actions {
   display: flex;
-  gap: 8px;
+  align-items: center;
   flex-shrink: 0;
+  gap: 10px;
 }
 
 // ── 主内容区 ──

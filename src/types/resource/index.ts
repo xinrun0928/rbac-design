@@ -15,3 +15,6 @@ export * from './maintenance'
 
 // 库存查询
 export * from './warehouse'
+
+// 无人机设备管理
+export * from './drone'

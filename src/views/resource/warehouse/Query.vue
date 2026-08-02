@@ -1363,7 +1363,7 @@ function handleInsuranceRenewalSubmit() {
 :deep(.el-drawer__body) {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 :deep(.el-tabs) {

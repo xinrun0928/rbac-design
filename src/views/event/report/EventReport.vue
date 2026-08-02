@@ -1416,7 +1416,7 @@ function handlePageChange(page: number) {
     padding: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
   }
 }
 

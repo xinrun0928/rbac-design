@@ -1,6 +1,6 @@
 /**
  * 模块级排期 Mock 数据
- * 由 scripts/generateScheduleMock.py 自动生成，请勿手动修改
+ * 由 docs/项目排期计划/generateScheduleMock.py 自动生成，请勿手动修改
  * 数据来源：模块级排期v4.xlsx（难度系数与人天表）
  */
 import type { ScheduleItem, ScheduleModule, ScheduleTeam } from '@/types/schedule'

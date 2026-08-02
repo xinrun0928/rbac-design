@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
 从 模块级排期v4.xlsx 生成前端 mock 数据 src/mock/schedule/scheduleData.ts
-用法: python3 scripts/generateScheduleMock.py
+用法: python3 docs/项目排期计划/generateScheduleMock.py
 """
 
 import json
+import os
 import openpyxl
 from collections import OrderedDict
 
-XLSX = "模块级排期v4.xlsx"
-OUT = "src/mock/schedule/scheduleData.ts"
+BASE = os.path.dirname(os.path.abspath(__file__))
+XLSX = os.path.join(BASE, "模块级排期v4.xlsx")
+OUT = os.path.join(BASE, "..", "..", "src", "mock", "schedule", "scheduleData.ts")
 
 wb = openpyxl.load_workbook(XLSX, data_only=True)
 ws = wb["难度系数与人天"]
@@ -88,7 +90,7 @@ TEAMS = [
 
 header = """/**
  * 模块级排期 Mock 数据
- * 由 scripts/generateScheduleMock.py 自动生成，请勿手动修改
+ * 由 docs/项目排期计划/generateScheduleMock.py 自动生成，请勿手动修改
  * 数据来源：模块级排期v4.xlsx（难度系数与人天表）
  */
 import type { ScheduleItem, ScheduleModule, ScheduleTeam } from '@/types/schedule'

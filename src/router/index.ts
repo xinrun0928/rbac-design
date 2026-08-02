@@ -45,6 +45,24 @@ const publicRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/schedule/ScheduleView.vue')
   },
   {
+    path: '/deploy-architecture',
+    name: 'DeployArchitecture',
+    component: () => import('@/views/specs/DeployView.vue')
+  },
+  {
+    path: '/specs',
+    name: 'Specs',
+    component: () => import('@/views/specs/SpecLayout.vue'),
+    redirect: '/specs/api-design',
+    children: [
+      {
+        path: ':key',
+        name: 'SpecDetail',
+        component: () => import('@/views/specs/SpecPage.vue')
+      }
+    ]
+  },
+  {
     path: '/redirect/:path(.*)',
     name: 'Redirect',
     component: () => import('@/views/redirect/index.vue')

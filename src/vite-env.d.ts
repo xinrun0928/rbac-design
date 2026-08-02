@@ -9,3 +9,8 @@ declare module '*.vue' {
 declare module '@wangeditor/editor-for-vue' {
   export { Editor, Toolbar }
 }
+
+declare module '*.md?raw' {
+  const content: string
+  export default content
+}

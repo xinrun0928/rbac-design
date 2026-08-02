@@ -84,9 +84,16 @@ const businessRoutes: RouteRecordRaw[] = [
   inspectionRoutes, // 汛期巡查子系统
 ]
 
+// 404 兜底路由（必须放在所有路由之后）
+const notFoundRoute: RouteRecordRaw = {
+  path: '/:pathMatch(.*)*',
+  name: 'NotFound',
+  component: () => import('@/views/error/NotFound.vue')
+}
+
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [...publicRoutes, ...businessRoutes]
+  routes: [...publicRoutes, ...businessRoutes, notFoundRoute]
 })
 
 export default router

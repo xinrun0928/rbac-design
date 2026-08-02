@@ -84,7 +84,6 @@
     </footer>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -269,13 +268,16 @@ const handleLogout = () => {
 <style scoped>
 .subsystem-select-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px 40px;
+  padding: 20px;
+  box-sizing: border-box;
 
   background:
     radial-gradient(
@@ -364,7 +366,7 @@ const handleLogout = () => {
 .subsystem-select-wrapper {
   width: 100%;
   max-width: 1400px;
-  min-height: calc(100vh - 160px);
+  min-height: 0;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 24px;
   padding: 36px 48px;
@@ -374,6 +376,7 @@ const handleLogout = () => {
   position: relative;
   z-index: 2;
   backdrop-filter: blur(10px);
+  flex-shrink: 0;
 }
 
 /* 头部 */
@@ -381,9 +384,9 @@ const handleLogout = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 22px;
+  padding-bottom: 18px;
   border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .org-info {
@@ -437,14 +440,15 @@ const handleLogout = () => {
 /* 选择提示 */
 .select-tip {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .select-tip h2 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #1f2937;
   letter-spacing: 0.5px;
+  margin: 0;
 }
 
 /* 子系统网格 */
@@ -610,10 +614,11 @@ const handleLogout = () => {
 
 /* 页脚 */
 .footer {
-  position: fixed;
-  bottom: 20px;
+  flex-shrink: 0;
+  margin-top: 16px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 13px;
   z-index: 1;
+  text-align: center;
 }
 </style>

@@ -3,11 +3,18 @@
     <el-card class="table-card" shadow="never">
       <!-- 搜索栏 -->
       <div class="search-bar">
-        <el-form :model="searchForm" inline class="search-form">
-          <el-form-item label="事项名称">
-            <el-input v-model="searchForm.todoName" placeholder="输入事项名称" clearable :prefix-icon="Search" style="width: 220px" @keyup.enter="handleSearch" />
-          </el-form-item>
-        </el-form>
+        <span class="search-bar-title">我的待办</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchForm.todoName"
+            placeholder="输入事项名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 220px"
+            @keyup.enter="handleSearch"
+            @clear="handleSearch"
+          />
+        </div>
       </div>
 
       <el-table
@@ -116,14 +123,11 @@ const filteredData = computed(() => {
 // ── 待办类型标签颜色 ──
 function getTodoTypeTag(type: string) {
   const map: Record<string, string> = {
-    '审批': '',
-    '确认': 'success',
-    '补充材料': 'warning',
-    '反馈': 'info',
-    '报告': '',
-    '更新': 'warning'
+    '告警': 'danger',
+    '指令': 'warning',
+    '任务': 'success',
   }
-  return map[type] || ''
+  return map[type] || 'info'
 }
 
 // ── 方法 ──
@@ -172,13 +176,25 @@ function handlePageChange(page: number) {
     }
 
     .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid #ebeef5;
     }
 
-    .search-form {
-      .el-form-item { margin-bottom: 0; margin-right: 12px; }
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .index-text { color: #909399; font-size: 13px; }

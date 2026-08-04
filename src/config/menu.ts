@@ -270,13 +270,13 @@ export const dutyMenus: MenuItem[] = [
 // 应急事件管理菜单
 export const eventMenus: MenuItem[] = [
   { path: '/event/report', title: '事故上报', icon: EditPen, status: 'done' },
-  { path: '/event/receive', title: '事故信息接收', icon: ChatDotRound, status: 'todo' },
+  { path: '/event/receive', title: '事故信息接收', icon: ChatDotRound, status: 'done' },
   { path: '/event/warning', title: '预警处置', icon: Warning, status: 'todo' },
   { path: '/event/warning/rule', title: '事故预警规则', icon: Document, status: 'todo' },
-  { path: '/event/receive/rule', title: '事故接报规则', icon: List, status: 'todo' },
+  { path: '/event/receive/rule', title: '事故接报规则', icon: List, status: 'done' },
   { path: '/event/task', title: '任务分配及跟踪', icon: DataAnalysis, status: 'todo' },
   { path: '/event/todo', title: '我的待办', icon: Clock, status: 'doing' },
-  { path: '/event/document', title: '文档库', icon: Folder, status: 'todo' },
+  { path: '/event/document', title: '文档库', icon: Folder, status: 'done' },
   { path: '/event/archive', title: '归档事故库', icon: Box, status: 'todo' },
   { path: '/event/dict', title: '字典管理', icon: Collection, status: 'done' },
   { path: '/event/log', title: '系统日志', icon: Notebook, status: 'done' },

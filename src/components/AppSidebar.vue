@@ -25,7 +25,9 @@
     </div>
 
     <el-menu
+      ref="menuRef"
       :default-active="activeMenu"
+      :default-openeds="openedMenus"
       :collapse="collapsed"
       :collapse-transition="false"
       class="sidebar-menu"
@@ -91,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Component } from 'vue'
 import type { MenuItem } from '@/config/menu'
@@ -107,6 +109,42 @@ const props = defineProps<{
 const route = useRoute()
 const router = useRouter()
 const activeMenu = computed(() => route.path)
+const menuRef = ref()
+
+// 递归找出当前激活菜单的所有父级子菜单 index，用于刷新后自动展开所在分组，
+// 使深层选中的菜单在侧栏中可见可定位
+const openedMenus = computed(() => {
+  const result: string[] = []
+  const walk = (items: MenuItem[], pathStack: string[]) => {
+    for (const item of items) {
+      if (item.isGroup && item.children) {
+        walk(item.children, pathStack)
+      } else if (item.children) {
+        if (item.path === activeMenu.value) result.push(...pathStack)
+        walk(item.children, [...pathStack, item.path])
+      } else if (item.path === activeMenu.value) {
+        result.push(...pathStack)
+      }
+    }
+  }
+  walk(props.menus, [])
+  return result
+})
+
+// 将激活菜单项滚动到侧栏可视区域内（刷新或路由切换时避免被遮挡在下方）
+const scrollActiveIntoView = async () => {
+  await nextTick()
+  const el = menuRef.value?.$el?.querySelector('.el-menu-item.is-active')
+  el?.scrollIntoView({ block: 'nearest' })
+}
+
+onMounted(() => {
+  scrollActiveIntoView()
+})
+
+watch(activeMenu, () => {
+  scrollActiveIntoView()
+})
 
 // 点击顶部子系统名称，跳转到选择子系统页面
 function goToSubsystemSelect() {

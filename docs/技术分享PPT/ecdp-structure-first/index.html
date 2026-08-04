@@ -15,7 +15,7 @@
 
   <!-- ============ 1. COVER ============ -->
   <section class="slide" data-title="Cover">
-    <p class="kicker">ECDP-Cloud · 新人培训 / 项目交接</p>
+    <p class="kicker">ECDP-Cloud · 新人培训 / 技术分享 / 项目讲解</p>
     <h1 class="h1 anim-fade-up" data-anim="fade-up">广东省应急指挥调度平台<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">项目结构</span>与<span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">技术规范</span>详解</h1>
     <p class="lede mt-m">90 分钟 · 两大阶段 · 按 <span class="mono">S</span> 进入演讲者视图 · <span class="mono">T</span> 切换主题 · <span class="mono">← →</span> 翻页</p>
     <div class="speaker">
@@ -32,22 +32,20 @@
   <!-- ============ 2. AGENDA（两大阶段） ============ -->
   <section class="slide" data-title="Agenda">
     <p class="kicker">agenda · 两大阶段</p>
-    <h2 class="h2">今天要讲的<span class="accent">两大阶段</span></h2>
+    <h2 class="h2">今天我们主要过这<span class="accent">两大部分</span></h2>
     <div class="grid g2 mt-l">
       <div class="phase-card">
         <p class="ph-num">PHASE 01 · 项目结构</p>
-        <h3>工程怎么组织、版本怎么管、怎么部署</h3>
-        <span class="chip">总体架构</span><span class="chip">模块职责</span><span class="chip">技术栈</span><span class="chip">业务架构</span>
-        <span class="chip hot">两层 BOM</span><span class="chip hot">Maven Profile</span><span class="chip hot">Nacos 配置</span><span class="chip hot">部署架构</span>
-        <span class="chip">演进待办</span>
+        <h3>从总体架构入手，明确模块职责与技术栈</h3>
+        <span class="chip hot">技术栈</span><span class="chip hot">模块职责</span><span class="chip hot">工程组织</span><span class="chip hot">多层BOM设计</span>
+        <span class="chip hot">Maven Profile</span><span class="chip hot">Nacos配置管理</span><span class="chip hot">版本管理</span><span class="chip hot">部署策略</span>
         <p class="ph-time mt-m">≈ 36 min · S4–S14</p>
       </div>
       <div class="phase-card">
         <p class="ph-num">PHASE 02 · 技术规范</p>
-        <h3>代码怎么写、怎么协作、质量怎么守</h3>
-        <span class="chip">背景总纲</span><span class="chip hot">编码规范</span><span class="chip hot">Git 规范</span>
-        <span class="chip">接口规范</span><span class="chip">数据库</span><span class="chip">数据签名</span>
-        <span class="chip">异常错误码</span><span class="chip">日志</span><span class="chip">服务通信</span><span class="chip">消息队列</span><span class="chip">数据度量</span>
+        <h3>统一编码风格、明确协作机制与落实质量守护</h3>
+        <span class="chip hot">编码规范</span><span class="chip hot">接口规范</span><span class="chip hot">数据库</span><span class="chip hot">数据签名</span>
+        <span class="chip hot">服务通信</span><span class="chip hot">消息队列</span><span class="chip hot">异常错误码</span><span class="chip hot">日志</span><span class="chip hot">Git 规范</span>
         <p class="ph-time mt-m">≈ 50 min · S15–S26</p>
       </div>
     </div>
@@ -66,12 +64,12 @@
     <div class="grid g3 mt-l">
       <div class="card card-accent">
         <h4>⚡ 建设背景</h4>
-        <p class="dim">省级应急管理 + 多部门协同，面向值班值守 / 事件接报 / 预案管理 / 调度指挥 / 数据融合等综合业务。</p>
+        <p class="dim">以多部门协同为纽带，贯通值班值守、事件接报、预案管理、调度指挥与数据融合全链条，打造平急结合的一体化智慧应急体系。</p>
         <ul>
-          <li><b>业务域多、用户角色多</b></li>
-          <li><b>系统集成多</b></li>
-          <li><b>数据安全要求高</b></li>
           <li><b>运行连续性要求高</b></li>
+          <li><b>多用户、多租户体系</b></li>
+          <li><b>业务数据安全要求较高</b></li>
+          <li><b>与部路网系统统一用户中心体系</b></li>
         </ul>
       </div>
       <div class="card card-accent">
@@ -177,7 +175,7 @@
     <h2 class="h2">技术栈总览<span class="accent">（每个组件都有它的位置）</span></h2>
     <div class="grid g3 mt-l">
       <div class="kpi"><p class="k-label">运行时</p><p class="k-val">JDK 17</p><p class="k-note">Spring Boot 3.5.13 · Spring Cloud 2025.0.1 · SCA 2025.0.0.0</p></div>
-      <div class="kpi"><p class="k-label">注册 / 配置</p><p class="k-val">Nacos 2.x</p><p class="k-note">服务发现 + 配置中心，配置热更新</p></div>
+      <div class="kpi"><p class="k-label">注册 / 配置</p><p class="k-val">Nacos 3.x</p><p class="k-note">服务发现 + 配置中心，配置热更新</p></div>
       <div class="kpi"><p class="k-label">网关 / 认证</p><p class="k-val">Gateway 4.3.2</p><p class="k-note">OAuth2 + JJWT 0.12.5</p></div>
       <div class="kpi"><p class="k-label">数据访问</p><p class="k-val">OpenGauss 6.0+</p><p class="k-note">MyBatis-Plus 3.5.16 + mybatis-plus-join 1.5.5</p></div>
       <div class="kpi"><p class="k-label">缓存 / 锁</p><p class="k-val">Redis 7.x</p><p class="k-note">Caffeine 本地缓存 · Redisson 3.39.0 · Lock4j 2.2.7</p></div>
@@ -275,8 +273,6 @@
         <tr><th>Profile</th><th>用途</th><th>Nacos 地址</th><th>namespace</th><th>group</th></tr>
         <tr><td><span class="mono">dev</span>（默认）</td><td>本地开发</td><td>127.0.0.1:8848</td><td><span class="mono">fetch</span></td><td>local</td></tr>
         <tr><td><span class="mono">nas_local</span></td><td>局域网本地</td><td>192.168.0.166:8848</td><td>ecdp</td><td>local</td></tr>
-        <tr><td><span class="mono">nas_jx_local</span></td><td>局域网（江西）</td><td>192.168.0.166:8848</td><td>ecdp</td><td><span class="mono">jx</span></td></tr>
-        <tr><td><span class="mono">nas_local_ky</span></td><td>本地科员（私有）</td><td>127.0.0.1:8848</td><td>ecdp</td><td><span class="mono">local_ky</span></td></tr>
         <tr><td><span class="mono">71.95_test</span></td><td>测试环境</td><td>10.0.71.95:8848</td><td>ecdp</td><td>local</td></tr>
         <tr><td><span class="mono">11.14_prod</span></td><td>生产环境</td><td>10.169.11.14:8848</td><td>ecdp</td><td>local</td></tr>
       </table>
@@ -371,7 +367,6 @@ mvn clean package -DskipTests -P 71.95_test
             <tr><td>瘦身打包</td><td>第三方依赖放 project-libs（maven.thin.skip=false）</td></tr>
           </table>
         </div>
-        <div class="warn"><b>⚠️ 待改进</b>：当前 profile 中 <b>Nacos 密码为明文</b>，建议迁 ~/.m2/settings.xml 凭据 + Jasypt ENC(...)。</div>
       </div>
     </div>
     <aside class="notes">
@@ -1041,7 +1036,7 @@ double percent = 0.85;          <span class="comment">// 百分比存 0-1</span>
   <!-- ============ 28. 感谢 + Q&A ============ -->
   <section class="slide" data-title="感谢 & Q&A">
     <p class="kicker">thanks · Q&amp;A</p>
-    <div class="thanks-num">ECDP-Cloud · 新人培训 / 项目交接</div>
+    <div class="thanks-num">ECDP-Cloud · 新人培训 / 技术分享 / 项目讲解</div>
     <div class="thanks-line">项目结构让我们看懂系统，<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">技术规范让代码能被长期维护</span></div>
     <p class="lede">所有素材：<span class="mono">docs/</span> 目录 · 8 份规范 + 架构说明书 + 部署文档</p>
     <aside class="notes">

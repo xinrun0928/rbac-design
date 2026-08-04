@@ -30,6 +30,7 @@ import {
   Switch,
   Grid
 } from '@element-plus/icons-vue'
+import { clearToken, clearLoginInfo } from '@/utils/auth'
 
 const router = useRouter()
 
@@ -47,6 +48,8 @@ const handleLogout = () => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
+    clearToken()
+    clearLoginInfo()
     localStorage.removeItem('currentOrg')
     localStorage.removeItem('currentSubsystem')
     router.push('/login')

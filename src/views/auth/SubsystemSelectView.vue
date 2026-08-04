@@ -255,8 +255,6 @@ const handleLogout = () => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    localStorage.removeItem('currentOrg')
-    localStorage.removeItem('currentSubsystem')
     ElMessage.success('已退出登录')
     router.push('/login')
   }).catch(() => {

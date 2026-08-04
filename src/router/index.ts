@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { getToken } from '@/utils/auth'
 
 // 导入各子系统路由模块
 import adminRoutes from './modules/admin'
@@ -84,6 +85,13 @@ const businessRoutes: RouteRecordRaw[] = [
   inspectionRoutes, // 汛期巡查子系统
 ]
 
+// 403 无权限路由
+const forbiddenRoute: RouteRecordRaw = {
+  path: '/403',
+  name: 'Forbidden',
+  component: () => import('@/views/error/NoPermission.vue')
+}
+
 // 404 兜底路由（必须放在所有路由之后）
 const notFoundRoute: RouteRecordRaw = {
   path: '/:pathMatch(.*)*',
@@ -93,7 +101,23 @@ const notFoundRoute: RouteRecordRaw = {
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [...publicRoutes, ...businessRoutes, notFoundRoute]
+  routes: [...publicRoutes, ...businessRoutes, forbiddenRoute, notFoundRoute]
+})
+
+// 全局路由守卫：除登录页与 404 外，其余页面均需本地缓存的用户信息
+router.beforeEach((to, _from, next) => {
+  const token = getToken()
+  // 白名单：登录页与 404 页面无需登录
+  if (to.path === '/login' || to.name === 'NotFound') {
+    next()
+    return
+  }
+  // 未登录：跳转登录页并携带原目标地址
+  if (!token) {
+    next({ path: '/login', query: { redirect: to.fullPath } })
+    return
+  }
+  next()
 })
 
 export default router

@@ -20,6 +20,7 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { User, ArrowDown, Setting, SwitchButton, Share, Grid } from '@element-plus/icons-vue'
 import TopNavBar from '@/components/TopNavBar.vue'
 import { adminMenus } from '@/config/menu'
+import { clearToken, clearLoginInfo } from '@/utils/auth'
 
 const router = useRouter()
 const route = useRoute()
@@ -47,6 +48,8 @@ function handleLogout() {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
+    clearToken()
+    clearLoginInfo()
     localStorage.removeItem('currentOrg')
     localStorage.removeItem('currentSubsystem')
     ElMessage.success('已退出登录')

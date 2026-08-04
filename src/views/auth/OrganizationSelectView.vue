@@ -106,7 +106,6 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, SwitchButton, Box, ArrowRight, SetUp, Platform, Collection, Calendar } from '@element-plus/icons-vue'
 import { specCategories } from '@/views/specs/specs'
-import { clearToken, clearLoginInfo } from '@/utils/auth'
 
 const router = useRouter()
 
@@ -155,8 +154,6 @@ const handleLogout = () => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    clearToken()
-    clearLoginInfo()
     ElMessage.success('已退出登录')
     router.push('/login')
   }).catch(() => {

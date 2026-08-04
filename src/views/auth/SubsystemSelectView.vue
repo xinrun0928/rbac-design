@@ -157,6 +157,19 @@ const currentOrg = reactive({
 })
 
 onMounted(() => {
+  // 清除所有子系统的侧边栏折叠状态，重新进入子系统时默认展开
+  const sidebarKeys = [
+    'ecdp_sidebar_collapsed_admin',
+    'ecdp_sidebar_collapsed_duty',
+    'ecdp_sidebar_collapsed_plan',
+    'ecdp_sidebar_collapsed_event',
+    'ecdp_sidebar_collapsed_dispatch',
+    'ecdp_sidebar_collapsed_material',
+    'ecdp_sidebar_collapsed_decision',
+    'ecdp_sidebar_collapsed_fusion',
+  ]
+  sidebarKeys.forEach(key => localStorage.removeItem(key))
+
   // 从 localStorage 获取选择的组织
   const orgStr = localStorage.getItem('currentOrg')
   if (orgStr) {

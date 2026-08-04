@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import {
   Box
 } from '@element-plus/icons-vue'
@@ -34,7 +34,9 @@ import AppSidebar from '@/components/AppSidebar.vue'
 import TagsView from '@/components/TagsView.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 
-const isCollapsed = ref(false)
+const STORAGE_KEY = 'ecdp_sidebar_collapsed_material'
+const isCollapsed = ref(localStorage.getItem(STORAGE_KEY) === 'true')
+watch(isCollapsed, (val) => localStorage.setItem(STORAGE_KEY, String(val)))
 </script>
 
 <style lang="scss" scoped>

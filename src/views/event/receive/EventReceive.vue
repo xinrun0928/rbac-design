@@ -9,11 +9,11 @@
           <div class="focus-actions">
             <span class="auto-refresh">
               <el-icon class="refresh-icon"><Refresh /></el-icon>
-              每(5)秒自动刷新，最后更新时间：2026年4月16日 14点01分
+              每(5)秒自动刷新<br />最后更新时间：2026年4月16日 14点01分
             </span>
             <span class="implement-desc">实现厅值班人员对事件的接报</span>
           </div>
-          <el-button type="primary" size="small" :icon="Monitor" class="event-screen-btn">事件大屏</el-button>
+          <el-button type="primary" size="small" :icon="Monitor" class="event-screen-btn" @click="goToScreen">事件大屏</el-button>
         </div>
         <div class="focus-cards">
           <div
@@ -307,6 +307,11 @@ const events = ref<ReceiveEvent[]>(mockReceiveEvents)
 const selectedEvent = ref<ReceiveEvent | null>(mockReceiveEvents[0])
 const eventDetail = ref(mockEventDetail)
 
+function goToScreen() {
+  const base = window.location.href.split('#')[0]
+  window.open(base + '#/event/receive/screen', '_blank')
+}
+
 // 筛选状态
 const activeReportType = ref('全部')
 const activeTimeRange = ref('24小时内')
@@ -357,6 +362,7 @@ function handleRowClick(row: ReceiveEvent) {
 <style lang="scss" scoped>
 .event-receive-page {
   display: flex;
+  gap: 16px;
   height: 100%;
   overflow: hidden;
   background: #f0f2f5;
@@ -367,6 +373,7 @@ function handleRowClick(row: ReceiveEvent) {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 16px;
   overflow: hidden;
   min-width: 0;
 }
@@ -420,6 +427,11 @@ function handleRowClick(row: ReceiveEvent) {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+    overflow-x: auto;
+
+    .focus-card {
+      min-width: 240px;
+    }
   }
 
   .focus-card {

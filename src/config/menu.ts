@@ -53,7 +53,8 @@ import {
   Microphone,
   CircleClose,
   Cpu,
-  DataBoard
+  DataBoard,
+  Key
 } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
 
@@ -120,6 +121,16 @@ export const adminMealMenu: MenuItem[] = [
     children: [
       { path: '/admin/subsystem', title: '子系统管理', icon: Monitor, status: 'done' },
       { path: '/admin/meal', title: '套餐列表', icon: Box, status: 'done' },
+    ]
+  },
+  {
+    path: '/admin/client-group',
+    title: '客户端管理',
+    icon: Key,
+    isGroup: true,
+    groupTitle: '客户端管理',
+    children: [
+      { path: '/admin/client', title: '客户端管理', icon: Key, status: 'done' },
     ]
   },
 ]
@@ -271,7 +282,7 @@ export const dutyMenus: MenuItem[] = [
 export const eventMenus: MenuItem[] = [
   { path: '/event/report', title: '事故上报', icon: EditPen, status: 'done' },
   { path: '/event/receive', title: '事故信息接收', icon: ChatDotRound, status: 'done' },
-  { path: '/event/warning', title: '预警处置', icon: Warning, status: 'todo' },
+  { path: '/event/warning', title: '预警处置', icon: Warning, status: 'done' },
   { path: '/event/warning/rule', title: '事故预警规则', icon: Document, status: 'todo' },
   { path: '/event/receive/rule', title: '事故接报规则', icon: List, status: 'done' },
   { path: '/event/task', title: '任务分配及跟踪', icon: DataAnalysis, status: 'todo' },

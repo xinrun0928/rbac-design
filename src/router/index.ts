@@ -51,6 +51,11 @@ const publicRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/specs/DeployView.vue')
   },
   {
+    path: '/event/receive/screen',
+    name: 'EventScreen',
+    component: () => import('@/views/event/receive/screen/EventScreen.vue')
+  },
+  {
     path: '/specs',
     name: 'Specs',
     component: () => import('@/views/specs/SpecLayout.vue'),

@@ -108,6 +108,12 @@ const adminRoutes: RouteRecordRaw = {
       component: () => import('@/views/admin/meal/MealManagement.vue'),
       meta: { title: '套餐列表' }
     },
+    {
+      path: 'client',
+      name: 'AdminClient',
+      component: () => import('@/views/admin/meal/ClientManagement.vue'),
+      meta: { title: '客户端管理' }
+    },
 
     // 应用管理
     {

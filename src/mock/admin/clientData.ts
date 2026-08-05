@@ -1,0 +1,40 @@
+import type { OAuthClient } from '@/types/admin/client'
+
+export const mockClients: OAuthClient[] = [
+  {
+    clientId: 'sub-system',
+    clientSecret: 'BDNvWchhicGUNvJq',
+    scope: 'all,server',
+    authorizedGrantTypes: 'authorization_code,refresh_token,implicit,client_credentials',
+    webServerRedirectUri: '',
+    subsystemIds: 'EMERGENCY_WATCH,EMERGENCY_PLAN,EMERGENCY_EVENT',
+    accessTokenValidity: 3600,
+    refreshTokenValidity: 86400,
+    additionalInformation: '{}',
+    autoApprove: 'true',
+  },
+  {
+    clientId: 'flood-inspection',
+    clientSecret: '7cYFnlBfIWMHb3c3',
+    scope: 'all,server',
+    authorizedGrantTypes: 'authorization_code,refresh_token,implicit,client_credentials',
+    webServerRedirectUri: '',
+    subsystemIds: 'FLOOD_INSPECTION',
+    accessTokenValidity: 3600,
+    refreshTokenValidity: 86400,
+    additionalInformation: '{}',
+    autoApprove: 'true',
+  },
+  {
+    clientId: 'web-app',
+    clientSecret: 'web-secret',
+    scope: 'all,server',
+    authorizedGrantTypes: 'authorization_code,refresh_token,implicit,client_credentials,mobile',
+    webServerRedirectUri: 'http://localhost:8080/callback',
+    subsystemIds: 'EMERGENCY_WATCH,EMERGENCY_PLAN,EMERGENCY_EVENT,EMERGENCY_DISPATCH,EMERGENCY_MATERIAL',
+    accessTokenValidity: 7200,
+    refreshTokenValidity: 172800,
+    additionalInformation: '{"appVersion":"1.0.0","platform":"web"}',
+    autoApprove: 'false',
+  },
+]

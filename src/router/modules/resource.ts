@@ -9,6 +9,7 @@ const resourceRoutes: RouteRecordRaw = {
   path: '/resource',
   component: () => import('@/views/resource/MaterialLayout.vue'),
   meta: { title: '物资管理', subsystem: 'MATERIAL' },
+  redirect: '/resource/warehouse/query',
   children: [
     // 首页
     { path: 'home', name: 'MaterialHome', component: () => import('@/views/resource/MaterialHome.vue'), meta: { title: '首页' } },

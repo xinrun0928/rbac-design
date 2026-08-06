@@ -141,7 +141,8 @@ const entries = [
 
 // 打开新页面
 const openPage = (path: string) => {
-  window.open(path, '_blank')
+  const base = window.location.href.split('#')[0]
+  window.open(base + '#' + path, '_blank')
 }
 
 // 更新时间

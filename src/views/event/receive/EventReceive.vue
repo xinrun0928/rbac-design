@@ -45,140 +45,159 @@
         </div>
       </div>
 
-      <!-- 筛选区域 -->
-      <div class="filter-section">
-        <div class="filter-row">
-          <div class="filter-group">
-            <span
-              v-for="item in reportTypes"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeReportType === item }"
-              @click="activeReportType = item"
-            >{{ item }}</span>
+      <!-- 筛选区域 + 事件表格合并卡片 -->
+      <el-card class="table-card" shadow="never">
+        <!-- 筛选区域 -->
+        <div class="filter-section">
+          <div class="filter-row">
+            <div class="filter-group">
+              <span
+                v-for="item in reportTypes"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeReportType === item }"
+                @click="activeReportType = item"
+              >{{ item }}</span>
+            </div>
+            <div class="filter-group">
+              <span
+                v-for="item in timeRanges"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeTimeRange === item }"
+                @click="activeTimeRange = item"
+              >{{ item }}</span>
+            </div>
+            <div class="filter-group">
+              <span
+                v-for="item in viewStatuses"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeViewStatus === item }"
+                @click="activeViewStatus = item"
+              >{{ item }}</span>
+            </div>
           </div>
-          <div class="filter-group">
-            <span
-              v-for="item in timeRanges"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeTimeRange === item }"
-              @click="activeTimeRange = item"
-            >{{ item }}</span>
-          </div>
-          <div class="filter-group">
-            <span
-              v-for="item in viewStatuses"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeViewStatus === item }"
-              @click="activeViewStatus = item"
-            >{{ item }}</span>
+          <div class="filter-row">
+            <div class="filter-group">
+              <span
+                v-for="item in trafficStatuses"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeTrafficStatus === item }"
+                @click="activeTrafficStatus = item"
+              >{{ item }}</span>
+            </div>
+            <div class="filter-group">
+              <span
+                v-for="item in closeStatuses"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeCloseStatus === item }"
+                @click="activeCloseStatus = item"
+              >{{ item }}</span>
+            </div>
+            <div class="filter-group">
+              <span
+                v-for="item in alarmStatuses"
+                :key="item"
+                class="filter-tag"
+                :class="{ active: activeAlarmStatus === item }"
+                @click="activeAlarmStatus = item"
+              >{{ item }}</span>
+            </div>
+            <div class="filter-actions">
+              <el-button type="primary" link>导出</el-button>
+              <el-button type="primary" link :icon="Filter" @click="showAdvancedSearch = true">高级搜索</el-button>
+            </div>
           </div>
         </div>
-        <div class="filter-row">
-          <div class="filter-group">
-            <span
-              v-for="item in trafficStatuses"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeTrafficStatus === item }"
-              @click="activeTrafficStatus = item"
-            >{{ item }}</span>
-          </div>
-          <div class="filter-group">
-            <span
-              v-for="item in closeStatuses"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeCloseStatus === item }"
-              @click="activeCloseStatus = item"
-            >{{ item }}</span>
-          </div>
-          <div class="filter-group">
-            <span
-              v-for="item in alarmStatuses"
-              :key="item"
-              class="filter-tag"
-              :class="{ active: activeAlarmStatus === item }"
-              @click="activeAlarmStatus = item"
-            >{{ item }}</span>
-          </div>
-          <div class="filter-actions">
-            <el-button type="primary" link>导出</el-button>
-            <el-button type="primary" link :icon="Filter">高级搜索</el-button>
-          </div>
+
+        <!-- 事件表格 -->
+        <div class="table-wrapper">
+          <el-table
+            :data="tableData"
+            border
+            stripe
+            highlight-current-row
+            row-key="id"
+            :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+            class="data-table"
+            @row-click="handleRowClick"
+          >
+            <el-table-column type="index" label="序号" width="60" align="center" />
+
+            <el-table-column label="发生/发现时段" width="140" align="center">
+              <template #default="{ row }">
+                <span v-if="row.timeSlot" class="time-slot-text">{{ row.timeSlot }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="eventName" label="事件名称" min-width="200">
+              <template #default="{ row }">
+                <span class="event-name-text">{{ row.eventName }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="updateTime" label="更新时间" width="100" align="center">
+              <template #default="{ row }">
+                <span class="time-text">{{ row.updateTime }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="事件状态" width="130" align="center">
+              <template #default="{ row }">
+                <div class="status-tags">
+                  <el-tag size="small" :type="getStatusType(row.eventStatus)">{{ row.eventStatus }}</el-tag>
+                  <el-tag v-if="row.hasAlarm" size="small" type="danger">告警</el-tag>
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="roadSegment" label="涉及路段" min-width="220" show-overflow-tooltip />
+
+            <el-table-column label="中断/阻塞" width="110" align="center">
+              <template #default="{ row }">
+                <span :class="['traffic-status', getTrafficClass(row.trafficStatus)]">
+                  {{ row.trafficStatus }}
+                </span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="deaths" label="死亡" width="80" align="center">
+              <template #default="{ row }">
+                <span :class="{ 'death-highlight': row.deaths > 0 }">{{ row.deaths }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="injuries" label="受伤" width="80" align="center">
+              <template #default="{ row }">
+                <span :class="{ 'injury-highlight': row.injuries > 0 }">{{ row.injuries }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="specialVehicles" label="两客一危一重" width="120" align="center">
+              <template #default="{ row }">
+                <span :class="{ 'special-highlight': row.specialVehicles > 0 }">{{ row.specialVehicles }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-      </div>
 
-      <!-- 事件表格 -->
-      <div class="event-table-section">
-        <el-table
-          :data="filteredEvents"
-          border
-          stripe
-          highlight-current-row
-          row-key="id"
-          :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
-          class="event-table"
-          @row-click="handleRowClick"
-        >
-          <el-table-column label="发生/发现时段" width="140" align="center">
-            <template #default="{ row }">
-              <span v-if="row.timeSlot" class="time-slot-text">{{ row.timeSlot }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="eventName" label="事件名称" min-width="200">
-            <template #default="{ row }">
-              <span class="event-name-text">{{ row.eventName }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="updateTime" label="更新时间" width="100" align="center">
-            <template #default="{ row }">
-              <span class="time-text">{{ row.updateTime }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column label="事件状态" width="130" align="center">
-            <template #default="{ row }">
-              <div class="status-tags">
-                <el-tag size="small" :type="getStatusType(row.eventStatus)">{{ row.eventStatus }}</el-tag>
-                <el-tag v-if="row.hasAlarm" size="small" type="danger">告警</el-tag>
-              </div>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="roadSegment" label="涉及路段" min-width="220" show-overflow-tooltip />
-
-          <el-table-column label="中断/阻塞" width="110" align="center">
-            <template #default="{ row }">
-              <span :class="['traffic-status', getTrafficClass(row.trafficStatus)]">
-                {{ row.trafficStatus }}
-              </span>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="deaths" label="死亡" width="80" align="center">
-            <template #default="{ row }">
-              <span :class="{ 'death-highlight': row.deaths > 0 }">{{ row.deaths }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="injuries" label="受伤" width="80" align="center">
-            <template #default="{ row }">
-              <span :class="{ 'injury-highlight': row.injuries > 0 }">{{ row.injuries }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="specialVehicles" label="两客一危一重" width="120" align="center">
-            <template #default="{ row }">
-              <span :class="{ 'special-highlight': row.specialVehicles > 0 }">{{ row.specialVehicles }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+        <!-- 分页 -->
+        <div class="pagination-wrapper">
+          <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :total="total"
+            :page-sizes="[10, 20, 50, 100]"
+            layout="total, sizes, prev, pager, next, jumper"
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+      </el-card>
     </div>
 
     <!-- 右侧详情面板 -->
@@ -294,11 +313,135 @@
       </div>
     </div>
   </div>
+
+  <!-- 高级搜索弹窗 -->
+  <el-dialog v-model="showAdvancedSearch" title="高级搜索" width="680px" top="8vh" destroy-on-close>
+    <el-form :model="searchForm" label-width="100px" class="advanced-search-form">
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="事件名称">
+            <el-input v-model="searchForm.eventName" placeholder="请输入" clearable />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="上报单位">
+            <el-input v-model="searchForm.reportUnit" placeholder="请输入" clearable />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="发生时间">
+            <el-date-picker
+              v-model="searchForm.happenTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="YYYY-MM-DD"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="事故地点">
+            <el-input v-model="searchForm.location" placeholder="请输入" clearable />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="死亡人数">
+            <el-input-number v-model="searchForm.deaths" :min="0" controls-position="right" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="受伤人数">
+            <el-input-number v-model="searchForm.injuries" :min="0" controls-position="right" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <el-form-item label="两客一危一重">
+            <el-radio-group v-model="searchForm.specialVehicle">
+              <el-radio value="">不限</el-radio>
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <el-form-item label="外地车辆">
+            <el-radio-group v-model="searchForm.outsideVehicle">
+              <el-radio value="">不限</el-radio>
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <el-form-item label="事件关闭">
+            <el-radio-group v-model="searchForm.eventClosed">
+              <el-radio value="">不限</el-radio>
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="关闭人员姓名">
+            <el-input v-model="searchForm.closerName" placeholder="请输入" clearable />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="关闭时间">
+            <el-date-picker
+              v-model="searchForm.closeTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="YYYY-MM-DD"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="归档时间">
+            <el-date-picker
+              v-model="searchForm.archiveTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="YYYY-MM-DD"
+              style="width: 100%"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12" />
+      </el-row>
+    </el-form>
+    <template #footer>
+      <el-button @click="handleSearchClear">清空</el-button>
+      <el-button type="primary" @click="handleSearchConfirm">确定</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { Refresh, Monitor, View, Warning, Bell, Filter, Edit } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import { mockFocusEvents, mockReceiveEvents, mockEventDetail } from '@/mock/event/receiveData'
 import type { FocusEvent, ReceiveEvent } from '@/types/event/receive'
 
@@ -306,6 +449,41 @@ const focusEvents = ref<FocusEvent[]>(mockFocusEvents)
 const events = ref<ReceiveEvent[]>(mockReceiveEvents)
 const selectedEvent = ref<ReceiveEvent | null>(mockReceiveEvents[0])
 const eventDetail = ref(mockEventDetail)
+
+// 高级搜索
+const showAdvancedSearch = ref(false)
+const searchForm = reactive({
+  eventName: '',
+  reportUnit: '',
+  happenTime: null,
+  location: '',
+  deaths: null,
+  injuries: null,
+  specialVehicle: '',
+  outsideVehicle: '',
+  eventClosed: '',
+  closerName: '',
+  closeTime: null,
+  archiveTime: null
+})
+function handleSearchClear() {
+  searchForm.eventName = ''
+  searchForm.reportUnit = ''
+  searchForm.happenTime = null
+  searchForm.location = ''
+  searchForm.deaths = null
+  searchForm.injuries = null
+  searchForm.specialVehicle = ''
+  searchForm.outsideVehicle = ''
+  searchForm.eventClosed = ''
+  searchForm.closerName = ''
+  searchForm.closeTime = null
+  searchForm.archiveTime = null
+}
+function handleSearchConfirm() {
+  showAdvancedSearch.value = false
+  ElMessage.success('搜索条件已应用')
+}
 
 function goToScreen() {
   const base = window.location.href.split('#')[0]
@@ -329,6 +507,21 @@ const alarmStatuses = ['全部', '告警', '无告警']
 
 // 简单筛选（演示用）
 const filteredEvents = ref<ReceiveEvent[]>(events.value)
+
+// 分页
+const currentPage = ref(1)
+const pageSize = ref(20)
+const total = computed(() => filteredEvents.value.length)
+const tableData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  return filteredEvents.value.slice(start, start + pageSize.value)
+})
+function handleSizeChange() {
+  currentPage.value = 1
+}
+function handleCurrentChange() {
+  // 页码变化，表格自动更新
+}
 
 function getStatusType(status: string) {
   const map: Record<string, string> = {
@@ -519,11 +712,8 @@ function handleRowClick(row: ReceiveEvent) {
 
 // 筛选区域
 .filter-section {
-  background: #fff;
-  padding: 12px 16px;
-  margin: 0;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid #ebeef5;
 
   .filter-row {
     display: flex;
@@ -540,7 +730,7 @@ function handleRowClick(row: ReceiveEvent) {
   .filter-group {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0;
 
     &::after {
       content: '';
@@ -549,27 +739,28 @@ function handleRowClick(row: ReceiveEvent) {
       background: #e4e7ed;
       margin-left: 8px;
     }
+
+    &:last-child::after {
+      display: none;
+    }
   }
 
   .filter-tag {
-    padding: 4px 12px;
+    padding: 4px 8px;
     font-size: 13px;
-    color: #606266;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
+    color: #909399;
     cursor: pointer;
-    transition: all 0.2s;
+    position: relative;
+    transition: color 0.2s;
+    white-space: nowrap;
 
     &:hover {
       color: #409eff;
-      border-color: #c6e2ff;
-      background: #ecf5ff;
     }
 
     &.active {
-      color: #fff;
-      background: #409eff;
-      border-color: #409eff;
+      color: #303133;
+      font-weight: 600;
     }
   }
 
@@ -580,53 +771,73 @@ function handleRowClick(row: ReceiveEvent) {
   }
 }
 
-// 事件表格
-.event-table-section {
+// 表格卡片
+.table-card {
   flex: 1;
-  background: #fff;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  overflow: auto;
+  border: none;
 
-  .event-table {
-    width: 100%;
-  }
-
-  .time-slot-text {
-    font-size: 13px;
-    color: #606266;
-  }
-
-  .event-name-text {
-    font-weight: 500;
-    color: #303133;
-  }
-
-  .time-text {
-    font-size: 13px;
-    color: #909399;
-  }
-
-  .status-tags {
+  :deep(.el-card__body) {
+    padding: 16px;
     display: flex;
-    justify-content: center;
-    gap: 4px;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
   }
 
-  .traffic-status {
-    font-size: 13px;
-    font-weight: 500;
+  .table-wrapper {
+    flex: 1;
+    overflow: auto;
 
-    &.status-interrupt { color: #f56c6c; }
-    &.status-block { color: #e6a23c; }
-    &.status-none { color: #909399; }
+    .data-table {
+      width: 100%;
+    }
   }
 
-  .death-highlight { color: #f56c6c; font-weight: 600; }
-  .injury-highlight { color: #f56c6c; }
-  .special-highlight { color: #e6a23c; font-weight: 600; }
+  .pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    flex-shrink: 0;
+  }
 }
+
+.time-slot-text {
+  font-size: 13px;
+  color: #606266;
+}
+
+.event-name-text {
+  font-weight: 500;
+  color: #303133;
+}
+
+.time-text {
+  font-size: 13px;
+  color: #909399;
+}
+
+.status-tags {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.traffic-status {
+  font-size: 13px;
+  font-weight: 500;
+
+  &.status-interrupt { color: #f56c6c; }
+  &.status-block { color: #e6a23c; }
+  &.status-none { color: #909399; }
+}
+
+.death-highlight { color: #f56c6c; font-weight: 600; }
+.injury-highlight { color: #f56c6c; }
+.special-highlight { color: #e6a23c; font-weight: 600; }
 
 // 右侧详情面板
 .detail-panel {

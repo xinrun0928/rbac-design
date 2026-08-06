@@ -547,7 +547,7 @@ onUnmounted(() => {
   width: 100%;
   max-width: 960px;
   min-width: 720px;
-  min-height: 400px;
+  min-height: 360px;
   height: auto;
   display: flex;
   overflow: hidden;
@@ -563,7 +563,7 @@ onUnmounted(() => {
 =============================== */
 .brand-panel {
   width: 45%;
-  padding: 60px;
+  padding: 40px;
   display: flex;
   align-items: center;
   background: linear-gradient(145deg, #0068ff, #00b7ff);
@@ -591,7 +591,7 @@ onUnmounted(() => {
 }
 
 .logo-box {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .logo-ring {
@@ -627,10 +627,10 @@ onUnmounted(() => {
 }
 
 .feature-list {
-  margin-top: 45px;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
 }
 
 .feature-card {
@@ -663,8 +663,8 @@ onUnmounted(() => {
 
 .data-panel {
   display: flex;
-  gap: 35px;
-  margin-top: 45px;
+  gap: 30px;
+  margin-top: 25px;
 }
 
 .data-panel div {
@@ -690,7 +690,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px;
+  padding: 30px;
 }
 
 .login-content {
@@ -698,11 +698,12 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 0;
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .login-header h2 {
@@ -728,13 +729,13 @@ onUnmounted(() => {
 
   /* 锁定 tab 内容区高度，切换时不再撑高卡片 */
   :deep(.el-tab-pane) {
-    min-height: 410px;
+    min-height: auto;
   }
 }
 
 /* 输入框 */
 .login-form {
-  margin-top: 25px;
+  margin-top: 12px;
 }
 
 :deep(.el-input__wrapper) {
@@ -763,7 +764,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 15px 0 25px;
+  margin: 10px 0 20px;
 }
 
 .login-button {
@@ -785,7 +786,7 @@ onUnmounted(() => {
    第三方登录
 =============================== */
 .other-login {
-  margin-top: 22px;
+  margin-top: 12px;
 }
 
 .divider {
@@ -880,17 +881,17 @@ onUnmounted(() => {
 }
 
 /* 视口高度较小时压缩垂直留白，避免右侧内容被裁切 */
-@media (max-height: 820px) {
+@media (max-height: 700px) {
   .login-card {
     min-height: 0;
   }
 
   .login-panel {
-    padding: 20px 40px;
+    padding: 16px 30px;
   }
 
   .login-header {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .login-tabs :deep(.el-tab-pane) {
@@ -898,11 +899,11 @@ onUnmounted(() => {
   }
 
   .login-form {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 
   .other-login {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 }
 </style>

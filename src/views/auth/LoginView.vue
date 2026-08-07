@@ -185,24 +185,15 @@
                   </el-link>
                 </div>
 
-                <el-tooltip
-                  effect="custom"
-                  popper-class="sms-login-tooltip"
-                  content="此登录方式有需求待确认"
-                  placement="right"
+                <el-button
+                  type="primary"
+                  class="login-button"
+                  size="large"
+                  :loading="loading"
+                  @click="handleSmsLogin"
                 >
-                  <el-badge :value="1" type="danger" class="sms-login-badge">
-                    <el-button
-                      type="primary"
-                      class="login-button"
-                      size="large"
-                      :loading="loading"
-                      @click="handleSmsLogin"
-                    >
-                      登录
-                    </el-button>
-                  </el-badge>
-                </el-tooltip>
+                  登录
+                </el-button>
               </el-form>
             </el-tab-pane>
           </el-tabs>

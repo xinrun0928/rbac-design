@@ -407,7 +407,7 @@ export const dispatchMenus: MenuItem[] = [
     children: [
       { path: '/dispatch/basic/workflow', title: '工作流程管理', icon: List, status: 'todo' },
       { path: '/dispatch/basic/form', title: '填报表单管理', icon: Edit, status: 'todo' },
-      { path: '/dispatch/basic/scene', title: '业务场景管理', icon: Files, status: 'todo' },
+      { path: '/dispatch/basic/scene', title: '业务场景管理', icon: Files, status: 'done' },
     ]
   },
   {

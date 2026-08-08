@@ -540,6 +540,41 @@ function handleSubmit() {
 }
 ```
 
+#### 步骤4：状态/开关字段规范
+
+**所有布尔类型的状态字段（如使用状态、是否启用、是否允许编辑等）必须使用 `el-radio-group` 组件，禁止使用 `el-switch`。**
+
+参考 `/admin/config` 页面的状态字段实现：
+
+```vue
+<el-form-item label="使用状态" prop="useStatus">
+  <el-radio-group v-model="formData.useStatus">
+    <el-radio :value="true">启用</el-radio>
+    <el-radio :value="false">停用</el-radio>
+  </el-radio-group>
+</el-form-item>
+
+<el-form-item label="是否启用" prop="enabled">
+  <el-radio-group v-model="formData.enabled">
+    <el-radio :value="true">启用</el-radio>
+    <el-radio :value="false">停用</el-radio>
+  </el-radio-group>
+</el-form-item>
+
+<el-form-item label="是否允许编辑" prop="allowEdit">
+  <el-radio-group v-model="formData.allowEdit">
+    <el-radio :value="true">是</el-radio>
+    <el-radio :value="false">否</el-radio>
+  </el-radio-group>
+</el-form-item>
+```
+
+**适用场景：**
+- 使用状态 / 是否启用
+- 是否最新版本
+- 是否允许编辑 / 是否允许删除
+- 其他类似的布尔开关字段
+
 ---
 
 ### 四、文件结构速查

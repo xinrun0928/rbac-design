@@ -55,7 +55,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="更新时间" width="160" align="center" />
-      <el-table-column label="操作" width="200" align="center" fixed="right">
+      <el-table-column label="操作" width="230" align="center" fixed="right">
         <template #default="{ row }">
           <el-button type="primary" link :icon="Connection" @click="handleDesign(row)">流程设计</el-button>
           <el-button v-if="row.allowEdit" type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>

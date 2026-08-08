@@ -359,13 +359,14 @@ function handleEdit(row: FormTemplate) {
 }
 
 function handleDesign(row: FormTemplate) {
-  router.push({
+  const routeData = router.resolve({
     path: '/dispatch/basic/form-designer',
     query: {
       formId: row.formId,
       formName: row.formName
     }
   })
+  window.open(routeData.href, '_blank')
 }
 
 function handleSubmit() {

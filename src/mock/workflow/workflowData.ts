@@ -1,4 +1,160 @@
-import type { WorkflowNode, WorkflowEdge } from '@/types/workflow'
+import type { WorkflowNode, WorkflowEdge, WorkflowItem } from '@/types/workflow'
+
+/**
+ * 工作流列表 Mock 数据
+ */
+export const mockWorkflowList: WorkflowItem[] = [
+  {
+    id: 1,
+    name: '隐患上报流程',
+    code: 'WF001',
+    scenario: '隐患排查',
+    type: '上报',
+    version: 'v1.0',
+    versionDesc: '初始版本',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 08:50'
+  },
+  {
+    id: 2,
+    name: '事故处置流程',
+    code: 'WF002',
+    scenario: '事故管理',
+    type: '处置',
+    version: 'v2.1',
+    versionDesc: '优化处置环节',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 08:55'
+  },
+  {
+    id: 3,
+    name: '应急演练流程',
+    code: 'WF003',
+    scenario: '应急演练',
+    type: '审批',
+    version: 'v1.3',
+    versionDesc: '增加演练评估环节',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:00'
+  },
+  {
+    id: 4,
+    name: '设备巡检流程',
+    code: 'WF004',
+    scenario: '设备管理',
+    type: '巡检',
+    version: 'v1.0',
+    versionDesc: '初始版本',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:05'
+  },
+  {
+    id: 5,
+    name: '风险评估流程',
+    code: 'WF005',
+    scenario: '风险管理',
+    type: '审批',
+    version: 'v2.0',
+    versionDesc: '重构评估模型',
+    isLatest: true,
+    publishStatus: 'unpublished',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:10'
+  },
+  {
+    id: 6,
+    name: '视频巡查流程',
+    code: 'WF006',
+    scenario: '视频监控',
+    type: '巡检',
+    version: 'v1.2',
+    versionDesc: '增加异常标记',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:15'
+  },
+  {
+    id: 7,
+    name: '收费站检查流程',
+    code: 'WF007',
+    scenario: '收费站管理',
+    type: '巡检',
+    version: 'v1.1',
+    versionDesc: '优化检查项',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:20'
+  },
+  {
+    id: 8,
+    name: '服务区检查流程',
+    code: 'WF008',
+    scenario: '服务区管理',
+    type: '巡检',
+    version: 'v1.0',
+    versionDesc: '初始版本',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:25'
+  },
+  {
+    id: 9,
+    name: '桥梁巡检流程',
+    code: 'WF009',
+    scenario: '桥梁管理',
+    type: '巡检',
+    version: 'v2.2',
+    versionDesc: '增加结构检测',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:30'
+  },
+  {
+    id: 10,
+    name: '隧道巡检流程',
+    code: 'WF010',
+    scenario: '隧道管理',
+    type: '巡检',
+    version: 'v1.5',
+    versionDesc: '增加照明检测',
+    isLatest: true,
+    publishStatus: 'published',
+    useStatus: 'enabled',
+    allowEdit: true,
+    allowDelete: true,
+    updateTime: '2026-04-01 09:35'
+  }
+]
 
 /**
  * 工作流编排设计器 - 示例数据

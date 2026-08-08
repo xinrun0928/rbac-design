@@ -124,3 +124,33 @@ export interface ValidationIssue {
   /** 简要说明 */
   message: string
 }
+
+/** 工作流列表项 */
+export interface WorkflowItem {
+  /** 主键ID */
+  id: number
+  /** 流程名称 */
+  name: string
+  /** 流程编号 */
+  code: string
+  /** 业务场景 */
+  scenario: string
+  /** 流程类型 */
+  type: string
+  /** 版本号 */
+  version: string
+  /** 版本说明 */
+  versionDesc: string
+  /** 是否最新版本 */
+  isLatest: boolean
+  /** 发布状态：未发布/已发布 */
+  publishStatus: 'unpublished' | 'published'
+  /** 使用状态：启用/停用 */
+  useStatus: 'enabled' | 'disabled'
+  /** 是否允许编辑 */
+  allowEdit: boolean
+  /** 是否允许删除 */
+  allowDelete: boolean
+  /** 更新时间 */
+  updateTime: string
+}

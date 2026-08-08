@@ -255,6 +255,12 @@ export const dispatchStandaloneRoutes: RouteRecordRaw[] = [
     meta: { title: '表单设计器', hideLayout: true }
   },
   {
+    path: '/dispatch/basic/workflow-designer',
+    name: 'DispatchBasicWorkflowDesigner',
+    component: () => import('@/views/workflow/WorkflowDesigner.vue'),
+    meta: { title: '流程设计器', hideLayout: true }
+  },
+  {
     path: '/dispatch/road/screen/overview',
     name: 'DispatchScreenOverview',
     component: () => import('@/views/dispatch/road/screen/Overview.vue'),

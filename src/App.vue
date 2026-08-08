@@ -38,7 +38,7 @@ const isLoginPage = computed(() => {
   if (authPages.includes(route.path)) return true
 
   // 各子系统页面（有自己的布局，不需要顶部导航）
-  const subsystemPrefixes = ['/admin', '/duty', '/plan', '/event', '/dispatch', '/resource', '/dss', '/fusion', '/display']
+  const subsystemPrefixes = ['/admin', '/duty', '/plan', '/event', '/dispatch', '/resource', '/dss', '/fusion', '/display', '/workflow']
   return subsystemPrefixes.some(prefix => route.path.startsWith(prefix))
 })
 

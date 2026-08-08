@@ -13,6 +13,7 @@ import dssRoutes from './modules/dss'
 import fusionRoutes from './modules/fusion'
 import displayRoutes from './modules/display'
 import inspectionRoutes from './modules/inspection'
+import workflowRoutes from './modules/workflow'
 
 // 公共路由（不需要权限验证）
 const publicRoutes: RouteRecordRaw[] = [
@@ -88,6 +89,7 @@ const businessRoutes: RouteRecordRaw[] = [
   fusionRoutes,     // 数据融合子系统
   displayRoutes,    // 综合展示子系统
   inspectionRoutes, // 汛期巡查子系统
+  workflowRoutes,   // 工作流编排设计器
 ]
 
 // 403 无权限路由

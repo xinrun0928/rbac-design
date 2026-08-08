@@ -220,12 +220,6 @@ const dispatchRoutes: RouteRecordRaw = {
       meta: { title: '填报表单管理' }
     },
     {
-      path: 'basic/form-designer',
-      name: 'DispatchBasicFormDesigner',
-      component: () => import('@/views/dispatch/basic/FormDesigner.vue'),
-      meta: { title: '表单设计器', hideInMenu: true }
-    },
-    {
       path: 'basic/scene',
       name: 'DispatchBasicScene',
       component: () => import('@/views/dispatch/basic/Scene.vue'),
@@ -254,6 +248,12 @@ const dispatchRoutes: RouteRecordRaw = {
 
 // 独立全屏页面路由（不使用DispatchLayout）
 export const dispatchStandaloneRoutes: RouteRecordRaw[] = [
+  {
+    path: '/dispatch/basic/form-designer',
+    name: 'DispatchBasicFormDesigner',
+    component: () => import('@/views/dispatch/basic/FormDesigner.vue'),
+    meta: { title: '表单设计器', hideLayout: true }
+  },
   {
     path: '/dispatch/road/screen/overview',
     name: 'DispatchScreenOverview',

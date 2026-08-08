@@ -22,6 +22,16 @@
         <span class="entry-icon"><el-icon><Collection /></el-icon></span>
         <span class="entry-text">后端开发规范</span>
       </div>
+      <div class="entry-slot spec-entry form-designer" @click="goToFormDesigner">
+        <span class="entry-icon"><el-icon><Document /></el-icon></span>
+        <span class="entry-text">表单设计器</span>
+        <span class="entry-badge">NEW</span>
+      </div>
+      <div class="entry-slot spec-entry workflow" @click="goToWorkflow">
+        <span class="entry-icon"><el-icon><Connection /></el-icon></span>
+        <span class="entry-text">流程设计器</span>
+        <span class="entry-badge">NEW</span>
+      </div>
     </div>
 
     <!-- 右上角快捷入口 -->
@@ -104,7 +114,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { User, SwitchButton, Box, ArrowRight, SetUp, Platform, Collection, Calendar } from '@element-plus/icons-vue'
+import { User, SwitchButton, Box, ArrowRight, SetUp, Platform, Collection, Calendar, Connection, Document } from '@element-plus/icons-vue'
 import { specCategories } from '@/views/specs/specs'
 
 const router = useRouter()
@@ -169,6 +179,16 @@ const goToSchedule = () => {
 /** 部署架构图跳转 */
 const goToDeploy = () => {
   router.push('/deploy-architecture')
+}
+
+/** 工作流编排设计器跳转 */
+const goToWorkflow = () => {
+  router.push('/workflow/designer')
+}
+
+/** 表单设计器跳转 */
+const goToFormDesigner = () => {
+  router.push('/dispatch/basic/form-designer')
 }
 
 /** 规范文档跳转（跳转指定分类的第一个文档） */
@@ -545,6 +565,47 @@ const goToSpecs = (category: string) => {
       border-color: rgba(235, 190, 120, 0.7);
       box-shadow: 0 8px 26px rgba(230, 162, 60, 0.3);
     }
+  }
+
+  /* 工作流设计器 */
+  &.workflow {
+    background: linear-gradient(135deg, rgba(22, 119, 255, 0.32), rgba(114, 46, 209, 0.2));
+    border-color: rgba(100, 160, 255, 0.4);
+
+    .entry-icon {
+      background: linear-gradient(135deg, #1677ff, #722ed1);
+    }
+
+    &:hover {
+      border-color: rgba(100, 160, 255, 0.7);
+      box-shadow: 0 8px 26px rgba(22, 119, 255, 0.3);
+    }
+  }
+
+  /* 表单设计器 */
+  &.form-designer {
+    background: linear-gradient(135deg, rgba(103, 194, 58, 0.32), rgba(64, 158, 255, 0.2));
+    border-color: rgba(103, 194, 58, 0.4);
+
+    .entry-icon {
+      background: linear-gradient(135deg, #67c23a, #409eff);
+    }
+
+    &:hover {
+      border-color: rgba(103, 194, 58, 0.7);
+      box-shadow: 0 8px 26px rgba(103, 194, 58, 0.3);
+    }
+  }
+
+  .entry-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: linear-gradient(135deg, #e6a23c, #f56c6c);
+    border-radius: 10px;
+    padding: 2px 7px;
+    box-shadow: 0 3px 10px rgba(230, 162, 60, 0.35);
   }
 
   &:hover {

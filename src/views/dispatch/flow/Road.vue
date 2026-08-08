@@ -1,87 +1,99 @@
 <template>
-  <div class="page-container">
-    <!-- 搜索区域 -->
-    <div class="search-bar">
-      <el-input
-        v-model="searchName"
-        placeholder="请输入路段名称"
-        clearable
-        @clear="handleSearch"
-        @keyup.enter="handleSearch"
+  <div class="road-management">
+    <el-card class="table-card animate-item" shadow="never">
+      <div class="search-bar">
+        <span class="search-bar-title">大客流大货流路段</span>
+        <div class="search-bar-actions">
+          <el-input
+            v-model="searchName"
+            placeholder="请输入路段名称"
+            clearable
+            :prefix-icon="Search"
+            style="width: 180px"
+            @clear="handleSearch"
+            @keyup.enter="handleSearch"
+          />
+          <DataAccessButton text="路段接入" @click="handleAdd" />
+          <ExportButton />
+        </div>
+      </div>
+
+      <el-table
+        :data="tableData"
+        stripe
+        border
+        highlight-current-row
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+        class="data-table"
       >
-        <template #prefix>
-          <el-icon><Search /></el-icon>
-        </template>
-      </el-input>
-      <el-button type="primary" @click="handleSearch">搜索</el-button>
-    </div>
+        <el-table-column type="index" label="序号" width="60" align="center" :index="getIndex" />
+        <el-table-column prop="name" label="路段名称" min-width="150" show-overflow-tooltip />
+        <el-table-column prop="highwayName" label="高速公路名称" min-width="150" show-overflow-tooltip />
+        <el-table-column prop="roadType" label="路段类型" width="120" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.roadType === '高速公路' ? 'primary' : 'success'" size="small">
+              {{ row.roadType }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="congestionLevel" label="拥挤程度" width="120" align="center">
+          <template #default="{ row }">
+            <el-tag :type="getCongestionType(row.congestionLevel)" size="small">
+              {{ row.congestionLevel }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="trafficType" label="车流类型" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.trafficType === '客流' ? 'warning' : 'info'" size="small">
+              {{ row.trafficType }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="当前状态" width="120" align="center">
+          <template #default="{ row }">
+            <el-tag :type="getStatusType(row.status)" size="small">
+              {{ row.status }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="350" align="center" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" link size="small" @click="handleContact(row)">联系人配置</el-button>
+            <el-button type="primary" link size="small" @click="handleBindSlice(row)">绑定切片</el-button>
+            <el-button type="primary" link size="small" @click="handleVideoList(row)">视频清单</el-button>
+            <el-button type="primary" link size="small" @click="handleBindVideo(row)">绑定监控视频</el-button>
+            <el-button type="primary" link size="small" @click="handleAutoSlice(row)">自动切片</el-button>
+            <el-button type="primary" link size="small" @click="handleSliceVideo(row)">切片视频</el-button>
+            <el-button type="primary" link size="small" @click="handleDataAnalysis(row)">数据分析</el-button>
+            <el-button type="primary" link size="small" @click="handleDetail(row)">详情</el-button>
+            <el-button type="danger" link size="small" @click="handleRemove(row)">移除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <!-- 表格 -->
-    <el-table
-      :data="tableData"
-      stripe
-      border
-      style="width: 100%"
-      height="calc(100vh - 200px)"
-    >
-      <el-table-column type="index" label="序号" width="70" align="center" :index="getIndex" />
-      <el-table-column prop="name" label="路段名称" min-width="150" show-overflow-tooltip />
-      <el-table-column prop="highwayName" label="高速公路名称" min-width="150" show-overflow-tooltip />
-      <el-table-column prop="roadType" label="路段类型" width="120" align="center">
-        <template #default="{ row }">
-          <el-tag :type="row.roadType === '高速公路' ? 'primary' : 'success'" size="small">
-            {{ row.roadType }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="congestionLevel" label="拥挤程度" width="120" align="center">
-        <template #default="{ row }">
-          <el-tag :type="getCongestionType(row.congestionLevel)" size="small">
-            {{ row.congestionLevel }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="trafficType" label="车流类型" width="100" align="center">
-        <template #default="{ row }">
-          <el-tag :type="row.trafficType === '客流' ? 'warning' : 'info'" size="small">
-            {{ row.trafficType }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="status" label="当前状态" width="120" align="center">
-        <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)" size="small">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100" align="center" fixed="right">
-        <template #default="{ row }">
-          <el-button type="primary" link size="small" @click="handleBind(row)">绑定</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页 -->
-    <div class="pagination-wrapper">
-      <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[10, 20, 50, 100]"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import DataAccessButton from '@/components/DataAccessButton.vue'
+import ExportButton from '@/components/ExportButton.vue'
 
 // 搜索关键词
 const searchName = ref('')
@@ -122,16 +134,71 @@ const handleSearch = () => {
 }
 
 // 分页大小变化
-const handleSizeChange = () => {
+const handleSizeChange = (size: number) => {
+  pageSize.value = size
   currentPage.value = 1
 }
 
 // 页码变化
-const handleCurrentChange = () => {}
+const handleCurrentChange = (page: number) => {
+  currentPage.value = page
+}
 
-// 绑定操作
-const handleBind = (row: any) => {
-  ElMessage.success(`已绑定路段：${row.name}`)
+// 数据接入
+const handleAdd = () => {
+  ElMessage.info('路段接入功能开发中...')
+}
+
+// 联系人配置
+const handleContact = (row: any) => {
+  ElMessage.info(`联系人配置：${row.name}`)
+}
+
+// 绑定切片
+const handleBindSlice = (row: any) => {
+  ElMessage.info(`绑定切片：${row.name}`)
+}
+
+// 视频清单
+const handleVideoList = (row: any) => {
+  ElMessage.info(`视频清单：${row.name}`)
+}
+
+// 绑定监控视频
+const handleBindVideo = (row: any) => {
+  ElMessage.info(`绑定监控视频：${row.name}`)
+}
+
+// 自动切片
+const handleAutoSlice = (row: any) => {
+  ElMessage.info(`自动切片：${row.name}`)
+}
+
+// 切片视频
+const handleSliceVideo = (row: any) => {
+  ElMessage.info(`切片视频：${row.name}`)
+}
+
+// 数据分析
+const handleDataAnalysis = (row: any) => {
+  ElMessage.info(`数据分析：${row.name}`)
+}
+
+// 详情
+const handleDetail = (row: any) => {
+  ElMessage.info(`查看详情：${row.name}`)
+}
+
+// 移除
+const handleRemove = (row: any) => {
+  ElMessageBox.confirm(`确定要移除路段"${row.name}"吗？`, '移除确认', {
+    type: 'warning',
+    confirmButtonText: '确定',
+    cancelButtonText: '取消'
+  }).then(() => {
+    allData.value = allData.value.filter(item => item.id !== row.id)
+    ElMessage.success('移除成功')
+  }).catch(() => {})
 }
 
 // 获取拥挤程度类型
@@ -196,31 +263,72 @@ function generateMockData() {
 </script>
 
 <style lang="scss" scoped>
-.page-container {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
+.road-management {
+  padding: 0;
+  background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100%;
   display: flex;
   flex-direction: column;
-}
+  overflow: hidden;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  flex-shrink: 0;
+  .animate-item {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
 
-  .el-input {
-    width: 300px;
+  .table-card {
+    border-radius: 12px;
+    border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    :deep(.el-card__body) {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ebeef5;
+    }
+
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .data-table { flex: 1; }
+  }
+
+  .pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    flex-shrink: 0;
   }
 }
 
-.pagination-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 15px;
-  padding: 10px 0;
-  flex-shrink: 0;
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

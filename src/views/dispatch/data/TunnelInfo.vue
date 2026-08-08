@@ -1,61 +1,62 @@
 <template>
-  <div class="page-container">
-    <div class="page-header">
-      <el-button type="primary" @click="handleAdd">
-        <el-icon><Plus /></el-icon>
-        隧道信息接入
-      </el-button>
-      <div class="header-right">
-        <span class="sync-info">同步网关视频 2026年4月24日 09点20分</span>
-        <el-button type="success" @click="handleExport">导出</el-button>
+  <div class="tunnel-info-management">
+    <el-card class="table-card animate-item" shadow="never">
+      <div class="search-bar">
+        <span class="search-bar-title">隧道信息</span>
+        <div class="search-bar-actions">
+          <DataAccessButton text="隧道信息接入" @click="handleAdd" />
+          <ExportButton />
+        </div>
       </div>
-    </div>
 
-    <el-table
-      :data="paginatedData"
-      border
-      stripe
-      :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
-      class="data-table"
-    >
-      <el-table-column prop="name" label="隧道名称" min-width="140" align="center" />
-      <el-table-column prop="route" label="所属路线" width="140" align="center" />
-      <el-table-column prop="roadSection" label="所属路段" width="120" align="center" />
-      <el-table-column prop="area" label="所属区域" width="100" align="center" />
-      <el-table-column prop="manager" label="管理单位" width="120" align="center" />
-      <el-table-column prop="type" label="隧道类型" width="100" align="center" />
-      <el-table-column label="状态" width="100" align="center">
-        <template #default="{ row }">
-          <el-tag type="success" effect="plain" size="small">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column label="操作" width="80" align="center" fixed="right">
-        <template #default="{ row }">
-          <el-button type="primary" link size="small" @click="handleRemove(row)">移除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+      <el-table
+        :data="paginatedData"
+        border
+        stripe
+        highlight-current-row
+        :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
+        class="data-table"
+      >
+        <el-table-column type="index" label="序号" width="60" align="center" />
+        <el-table-column prop="name" label="隧道名称" min-width="140" align="center" />
+        <el-table-column prop="route" label="所属路线" width="140" align="center" />
+        <el-table-column prop="roadSection" label="所属路段" width="120" align="center" />
+        <el-table-column prop="area" label="所属区域" width="100" align="center" />
+        <el-table-column prop="manager" label="管理单位" width="120" align="center" />
+        <el-table-column prop="type" label="隧道类型" width="100" align="center" />
+        <el-table-column label="状态" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag type="success" effect="plain" size="small">{{ row.status }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="80" align="center" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" link size="small" @click="handleRemove(row)">移除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <div class="pagination-wrapper">
-      <el-pagination
-        v-model:current-page="pagination.page"
-        v-model:page-size="pagination.pageSize"
-        :total="pagination.total"
-        :page-sizes="[10, 20, 50, 100]"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handlePageChange"
-      />
-    </div>
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :total="pagination.total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+        />
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import ExportButton from '@/components/ExportButton.vue'
+import DataAccessButton from '@/components/DataAccessButton.vue'
 import { tunnelInfoData } from '@/mock/dispatch/roadData'
 import type { TunnelInfo } from '@/types/dispatch/roadData'
 
@@ -73,15 +74,16 @@ const paginatedData = computed(() => {
   return tableData.value.slice(start, start + pagination.pageSize)
 })
 
-const handleSizeChange = () => { pagination.page = 1 }
-const handlePageChange = () => {}
+const handleSizeChange = (size: number) => {
+  pagination.pageSize = size
+  pagination.page = 1
+}
+const handlePageChange = (page: number) => {
+  pagination.page = page
+}
 
 const handleAdd = () => {
   ElMessage.info('隧道信息接入功能开发中...')
-}
-
-const handleExport = () => {
-  ElMessage.success('导出成功')
 }
 
 const handleRemove = (row: TunnelInfo) => {
@@ -97,40 +99,72 @@ const handleRemove = (row: TunnelInfo) => {
 </script>
 
 <style lang="scss" scoped>
-.page-container {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
+.tunnel-info-management {
+  padding: 0;
+  background: linear-gradient(160deg, #f5f7fa 0%, #e8ecf1 100%);
+  height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  .animate-item {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .table-card {
+    border-radius: 12px;
+    border: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    :deep(.el-card__body) {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ebeef5;
+    }
+
+    .search-bar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .search-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .data-table { flex: 1; }
+  }
+
+  .pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    flex-shrink: 0;
+  }
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.sync-info {
-  font-size: 14px;
-  color: #606266;
-}
-
-.data-table {
-  width: 100%;
-  flex: 1;
-}
-
-.pagination-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

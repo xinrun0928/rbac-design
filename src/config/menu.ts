@@ -351,10 +351,10 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '终端设备管理',
     children: [
-      { path: '/dispatch/terminal/control-ball', title: '应急布控球', icon: Camera, status: 'todo' },
-      { path: '/dispatch/terminal/command-vehicle', title: '应急指挥车', icon: Van, status: 'todo' },
-      { path: '/dispatch/terminal/personal', title: '应急单兵设备', icon: Cellphone, status: 'todo' },
-      { path: '/dispatch/terminal/statistics', title: '终端调度统计', icon: DataLine, status: 'todo' },
+      { path: '/dispatch/terminal/control-ball', title: '应急布控球', icon: Camera, status: 'done' },
+      { path: '/dispatch/terminal/command-vehicle', title: '应急指挥车', icon: Van, status: 'done' },
+      { path: '/dispatch/terminal/personal', title: '应急单兵设备', icon: Cellphone, status: 'done' },
+      { path: '/dispatch/terminal/statistics', title: '终端调度统计', icon: DataLine, status: 'done' },
     ]
   },
   {

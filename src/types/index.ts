@@ -9,3 +9,6 @@ export * from './resource'
 
 // 辅助决策类型
 export * from './dss'
+
+// 指挥调度类型
+export * from './dispatch'

@@ -19,12 +19,10 @@
           <el-select v-model="searchForm.packageType" placeholder="套餐类型" clearable style="width: 180px; margin-right: 12px" @change="handleSearch">
             <el-option v-for="item in mealTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
-          <el-cascader
+          <AreaCascader
             v-model="searchForm.areaName"
-            :options="areaOptions"
-            :props="{ label: 'name', value: 'name', children: 'children', checkStrictly: true }"
             placeholder="选择区域"
-            clearable
+            value-field="name"
             style="width: 180px; margin-right: 12px"
             @change="handleSearch"
           />
@@ -135,12 +133,9 @@
         </el-form-item>
 
         <el-form-item label="归属地区" prop="areaCode">
-          <el-cascader
+          <AreaCascader
             v-model="formData.areaCode"
-            :options="areaOptions"
-            :props="{ label: 'name', value: 'code', children: 'children', checkStrictly: true }"
             placeholder="请选择归属地区"
-            clearable
             style="width: 100%"
           />
         </el-form-item>
@@ -222,7 +217,7 @@ import {
 import type { OrgTreeNode } from '@/types/admin/orgTree'
 import { orgTreeData as rawOrgTreeData } from '@/mock/admin/orgTreeData'
 import { mealTypeOptions, mealNameOptions } from '@/mock/admin/mealData'
-import { areaData } from '@/mock/admin/areaData'
+import AreaCascader from '@/components/AreaCascader.vue'
 
 // ── 状态 ──
 const loading = ref(false)
@@ -253,9 +248,6 @@ const formData = reactive({
   parentAffairOrgId: null as number | null,
   parentCompanyOrgId: null as number | null
 })
-
-// 地区选项
-const areaOptions = computed(() => areaData)
 
 // 套餐名称选项
 const packageLabelOptions = computed(() => {

@@ -162,7 +162,10 @@
         </el-form-item>
 
         <el-form-item label="是否最新版本" prop="isLatest">
-          <el-switch v-model="formData.isLatest" active-text="是" inactive-text="否" />
+          <el-radio-group v-model="formData.isLatest">
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="适配终端" prop="terminal">
@@ -191,11 +194,17 @@
         </el-form-item>
 
         <el-form-item label="是否允许编辑" prop="allowEdit">
-          <el-switch v-model="formData.allowEdit" active-text="是" inactive-text="否" />
+          <el-radio-group v-model="formData.allowEdit">
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="是否允许删除" prop="allowDelete">
-          <el-switch v-model="formData.allowDelete" active-text="是" inactive-text="否" />
+          <el-radio-group v-model="formData.allowDelete">
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
 

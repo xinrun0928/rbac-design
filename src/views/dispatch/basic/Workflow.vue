@@ -20,7 +20,7 @@
     </div>
 
     <el-table
-      :data="filteredData"
+      :data="paginatedData"
       border
       stripe
       :header-cell-style="{ background: '#F5F7FA', color: '#606266', fontWeight: '600', textAlign: 'center' }"
@@ -55,33 +55,27 @@
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="更新时间" width="160" align="center" />
-      <el-table-column label="操作" width="180" align="center" fixed="right">
+      <el-table-column label="操作" width="200" align="center" fixed="right">
         <template #default="{ row }">
-          <el-button type="primary" link size="small" @click="handleDesign(row)">
-            <el-icon><Connection /></el-icon>
-            流程设计
-          </el-button>
-          <el-button
-            v-if="row.allowEdit"
-            type="primary"
-            link
-            size="small"
-            @click="handleEdit(row)"
-          >
-            编辑
-          </el-button>
-          <el-button
-            v-if="row.allowDelete"
-            type="danger"
-            link
-            size="small"
-            @click="handleDelete(row)"
-          >
-            删除
-          </el-button>
+          <el-button type="primary" link :icon="Connection" @click="handleDesign(row)">流程设计</el-button>
+          <el-button v-if="row.allowEdit" type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
+          <el-button v-if="row.allowDelete" type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="pagination-wrapper">
+      <el-pagination
+        v-model:current-page="pagination.page"
+        v-model:page-size="pagination.pageSize"
+        :total="pagination.total"
+        :page-sizes="[10, 20, 50, 100]"
+        layout="total, sizes, prev, pager, next, jumper"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handlePageChange"
+      />
+    </div>
 
     <!-- 新建/编辑抽屉 -->
     <el-drawer
@@ -161,7 +155,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import { Plus, Connection, Search } from '@element-plus/icons-vue'
+import { Plus, Connection, Search, Edit, Delete } from '@element-plus/icons-vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { mockWorkflowList } from '@/mock/workflow/workflowData'
@@ -174,6 +168,29 @@ const searchName = ref('')
 const drawerVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
+
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  total: 0
+})
+
+const filteredData = computed(() => {
+  let data = mockWorkflowList
+  if (searchName.value) {
+    data = data.filter(item => item.name.includes(searchName.value))
+  }
+  pagination.total = data.length
+  return data
+})
+
+const paginatedData = computed(() => {
+  const start = (pagination.page - 1) * pagination.pageSize
+  return filteredData.value.slice(start, start + pagination.pageSize)
+})
+
+const handleSizeChange = () => { pagination.page = 1 }
+const handlePageChange = () => {}
 
 const formData = reactive({
   id: 0,
@@ -196,13 +213,8 @@ const formRules: FormRules = {
   version: [{ required: true, message: '请输入版本号', trigger: 'blur' }]
 }
 
-const filteredData = computed(() => {
-  if (!searchName.value) return mockWorkflowList
-  return mockWorkflowList.filter(item => item.name.includes(searchName.value))
-})
-
 const handleSearch = () => {
-  // 搜索由 computed 自动处理
+  pagination.page = 1
 }
 
 const handleCreate = () => {
@@ -302,6 +314,12 @@ const resetForm = () => {
 
 .data-table {
   width: 100%;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .drawer-footer {

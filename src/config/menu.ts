@@ -364,9 +364,9 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '大客流大货流',
     children: [
-      { path: '/dispatch/flow/road', title: '路段', icon: Guide, status: 'doing' },
-      { path: '/dispatch/flow/service-area', title: '服务区', icon: OfficeBuilding, status: 'doing' },
-      { path: '/dispatch/flow/toll-station', title: '收费站', icon: OfficeBuilding, status: 'doing' },
+      { path: '/dispatch/flow/road', title: '路段', icon: Guide, status: 'done' },
+      { path: '/dispatch/flow/service-area', title: '服务区', icon: OfficeBuilding, status: 'done' },
+      { path: '/dispatch/flow/toll-station', title: '收费站', icon: OfficeBuilding, status: 'done' },
     ]
   },
   {
@@ -376,12 +376,12 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '数据接口',
     children: [
-      { path: '/dispatch/data/road-config', title: '重点路段配置', icon: Setting, status: 'todo' },
-      { path: '/dispatch/data/road-info', title: '路段信息', icon: InfoFilled, status: 'todo' },
-      { path: '/dispatch/data/toll-info', title: '收费站信息', icon: InfoFilled, status: 'todo' },
-      { path: '/dispatch/data/service-info', title: '服务区信息', icon: InfoFilled, status: 'todo' },
-      { path: '/dispatch/data/bridge-info', title: '桥梁信息', icon: InfoFilled, status: 'todo' },
-      { path: '/dispatch/data/tunnel-info', title: '隧道信息', icon: InfoFilled, status: 'todo' },
+      { path: '/dispatch/data/road-config', title: '重点路段配置', icon: Setting, status: 'done' },
+      { path: '/dispatch/data/road-info', title: '路段信息', icon: DataLine, status: 'done' },
+      { path: '/dispatch/data/toll-info', title: '收费站信息', icon: OfficeBuilding, status: 'done' },
+      { path: '/dispatch/data/service-info', title: '服务区信息', icon: Location, status: 'done' },
+      { path: '/dispatch/data/bridge-info', title: '桥梁信息', icon: Link, status: 'done' },
+      { path: '/dispatch/data/tunnel-info', title: '隧道信息', icon: VideoCamera, status: 'done' },
     ]
   },
   {
@@ -391,11 +391,11 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '气象数据接入',
     children: [
-      { path: '/dispatch/weather/typhoon', title: '台风', icon: Sunny, status: 'todo' },
-      { path: '/dispatch/weather/rainfall', title: '降雨量', icon: Sunny, status: 'todo' },
-      { path: '/dispatch/weather/weather', title: '天气', icon: Sunny, status: 'todo' },
-      { path: '/dispatch/weather/wind', title: '风力', icon: Sunny, status: 'todo' },
-      { path: '/dispatch/weather/interface', title: '数据接口设置', icon: Connection, status: 'todo' },
+      { path: '/dispatch/weather/typhoon', title: '台风', icon: Warning, status: 'done' },
+      { path: '/dispatch/weather/rainfall', title: '降雨量', icon: DataLine, status: 'done' },
+      { path: '/dispatch/weather/weather', title: '天气', icon: Sunny, status: 'done' },
+      { path: '/dispatch/weather/wind', title: '风力', icon: Connection, status: 'done' },
+      { path: '/dispatch/weather/interface', title: '数据接口设置', icon: Setting, status: 'done' },
     ]
   },
   {

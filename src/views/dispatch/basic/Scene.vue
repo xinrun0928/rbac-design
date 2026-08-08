@@ -156,7 +156,12 @@
         </el-form-item>
 
         <el-form-item label="适用范围" prop="applicableScope">
-          <el-input v-model="formData.applicableScope" placeholder="必填（如：全省/市级/区县）" />
+          <AreaCascader
+            v-model="scopeAreaCodes"
+            placeholder="请选择适用范围"
+            value-field="name"
+            @change="handleScopeChange"
+          />
         </el-form-item>
 
         <el-form-item label="关联流程" prop="workflowId">
@@ -213,6 +218,7 @@ import {
   BUSINESS_OPTIONS
 } from '@/types/dispatch/businessScene'
 import type { BusinessScene, BusinessSceneForm } from '@/types/dispatch/businessScene'
+import AreaCascader from '@/components/AreaCascader.vue'
 
 // ── 状态 ──
 const loading = ref(false)
@@ -244,7 +250,16 @@ const formRules: FormRules = {
   sceneCode: [{ required: true, message: '请输入场景编码', trigger: 'blur' }],
   sceneType: [{ required: true, message: '请选择场景类型', trigger: 'change' }],
   applicableBusiness: [{ required: true, message: '请选择适用业务', trigger: 'change' }],
-  applicableScope: [{ required: true, message: '请输入适用范围', trigger: 'blur' }]
+  applicableScope: [{ required: true, message: '请选择适用范围', trigger: 'change' }]
+}
+
+// 适用范围地区选择
+const scopeAreaCodes = ref<string[]>([])
+
+function handleScopeChange(value: string[] | number[]) {
+  // 取最后一个选中的值作为适用范围
+  const lastValue = value.length > 0 ? value[value.length - 1] : ''
+  formData.applicableScope = String(lastValue)
 }
 
 const pagination = reactive({
@@ -307,6 +322,7 @@ function handleAdd() {
   formData.formId = null
   formData.enabled = true
   formData.sceneDescription = ''
+  scopeAreaCodes.value = []
   drawerVisible.value = true
 }
 
@@ -322,6 +338,8 @@ function handleEdit(row: BusinessScene) {
   formData.formId = row.formId || null
   formData.enabled = row.enabled
   formData.sceneDescription = row.sceneDescription || ''
+  // 将已有的适用范围转换为数组
+  scopeAreaCodes.value = row.applicableScope ? [row.applicableScope] : []
   drawerVisible.value = true
 }
 

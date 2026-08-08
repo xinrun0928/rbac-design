@@ -184,7 +184,10 @@
         </el-form-item>
 
         <el-form-item label="使用状态" prop="useStatus">
-          <el-switch v-model="formData.useStatus" active-text="启用" inactive-text="停用" />
+          <el-radio-group v-model="formData.useStatus">
+            <el-radio :value="true">启用</el-radio>
+            <el-radio :value="false">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="是否允许编辑" prop="allowEdit">

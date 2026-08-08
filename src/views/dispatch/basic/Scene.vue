@@ -187,7 +187,10 @@
         </el-form-item>
 
         <el-form-item label="是否启用" prop="enabled">
-          <el-switch v-model="formData.enabled" active-text="是" inactive-text="否" />
+          <el-radio-group v-model="formData.enabled">
+            <el-radio :value="true">启用</el-radio>
+            <el-radio :value="false">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="场景描述" prop="sceneDescription">

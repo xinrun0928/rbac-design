@@ -249,6 +249,12 @@ const dispatchRoutes: RouteRecordRaw = {
 // 独立全屏页面路由（不使用DispatchLayout）
 export const dispatchStandaloneRoutes: RouteRecordRaw[] = [
   {
+    path: '/dispatch/meeting/room',
+    name: 'DispatchMeetingRoom',
+    component: () => import('@/views/dispatch/meeting/MeetingRoom.vue'),
+    meta: { title: '会议房间', hideLayout: true }
+  },
+  {
     path: '/dispatch/basic/form-designer',
     name: 'DispatchBasicFormDesigner',
     component: () => import('@/views/dispatch/basic/FormDesigner.vue'),

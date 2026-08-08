@@ -295,8 +295,8 @@ export const eventMenus: MenuItem[] = [
 
 // 指挥调度子系统菜单
 export const dispatchMenus: MenuItem[] = [
-  { path: '/dispatch/guarantee', title: '重点保障工作', icon: Star, status: 'todo' },
-  { path: '/dispatch/vehicle/track', title: '重点车辆行驶轨迹', icon: Location, status: 'todo' },
+  { path: '/dispatch/guarantee', title: '重点保障工作', icon: Star, status: 'done' },
+  { path: '/dispatch/vehicle/track', title: '重点车辆行驶轨迹', icon: Location, status: 'done' },
   {
     path: '/dispatch/topic-group',
     title: '专题管理',
@@ -304,9 +304,9 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '专题管理',
     children: [
-      { path: '/dispatch/topic/channel', title: '航道专题视图', icon: MapLocation, status: 'todo' },
-      { path: '/dispatch/topic/strait', title: '海峡办专题视图', icon: Position, status: 'todo' },
-      { path: '/dispatch/topic/config', title: '专题配置', icon: Setting, status: 'todo' },
+      { path: '/dispatch/topic/channel', title: '航道专题视图', icon: MapLocation, status: 'done' },
+      { path: '/dispatch/topic/strait', title: '海峡办专题视图', icon: Position, status: 'done' },
+      { path: '/dispatch/topic/config', title: '专题配置', icon: Setting, status: 'done' },
     ]
   },
   {
@@ -326,7 +326,7 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '会议管理',
     children: [
-      { path: '/dispatch/meeting', title: '会议列表', icon: ChatDotRound, status: 'todo' },
+      { path: '/dispatch/meeting', title: '会议列表', icon: ChatDotRound, status: 'done' },
     ]
   },
   {
@@ -336,12 +336,12 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '网络设备管理',
     children: [
-      { path: '/dispatch/network/monitor', title: '监控设备管理', icon: Monitor, status: 'todo' },
-      { path: '/dispatch/network/video', title: '监控视频', icon: VideoCamera, status: 'todo' },
-      { path: '/dispatch/network/meeting-device', title: '会议设备管理', icon: ChatDotRound, status: 'todo' },
-      { path: '/dispatch/network/meeting-video', title: '会议视频', icon: VideoPlay, status: 'todo' },
-      { path: '/dispatch/network/voice-device', title: '语音设备管理', icon: Microphone, status: 'todo' },
-      { path: '/dispatch/network/voice', title: '语音', icon: Headset, status: 'todo' },
+      { path: '/dispatch/network/monitor', title: '监控设备管理', icon: Monitor, status: 'done' },
+      { path: '/dispatch/network/video', title: '监控视频', icon: VideoCamera, status: 'done' },
+      { path: '/dispatch/network/meeting-device', title: '会议设备管理', icon: ChatDotRound, status: 'done' },
+      { path: '/dispatch/network/meeting-video', title: '会议视频', icon: VideoPlay, status: 'done' },
+      { path: '/dispatch/network/voice-device', title: '语音设备管理', icon: Microphone, status: 'done' },
+      { path: '/dispatch/network/voice', title: '语音', icon: Headset, status: 'done' },
     ]
   },
   {
@@ -417,7 +417,7 @@ export const dispatchMenus: MenuItem[] = [
     isGroup: true,
     groupTitle: '机构管理',
     children: [
-      { path: '/dispatch/org/admin', title: '机构管理（超管）', icon: OfficeBuilding, status: 'todo' },
+      { path: '/dispatch/org/admin', title: '机构管理（超管）', icon: OfficeBuilding, status: 'done' },
       { path: '/dispatch/org/unit', title: '机构管理（单位）', icon: OfficeBuilding, status: 'todo' },
     ]
   },

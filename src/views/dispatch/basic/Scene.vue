@@ -46,7 +46,7 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="sceneName" label="场景名称" min-width="180" show-overflow-tooltip>
+        <el-table-column prop="sceneName" label="场景名称" min-width="180" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="name-text">{{ row.sceneName }}</span>
           </template>

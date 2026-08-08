@@ -46,7 +46,7 @@
       >
         <el-table-column type="index" label="序号" width="60" align="center" />
 
-        <el-table-column prop="formName" label="表单名称" min-width="160" show-overflow-tooltip>
+        <el-table-column prop="formName" label="表单名称" min-width="160" align="center" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="name-text">{{ row.formName }}</span>
           </template>

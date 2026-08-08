@@ -94,9 +94,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150" align="center" fixed="right">
+        <el-table-column label="操作" width="200" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">修改</el-button>
+            <el-button type="warning" link :icon="SetUp" @click="handleDesign(row)">设计表单</el-button>
             <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
@@ -220,10 +221,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import {
-  Search, Plus, Delete, Edit, Download
+  Search, Plus, Delete, Edit, Download, SetUp
 } from '@element-plus/icons-vue'
 import { formTemplateData } from '@/mock/dispatch/formTemplateData'
 import {
@@ -232,6 +234,8 @@ import {
   BUSINESS_SCENE_OPTIONS
 } from '@/types/dispatch/formTemplate'
 import type { FormTemplate, FormTemplateForm } from '@/types/dispatch/formTemplate'
+
+const router = useRouter()
 
 // ── 状态 ──
 const loading = ref(false)
@@ -352,6 +356,16 @@ function handleEdit(row: FormTemplate) {
   formData.allowDelete = row.allowDelete
   formData.description = row.description || ''
   drawerVisible.value = true
+}
+
+function handleDesign(row: FormTemplate) {
+  router.push({
+    path: '/dispatch/basic/form-designer',
+    query: {
+      formId: row.formId,
+      formName: row.formName
+    }
+  })
 }
 
 function handleSubmit() {

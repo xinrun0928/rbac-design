@@ -220,6 +220,12 @@ const dispatchRoutes: RouteRecordRaw = {
       meta: { title: '填报表单管理' }
     },
     {
+      path: 'basic/form-designer',
+      name: 'DispatchBasicFormDesigner',
+      component: () => import('@/views/dispatch/basic/FormDesigner.vue'),
+      meta: { title: '表单设计器', hideInMenu: true }
+    },
+    {
       path: 'basic/scene',
       name: 'DispatchBasicScene',
       component: () => import('@/views/dispatch/basic/Scene.vue'),
